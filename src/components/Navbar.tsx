@@ -1,18 +1,37 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { AnnouncementMarquee } from '@/components/AnnouncementMarquee';
+import { useToast } from '@/hooks/use-toast';
 import { NAV_LINKS } from '@/lib/constants';
 import logo from '../logo.webp';
 
 export const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === '/';
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [registerData, setRegisterData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
@@ -21,7 +40,88 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (location.hash === '#register') {
+      setIsRegisterOpen(true);
+      setIsMobileMenuOpen(false);
+    }
+  }, [location.hash]);
+
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const scrollToSection = (hash: string) => {
+    const sectionId = hash.replace('#', '');
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.history.replaceState(null, '', hash);
+  };
+
+  const handleNavClick = (href: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!href.startsWith('/#')) {
+      closeMobileMenu();
+      return;
+    }
+
+    e.preventDefault();
+    closeMobileMenu();
+    const hash = href.replace('/', '');
+
+    if (isHome) {
+      scrollToSection(hash);
+      return;
+    }
+
+    navigate(`/${hash}`);
+  };
+
+  const openRegisterModal = () => {
+    closeMobileMenu();
+    setIsRegisterOpen(true);
+  };
+
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const params = new URLSearchParams();
+      params.append('name', registerData.name);
+      params.append('email', registerData.email);
+      params.append('subject', 'Internship registration');
+      params.append('message', `Phone: ${registerData.phone}`);
+
+      const response = await fetch(
+        'https://script.google.com/macros/s/AKfycbyVFalUML0Mnb-S2RuoCA68d5422p5MvMWF_id4Uw-MIQyiH5PxiglxPGdHDV47QJ22/exec',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: params.toString(),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to submit registration');
+      }
+
+      toast({
+        title: 'Registration submitted',
+        description: 'Thank you. Our team will contact you shortly.',
+      });
+      setRegisterData({ name: '', email: '', phone: '' });
+      setIsRegisterOpen(false);
+    } catch {
+      toast({
+        title: 'Submission failed',
+        description: 'Unable to submit now. Please try again shortly.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   /** Dark hero on home: transparent bar + light text until scroll */
   const onDarkHero = isHome && !isScrolled;
@@ -71,7 +171,12 @@ export const Navbar = () => {
 
           <div className="hidden items-center gap-5 lg:gap-7 xl:gap-8 md:flex">
             {NAV_LINKS.map((link) => (
-              <Link key={link.label} to={link.href} className={cn(linkClass, 'group')}>
+              <Link
+                key={link.label}
+                to={link.href}
+                className={cn(linkClass, 'group')}
+                onClick={handleNavClick(link.href)}
+              >
                 {link.label}
                 <span className={underlineClass} />
               </Link>
@@ -86,9 +191,9 @@ export const Navbar = () => {
                 'rounded-full font-semibold',
                 onDarkHero && 'shadow-lg shadow-primary/25'
               )}
-              asChild
+              onClick={openRegisterModal}
             >
-              <Link to="/#contact">Get started</Link>
+              Register now
             </Button>
           </div>
 
@@ -121,20 +226,67 @@ export const Navbar = () => {
                   key={link.label}
                   to={link.href}
                   className="block rounded-lg px-2 py-3 text-sm font-medium text-slate-700 hover:bg-muted hover:text-primary"
-                  onClick={closeMobileMenu}
+                  onClick={handleNavClick(link.href)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Button variant="hero" size="lg" className="mt-4 w-full" asChild>
-                <Link to="/#contact" onClick={closeMobileMenu}>
-                  Get started
-                </Link>
+              <Button variant="hero" size="lg" className="mt-4 w-full" onClick={openRegisterModal}>
+                Register now
               </Button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
+        <DialogContent className="sm:max-w-[480px]">
+          <DialogHeader>
+            <DialogTitle className="font-display text-xl">Register now</DialogTitle>
+            <DialogDescription>
+              Share your details and our team will connect with you about the next batch.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleRegisterSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="reg-name">Full name</Label>
+              <Input
+                id="reg-name"
+                type="text"
+                value={registerData.name}
+                onChange={(e) => setRegisterData((prev) => ({ ...prev, name: e.target.value }))}
+                placeholder="Your full name"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="reg-email">Email ID</Label>
+              <Input
+                id="reg-email"
+                type="email"
+                value={registerData.email}
+                onChange={(e) => setRegisterData((prev) => ({ ...prev, email: e.target.value }))}
+                placeholder="name@example.com"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="reg-phone">Number</Label>
+              <Input
+                id="reg-phone"
+                type="tel"
+                value={registerData.phone}
+                onChange={(e) => setRegisterData((prev) => ({ ...prev, phone: e.target.value }))}
+                placeholder="+91 9876543210"
+                required
+              />
+            </div>
+            <Button type="submit" variant="hero" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting…' : 'Submit'}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </motion.header>
   );
 };

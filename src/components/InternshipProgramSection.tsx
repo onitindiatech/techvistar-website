@@ -272,7 +272,7 @@ export const InternshipProgramSection = () => {
                   </a>
                 </Button>
                 <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-                  <Link to="/#contact" className="gap-2">
+                  <Link to="/#register" className="gap-2">
                     Enquire & register
                     <ArrowUpRight className="h-4 w-4" aria-hidden />
                   </Link>

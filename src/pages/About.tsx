@@ -8,7 +8,9 @@ import {
   Eye,
   Globe,
   GraduationCap,
+  Layers,
   Smartphone,
+  Sparkles,
   Target,
   TrendingUp,
 } from 'lucide-react';
@@ -93,7 +95,7 @@ const About = () => {
                 What we focus on
               </h2>
               <p className="mt-2 text-sm leading-snug text-slate-600">
-                Four practice areas—scoped standalone or as part of a broader program.
+                Six practice areas—scoped standalone or as part of a broader program.
               </p>
             </motion.div>
             <div className="mt-5 grid gap-3 sm:grid-cols-2 sm:gap-4">

@@ -35,13 +35,13 @@ export const JsonLd = () => {
       {
         '@type': 'ProfessionalService',
         '@id': serviceId,
-        name: `${SITE.name} — Technology services`,
+        name: `${SITE.name} — Technology-first growth partner`,
         url: SITE.url,
         description: SITE.description,
         provider: { '@id': orgId },
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
-          name: 'Technology services',
+          name: 'Growth and technology services',
           itemListElement: SERVICES.map((s, i) => ({
             '@type': 'ListItem',
             position: i + 1,

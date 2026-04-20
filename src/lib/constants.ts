@@ -1,9 +1,6 @@
 import {
-  Smartphone,
   Globe,
   TrendingUp,
-  GraduationCap,
-  FileText,
   BookOpen,
   Cpu,
   Shield,
@@ -20,6 +17,7 @@ import {
   Code2,
   Share2,
   Headset,
+  Sparkles,
 } from 'lucide-react';
 
 /** Site-wide identity (used in copy + JSON-LD) */
@@ -27,7 +25,7 @@ export const SITE = {
   name: 'TechVistar',
   url: 'https://techvistar.com',
   description:
-    'TechVistar provides software development, cloud-ready web and mobile applications, digital marketing, academic project support, and technical documentation for businesses and institutions in India and remotely.',
+    'TechVistar is a technology-first growth partner: web systems, brand and digital presence, marketing instrumentation, automation, AI, and documentation—delivered with structured scope, measurable outcomes, and handover your team can operate.',
 } as const;
 
 // Navigation — About is a dedicated route; other anchors target home sections via /#…
@@ -119,12 +117,12 @@ export const INTERNSHIP_PROGRAM = {
 
 export const HERO_COPY = {
   /** Line 1 + accent word + line 2 — Voxvertex-style two-line headline */
-  headlineLine1: 'Making',
-  headlineAccent: 'Technology',
-  headlineLine2: 'Work for You',
+  headlineLine1: 'Technology-first',
+  headlineAccent: 'Growth',
+  headlineLine2: 'Without the chaos',
   /** Single subline under H1 */
   tagline:
-    'TechVistar designs and delivers software, integrations, and documentation—structured for teams that need accountable delivery.',
+    'TechVistar helps businesses scale with integrated web systems, brand and digital presence, automation, and applied AI—structured from scope to sign-off, with outcomes you can measure and teams can run.',
   ctaPrimary: 'Get in touch',
   ctaSecondary: 'View services',
   locationLine: 'Hyderabad · Remote worldwide',
@@ -133,21 +131,22 @@ export const HERO_COPY = {
 export const ABOUT_COPY = {
   tag: 'About us',
   /** Short line under the brand — plain language */
-  subtitle: 'Technology services: software delivery, documentation, and support—structured for real-world operations.',
+  subtitle:
+    'A technology-first growth partner: we connect engineering, marketing operations, and automation so digital investments produce pipeline, efficiency, and clarity—not one-off deliverables.',
   /** One paragraph only — who we are */
   summary:
-    'We are a Hyderabad-based team helping startups, SMEs, and academic clients ship digital products. Work is scoped in writing, demonstrated on a regular cadence, and signed off before go-live—so you always know what is included.',
+    'We are a Hyderabad-based team partnering with startups, SMEs, and institutions to ship digital products and operating systems. Engagements are scoped in writing, demonstrated on a steady cadence, and signed off with documentation your stakeholders can audit.',
   mission: {
     title: 'Mission',
-    text: 'Ship secure, maintainable software and clear guidance so every technology investment is understandable and auditable.',
+    text: 'Deliver secure, maintainable technology and clear guidance so every investment in digital, data, and AI is understandable, measurable, and ownable by your organization.',
   },
   vision: {
     title: 'Vision',
-    text: 'Be the partner teams call when they need dependable delivery—not just ideas—across applications and technical documentation.',
+    text: 'Be the partner teams call when they need accountable delivery across applications, automation, and growth—not disconnected campaigns or undocumented handoffs.',
   },
   locationLine: 'Hyderabad, Telangana, India',
   closing:
-    'We favour maintainability, knowledge transfer, and steady communication over one-off drops and undocumented handoffs.',
+    'We favour clarity, knowledge transfer, and steady communication over heroics, vanity metrics, and tacit-only knowledge.',
 } as const;
 
 /** Dedicated About page — extended copy */
@@ -156,131 +155,141 @@ export const ABOUT_PAGE = {
     eyebrow: 'Company',
     title: 'About TechVistar',
     lead:
-      'We are a technology services team based in Hyderabad, helping organizations ship software, documentation, and digital campaigns with clear scope, accountable delivery, and documentation you can rely on after go-live.',
+      'TechVistar is a technology-first growth partner. We help organizations design and run digital systems—web, brand presence, marketing instrumentation, automation, AI, and documentation—with the discipline of a product team and the language of business outcomes.',
   },
   overview: {
     title: 'Who we are',
     paragraphs: [
       ABOUT_COPY.summary,
-      'Across engagements we align engineering practices with your operational reality: security and testing expectations, stakeholder review cycles, and handover artefacts are agreed in writing—not assumed. That keeps delivery predictable for your teams and auditable for your stakeholders.',
+      'Across engagements we align engineering, marketing operations, and data reality: security and testing expectations, funnel truth, stakeholder review cycles, and handover artefacts are agreed in writing—not assumed. That keeps delivery predictable for your teams and credible for leadership.',
     ] as const,
   },
   focusAreas: [
     {
-      title: 'Software & platforms',
+      title: 'Product & platforms (web & mobile)',
       description:
-        'Web and mobile applications, APIs, and integrations—scoped with milestones, demos on a regular cadence, and acceptance criteria before release.',
+        'Customer-facing and internal applications, APIs, and integrations—scoped with milestones, demos, acceptance criteria, and release discipline.',
     },
     {
-      title: 'Documentation & knowledge transfer',
+      title: 'Revenue web & conversion systems',
       description:
-        'SRS, architecture notes, API docs, and runbooks maintained alongside the product so operations and future development are not blocked by tacit knowledge.',
+        'High-trust web experiences with analytics and goal design so marketing and sales see the same truth about demand and conversion.',
     },
     {
-      title: 'Marketing & digital presence',
+      title: 'Brand, content & growth marketing',
       description:
-        'Search, content, and analytics tied to measurable goals so campaigns connect to funnel and reporting—not vanity metrics alone.',
+        'Positioning and assets that stay consistent across channels—paired to measurable goals, not activity for its own sake.',
     },
     {
-      title: 'Academic & research support',
+      title: 'Automation & integration layer',
       description:
-        'Structured help for project builds and manuscript-adjacent work: clear problem statements, reproducible artefacts where applicable, and submission-ready packaging.',
+        'Connect CRM, ops tools, and data flows; reduce manual work, errors, and “spreadsheet risk” with observable workflows.',
+    },
+    {
+      title: 'Applied AI & decision support',
+      description:
+        'Practical AI features—classification, assistants, retrieval—deployed with evaluation, guardrails, and governance appropriate to your risk profile.',
+    },
+    {
+      title: 'Documentation, research & academic programmes',
+      description:
+        'SRS and runbooks alongside builds; structured academic and research-adjacent support with reproducible artefacts where applicable.',
     },
   ] as const,
   principles: [
     'Scope, assumptions, and exclusions are captured before build-heavy work begins; changes flow through an agreed change path.',
-    'You see working software on a predictable rhythm—so there are no surprise “big reveals” at the deadline.',
-    'Security, testing, and observability are matched to the sensitivity of your data and deployment environment.',
-    'Handover includes what your team needs to operate and extend the system: docs, access patterns, and transition checkpoints.',
+    'You see working software and measurable signals on a predictable rhythm—no surprise “big reveals” at the deadline.',
+    'Security, testing, and observability match the sensitivity of your data, brand, and deployment environment.',
+    'Handover includes what your team needs to operate and extend the system: docs, access patterns, training, and transition checkpoints.',
   ] as const,
   principlesIntro:
-    'These principles show up in statements of work, demo agendas, and sign-off—so delivery stays understandable at every stage.',
+    'These principles show up in statements of work, demo agendas, analytics reviews, and sign-off—so delivery stays understandable at every stage.',
 } as const;
 
-/** Service catalog — aligned with JSON-LD OfferCatalog */
+/** Service catalog — productized offers; aligned with JSON-LD OfferCatalog */
 export const SERVICES = [
   {
-    icon: Smartphone,
-    title: 'Mobile application development',
+    icon: Layers,
+    title: 'Growth Stack Blueprint',
     description:
-      'Native and cross-platform mobile apps for Android and iOS: discovery, UX implementation, API integration, store submission, and release management.',
-    deliverables: ['Kotlin / Swift / Flutter', 'REST & GraphQL APIs', 'CI-friendly builds', 'Store listing support'],
+      'End-to-end product foundations: web and mobile applications, APIs, and integrations—scoped as one coherent system so marketing, sales, and ops see the same data and release cadence.',
+    deliverables: ['Roadmap & milestone plan', 'Web / mobile / API delivery', 'Environments & release discipline', 'Acceptance & sign-off'],
   },
   {
     icon: Globe,
-    title: 'Web applications & platforms',
+    title: 'Revenue Web Engine',
     description:
-      'Responsive web apps and internal tools: single-page applications, SSR where appropriate, role-based access, and integration with your identity and data stack.',
-    deliverables: ['React / modern stacks', 'APIs & microservices fit', 'Cloud-ready deployment', 'Performance & SEO basics'],
+      'High-trust websites and conversion paths with analytics and goal design—so leadership sees demand, conversion, and channel truth, not vanity metrics.',
+    deliverables: ['UX & performance baseline', 'Measurement plan & events', 'CRM / form integrations', 'SEO & content structure'],
   },
   {
     icon: TrendingUp,
-    title: 'Digital marketing & brand presence',
+    title: 'Brand & Growth Flywheel',
     description:
-      'Search, content, social, and analytics aligned to your funnel—so traffic and campaigns connect to measurable business goals.',
-    deliverables: ['SEO & content', 'Paid & organic social', 'Analytics setup', 'Brand-consistent assets'],
+      'Positioning, content, and campaigns wired to pipeline and reporting—consistent creative, measurable experiments, and clear ownership between marketing and sales.',
+    deliverables: ['Messaging & asset system', 'Organic & paid programs', 'Funnel & attribution hygiene', 'Reporting cadence'],
   },
   {
-    icon: GraduationCap,
-    title: 'Academic & industry projects',
+    icon: Cpu,
+    title: 'Automate & Integrate',
     description:
-      'Structured support for final-year and research-led builds: problem definition, implementation, evaluation, and viva-ready documentation.',
-    deliverables: ['Scope & ethics alignment', 'Implementation support', 'Results & reporting', 'Demo preparation'],
+      'Connect CRM, ops tools, and data flows; replace fragile spreadsheets with observable workflows, alerts, and audit-friendly handoffs between teams.',
+    deliverables: ['Integration map & APIs', 'Workflow automation', 'Error handling & monitoring', 'Runbooks for operators'],
   },
   {
-    icon: FileText,
-    title: 'Research & manuscript support',
+    icon: Sparkles,
+    title: 'Applied AI & Decision Support',
     description:
-      'Formatting, reproducibility of experiments where applicable, illustration of results, and submission-ready packaging for conferences and journals.',
-    deliverables: ['LaTeX / Word workflows', 'Figure & citation hygiene', 'Reviewer response support', 'Code artifacts'],
+      'Practical AI features—classification, assistants, retrieval—deployed with evaluation, guardrails, and governance suited to your data sensitivity and brand risk.',
+    deliverables: ['Use-case & success metrics', 'Model / RAG architecture', 'Safety & evaluation harness', 'Rollout & owner training'],
   },
   {
     icon: BookOpen,
-    title: 'Technical documentation',
+    title: 'Documentation & Research Desk',
     description:
-      'SRS, architecture decision records, API docs, user manuals, and onboarding guides—maintained alongside the product lifecycle.',
-    deliverables: ['SRS & HLD/LLD', 'API & SDK docs', 'Ops runbooks', 'Release notes'],
+      'SRS, architecture notes, API docs, and runbooks alongside the build; plus structured academic and research-adjacent support with reproducible artefacts where applicable.',
+    deliverables: ['SRS & ADRs', 'API & ops documentation', 'Academic / capstone support', 'Submission-ready packaging'],
   },
 ] as const;
 
 export const SECTION_SERVICES = {
   tag: 'Our services',
-  title: 'Solutions that move your product',
-  highlight: 'from idea to production',
+  title: 'Productized growth',
+  highlight: 'you can scope and measure',
   description:
-    'We design and build software, integrations, and documentation with clear scope—so teams know what ships, when, and how it is supported.',
+    'Six offers—from full-stack delivery to automation and applied AI—each with defined outcomes, written assumptions, and handover your team can run. Combine them or start where risk and ROI are highest.',
   cta: 'Request a scoped proposal or SOW discussion',
 } as const;
 
-/** Delivery process — homepage process block */
+/** Delivery process — homepage process block (VISTAR-inspired phases) */
 export const SECTION_PROCESS = {
   tag: 'Delivery process',
-  title: 'Structured, professional',
-  highlight: 'delivery',
+  title: 'Vision to results,',
+  highlight: 'without guesswork',
   description:
-    'A four-phase framework with defined outputs, documented assumptions, and accountable ownership at each step—so delivery stays predictable as scope and teams grow.',
+    'A four-phase VISTAR-style framework: align on vision and insight, lock strategy and build, ship technology with integration discipline, then accelerate with support and measurable optimization.',
 } as const;
 
-export const PROCESS_PILLARS = ['Structured', 'Professional', 'Scalable'] as const;
+export const PROCESS_PILLARS = ['Vision', 'Insight', 'Strategy', 'Results'] as const;
 
 export const PROCESS_STEPS = [
   {
     step: '01',
-    title: 'Discovery & scope',
+    title: 'Vision & scope',
     description:
-      'We align on goals, constraints, and success criteria—then produce a written scope, milestone plan, and risk register.',
+      'We align on goals, constraints, funnel truth, and success criteria—then produce a written scope, milestone plan, and risk register.',
     icon: FileSearch,
     deliverables: [
       'Scope, milestones, and assumptions in writing',
       'Risk register and dependency map',
-      'Agreed demo and reporting cadence',
+      'Agreed demo, analytics, and reporting cadence',
     ] as const,
   },
   {
     step: '02',
-    title: 'Design & build',
+    title: 'Insight & build',
     description:
-      'Iterative delivery with demos, code review, and test evidence. You see progress on a steady cadence—not a black box.',
+      'Iterative delivery with demos, code review, and test evidence. You see product and metrics on a steady cadence—not a black box.',
     icon: Code2,
     deliverables: [
       'Incremental builds with review checkpoints',
@@ -290,26 +299,26 @@ export const PROCESS_STEPS = [
   },
   {
     step: '03',
-    title: 'Integration & handover',
+    title: 'Strategy & integration',
     description:
-      'Deployment to your environments, runbooks, and knowledge transfer so your team can operate and extend what we ship.',
+      'Deployment to your environments, integrations with CRM and ops tools, runbooks, and knowledge transfer so your team can operate and extend what we ship.',
     icon: Share2,
     deliverables: [
       'Environment-specific deploy and rollback paths',
-      'Runbooks and operational checklists',
+      'Integration tests and data contracts',
       'Handover sessions and documentation',
     ] as const,
   },
   {
     step: '04',
-    title: 'Support & optimization',
+    title: 'Technology & acceleration',
     description:
-      'Post-launch fixes, minor enhancements, and performance tuning—with SLAs and escalation paths you can rely on.',
+      'Post-launch fixes, enhancements, performance and cost tuning—with SLAs, escalation paths, and optimization tied to agreed KPIs.',
     icon: Headset,
     deliverables: [
       'Defined response times and escalation',
       'Triage for defects vs enhancements',
-      'Ongoing performance and cost visibility',
+      'Ongoing performance, funnel, and cost visibility',
     ] as const,
   },
 ] as const;
@@ -318,9 +327,9 @@ export const PROCESS_STEPS = [
 export const SECTION_BENEFITS = {
   tag: 'Benefits',
   title: 'Why teams choose',
-  highlight: 'structured delivery',
+  highlight: 'technology-first growth',
   description:
-    'Predictable delivery comes from explicit scope, disciplined engineering practice, and communication your stakeholders can audit—so timelines and outcomes stay aligned from kickoff to handover.',
+    'Clear scope, disciplined engineering, marketing and ops alignment, and communication leadership can audit—so pipeline, efficiency, and delivery stay aligned from kickoff to handover.',
 } as const;
 
 export const BENEFITS = [
@@ -334,19 +343,19 @@ export const BENEFITS = [
     icon: Shield,
     title: 'Security & reliability',
     description:
-      'Threat-aware design, sensible defaults, and testing matched to your risk profile and compliance needs.',
+      'Threat-aware design, sensible defaults, and testing matched to your risk profile, data sensitivity, and compliance needs.',
   },
   {
     icon: Users,
-    title: 'Stakeholder alignment',
+    title: 'Revenue alignment',
     description:
-      'Shared visibility on backlog, demos, and documentation so everyone agrees on what “done” means.',
+      'Shared truth on backlog, demos, funnel metrics, and documentation so sales, marketing, and product agree on what “done” means.',
   },
   {
     icon: ClipboardCheck,
     title: 'Quality & handover',
     description:
-      'Test evidence, runbooks, and training so your internal team can own the system after go-live.',
+      'Test evidence, runbooks, and training so your internal team owns the system after go-live.',
   },
   {
     icon: DollarSign,
@@ -358,16 +367,16 @@ export const BENEFITS = [
     icon: Layers,
     title: 'Full-stack continuity',
     description:
-      'One partner for UI, APIs, data, and docs reduces integration risk and speeds root-cause resolution.',
+      'One partner for UI, APIs, data, automation, and docs reduces integration risk and speeds root-cause resolution.',
   },
 ] as const;
 
 export const SECTION_PROJECTS = {
   tag: 'Case highlights',
   title: 'Representative work',
-  highlight: 'engineering samples',
+  highlight: 'across stacks',
   description:
-    'Route, ecosystem, translation, and finance samples sit alongside other ML/NLP builds—illustrative of how we scope, build, and hand over production-minded software. Details anonymized where required.',
+      'Samples span routing, NLP/ML, finance, and internal tooling—illustrative of how we scope, integrate, and hand over production-minded software. Details anonymized where required.',
 } as const;
 
 export const TESTIMONIALS = [
@@ -455,10 +464,10 @@ export const TESTIMONIALS = [
 
 export const SECTION_TESTIMONIALS = {
   tag: 'Client references',
-  title: 'What organizations',
-  highlight: 'say about working with us',
+  title: 'What leaders and teams',
+  highlight: 'say about delivery',
   description:
-    'A curated set of post-engagement feedback from product, engineering, operations, and academic clients. Identifiers are summarized where confidentiality agreements apply; fuller references are available when mutually agreed.',
+    'Post-engagement feedback from product, engineering, operations, and academic clients—focused on scope discipline, measurable outcomes, and handover quality. Identifiers summarized where confidentiality applies.',
 } as const;
 
 export const TESTIMONIAL_AGGREGATE = [
@@ -488,29 +497,29 @@ export const CONTACT_INFO = [
 export const SECTION_CONTACT = {
   tag: 'Contact',
   title: 'Start a',
-  highlight: 'structured conversation',
+  highlight: 'growth conversation',
   description:
-    'Share your goals, timeline, budget band, and constraints. We will respond with clarifying questions, a suggested approach, and—where appropriate—a proposal or statement of work.',
+    'Share goals, timeline, budget band, and constraints. We reply with clarifying questions, a suggested approach, and—where appropriate—a proposal or statement of work aligned to measurable outcomes.',
 } as const;
 
 export const CONTACT_SIDEBAR = {
   title: 'Business & project inquiries',
   lead:
-    'For RFPs, vendor onboarding, or project kickoff, use the form. We route messages to the right practice lead within one business day.',
+    'For RFPs, vendor onboarding, or kickoff, use the form. We route messages to the right practice lead within one business day.',
   slaTitle: 'First response',
   slaBody:
     'We acknowledge new business inquiries within one business day (IST). For urgent production issues from existing clients, please call and reference your engagement ID.',
 } as const;
 
 export const FOOTER_DESCRIPTION =
-  'TechVistar delivers software development, web and mobile applications, digital marketing, academic project support, and technical documentation for organizations that require reliable delivery and clear communication.';
+  'TechVistar is a technology-first growth partner: web and mobile systems, brand and digital presence, automation, applied AI, and documentation—structured delivery, clear communication, and handover your team can operate.';
 
 export const FOOTER_LINKS = {
   services: [
-    { label: 'Mobile Development', href: '/#services' },
-    { label: 'Web & APIs', href: '/#services' },
-    { label: 'Digital Marketing', href: '/#services' },
-    { label: 'Documentation', href: '/#services' },
+    { label: 'Growth Stack Blueprint', href: '/#services' },
+    { label: 'Revenue Web Engine', href: '/#services' },
+    { label: 'Automate & Integrate', href: '/#services' },
+    { label: 'Applied AI', href: '/#services' },
   ],
   company: [
     { label: 'About', href: '/about' },

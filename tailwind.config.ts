@@ -124,22 +124,19 @@ export default {
           "50%": { opacity: "0.28" },
           "100%": { transform: "translate3d(30%, 0, 0) rotate(12deg)", opacity: "0.15" },
         },
-        /** One soft circle that slowly travels across the full hero (centered on path) */
+        /** One soft circle that moves subtly and continuously */
         "hero-circle-orbit": {
           "0%, 100%": {
-            transform: "translate(-50%, -50%) translate3d(8vw, 12vh, 0) scale(1)",
+            transform: "translate(-50%, -50%) translate3d(12vw, 16vh, 0) scale(1)",
           },
-          "20%": {
-            transform: "translate(-50%, -50%) translate3d(72vw, 8vh, 0) scale(1.05)",
+          "25%": {
+            transform: "translate(-50%, -50%) translate3d(16vw, 13vh, 0) scale(1.015)",
           },
-          "40%": {
-            transform: "translate(-50%, -50%) translate3d(55vw, 58vh, 0) scale(0.98)",
+          "50%": {
+            transform: "translate(-50%, -50%) translate3d(19vw, 17vh, 0) scale(0.99)",
           },
-          "60%": {
-            transform: "translate(-50%, -50%) translate3d(12vw, 78vh, 0) scale(1.02)",
-          },
-          "80%": {
-            transform: "translate(-50%, -50%) translate3d(-8vw, 38vh, 0) scale(1)",
+          "75%": {
+            transform: "translate(-50%, -50%) translate3d(14vw, 20vh, 0) scale(1.01)",
           },
         },
       },
@@ -156,7 +153,7 @@ export default {
         "hero-grid-drift": "hero-grid-drift 22s linear infinite",
         "hero-starfield-drift": "hero-starfield-drift 85s linear infinite",
         "hero-shimmer": "hero-shimmer 14s ease-in-out infinite",
-        "hero-circle-orbit": "hero-circle-orbit 110s linear infinite",
+        "hero-circle-orbit": "hero-circle-orbit 80s linear infinite",
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

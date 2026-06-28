@@ -143,26 +143,31 @@ export const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        onDarkHero
-          ? 'border-b border-transparent bg-transparent'
-          : 'border-b border-slate-200/90 bg-white/95 shadow-sm backdrop-blur-md'
+        // Mobile: always transparent so it floats over the video
+        'border-b border-transparent bg-transparent',
+        // Tablet/Desktop: switch to solid when scrolled or not on dark hero
+        !onDarkHero && 'md:border-b md:border-slate-200/90 md:bg-white/95 md:shadow-sm md:backdrop-blur-md'
       )}
     >
       <nav className="container-custom">
-        <div className="flex h-16 items-center justify-between md:h-[4.25rem]">
+        <div className="flex h-12 items-center justify-between sm:h-14 md:h-16 lg:h-[4.25rem]">
           <Link to="/" className="flex items-center gap-3 group">
             <img
               src={logo}
               alt="TechVistar"
               className={cn(
-                'h-11 w-11 rounded-full object-cover ring-2 transition-all',
-                onDarkHero ? 'ring-white/20' : 'ring-slate-200'
+                'h-8 w-8 sm:h-9 sm:w-9 md:h-11 md:w-11 rounded-full object-cover ring-2 transition-all',
+                // Mobile always on dark hero (transparent header over video)
+                'ring-white/20 md:ring-white/20',
+                !onDarkHero && 'md:ring-slate-200'
               )}
             />
             <span
               className={cn(
-                'text-lg font-bold font-display tracking-tight transition-colors',
-                onDarkHero ? 'text-white' : 'text-slate-900'
+                'text-sm sm:text-base md:text-lg font-bold font-display tracking-tight transition-colors',
+                // Mobile always white text (floating over video)
+                'text-white',
+                !onDarkHero && 'md:text-slate-900'
               )}
             >
               TechVistar
@@ -199,13 +204,14 @@ export const Navbar = () => {
 
           <button
             className={cn(
-              'rounded-lg p-2 transition-colors md:hidden',
-              onDarkHero ? 'text-white' : 'text-slate-900'
+              'rounded-lg p-1.5 transition-colors md:hidden',
+              // Mobile always white text over the video
+              'text-white'
             )}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </nav>
@@ -218,20 +224,20 @@ export const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-b border-slate-200 bg-white shadow-lg md:hidden"
+            className="border-b border-white/10 bg-zinc-950/95 backdrop-blur-xl shadow-xl md:hidden"
           >
-            <div className="container-custom space-y-1 py-5">
+            <div className="container-custom space-y-1 py-4">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.label}
                   to={link.href}
-                  className="block rounded-lg px-2 py-3 text-sm font-medium text-slate-700 hover:bg-muted hover:text-primary"
+                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white transition-colors"
                   onClick={handleNavClick(link.href)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Button variant="hero" size="lg" className="mt-4 w-full" onClick={openRegisterModal}>
+              <Button variant="hero" size="lg" className="mt-3 w-full" onClick={openRegisterModal}>
                 Register now
               </Button>
             </div>

@@ -175,12 +175,10 @@ npm run build
 
 # 👨‍💻 Contributors
 
-**Aditya Choubey**
-
-Frontend Developer
-
-GitHub:
-https://github.com/Adityachoubey26
+| Name | Role | GitHub |
+|------|------|--------|
+| **Aditya Choubey** | Frontend Developer & Architecture | https://github.com/Adityachoubey26 |
+| **Amrita Singh** | Frontend Developer & UI/UX | https://github.com/Amritas851203 |
 
 ---
 

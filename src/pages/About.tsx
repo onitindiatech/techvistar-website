@@ -133,7 +133,7 @@ const About = () => {
               <motion.nav 
                 variants={itemVariants}
                 aria-label="Breadcrumb" 
-                className="mb-4 text-xs font-semibold tracking-wider text-emerald-400 uppercase"
+                className="mb-6 text-xs font-semibold tracking-wider text-emerald-400 uppercase"
               >
                 <Link to="/" className="hover:underline underline-offset-4">
                   Home
@@ -151,44 +151,28 @@ const About = () => {
 
               <motion.h1 
                 variants={itemVariants}
-                className="mt-5 font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-[1.1]"
+                className="mt-6 font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-[1.1]"
               >
                 About <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">TechVistar</span>
               </motion.h1>
 
               <motion.div 
                 variants={lineVariants}
-                className="mt-4 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" 
+                className="mt-5 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" 
               />
 
               <motion.p 
                 variants={itemVariants}
-                className="mt-6 text-sm sm:text-[0.9375rem] md:text-base leading-relaxed text-zinc-300 max-w-xl"
+                className="mt-8 text-sm sm:text-[0.9375rem] md:text-base leading-relaxed text-zinc-300 max-w-xl"
               >
                 {ABOUT_PAGE.hero.lead}
               </motion.p>
             </motion.div>
 
-            {/* Right Side: Interactive Animated Globe & Floating Cards */}
+            {/* Right Side: Interactive Animated Globe */}
             <div className="lg:col-span-5 relative flex items-center justify-center h-[350px] sm:h-[400px]">
-              {/* Energy Platform expanding glowing rings */}
-              <div className="absolute bottom-[20%] flex items-center justify-center pointer-events-none">
-                <div className="relative w-48 h-10 flex items-center justify-center">
-                  <motion.div
-                    className="absolute w-full h-full border border-emerald-500/30 rounded-full"
-                    initial={{ scale: 0.8, opacity: 0.8 }}
-                    animate={{ scale: 1.4, opacity: 0 }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'easeOut' }}
-                  />
-                  <motion.div
-                    className="absolute w-full h-full border border-emerald-500/15 rounded-full"
-                    initial={{ scale: 0.8, opacity: 0.8 }}
-                    animate={{ scale: 1.4, opacity: 0 }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'easeOut', delay: 1.5 }}
-                  />
-                  <div className="absolute w-44 h-8 bg-emerald-950/20 border border-emerald-500/10 rounded-full blur-[1px] shadow-[0_0_15px_rgba(16,185,129,0.05)]" />
-                </div>
-              </div>
+              {/* Soft radial glow under the globe */}
+              <div className="absolute w-44 h-44 rounded-full bg-emerald-500/10 blur-[60px] pointer-events-none" />
 
               {/* Parallax Group (Globe + Orbits) */}
               <motion.div
@@ -196,7 +180,7 @@ const About = () => {
                   x: mousePosition.x * 12,
                   y: mousePosition.y * 12,
                 }}
-                className="relative w-72 h-72 rounded-full border border-emerald-500/20 bg-emerald-500/[0.01] flex items-center justify-center pointer-events-none"
+                className="relative w-72 h-72 rounded-full border border-emerald-500/20 bg-emerald-500/[0.01] flex items-center justify-center pointer-events-none opacity-40"
                 animate={{
                   boxShadow: [
                     '0 0 35px rgba(16,185,129,0.04)',
@@ -229,92 +213,8 @@ const About = () => {
                   animate={{ rotate: 360 }}
                   transition={{ duration: 55, repeat: Infinity, ease: 'linear' }}
                 >
-                  <Globe className="w-24 h-24 text-emerald-400/25" strokeWidth={1} />
+                  <Globe className="w-24 h-24 text-emerald-400/40" strokeWidth={1} />
                 </motion.div>
-
-                {/* Light Sweep Effect */}
-                <motion.div
-                  className="absolute w-full h-[1.5px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -skew-y-12"
-                  animate={{ y: ['-40%', '140%'] }}
-                  transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.5 }}
-                />
-              </motion.div>
-
-              {/* Floating Cards (Glassmorphic) with individual offset & delays */}
-              {/* Card 1: Strategy (Top Left) */}
-              <motion.div
-                style={{
-                  x: mousePosition.x * 16,
-                  y: mousePosition.y * 16,
-                }}
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute top-4 left-2 bg-white/[0.02] backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-lg shadow-black/30 flex items-center gap-2.5 max-w-[140px]"
-              >
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
-                  <Target size={16} />
-                </div>
-                <div className="text-left">
-                  <div className="text-xs font-bold text-white">Strategy</div>
-                  <div className="text-[9px] text-zinc-400 font-medium">Define direction</div>
-                </div>
-              </motion.div>
-
-              {/* Card 2: Build (Bottom Left) */}
-              <motion.div
-                style={{
-                  x: mousePosition.x * 16,
-                  y: mousePosition.y * 16,
-                }}
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-                className="absolute bottom-6 left-0 bg-white/[0.02] backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-lg shadow-black/30 flex items-center gap-2.5 max-w-[130px]"
-              >
-                <div className="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400">
-                  <Layers size={16} />
-                </div>
-                <div className="text-left">
-                  <div className="text-xs font-bold text-white">Build</div>
-                  <div className="text-[9px] text-zinc-400 font-medium">Ship software</div>
-                </div>
-              </motion.div>
-
-              {/* Card 3: Automate (Top Right) */}
-              <motion.div
-                style={{
-                  x: mousePosition.x * 16,
-                  y: mousePosition.y * 16,
-                }}
-                animate={{ y: [0, 7, 0] }}
-                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
-                className="absolute top-10 right-4 bg-white/[0.02] backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-lg shadow-black/30 flex items-center gap-2.5 max-w-[140px]"
-              >
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                  <Zap size={16} />
-                </div>
-                <div className="text-left">
-                  <div className="text-xs font-bold text-white">Automate</div>
-                  <div className="text-[9px] text-zinc-400 font-medium">Streamline ops</div>
-                </div>
-              </motion.div>
-
-              {/* Card 4: Grow (Bottom Right) */}
-              <motion.div
-                style={{
-                  x: mousePosition.x * 16,
-                  y: mousePosition.y * 16,
-                }}
-                animate={{ y: [0, -7, 0] }}
-                transition={{ duration: 6.2, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
-                className="absolute bottom-8 right-2 bg-white/[0.02] backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-lg shadow-black/30 flex items-center gap-2.5 max-w-[130px]"
-              >
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
-                  <TrendingUp size={16} />
-                </div>
-                <div className="text-left">
-                  <div className="text-xs font-bold text-white">Grow</div>
-                  <div className="text-[9px] text-zinc-400 font-medium">Drive impact</div>
-                </div>
               </motion.div>
             </div>
           </div>

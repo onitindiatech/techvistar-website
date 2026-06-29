@@ -234,12 +234,12 @@ const Services = () => {
                       className="group h-full flex flex-col overflow-hidden border-slate-200 bg-white shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-primary/25 transition-all duration-[450ms] ease-in-out"
                     >
                       {/* Service Cover Image */}
-                      <div className="overflow-hidden bg-slate-50" style={{ borderRadius: '20px 20px 0 0' }}>
+                      <div className="overflow-hidden bg-white" style={{ borderRadius: '20px 20px 0 0' }}>
                         <img
                           src={service.coverImage}
                           alt={service.title}
                           loading="lazy"
-                          className="w-full h-[200px] md:h-[250px] object-cover transition-transform duration-[450ms] ease-in-out group-hover:scale-105"
+                          className="w-full h-[200px] md:h-[250px] object-contain p-2 transition-transform duration-[450ms] ease-in-out group-hover:scale-105"
                         />
                       </div>
                       <CardHeader className="space-y-3 pb-2">

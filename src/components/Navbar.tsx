@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 
 import { useToast } from '@/hooks/use-toast';
 import { NAV_LINKS, SITE, NAVBAR_REGISTER_FORM } from '@/data';
-import logo from '../logo.webp';
+import logo from '../assets/logo.webp';
 
 export const Navbar = () => {
   const location = useLocation();

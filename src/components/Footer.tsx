@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { FOOTER_DESCRIPTION, FOOTER_LINKS, FOOTER_NEWSLETTER, FOOTER_COPYRIGHT } from '@/data';
-import logo from '../logo.webp';
+import logo from '../assets/logo.webp';
 
 export const Footer = () => {
   const { toast } = useToast();

@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Search } from 'lucide-react';
-import workBg from '../work-bg.png';
+import workBg from '../assets/work-bg.png';
 
 const Work = () => {
   const {

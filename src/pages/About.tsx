@@ -18,7 +18,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { ABOUT_COPY, ABOUT_PAGE } from '@/data';
-import aboutBg from '../about-bg.png';
+import aboutBg from '../assets/about-bg.png';
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 

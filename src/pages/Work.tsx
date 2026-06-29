@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Search } from 'lucide-react';
+import workBg from '../work-bg.png';
 
 const Work = () => {
   const {
@@ -57,7 +58,6 @@ const Work = () => {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Parallax Container with Slow Zoom */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
@@ -73,6 +73,11 @@ const Work = () => {
               ease: 'easeInOut',
             }}
           >
+            {/* Background Image */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-45 mix-blend-screen"
+              style={{ backgroundImage: `url(${workBg})` }}
+            />
             {/* Soft shifting auroras */}
             <motion.div 
               animate={{ 

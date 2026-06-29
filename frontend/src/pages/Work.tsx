@@ -1,35 +1,15 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useProjectFilters, SortOption } from '@/hooks/useProjectFilters';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useProjectFilters } from '@/hooks/useProjectFilters';
 import { ProjectsGrid } from '@/components/ProjectsGrid';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Search } from 'lucide-react';
+import { ProjectFilterToolbar } from '@/components/work/ProjectFilterToolbar';
 import workBg from '../assets/work-bg.png';
 
 const Work = () => {
-  const {
-    filteredProjects,
-    categories,
-    searchQuery,
-    setSearchQuery,
-    selectedCategory,
-    setSelectedCategory,
-    selectedStatus,
-    setSelectedStatus,
-    sortBy,
-    setSortBy,
-  } = useProjectFilters();
-
+  const filterHook = useProjectFilters();
+  const { filteredProjects, selectedIndustry, selectedService, selectedTechnology, selectedStatus, searchQuery } = filterHook;
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -44,17 +24,20 @@ const Work = () => {
     setMousePosition({ x: 0, y: 0 });
   };
 
+  // Create a compound key to trigger animations whenever filter states change
+  const filterKey = `${selectedIndustry}-${selectedService}-${selectedTechnology}-${selectedStatus}-${searchQuery}`;
+
   return (
     <>
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
-      <main id="main-content" className="min-h-screen bg-slate-50">
+      <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 animate-fade-in">
         <Navbar />
 
         {/* Work Hero */}
         <section 
-          className="relative overflow-hidden bg-zinc-950 pt-28 pb-20 md:pt-36 md:pb-28 border-b border-zinc-900"
+          className="relative overflow-hidden bg-zinc-950 pt-28 pb-20 md:pt-36 md:pb-28 border-b border-zinc-900 text-white"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
@@ -65,7 +48,7 @@ const Work = () => {
               y: mousePosition.y * 25,
             }}
             animate={{
-              scale: [1, 1.05, 1],
+              scale: [1, 1.03, 1],
             }}
             transition={{
               duration: 28,
@@ -75,41 +58,42 @@ const Work = () => {
           >
             {/* Background Image */}
             <div 
-              className="absolute inset-0 bg-cover bg-center opacity-45 mix-blend-screen"
+              className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-screen"
               style={{ backgroundImage: `url(${workBg})` }}
             />
-            {/* Soft shifting auroras */}
+            
+            {/* Shifting green waves / glow effect */}
             <motion.div 
               animate={{ 
-                x: [0, 15, -10, 0],
-                y: [0, -10, 15, 0],
-                scale: [1, 1.1, 0.9, 1]
+                x: [0, 20, -15, 0],
+                y: [0, -15, 20, 0],
+                scale: [1, 1.15, 0.9, 1]
               }}
               transition={{
-                duration: 20,
+                duration: 18,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute -left-16 top-0 h-96 w-96 rounded-full bg-emerald-500/10 blur-[120px]" 
+              className="absolute left-1/4 top-1/4 h-[350px] w-[350px] rounded-full bg-emerald-500/10 blur-[130px]" 
             />
             <motion.div 
               animate={{ 
-                x: [0, -15, 10, 0],
-                y: [0, 15, -10, 0],
-                scale: [1, 0.9, 1.1, 1]
+                x: [0, -25, 20, 0],
+                y: [0, 20, -25, 0],
+                scale: [1, 0.85, 1.15, 1]
               }}
               transition={{
                 duration: 22,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute -right-16 bottom-0 h-96 w-96 rounded-full bg-teal-500/10 blur-[120px]" 
+              className="absolute right-1/4 bottom-1/4 h-[350px] w-[350px] rounded-full bg-teal-500/10 blur-[130px]" 
             />
           </motion.div>
 
           {/* Tiny Floating Particles */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-            {[...Array(12)].map((_, i) => (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+            {[...Array(15)].map((_, i) => (
               <motion.div
                 key={i}
                 className="absolute w-1 h-1 bg-emerald-400/80 rounded-full"
@@ -118,157 +102,64 @@ const Work = () => {
                   top: `${(i * 17) % 100}%`,
                 }}
                 animate={{
-                  y: [0, -30, 0],
-                  x: [0, 12, 0],
-                  opacity: [0.2, 0.7, 0.2],
+                  y: [0, -35, 0],
+                  x: [0, 15, 0],
+                  opacity: [0.1, 0.8, 0.1],
                 }}
                 transition={{
-                  duration: 9 + (i % 4) * 3,
+                  duration: 8 + (i % 5) * 2,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: i * 0.4,
+                  delay: i * 0.3,
                 }}
               />
             ))}
           </div>
 
-          {/* Soft Light Sweep */}
-          <motion.div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.015] to-transparent -skew-x-12"
-            animate={{
-              x: ['-100%', '200%'],
-            }}
-            transition={{
-              duration: 14,
-              repeat: Infinity,
-              ease: "easeInOut",
-              repeatDelay: 2,
-            }}
-          />
-
-          {/* Noise texture overlay */}
-          <div 
-            className="pointer-events-none absolute inset-0 opacity-[0.015]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
-            }}
-          />
-
-          {/* Subtle Grid Pattern Overlay */}
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] opacity-40" />
-
-          <div className="container mx-auto px-4 max-w-6xl relative z-10">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight mb-5 font-display leading-[1.1]">
+          <div className="container mx-auto px-4 max-w-6xl relative z-10 space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 select-none">
+              OUR PORTFOLIO
+            </span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight font-display leading-[1.1]">
               Our Work
             </h1>
-            <p className="text-base sm:text-lg text-zinc-300 max-w-2xl leading-relaxed mb-6">
+            <p className="text-sm sm:text-base text-zinc-400 max-w-2xl leading-relaxed">
               Explore our portfolio of production-ready systems spanning logistics routing, natural language processing, financial workspaces, and applied machine learning.
             </p>
-            <div className="text-xs uppercase tracking-widest text-emerald-400/90 font-mono font-semibold">
-              Showing {filteredProjects.length} project{filteredProjects.length !== 1 ? 's' : ''}
-            </div>
           </div>
         </section>
 
         {/* Filters & Control Panel */}
         <section className="relative -mt-10 md:-mt-12 z-20 pb-8 bg-transparent">
           <div className="container mx-auto px-4 max-w-6xl">
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 md:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col gap-6">
-              
-              {/* Search Bar */}
-              <div className="relative w-full max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <Input
-                  type="text"
-                  placeholder="Search by title, description, or tags..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white border-slate-200 focus-visible:ring-primary"
-                />
-              </div>
-
-              {/* Filters & Sorting Controls */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                
-                {/* Category Filters */}
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((cat) => (
-                    <Button
-                      key={cat}
-                      variant={selectedCategory === cat ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setSelectedCategory(cat)}
-                      className={
-                        selectedCategory === cat
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }
-                    >
-                      {cat}
-                    </Button>
-                  ))}
-                </div>
-
-                {/* Status & Sorting */}
-                <div className="flex flex-wrap items-center gap-4">
-                  {/* Status Toggle Buttons */}
-                  <div className="flex border border-slate-200 rounded-lg overflow-hidden bg-white p-0.5">
-                    {(['All', 'Completed', 'In Progress'] as const).map((status) => (
-                      <Button
-                        key={status}
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setSelectedStatus(status)}
-                        className={`px-3 py-1.5 h-auto text-xs font-medium rounded-md transition-colors ${
-                          selectedStatus === status
-                            ? 'bg-slate-100 text-slate-900 font-semibold'
-                            : 'text-slate-500 hover:text-slate-950'
-                        }`}
-                      >
-                        {status}
-                      </Button>
-                    ))}
-                  </div>
-
-                  {/* Sort Dropdown */}
-                  <div className="w-48">
-                    <Select
-                      value={sortBy}
-                      onValueChange={(value) => setSortBy(value as SortOption)}
-                    >
-                      <SelectTrigger className="bg-white border-slate-200">
-                        <SelectValue placeholder="Sort by" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="newest">Newest First</SelectItem>
-                        <SelectItem value="oldest">Oldest First</SelectItem>
-                        <SelectItem value="a-z">Alphabetical (A-Z)</SelectItem>
-                        <SelectItem value="z-a">Alphabetical (Z-A)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
+            <ProjectFilterToolbar filterHook={filterHook} />
           </div>
         </section>
 
         {/* Projects Grid Section */}
         <section className="py-12">
           <div className="container mx-auto px-4 max-w-6xl">
-            {filteredProjects.length > 0 ? (
-              <ProjectsGrid projects={filteredProjects} />
-            ) : (
-              /* Empty State */
-              <div className="text-center py-16 bg-white border border-slate-200 rounded-xl max-w-md mx-auto px-6">
-                <h3 className="text-lg font-bold text-slate-800 mb-2">No projects found.</h3>
-                <p className="text-slate-500 text-sm">
-                  Try changing your search or filters.
-                </p>
-              </div>
-            )}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={filterKey}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2, ease: 'easeInOut' }}
+              >
+                {filteredProjects.length > 0 ? (
+                  <ProjectsGrid projects={filteredProjects} />
+                ) : (
+                  /* Empty State */
+                  <div className="text-center py-16 bg-white border border-slate-200 rounded-xl max-w-md mx-auto px-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-2">No projects found.</h3>
+                    <p className="text-slate-500 text-sm">
+                      Try changing your search or active filter badges.
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </section>
 

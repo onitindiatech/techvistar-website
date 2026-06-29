@@ -8,22 +8,24 @@ export interface Project {
   title: string;
   slug: string;
   description: string;
-  thumbnail: string; // Renamed from image to better represent the primary card thumbnail
+  thumbnail: string;
   category: string;
   technologies: string[];
   liveUrl: string;
   githubUrl: string;
   featured: boolean;
-  date: string; // ISO 8601 Date String (YYYY-MM-DD) for robust chronological sorting
+  date: string; // ISO 8601 Date String (YYYY-MM-DD)
   client: string;
   role: string;
   longDescription: string;
   keyFeatures: string[];
   challenges: string[];
   gallery: string[];
-  tags: string[]; // For keyword matching, search, and related project queries
-  status: 'Completed' | 'In Progress'; // Project status for sorting and filtering
-  serviceSlugs: string[]; // Map projects to relevant services
+  tags: string[];
+  status: 'Completed' | 'In Progress' | 'Coming Soon';
+  serviceSlugs: string[];
+  industry: string;
+  updatedDate: string; // ISO 8601 Date String (YYYY-MM-DD)
 }
 
 export const PROJECTS: readonly Project[] = [
@@ -35,7 +37,7 @@ export const PROJECTS: readonly Project[] = [
       'End-to-end planning workflow for multi-stop routes under time windows, capacity, and road constraints: geocoded inputs, solver-backed optimization (cost / time / distance objectives), and operator review before dispatch. Includes map visualisation, exception handling for failed legs, and auditable run history for operations.',
     thumbnail: img1,
     category: 'Mobility & logistics',
-    technologies: ['Python', 'Maps APIs', 'OR tooling', 'React'],
+    technologies: ['Python', 'Maps APIs', 'React', 'TypeScript'],
     liveUrl: '#',
     githubUrl: '#',
     featured: true,
@@ -58,6 +60,8 @@ export const PROJECTS: readonly Project[] = [
     tags: ['routing', 'logistics', 'optimization', 'maps', 'operations-research', 'dashboard'],
     status: 'Completed',
     serviceSlugs: ['web-development', 'custom-software-development'],
+    industry: 'Logistics',
+    updatedDate: '2025-11-20',
   },
   {
     id: 2,
@@ -67,7 +71,7 @@ export const PROJECTS: readonly Project[] = [
       'Unified dashboard for environmental indicators and programme KPIs: ingestion from sensors and third-party feeds, role-based views for field vs management users, scheduled reports, and threshold-based alerts. Designed for traceability from raw readings to consolidated scores used in review meetings.',
     thumbnail: img2,
     category: 'Data & sustainability',
-    technologies: ['APIs', 'PostgreSQL', 'ETL', 'Web'],
+    technologies: ['PostgreSQL', 'React', 'Docker', 'TypeScript'],
     liveUrl: '#',
     githubUrl: '#',
     featured: true,
@@ -90,6 +94,8 @@ export const PROJECTS: readonly Project[] = [
     tags: ['sustainability', 'sensors', 'iot', 'data-pipeline', 'reporting', 'analytics'],
     status: 'Completed',
     serviceSlugs: ['web-development', 'custom-software-development', 'digital-marketing'],
+    industry: 'SaaS',
+    updatedDate: '2025-10-01',
   },
   {
     id: 3,
@@ -99,7 +105,7 @@ export const PROJECTS: readonly Project[] = [
       'Image-based workflow for leaf uploads, model inference, and structured reporting for field teams—designed for clarity of results and auditability of predictions.',
     thumbnail: img3,
     category: 'Applied ML',
-    technologies: ['Python', 'TensorFlow', 'Flask', 'HTML/CSS'],
+    technologies: ['Python', 'TensorFlow', 'React', 'OpenAI'],
     liveUrl: '#',
     githubUrl: '#',
     featured: false,
@@ -122,6 +128,8 @@ export const PROJECTS: readonly Project[] = [
     tags: ['machine-learning', 'agriculture', 'computer-vision', 'tensorflow', 'classification', 'offline-first'],
     status: 'Completed',
     serviceSlugs: ['ai-automation', 'mobile-app-development'],
+    industry: 'Agriculture',
+    updatedDate: '2025-05-25',
   },
   {
     id: 4,
@@ -131,7 +139,7 @@ export const PROJECTS: readonly Project[] = [
       'Text-in / label-out service for opinion mining with reproducible training features, evaluation metrics, and a lightweight operator UI for batch runs.',
     thumbnail: img4,
     category: 'NLP',
-    technologies: ['Python', 'Streamlit', 'scikit-learn', 'TF-IDF'],
+    technologies: ['Python', 'Docker', 'TypeScript', 'React'],
     liveUrl: '#',
     githubUrl: '#',
     featured: false,
@@ -154,6 +162,8 @@ export const PROJECTS: readonly Project[] = [
     tags: ['nlp', 'sentiment-analysis', 'text-processing', 'scikit-learn', 'api', 'dashboard'],
     status: 'Completed',
     serviceSlugs: ['ai-automation', 'custom-software-development'],
+    industry: 'SaaS',
+    updatedDate: '2025-03-15',
   },
   {
     id: 5,
@@ -163,7 +173,7 @@ export const PROJECTS: readonly Project[] = [
       'Guided scoring against role templates, ATS-oriented formatting checks, and actionable suggestions—keeping human review in the loop.',
     thumbnail: img3,
     category: 'Productivity AI',
-    technologies: ['Python', 'Streamlit', 'AI/LLM'],
+    technologies: ['Python', 'OpenAI', 'React', 'TypeScript'],
     liveUrl: '#',
     githubUrl: '#',
     featured: false,
@@ -186,6 +196,8 @@ export const PROJECTS: readonly Project[] = [
     tags: ['llm', 'resume-parsing', 'ats', 'productivity', 'recruitment', 'ai-assistant'],
     status: 'Completed',
     serviceSlugs: ['ai-automation'],
+    industry: 'HRTech',
+    updatedDate: '2025-02-10',
   },
   {
     id: 6,
@@ -195,7 +207,7 @@ export const PROJECTS: readonly Project[] = [
       'Interpretable ML pipeline with calibrated outputs and confidence bands, focused on safe presentation of assistive—not diagnostic—information.',
     thumbnail: img4,
     category: 'Healthcare ML',
-    technologies: ['Python', 'Flask', 'ML', 'HTML/CSS'],
+    technologies: ['Python', 'React', 'MongoDB', 'TypeScript'],
     liveUrl: '#',
     githubUrl: '#',
     featured: false,
@@ -218,6 +230,8 @@ export const PROJECTS: readonly Project[] = [
     tags: ['healthcare', 'risk-scoring', 'explainable-ai', 'machine-learning', 'ehr', 'analytics'],
     status: 'Completed',
     serviceSlugs: ['web-development', 'ai-automation'],
+    industry: 'Healthcare',
+    updatedDate: '2024-12-05',
   },
   {
     id: 7,
@@ -227,7 +241,7 @@ export const PROJECTS: readonly Project[] = [
       'Multilingual translation service with configurable engines (neural + optional LLM assist), customer glossary and “do-not-translate” lists, segment-level confidence, and a review queue for low-confidence spans. Exposes REST/WebSocket APIs for product embeds plus an operator console for batch runs.',
     thumbnail: img1,
     category: 'NLP / GenAI',
-    technologies: ['Python', 'LLM APIs', 'FastAPI', 'React'],
+    technologies: ['Python', 'OpenAI', 'React', 'TypeScript', 'Express'],
     liveUrl: '#',
     githubUrl: '#',
     featured: true,
@@ -250,6 +264,8 @@ export const PROJECTS: readonly Project[] = [
     tags: ['translation', 'nlp', 'llm', 'websockets', 'localization', 'real-time'],
     status: 'Completed',
     serviceSlugs: ['ai-automation', 'custom-software-development'],
+    industry: 'SaaS',
+    updatedDate: '2024-09-01',
   },
   {
     id: 8,
@@ -259,7 +275,7 @@ export const PROJECTS: readonly Project[] = [
       'Long-form and high-volume translation pipeline: structured uploads (DOCX/PDF/HTML), layout-aware segmentation, translation memory reuse, and export that preserves headings, tables, and inline markup where feasible. Job queue with retries, per-file status, and downloadable artefacts for audit.',
     thumbnail: img2,
     category: 'NLP / GenAI',
-    technologies: ['Workers', 'DOCX/PDF', 'TM', 'Python'],
+    technologies: ['Python', 'PostgreSQL', 'Docker', 'AWS'],
     liveUrl: '#',
     githubUrl: '#',
     featured: false,
@@ -280,18 +296,20 @@ export const PROJECTS: readonly Project[] = [
     ],
     gallery: [img2, img1],
     tags: ['translation-memory', 'batch-processing', 'document-parsing', 'docx', 'pdf', 'workers'],
-    status: 'Completed',
+    status: 'In Progress',
     serviceSlugs: ['cloud-devops', 'ai-automation', 'custom-software-development'],
+    industry: 'SaaS',
+    updatedDate: '2024-07-02',
   },
   {
     id: 9,
     title: 'Finance — reporting & analytics',
     slug: 'finance-reporting-analytics',
     description:
-      'Role-based financial workspace: multi-entity P&L and balance views, period close checklists, drill-down to transactions, cashflow projections from configurable rules, and scheduled exports (CSV/PDF). Access logging and segregation of duties aligned to finance review—not just a single shared spreadsheet.',
+      'Role-based financial workspace: P&L charts, transaction log views, and automated ledger checkpoints.',
     thumbnail: img3,
     category: 'FinTech',
-    technologies: ['React', 'PostgreSQL', 'RBAC', 'Reporting'],
+    technologies: ['React', 'TypeScript', 'PostgreSQL', 'AWS'],
     liveUrl: '#',
     githubUrl: '#',
     featured: true,
@@ -314,6 +332,8 @@ export const PROJECTS: readonly Project[] = [
     tags: ['finance', 'fintech', 'analytics', 'compliance', 'rbac', 'reporting'],
     status: 'Completed',
     serviceSlugs: ['web-development', 'custom-software-development'],
+    industry: 'Finance',
+    updatedDate: '2024-04-10',
   },
 ] as const;
 

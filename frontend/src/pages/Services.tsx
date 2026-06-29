@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { SERVICES, Service } from '@/data/services';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -11,6 +12,19 @@ import servicesBg from '../assets/services-bg.png';
 
 const Services = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { left, top, width, height } = currentTarget.getBoundingClientRect();
+    const x = (clientX - left) / width - 0.5;
+    const y = (clientY - top) / height - 0.5;
+    setMousePosition({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePosition({ x: 0, y: 0 });
+  };
 
   // Filter out active services
   const activeServices = SERVICES.filter((s) => s.status === 'active');
@@ -35,24 +49,148 @@ const Services = () => {
         <Navbar />
 
         {/* Services Hero */}
-        <section className="relative overflow-hidden bg-zinc-950 pt-20 pb-12 md:pt-24 md:pb-16 border-b border-zinc-900">
-          {/* Background Image */}
-          <div 
-            className="absolute inset-0 bg-cover bg-right md:bg-center opacity-85 pointer-events-none"
-            style={{ backgroundImage: `url(${servicesBg})` }}
+        <motion.section 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className="relative overflow-hidden bg-zinc-950 pt-20 pb-12 md:pt-24 md:pb-16 border-b border-zinc-900"
+        >
+          {/* Animated Mesh Waves + Mouse Parallax */}
+          <motion.div 
+            className="absolute inset-0 bg-cover bg-right md:bg-center opacity-85 pointer-events-none z-0"
+            style={{ 
+              backgroundImage: `url(${servicesBg})`,
+            }}
+            animate={{
+              x: [0, 8, 0],
+              y: [0, -4, 0],
+            }}
+            transition={{
+              duration: 22,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-cover bg-right md:bg-center"
+              style={{ 
+                backgroundImage: `url(${servicesBg})`,
+              }}
+              animate={{
+                x: mousePosition.x * 10,
+                y: mousePosition.y * 10,
+              }}
+              transition={{ type: "tween", ease: "easeOut", duration: 0.5 }}
+            />
+          </motion.div>
+
+          {/* Grid Pulse */}
+          <motion.div 
+            className="absolute inset-0 pointer-events-none z-0"
+            style={{
+              backgroundImage: `linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px)`,
+              backgroundSize: '40px 40px',
+            }}
+            animate={{
+              opacity: [0.15, 0.25, 0.15],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
           />
+
+          {/* Gradient Breathing (Background radial glow) */}
+          <motion.div 
+            className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-emerald-500/10 blur-[100px] pointer-events-none z-0"
+            animate={{
+              scale: [1, 1.05, 1],
+              opacity: [0.6, 0.65, 0.6],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+
+          {/* Light Sweep */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none z-0 mix-blend-overlay"
+            style={{
+              background: 'linear-gradient(105deg, transparent 30%, rgba(20, 184, 166, 0.05) 45%, rgba(20, 184, 166, 0.1) 50%, rgba(20, 184, 166, 0.05) 55%, transparent 70%)',
+              backgroundSize: '200% 100%',
+            }}
+            animate={{
+              backgroundPosition: ['200% 0%', '-200% 0%'],
+            }}
+            transition={{
+              duration: 9,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+
+          {/* Floating Particles */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-40">
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute bg-teal-400/40 rounded-full blur-[0.5px]"
+                style={{
+                  width: `${3 + (i % 3)}px`,
+                  height: `${3 + (i % 3)}px`,
+                  left: `${(i * 14) + 12}%`,
+                  top: `${(i * 11) + 20}%`,
+                }}
+                animate={{
+                  y: [0, -25, 0],
+                  x: [0, 6, 0],
+                  opacity: [0.1, 0.5, 0.1],
+                }}
+                transition={{
+                  duration: 16 + (i % 3) * 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.4,
+                }}
+              />
+            ))}
+          </div>
+
           {/* Gradient Overlay for Text Readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/50 to-transparent z-0 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/60 to-transparent z-0 pointer-events-none" />
 
           <div className="container mx-auto px-4 max-w-6xl relative z-10">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 font-display">
+            <motion.h1 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="text-4xl md:text-5xl font-extrabold text-white mb-6 font-display relative inline-block pb-2"
+            >
               Our Services
-            </h1>
-            <p className="text-lg text-zinc-300 max-w-2xl leading-relaxed">
+              {/* Underline Animation */}
+              <motion.div 
+                className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-teal-400 to-emerald-400 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              />
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+              className="text-lg text-zinc-300 max-w-2xl leading-relaxed mt-2"
+            >
               We offer structured, productized growth services spanning full-stack delivery, revenue operations, automation, and applied artificial intelligence.
-            </p>
+            </motion.p>
           </div>
-        </section>
+        </motion.section>
 
         {/* Category Filters */}
         <section className="py-8 bg-slate-50 border-b border-slate-200">

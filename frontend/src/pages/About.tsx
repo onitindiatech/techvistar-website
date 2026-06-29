@@ -35,7 +35,44 @@ const pillars = [
   { icon: Eye, label: ABOUT_COPY.vision.title, text: ABOUT_COPY.vision.text },
 ] as const;
 
-const focusIcons = [Smartphone, Globe, TrendingUp, GraduationCap] as const;
+const boxStyles = [
+  {
+    icon: Smartphone,
+    bg: 'bg-blue-50/40 hover:bg-blue-50/70',
+    border: 'border-blue-100/80 hover:border-blue-200',
+    iconBg: 'bg-blue-100/60 text-blue-600',
+  },
+  {
+    icon: TrendingUp,
+    bg: 'bg-emerald-50/40 hover:bg-emerald-50/70',
+    border: 'border-emerald-100/80 hover:border-emerald-200',
+    iconBg: 'bg-emerald-100/60 text-emerald-600',
+  },
+  {
+    icon: Globe,
+    bg: 'bg-violet-50/40 hover:bg-violet-50/70',
+    border: 'border-violet-100/80 hover:border-violet-200',
+    iconBg: 'bg-violet-100/60 text-violet-600',
+  },
+  {
+    icon: Zap,
+    bg: 'bg-amber-50/40 hover:bg-amber-50/70',
+    border: 'border-amber-100/80 hover:border-amber-200',
+    iconBg: 'bg-amber-100/60 text-amber-600',
+  },
+  {
+    icon: Sparkles,
+    bg: 'bg-cyan-50/40 hover:bg-cyan-50/70',
+    border: 'border-cyan-100/80 hover:border-cyan-200',
+    iconBg: 'bg-cyan-100/60 text-cyan-600',
+  },
+  {
+    icon: GraduationCap,
+    bg: 'bg-rose-50/40 hover:bg-rose-50/70',
+    border: 'border-rose-100/80 hover:border-rose-200',
+    iconBg: 'bg-rose-100/60 text-rose-600',
+  },
+] as const;
 
 const sectionPad = 'px-5 py-6 sm:px-6 sm:py-7 md:px-8';
 
@@ -240,13 +277,14 @@ const About = () => {
             </motion.div>
             <div className="mt-5 grid gap-3 sm:grid-cols-2 sm:gap-4">
               {ABOUT_PAGE.focusAreas.map((area, i) => {
-                const Icon = focusIcons[i % focusIcons.length];
+                const styles = boxStyles[i % boxStyles.length];
+                const Icon = styles.icon;
                 return (
                   <div
                     key={area.title}
-                    className="rounded-xl border border-slate-200/90 bg-white p-4 shadow-sm"
+                    className={`rounded-xl border p-4 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 ${styles.bg} ${styles.border}`}
                   >
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary/12 to-primary/5 text-primary ring-1 ring-primary/12">
+                    <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${styles.iconBg} ring-1 ring-black/5`}>
                       <Icon className="h-[1.125rem] w-[1.125rem]" strokeWidth={1.75} aria-hidden />
                     </div>
                     <h3 className="mt-3 font-display text-[0.9375rem] font-semibold leading-snug text-slate-900">{area.title}</h3>

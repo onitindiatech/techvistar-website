@@ -231,8 +231,17 @@ const Services = () => {
                   return (
                     <Card
                       key={service.id}
-                      className="group h-full flex flex-col overflow-hidden border-slate-200 bg-white shadow-sm hover:shadow-md hover:border-primary/25 transition-all duration-300"
+                      className="group h-full flex flex-col overflow-hidden border-slate-200 bg-white shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-primary/25 transition-all duration-[450ms] ease-in-out"
                     >
+                      {/* Service Cover Image */}
+                      <div className="overflow-hidden" style={{ borderRadius: '20px 20px 0 0' }}>
+                        <img
+                          src={service.coverImage}
+                          alt={service.title}
+                          loading="lazy"
+                          className="w-full h-[180px] md:h-[220px] object-cover transition-transform duration-[450ms] ease-in-out group-hover:scale-105"
+                        />
+                      </div>
                       <CardHeader className="space-y-3 pb-2">
                         <div className="flex items-center justify-between">
                           <Badge

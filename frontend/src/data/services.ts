@@ -14,6 +14,14 @@ import img1 from '../assets/1.jpg';
 import img2 from '../assets/2.jpg';
 import img3 from '../assets/3.jpg';
 import img4 from '../assets/4.jpg';
+import serviceWebDev from '../assets/service_webdevlopment.png';
+import serviceMobileApp from '../assets/mobile_phone_devloper.png';
+import serviceUiUx from '../assets/ui_ux_designer.png';
+import serviceAiAutomation from '../assets/Ai_and_atomation.png';
+import serviceCloudDevops from '../assets/Claud_Devops.png';
+import serviceBranding from '../assets/branding_creative_design.png';
+import serviceDigitalMarketing from '../assets/digital_marketing.png';
+import serviceCustomSoftware from '../assets/custom_software_development.png';
 
 export interface Service {
   id: string;
@@ -49,8 +57,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We build fast, secure, and responsive web platforms that grow with your business. From custom corporate portals and portfolio showcases to high-conversion landing pages, e-commerce storefronts, and full-featured SaaS platforms, our systems are engineered for speed, clean UX, and seamless SEO implementation.',
     category: 'Development',
     icon: Globe,
-    coverImage: img1,
-    thumbnail: img1,
+    coverImage: serviceWebDev,
+    thumbnail: serviceWebDev,
     overview: 'Complete lifecycle web engineering, building responsive systems from specification to production release.',
     offerings: [
       'Business Websites',
@@ -100,8 +108,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We develop feature-rich mobile applications that deliver native-grade performance. Utilizing cutting-edge framework stacks like React Native and Flutter alongside native platforms, we construct systems engineered for offline accessibility, smooth transitions, store compliance, and secure user data flows.',
     category: 'Development',
     icon: Smartphone,
-    coverImage: img2,
-    thumbnail: img2,
+    coverImage: serviceMobileApp,
+    thumbnail: serviceMobileApp,
     overview: 'Design, compilation, testing, and deployment of native and hybrid applications to App Store and Google Play.',
     offerings: [
       'Android Apps',
@@ -146,8 +154,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We craft digital interfaces that are intuitive, accessible, and aligned with your brand identity. By conducting deep user research, compiling interactive wireframes, designing responsive design systems, and mapping custom dashboards, we translate business objectives into high-fidelity tactile layouts.',
     category: 'Design',
     icon: Palette,
-    coverImage: img3,
-    thumbnail: img3,
+    coverImage: serviceUiUx,
+    thumbnail: serviceUiUx,
     overview: 'Translate user needs and brand assets into scalable, pixel-perfect design files and interactive prototypes.',
     offerings: [
       'UX Research',
@@ -193,8 +201,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We bring artificial intelligence out of sandbox environments and embed it into daily workflows. From intelligent customer service chatbots and LLM prompt frameworks to workflow automation nodes and RAG document search engines, we construct AI systems with custom guardrails to control costs and eliminate accuracy concerns.',
     category: 'Advanced Technology',
     icon: Cpu,
-    coverImage: img4,
-    thumbnail: img4,
+    coverImage: serviceAiAutomation,
+    thumbnail: serviceAiAutomation,
     overview: 'Deploy custom LLM structures, database retrievers, and background task handlers for operational efficiency.',
     offerings: [
       'AI Chatbots',
@@ -239,8 +247,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We architect and maintain cloud configurations that prioritize maximum availability, cost optimization, and iron-clad security. Through Infrastructure as Code (IaC), Docker orchestration, automated build paths, and multi-region failovers, we eliminate operational silos and speed up release frequencies.',
     category: 'Infrastructure',
     icon: Cloud,
-    coverImage: img3,
-    thumbnail: img3,
+    coverImage: serviceCloudDevops,
+    thumbnail: serviceCloudDevops,
     overview: 'Design, configure, script, and launch modern container-driven infrastructure on global cloud platforms.',
     offerings: [
       'AWS Deployments',
@@ -286,8 +294,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We translate your business goals into premium visual marks that establish immediate market trust. From logo creation and typography guidelines to packaging designs, marketing assets, presentations, and kinetic vector movements, we establish unified identity standards that reflect your core values.',
     category: 'Design',
     icon: PenTool,
-    coverImage: img1,
-    thumbnail: img1,
+    coverImage: serviceBranding,
+    thumbnail: serviceBranding,
     overview: 'Create and systemize brand logos, marketing assets, and corporate design elements.',
     offerings: [
       'Logo Design',
@@ -332,8 +340,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We align marketing spend with measurable business growth. By implementing custom SEO optimizations, target search campaigns, analytical conversion funnels, and organic distribution setups, we convert simple web traffic into stable pipelines for lead acquisition.',
     category: 'Marketing',
     icon: Megaphone,
-    coverImage: img2,
-    thumbnail: img2,
+    coverImage: serviceDigitalMarketing,
+    thumbnail: serviceDigitalMarketing,
     overview: 'Configure advertising campaigns, clean up tracking pixels, and deploy search-optimized content engines.',
     offerings: [
       'Search Engine Optimization (SEO)',
@@ -380,8 +388,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'When standard SaaS tools are not enough, we develop custom enterprise software designed specifically for your workflows. We engineer robust, audit-friendly software ranging from internal management tools and secure database APIs to custom CRM implementations and multi-tenant SaaS products.',
     category: 'Development',
     icon: Terminal,
-    coverImage: img4,
-    thumbnail: img4,
+    coverImage: serviceCustomSoftware,
+    thumbnail: serviceCustomSoftware,
     overview: 'Full-stack software engineering providing custom dashboards, integrations, databases, and secure APIs.',
     offerings: [
       'Enterprise Resource Planning (ERP)',

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -175,6 +175,15 @@ export const Navbar = () => {
           </Link>
 
           <div className="hidden items-center gap-5 lg:gap-7 xl:gap-8 md:flex">
+            <Link
+              to="/"
+              className={cn(linkClass, 'group flex items-center gap-1')}
+              onClick={handleNavClick('/')}
+              aria-label="Home"
+            >
+              <Home size={17} className="transition-transform group-hover:scale-105" />
+              <span className={underlineClass} />
+            </Link>
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
@@ -227,6 +236,14 @@ export const Navbar = () => {
             className="border-b border-white/10 bg-zinc-950/95 backdrop-blur-xl shadow-xl md:hidden"
           >
             <div className="container-custom space-y-1 py-4">
+              <Link
+                to="/"
+                className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                onClick={handleNavClick('/')}
+              >
+                <Home size={16} />
+                Home
+              </Link>
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.label}

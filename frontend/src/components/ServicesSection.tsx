@@ -1,40 +1,28 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Check } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SECTION_SERVICES, SERVICES } from "@/data";
+import { SpotlightCard } from '@/components/animations/SpotlightCard';
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
-/** Card shell: rises in with staggered grid timing */
-const cardShellVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
+const listContainer = {
+  hidden: { opacity: 0 },
+  visible: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 0.52, delay: i * 0.05, ease },
-  }),
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+  },
 };
 
-/** Inner column: headline → copy → deliverables */
-const contentStagger = {
-  hidden: {},
-  visible: (i: number) => ({
-    transition: {
-      staggerChildren: 0.072,
-      delayChildren: 0.14 + i * 0.045,
-    },
-  }),
-};
-
-const rowVariants = {
-  hidden: { opacity: 0, y: 14 },
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease },
+    transition: { duration: 0.55, ease },
   },
 };
 
@@ -47,11 +35,29 @@ const ctaVariants = {
   },
 };
 
+const SERVICE_IMAGES = [
+  'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=150&auto=format&fit=crop&q=80', // Web Development
+  'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=150&auto=format&fit=crop&q=80', // Mobile App Development
+  'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=150&auto=format&fit=crop&q=80', // UI/UX Design
+  'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=150&auto=format&fit=crop&q=80', // AI & Automation
+  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=150&auto=format&fit=crop&q=80', // Cloud & DevOps
+  'https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?w=150&auto=format&fit=crop&q=80', // Branding & Creative Design
+  'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=150&auto=format&fit=crop&q=80', // Digital Marketing
+  'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&auto=format&fit=crop&q=80', // Custom Software Development
+];
+
 export const ServicesSection = () => {
   const { ref, isInView } = useAnimatedSection();
 
+  // Distribute services: Left Column (0, 2, 4) and Right Column (1, 3, 5)
+  const leftServices = SERVICES.filter((_, idx) => idx % 2 === 0);
+  const rightServices = SERVICES.filter((_, idx) => idx % 2 !== 0);
+
   return (
-    <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading">
+    <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative py-24 md:py-32">
+      {/* Background decoration */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -z-10 w-[500px] h-[500px] rounded-full bg-emerald-500/[0.02] blur-[120px] pointer-events-none" />
+
       <div className="container-custom relative z-10">
         <SectionHeader
           tag={SECTION_SERVICES.tag}
@@ -62,92 +68,127 @@ export const ServicesSection = () => {
           headingId="services-heading"
         />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
-          {SERVICES.map((service, index) => (
-            <motion.article
-              key={service.title}
-              custom={index}
-              variants={cardShellVariants}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              whileHover={{ y: -5, transition: { duration: 0.32, ease } }}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/95 bg-white shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] will-change-transform"
-            >
-              <div className="h-1 w-full bg-gradient-to-r from-primary via-emerald-500 to-teal-600" aria-hidden />
-
-              <Link to={`/services/${service.slug}`} className="flex flex-1 flex-col h-full">
-                <motion.div
-                  className="flex flex-1 flex-col p-6 sm:p-7"
-                  custom={index}
-                  variants={contentStagger}
-                  initial="hidden"
-                  animate={isInView ? 'visible' : 'hidden'}
-                >
-                  <motion.div variants={rowVariants} className="flex gap-4">
-                    <div
-                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/12 to-primary/5 text-primary shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] ring-1 ring-primary/15 transition-transform duration-300 group-hover:scale-[1.04]"
-                      aria-hidden
+        {/* 2-Column Grid Layout */}
+        <motion.div
+          variants={listContainer}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8"
+        >
+          {/* Left Column */}
+          <div className="flex flex-col gap-8">
+            {leftServices.map((service) => {
+              const originalIndex = SERVICES.findIndex(s => s.id === service.id);
+              return (
+                <motion.div key={service.title} variants={itemVariants}>
+                  <Link to={`/services/${service.slug}`} className="block">
+                    <SpotlightCard
+                      className="group relative flex flex-col p-6 rounded-2xl border border-slate-200/80 bg-white/95 shadow-sm hover:shadow-[0_15px_30px_rgba(15,23,42,0.05)] hover:border-emerald-500/20 transition-all duration-300 hover:-translate-y-1"
+                      spotlightColor="rgba(34, 197, 94, 0.03)"
+                      borderColor="rgba(34, 197, 94, 0.18)"
                     >
-                      <service.icon className="h-6 w-6" strokeWidth={1.75} />
-                    </div>
-                    <div className="min-w-0 flex-1 pt-0.5">
-                      <h3 className="font-display text-lg font-bold leading-snug tracking-tight text-slate-900 group-hover:text-primary transition-colors">
-                        {service.title}
-                      </h3>
-                    </div>
-                  </motion.div>
-
-                  <motion.p variants={rowVariants} className="mt-4 flex-1 text-sm leading-relaxed text-slate-600 sm:text-[0.9375rem]">
-                    {service.description}
-                  </motion.p>
-
-                  <motion.div variants={rowVariants} className="mt-6">
-                    <p className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                      Typical deliverables
-                    </p>
-                    <div className="rounded-xl border border-slate-100 bg-gradient-to-b from-slate-50/95 to-white p-4 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.95)]">
-                      <ul className="space-y-2.5" role="list">
-                        {service.offerings.map((item) => (
-                          <li key={item} className="flex gap-3 text-[0.8125rem] leading-snug text-slate-700">
-                            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary ring-1 ring-primary/15">
-                              <Check className="h-3 w-3 stroke-[2.5]" aria-hidden />
-                            </span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
+                      <div className="flex gap-4 items-start">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full overflow-hidden border border-slate-100 shadow-sm ring-1 ring-slate-100 transition-all duration-500 group-hover:scale-105 group-hover:ring-emerald-500/20">
+                          <img
+                            src={SERVICE_IMAGES[originalIndex]}
+                            alt={service.title}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                        </div>
+                        
+                        <div className="space-y-1.5 pt-0.5">
+                          <h3 className="font-display text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">
+                            {service.title}
+                          </h3>
+                          <p className="text-sm leading-relaxed text-slate-500 font-medium">
+                            {service.description}
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 group-hover:text-emerald-700 mt-2 transition-colors">
+                            Explore
+                            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.5} />
+                          </span>
+                        </div>
+                      </div>
+                    </SpotlightCard>
+                  </Link>
                 </motion.div>
-              </Link>
+              );
+            })}
+          </div>
 
-              <div
-                className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-slate-950/[0.04] transition-[box-shadow] duration-300 group-hover:shadow-[0_12px_40px_-16px_rgba(22,163,74,0.18)] group-hover:ring-primary/15"
-                aria-hidden
-              />
-            </motion.article>
-          ))}
-        </div>
+          {/* Right Column */}
+          <div className="flex flex-col gap-8">
+            {rightServices.map((service) => {
+              const originalIndex = SERVICES.findIndex(s => s.id === service.id);
+              return (
+                <motion.div key={service.title} variants={itemVariants}>
+                  <Link to={`/services/${service.slug}`} className="block">
+                    <SpotlightCard
+                      className="group relative flex flex-col p-6 rounded-2xl border border-slate-200/80 bg-white/95 shadow-sm hover:shadow-[0_15px_30px_rgba(15,23,42,0.05)] hover:border-emerald-500/20 transition-all duration-300 hover:-translate-y-1"
+                      spotlightColor="rgba(34, 197, 94, 0.03)"
+                      borderColor="rgba(34, 197, 94, 0.18)"
+                    >
+                      <div className="flex gap-4 items-start">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full overflow-hidden border border-slate-100 shadow-sm ring-1 ring-slate-100 transition-all duration-500 group-hover:scale-105 group-hover:ring-emerald-500/20">
+                          <img
+                            src={SERVICE_IMAGES[originalIndex]}
+                            alt={service.title}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                        </div>
+                        
+                        <div className="space-y-1.5 pt-0.5">
+                          <h3 className="font-display text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">
+                            {service.title}
+                          </h3>
+                          <p className="text-sm leading-relaxed text-slate-500 font-medium">
+                            {service.description}
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 group-hover:text-emerald-700 mt-2 transition-colors">
+                            Explore
+                            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.5} />
+                          </span>
+                        </div>
+                      </div>
+                    </SpotlightCard>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
 
+        {/* CTA Bar */}
         <motion.div
           variants={ctaVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="mt-14 flex flex-col items-center justify-between gap-5 overflow-hidden rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-[0_8px_30px_-12px_rgba(15,23,42,0.08)] sm:flex-row sm:px-8"
+          className="mt-20 max-w-5xl mx-auto w-full"
         >
-          <span className="max-w-xl text-center text-sm leading-relaxed text-slate-600 sm:text-left">{SECTION_SERVICES.cta}</span>
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/20 transition-colors hover:bg-primary/92"
+          <SpotlightCard
+            className="rounded-2xl border border-slate-200/80 bg-white shadow-[0_8px_30px_-12px_rgba(15,23,42,0.06)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.12)] hover:border-emerald-500/50 hover:bg-emerald-500/[0.04] transition-all duration-500 w-full"
+            spotlightColor="rgba(34, 197, 94, 0.03)"
+            borderColor="rgba(34, 197, 94, 0.2)"
           >
-            Contact us
-            <ArrowUpRight className="h-4 w-4" aria-hidden />
-          </motion.a>
+            <div className="flex flex-col items-center justify-between gap-5 px-6 py-6 sm:flex-row sm:px-8 w-full h-full">
+              <span className="max-w-xl text-center text-sm leading-relaxed text-slate-600 font-bold sm:text-left">
+                {SECTION_SERVICES.cta}
+              </span>
+              <motion.a
+                href="#contact"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/20 transition-colors hover:bg-primary/92"
+              >
+                Contact us
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </motion.a>
+            </div>
+          </SpotlightCard>
         </motion.div>
       </div>
     </SiteSection>
   );
 };
+export default ServicesSection;

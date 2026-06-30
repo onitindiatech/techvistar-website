@@ -1,7 +1,7 @@
-import img1 from '../assets/1.jpg';
-import img2 from '../assets/2.jpg';
-import img3 from '../assets/3.jpg';
-import img4 from '../assets/4.jpg';
+import mobilityImg from '../assets/mobility_routing_dashboard.png';
+import sustainabilityImg from '../assets/sustainability_dashboard.png';
+import cropImg from '../assets/crop_health_analysis.png';
+import nlpImg from '../assets/sentiment_nlp_dashboard.png';
 
 export interface Project {
   id: number;
@@ -35,7 +35,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'navigation-route-optimization',
     description:
       'End-to-end planning workflow for multi-stop routes under time windows, capacity, and road constraints: geocoded inputs, solver-backed optimization (cost / time / distance objectives), and operator review before dispatch. Includes map visualisation, exception handling for failed legs, and auditable run history for operations.',
-    thumbnail: img1,
+    thumbnail: mobilityImg,
     category: 'Mobility & logistics',
     technologies: ['Python', 'Maps APIs', 'React', 'TypeScript'],
     liveUrl: '#',
@@ -56,7 +56,7 @@ export const PROJECTS: readonly Project[] = [
       'Handling high-latency solver runs without locking the main UI thread, solved via Web Worker offloading.',
       'Reconciling manual operator route adjustments with solver constraints through dynamic incremental checks.',
     ],
-    gallery: [img1, img2],
+    gallery: [mobilityImg, sustainabilityImg],
     tags: ['routing', 'logistics', 'optimization', 'maps', 'operations-research', 'dashboard'],
     status: 'Completed',
     serviceSlugs: ['web-development', 'custom-software-development'],
@@ -69,7 +69,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'ecosystem-environmental-intelligence',
     description:
       'Unified dashboard for environmental indicators and programme KPIs: ingestion from sensors and third-party feeds, role-based views for field vs management users, scheduled reports, and threshold-based alerts. Designed for traceability from raw readings to consolidated scores used in review meetings.',
-    thumbnail: img2,
+    thumbnail: sustainabilityImg,
     category: 'Data & sustainability',
     technologies: ['PostgreSQL', 'React', 'Docker', 'TypeScript'],
     liveUrl: '#',
@@ -90,7 +90,7 @@ export const PROJECTS: readonly Project[] = [
       'Handling out-of-order and duplicate sensor readings, resolved by implementing idempotent database upserts and time-series bucketing.',
       'High-performance rendering of dense historic telemetry data, optimized through aggregate pre-computation and client-side charting downsampling.',
     ],
-    gallery: [img2, img3],
+    gallery: [sustainabilityImg, cropImg],
     tags: ['sustainability', 'sensors', 'iot', 'data-pipeline', 'reporting', 'analytics'],
     status: 'Completed',
     serviceSlugs: ['web-development', 'custom-software-development', 'digital-marketing'],
@@ -103,7 +103,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'crop-hub-crop-health-screening',
     description:
       'Image-based workflow for leaf uploads, model inference, and structured reporting for field teams—designed for clarity of results and auditability of predictions.',
-    thumbnail: img3,
+    thumbnail: cropImg,
     category: 'Applied ML',
     technologies: ['Python', 'TensorFlow', 'React', 'OpenAI'],
     liveUrl: '#',
@@ -124,7 +124,7 @@ export const PROJECTS: readonly Project[] = [
       'Deploying heavy Deep Learning models on cost-constrained hosting servers, solved through model quantization and conversion to ONNX format.',
       'Unreliable field connectivity, handled via LocalStorage queue synchronization once the device returns online.',
     ],
-    gallery: [img3, img4],
+    gallery: [cropImg, nlpImg],
     tags: ['machine-learning', 'agriculture', 'computer-vision', 'tensorflow', 'classification', 'offline-first'],
     status: 'Completed',
     serviceSlugs: ['ai-automation', 'mobile-app-development'],
@@ -137,7 +137,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'sentiment-classification-service',
     description:
       'Text-in / label-out service for opinion mining with reproducible training features, evaluation metrics, and a lightweight operator UI for batch runs.',
-    thumbnail: img4,
+    thumbnail: nlpImg,
     category: 'NLP',
     technologies: ['Python', 'Docker', 'TypeScript', 'React'],
     liveUrl: '#',
@@ -158,7 +158,7 @@ export const PROJECTS: readonly Project[] = [
       'Addressing domain shift when classifying specialized terminology, resolved by incorporating custom lexicon rules into the TF-IDF feature extractor.',
       'Sustaining high throughput for batch uploads, addressed through asynchronous queueing using python multiprocessing pools.',
     ],
-    gallery: [img4, img1],
+    gallery: [nlpImg, mobilityImg],
     tags: ['nlp', 'sentiment-analysis', 'text-processing', 'scikit-learn', 'api', 'dashboard'],
     status: 'Completed',
     serviceSlugs: ['ai-automation', 'custom-software-development'],
@@ -171,7 +171,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'resume-review-assistant',
     description:
       'Guided scoring against role templates, ATS-oriented formatting checks, and actionable suggestions—keeping human review in the loop.',
-    thumbnail: img3,
+    thumbnail: cropImg,
     category: 'Productivity AI',
     technologies: ['Python', 'OpenAI', 'React', 'TypeScript'],
     liveUrl: '#',
@@ -192,7 +192,7 @@ export const PROJECTS: readonly Project[] = [
       'Extracting clean text from highly formatted multi-column PDF layouts, resolved by implementing structured PDF miner pipelines.',
       'Minimizing API costs and latency during large batch uploads, solved through key-value caching and prompt compaction.',
     ],
-    gallery: [img3, img2],
+    gallery: [cropImg, sustainabilityImg],
     tags: ['llm', 'resume-parsing', 'ats', 'productivity', 'recruitment', 'ai-assistant'],
     status: 'Completed',
     serviceSlugs: ['ai-automation'],
@@ -205,7 +205,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'clinical-risk-scoring-prototype',
     description:
       'Interpretable ML pipeline with calibrated outputs and confidence bands, focused on safe presentation of assistive—not diagnostic—information.',
-    thumbnail: img4,
+    thumbnail: nlpImg,
     category: 'Healthcare ML',
     technologies: ['Python', 'React', 'MongoDB', 'TypeScript'],
     liveUrl: '#',
@@ -226,7 +226,7 @@ export const PROJECTS: readonly Project[] = [
       'Presenting complex mathematical explanations in an intuitive, non-overwhelming UI, solved by user testing and adopting hierarchical cards.',
       'Ensuring strict data sanitization to comply with health data standards in local sandbox environments.',
     ],
-    gallery: [img4, img3],
+    gallery: [nlpImg, cropImg],
     tags: ['healthcare', 'risk-scoring', 'explainable-ai', 'machine-learning', 'ehr', 'analytics'],
     status: 'Completed',
     serviceSlugs: ['web-development', 'ai-automation'],
@@ -239,7 +239,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'ai-translator',
     description:
       'Multilingual translation service with configurable engines (neural + optional LLM assist), customer glossary and “do-not-translate” lists, segment-level confidence, and a review queue for low-confidence spans. Exposes REST/WebSocket APIs for product embeds plus an operator console for batch runs.',
-    thumbnail: img1,
+    thumbnail: mobilityImg,
     category: 'NLP / GenAI',
     technologies: ['Python', 'OpenAI', 'React', 'TypeScript', 'Express'],
     liveUrl: '#',
@@ -260,7 +260,7 @@ export const PROJECTS: readonly Project[] = [
       'Enforcing custom terminology rules without breaking grammatical structures, solved using hybrid regex alignment and post-translation LLM correction.',
       'Synchronizing multi-user review states in real-time, resolved using WebSocket pub/sub patterns.',
     ],
-    gallery: [img1, img4],
+    gallery: [mobilityImg, nlpImg],
     tags: ['translation', 'nlp', 'llm', 'websockets', 'localization', 'real-time'],
     status: 'Completed',
     serviceSlugs: ['ai-automation', 'custom-software-development'],
@@ -273,7 +273,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'ai-translator-documents-batches',
     description:
       'Long-form and high-volume translation pipeline: structured uploads (DOCX/PDF/HTML), layout-aware segmentation, translation memory reuse, and export that preserves headings, tables, and inline markup where feasible. Job queue with retries, per-file status, and downloadable artefacts for audit.',
-    thumbnail: img2,
+    thumbnail: sustainabilityImg,
     category: 'NLP / GenAI',
     technologies: ['Python', 'PostgreSQL', 'Docker', 'AWS'],
     liveUrl: '#',
@@ -294,7 +294,7 @@ export const PROJECTS: readonly Project[] = [
       'Rebuilding translated documents without corrupting strict XML schemas in DOCX structures, solved by using direct AST node replacement.',
       'Managing memory limits when processing massive documents, addressed by processing sections in chunks.',
     ],
-    gallery: [img2, img1],
+    gallery: [sustainabilityImg, mobilityImg],
     tags: ['translation-memory', 'batch-processing', 'document-parsing', 'docx', 'pdf', 'workers'],
     status: 'In Progress',
     serviceSlugs: ['cloud-devops', 'ai-automation', 'custom-software-development'],
@@ -307,7 +307,7 @@ export const PROJECTS: readonly Project[] = [
     slug: 'finance-reporting-analytics',
     description:
       'Role-based financial workspace: P&L charts, transaction log views, and automated ledger checkpoints.',
-    thumbnail: img3,
+    thumbnail: cropImg,
     category: 'FinTech',
     technologies: ['React', 'TypeScript', 'PostgreSQL', 'AWS'],
     liveUrl: '#',
@@ -328,7 +328,7 @@ export const PROJECTS: readonly Project[] = [
       'Rendering dynamic tables with thousands of transactional line items without lag, resolved using row-virtualization libraries.',
       'Calculating multi-currency conversions on the fly, optimized by caching exchange rates daily and offloading calculations to backend views.',
     ],
-    gallery: [img3, img4],
+    gallery: [cropImg, nlpImg],
     tags: ['finance', 'fintech', 'analytics', 'compliance', 'rbac', 'reporting'],
     status: 'Completed',
     serviceSlugs: ['web-development', 'custom-software-development'],

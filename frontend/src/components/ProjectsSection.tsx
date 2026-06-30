@@ -16,6 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { PROJECTS, SECTION_PROJECTS } from "@/data";
 import { Link } from 'react-router-dom';
+import { HoverCard } from '@/components/animations/HoverCard';
 
 export const ProjectsSection = () => {
   const { ref, isInView } = useAnimatedSection();
@@ -81,125 +82,122 @@ export const ProjectsSection = () => {
                       transition={{ duration: 0.45, delay: index * 0.05 }}
                       className="h-full transform-gpu"
                     >
-                      <div className="group relative h-full rounded-2xl">
-                        {/* Blur glow background */}
-                        <div className={`absolute inset-0 -z-10 rounded-2xl bg-gradient-to-r from-primary/15 to-emerald-500/15 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100 pointer-events-none`} />
-
-                        <Card className={`h-full flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 transform-gpu ${
+                      <HoverCard
+                        depth={6}
+                        scale={1.01}
+                        className={`h-full flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 transform-gpu ${
                           isFeatured 
-                            ? 'border-primary/40 bg-white/85 backdrop-blur-lg shadow-[0_15px_35px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_50px_rgba(15,23,42,0.12)] hover:border-primary/60'
-                            : 'border-slate-200/80 bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(15,23,42,0.08)] hover:border-primary/30'
+                            ? 'border-primary/30 bg-white/95 backdrop-blur-md shadow-[0_12px_30px_rgba(15,23,42,0.04)]'
+                            : 'border-slate-200 bg-white/90 backdrop-blur-sm shadow-[0_6px_20px_rgba(15,23,42,0.02)]'
+                        }`}
+                      >
+                        {/* Image Container */}
+                        <Link to={`/work/${project.slug}`} className={`relative block overflow-hidden bg-slate-100 border-b border-slate-200/60 w-full ${
+                          isFeatured ? 'h-52' : 'h-48'
                         }`}>
+                          {/* Gradient Overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-slate-900/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300 z-10 pointer-events-none" />
                           
-                          {/* Image Container */}
-                          <Link to={`/work/${project.slug}`} className={`relative block overflow-hidden bg-slate-100 border-b border-slate-200/60 w-full ${
-                            isFeatured ? 'h-52' : 'h-48'
-                          }`}>
-                            {/* Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-slate-900/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300 z-10 pointer-events-none" />
-                            
-                            {/* Micro-CTA Case Study Overlay on hover */}
-                            <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center pointer-events-none">
-                              <span className="px-3.5 py-1.5 rounded-full bg-white/95 text-slate-900 text-[0.6875rem] font-bold shadow-md backdrop-blur-sm transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-1.5">
-                                View Case Study
-                                <ArrowUpRight className="w-3.5 h-3.5" />
-                              </span>
-                            </div>
-
-                            {/* Floating Category Badge */}
-                            <Badge
-                              variant="secondary"
-                              className={`absolute top-3 left-3 z-20 text-[0.625rem] font-bold uppercase tracking-wider backdrop-blur-md border shadow-sm transition-all duration-200 hover:scale-105 ${
-                                isFeatured 
-                                  ? 'bg-primary/95 text-white border-primary/25' 
-                                  : 'bg-white/90 text-slate-800 border-slate-200/40'
-                              }`}
-                            >
-                              {project.category}
-                            </Badge>
-
-                            <img
-                              src={project.thumbnail}
-                              alt={project.title}
-                              className="h-full w-full object-cover transition-transform duration-750 ease-out transform-gpu group-hover:scale-105"
-                              loading="lazy"
-                            />
-                          </Link>
-
-                          {/* Text & Meta details container */}
-                          <div className="flex flex-col flex-grow">
-                            <CardHeader className="space-y-2 pb-2">
-                              {isFeatured && (
-                                <span className="text-[0.625rem] font-bold uppercase tracking-widest text-primary mb-0.5">
-                                  ★ Featured Case
-                                </span>
-                              )}
-                              <CardTitle className={`font-bold font-display text-slate-900 leading-snug hover:text-primary transition-colors ${
-                                isFeatured ? 'text-xl' : 'text-lg'
-                              }`}>
-                                <Link to={`/work/${project.slug}`}>{project.title}</Link>
-                              </CardTitle>
-                              <CardDescription className="text-slate-600 text-sm leading-relaxed line-clamp-[6] md:line-clamp-5">
-                                {project.description}
-                              </CardDescription>
-                            </CardHeader>
-
-                            <CardContent className="flex flex-col flex-grow pt-0 mt-3">
-                              {/* Technology pills with micro-hover animations */}
-                              <div className="flex flex-wrap gap-1.5 mb-6">
-                                {project.technologies.slice(0, isFeatured ? 4 : 3).map((tech) => (
-                                  <span
-                                    key={tech}
-                                    className="px-2.5 py-0.5 rounded-md bg-slate-50 text-slate-700 text-[0.6875rem] font-medium border border-slate-200/60 transition-all duration-200 hover:scale-105 hover:bg-slate-100"
-                                  >
-                                    {tech}
-                                  </span>
-                                ))}
-                                {project.technologies.length > (isFeatured ? 4 : 3) && (
-                                  <span className="px-2 py-0.5 rounded-md bg-slate-50 text-slate-500 text-[0.6875rem] font-medium border border-slate-200/60">
-                                    +{project.technologies.length - (isFeatured ? 4 : 3)}
-                                  </span>
-                                )}
-                              </div>
-
-                              {/* Action buttons with custom hover icon animations */}
-                              <div className="flex gap-3 mt-auto">
-                                <a
-                                  href={project.liveUrl !== '#' ? project.liveUrl : undefined}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className={`group/btn flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border text-[0.6875rem] font-bold tracking-wide uppercase transition-all duration-200 ${
-                                    project.liveUrl === '#'
-                                      ? 'border-slate-200 text-slate-400 cursor-not-allowed opacity-60'
-                                      : 'border-slate-200 text-slate-700 hover:border-primary/30 hover:bg-primary/5 hover:text-primary'
-                                  }`}
-                                  onClick={(e) => project.liveUrl === '#' && e.preventDefault()}
-                                  aria-label={`View live demo of ${project.title}`}
-                                >
-                                  <ExternalLink className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-                                  Demo
-                                </a>
-                                <a
-                                  href={project.githubUrl !== '#' ? project.githubUrl : undefined}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className={`group/btn flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border text-[0.6875rem] font-bold tracking-wide uppercase transition-all duration-200 ${
-                                    project.githubUrl === '#'
-                                      ? 'border-slate-200 text-slate-400 cursor-not-allowed opacity-60'
-                                      : 'border-slate-200 text-slate-700 hover:border-primary/30 hover:bg-primary/5 hover:text-primary'
-                                  }`}
-                                  onClick={(e) => project.githubUrl === '#' && e.preventDefault()}
-                                  aria-label={`View source code of ${project.title}`}
-                                >
-                                  <Github className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:scale-110" />
-                                  Code
-                                </a>
-                              </div>
-                            </CardContent>
+                          {/* Micro-CTA Case Study Overlay on hover */}
+                          <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center pointer-events-none">
+                            <span className="px-3.5 py-1.5 rounded-full bg-white/95 text-slate-900 text-[0.6875rem] font-bold shadow-md backdrop-blur-sm transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-1.5">
+                              View Case Study
+                              <ArrowUpRight className="w-3.5 h-3.5" />
+                            </span>
                           </div>
 
-                        </Card>
-                      </div>
+                          {/* Floating Category Badge */}
+                          <Badge
+                            variant="secondary"
+                            className={`absolute top-3 left-3 z-20 text-[0.625rem] font-bold uppercase tracking-wider backdrop-blur-md border shadow-sm transition-all duration-200 hover:scale-105 ${
+                              isFeatured 
+                                ? 'bg-primary/95 text-white border-primary/25' 
+                                : 'bg-white/90 text-slate-800 border-slate-200/40'
+                            }`}
+                          >
+                            {project.category}
+                          </Badge>
+
+                          <img
+                            src={project.thumbnail}
+                            alt={project.title}
+                            className="h-full w-full object-cover transition-transform duration-750 ease-out transform-gpu group-hover:scale-105"
+                            loading="lazy"
+                          />
+                        </Link>
+
+                        {/* Text & Meta details container */}
+                        <div className="flex flex-col flex-grow p-6">
+                          <div className="space-y-2 pb-2">
+                            {isFeatured && (
+                              <span className="text-[0.625rem] font-bold uppercase tracking-widest text-primary mb-0.5 block">
+                                ★ Featured Case
+                              </span>
+                            )}
+                            <h3 className={`font-bold font-display text-slate-950 leading-snug hover:text-primary transition-colors ${
+                              isFeatured ? 'text-xl' : 'text-lg'
+                            }`}>
+                              <Link to={`/work/${project.slug}`}>{project.title}</Link>
+                            </h3>
+                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-[6] md:line-clamp-5">
+                              {project.description}
+                            </p>
+                          </div>
+
+                          <div className="flex flex-col flex-grow pt-0 mt-4">
+                            {/* Technology pills with micro-hover animations */}
+                            <div className="flex flex-wrap gap-1.5 mb-6">
+                              {project.technologies.slice(0, isFeatured ? 4 : 3).map((tech) => (
+                                <span
+                                  key={tech}
+                                  className="px-2.5 py-0.5 rounded-md bg-slate-50 text-slate-700 text-[0.6875rem] font-medium border border-slate-200/60 transition-all duration-200 hover:scale-105 hover:bg-slate-100"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                              {project.technologies.length > (isFeatured ? 4 : 3) && (
+                                <span className="px-2 py-0.5 rounded-md bg-slate-50 text-slate-500 text-[0.6875rem] font-medium border border-slate-200/60">
+                                  +{project.technologies.length - (isFeatured ? 4 : 3)}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Action buttons with custom hover icon animations */}
+                            <div className="flex gap-3 mt-auto">
+                              <a
+                                href={project.liveUrl !== '#' ? project.liveUrl : undefined}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`group/btn flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border text-[0.6875rem] font-bold tracking-wide uppercase transition-all duration-200 ${
+                                  project.liveUrl === '#'
+                                    ? 'border-slate-200 text-slate-400 cursor-not-allowed opacity-60'
+                                    : 'border-slate-200 text-slate-700 hover:border-primary/30 hover:bg-primary/5 hover:text-primary'
+                                }`}
+                                onClick={(e) => project.liveUrl === '#' && e.preventDefault()}
+                                aria-label={`View live demo of ${project.title}`}
+                              >
+                                <ExternalLink className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                                Demo
+                              </a>
+                              <a
+                                href={project.githubUrl !== '#' ? project.githubUrl : undefined}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`group/btn flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border text-[0.6875rem] font-bold tracking-wide uppercase transition-all duration-200 ${
+                                  project.githubUrl === '#'
+                                    ? 'border-slate-200 text-slate-400 cursor-not-allowed opacity-60'
+                                    : 'border-slate-200 text-slate-700 hover:border-primary/30 hover:bg-primary/5 hover:text-primary'
+                                }`}
+                                onClick={(e) => project.githubUrl === '#' && e.preventDefault()}
+                                aria-label={`View source code of ${project.title}`}
+                              >
+                                <Github className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:scale-110" />
+                                Code
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </HoverCard>
                     </motion.div>
                   </CarouselItem>
                 );

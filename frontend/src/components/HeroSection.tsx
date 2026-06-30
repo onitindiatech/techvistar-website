@@ -263,43 +263,30 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
               <motion.h1
                 variants={rise3d}
                 style={{ transformStyle: 'preserve-3d' }}
-                className="font-display text-[clamp(1.75rem,6vw,2.25rem)] sm:text-[clamp(2.15rem,5.5vw,3.5rem)] font-extrabold leading-[1.12] sm:leading-[1.15] tracking-[-0.03em] text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] [transform-style:preserve-3d]"
-                aria-label={heroHeadlineLabel}
+                className="font-display text-[clamp(2rem,6.5vw,4rem)] font-extrabold leading-[1.1] tracking-[-0.03em] text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] [transform-style:preserve-3d]"
               >
-                <span aria-hidden className="block">
-                  <motion.span
-                    className="block sm:whitespace-nowrap"
-                    style={{ display: 'block', transform: 'translateZ(24px)' }}
-                  >
-                    {HERO_COPY.headlineLine1}{' '}
-                    <TypingAccent
-                      text={HERO_COPY.headlineAccent}
-                      reduced={reduceMotion}
-                      delayMs={780}
-                      className="text-emerald-300 font-black drop-shadow-[0_4px_20px_rgba(52,211,153,0.6)]"
-                    />
-                  </motion.span>
-                  <motion.span
-                    className="mt-1 block text-white sm:mt-2"
-                    style={{ display: 'block', transform: 'translateZ(12px)' }}
-                  >
-                    {HERO_COPY.headlineLine2}
-                  </motion.span>
+                <span className="block">We Build Intelligent</span>
+                <span className="block mt-1 sm:mt-2">Digital Solutions</span>
+                <span className="block mt-1 sm:mt-2">
+                  That Drive{' '}
+                  <span className="text-primary font-black drop-shadow-[0_0_25px_rgba(34,197,94,0.3)]">
+                    Real Impact
+                  </span>
                 </span>
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
                 style={{ transform: 'translateZ(8px)' }}
-                className="mt-3 sm:mt-5 md:mt-6 max-w-xl text-zinc-200 text-sm sm:text-base leading-relaxed text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]"
+                className="mt-4 sm:mt-6 max-w-xl text-zinc-200 text-base sm:text-lg font-medium leading-relaxed text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]"
               >
-                {HERO_COPY.tagline}
+                AI-Powered. Future-Ready. Business-Focused.
               </motion.p>
 
               <motion.div
                 variants={fadeUp}
                 style={{ transform: 'translateZ(20px)' }}
-                className="mt-3.5 sm:mt-7 md:mt-8 flex flex-col items-start justify-start gap-2.5 sm:gap-4 sm:flex-row w-full"
+                className="mt-6 sm:mt-8 flex flex-col items-start justify-start gap-3 sm:gap-4 sm:flex-row w-full"
               >
                 <motion.div
                   whileHover={
@@ -309,15 +296,15 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                   }
                   whileTap={{ scale: 0.97 }}
                   style={{ transformStyle: 'preserve-3d' }}
+                  className="w-full sm:w-auto"
                 >
                   <Button
                     size="lg"
-                    className="h-12 min-w-[11.5rem] rounded-lg border-0 bg-primary px-8 text-base font-semibold text-primary-foreground shadow-[0_12px_40px_-12px_rgba(34,197,94,0.45)] transition-shadow hover:bg-primary/92 hover:shadow-[0_16px_48px_-10px_rgba(34,197,94,0.4)]"
+                    className="h-12 min-w-[11.5rem] w-full sm:w-auto rounded-lg border-0 bg-primary px-8 text-base font-semibold text-primary-foreground shadow-[0_12px_40px_-12px_rgba(34,197,94,0.45)] transition-shadow hover:bg-primary/92 hover:shadow-[0_16px_48px_-10px_rgba(34,197,94,0.4)]"
                     asChild
                   >
-                    <Link to="/#contact" className="group inline-flex items-center justify-center gap-2">
-                      {HERO_COPY.ctaPrimary}
-                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <Link to="/#services" className="inline-flex items-center justify-center">
+                      <span>Explore Services</span>
                     </Link>
                   </Button>
                 </motion.div>
@@ -327,70 +314,87 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                   }
                   whileTap={{ scale: 0.98 }}
                   style={{ transformStyle: 'preserve-3d' }}
+                  className="w-full sm:w-auto"
                 >
                   <Button
                     variant="outline"
                     size="lg"
-                    className="h-12 min-w-[11.5rem] rounded-lg border-white/15 bg-zinc-950/60 px-8 text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-colors hover:border-white/25 hover:bg-white/5"
+                    className="h-12 min-w-[11.5rem] w-full sm:w-auto rounded-lg border-white/15 bg-zinc-950/60 px-8 text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-colors hover:border-white/25 hover:bg-white/5"
                     asChild
                   >
-                    <Link to="/#services">{HERO_COPY.ctaSecondary}</Link>
+                    <Link to="/#contact" className="inline-flex items-center justify-center">
+                      <span>Talk to an Expert</span>
+                    </Link>
                   </Button>
                 </motion.div>
               </motion.div>
-
-              <motion.p
-                variants={fadeUp}
-                style={{ transform: 'translateZ(4px)' }}
-                className="mt-3.5 sm:mt-8 md:mt-10 text-xs font-semibold tracking-[0.12em] text-zinc-400 text-left drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
-              >
-                {HERO_COPY.locationLine}
-              </motion.p>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Trust Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="w-full mt-4 sm:mt-10 md:mt-12 text-left"
-        >
-          <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-300 font-bold mb-2 md:mb-3 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
-            Trusted by startups and growing businesses
-          </p>
-          <div className="flex flex-wrap items-center justify-start gap-x-4 gap-y-2 sm:gap-x-12 opacity-75 grayscale select-none">
-            {/* Logo 1: ACME */}
-            <svg className="h-3.5 sm:h-5 md:h-6 w-auto text-white/80 hover:text-white transition-colors" viewBox="0 0 100 24" fill="currentColor">
-              <path d="M12 4L4 18h16L12 4zm0 3.5l5.5 9.5H6.5L12 7.5z" fillRule="evenodd" />
-              <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">ACME</text>
-            </svg>
-            {/* Logo 2: GLOBEX */}
-            <svg className="h-3.5 sm:h-5 md:h-6 w-auto text-white/80 hover:text-white transition-colors" viewBox="0 0 110 24" fill="currentColor">
-              <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="2" fill="none" />
-              <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" />
-              <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">GLOBEX</text>
-            </svg>
-            {/* Logo 3: INITECH */}
-            <svg className="h-3.5 sm:h-5 md:h-6 w-auto text-white/80 hover:text-white transition-colors" viewBox="0 0 110 24" fill="currentColor">
-              <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" fill="none" />
-              <circle cx="12" cy="12" r="3" fill="currentColor" />
-              <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">INITECH</text>
-            </svg>
-            {/* Logo 4: UMBRELLA */}
-            <svg className="h-3.5 sm:h-5 md:h-6 w-auto text-white/80 hover:text-white transition-colors" viewBox="0 0 120 24" fill="currentColor">
-              <polygon points="12,3 20,8 20,16 12,21 4,16 4,8" stroke="currentColor" strokeWidth="2" fill="none" />
-              <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">UMBRELLA</text>
-            </svg>
-            {/* Logo 5: MASSIVE */}
-            <svg className="h-3.5 sm:h-5 md:h-6 w-auto text-white/80 hover:text-white transition-colors" viewBox="0 0 110 24" fill="currentColor">
-              <path d="M4 14l5 5 10-10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-              <path d="M9 14l3 3 7-7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
-              <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">MASSIVE</text>
-            </svg>
-          </div>
-        </motion.div>
+        {/* Trust Section & Scroll Indicator */}
+        <div className="w-full mt-4 sm:mt-8 md:mt-12 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="text-left"
+          >
+            <p className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-400/90 font-bold mb-3 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
+              Trusted by industry leaders
+            </p>
+            <div className="flex flex-wrap items-center justify-start gap-x-4 gap-y-3 sm:gap-x-10 opacity-60 grayscale select-none">
+              {/* Logo 1: ACME */}
+              <svg className="h-4 sm:h-5 w-auto text-white/80 hover:text-white hover:opacity-100 transition-all duration-300" viewBox="0 0 100 24" fill="currentColor">
+                <path d="M12 4L4 18h16L12 4zm0 3.5l5.5 9.5H6.5L12 7.5z" fillRule="evenodd" />
+                <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">ACME</text>
+              </svg>
+              {/* Logo 2: GLOBEX */}
+              <svg className="h-4 sm:h-5 w-auto text-white/80 hover:text-white hover:opacity-100 transition-all duration-300" viewBox="0 0 110 24" fill="currentColor">
+                <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="2" fill="none" />
+                <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" />
+                <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">GLOBEX</text>
+              </svg>
+              {/* Logo 3: INITECH */}
+              <svg className="h-4 sm:h-5 w-auto text-white/80 hover:text-white hover:opacity-100 transition-all duration-300" viewBox="0 0 110 24" fill="currentColor">
+                <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" fill="none" />
+                <circle cx="12" cy="12" r="3" fill="currentColor" />
+                <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">INITECH</text>
+              </svg>
+              {/* Logo 4: UMBRELLA */}
+              <svg className="h-4 sm:h-5 w-auto text-white/80 hover:text-white hover:opacity-100 transition-all duration-300" viewBox="0 0 120 24" fill="currentColor">
+                <polygon points="12,3 20,8 20,16 12,21 4,16 4,8" stroke="currentColor" strokeWidth="2" fill="none" />
+                <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">UMBRELLA</text>
+              </svg>
+            </div>
+          </motion.div>
+
+          {/* Smooth Scroll Indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className="hidden md:flex items-center gap-3 text-zinc-400 text-xs font-semibold tracking-wider cursor-pointer select-none"
+            onClick={() => {
+              document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            <span>Explore TechVistar</span>
+            <div className="w-6 h-10 rounded-full border-2 border-zinc-500/60 p-1 flex justify-center">
+              <motion.div
+                animate={{
+                  y: [0, 12, 0],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+                className="w-1 h-2 rounded-full bg-emerald-400"
+              />
+            </div>
+          </motion.div>
+        </div>
       </motion.div>
     </section>
   );

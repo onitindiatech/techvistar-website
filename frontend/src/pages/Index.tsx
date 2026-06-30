@@ -8,6 +8,7 @@ import { BenefitsSection } from '@/components/BenefitsSection';
 import { ProjectsSection } from '@/components/ProjectsSection';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
 import { JoinTeamPreview } from '@/components/JoinTeamPreview';
+import { FAQSection } from '@/components/faq';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 
@@ -28,6 +29,7 @@ const Index = () => {
         <BenefitsSection />
         <TestimonialsSection />
         <JoinTeamPreview />
+        <FAQSection pageFilter="home" limit={6} showViewAll />
         <ContactSection />
         <Footer />
       </main>

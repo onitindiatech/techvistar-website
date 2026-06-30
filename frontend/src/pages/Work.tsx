@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ProjectFilterToolbar } from '@/components/work/ProjectFilterToolbar';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { FAQSection } from '@/components/faq';
 import workBg from '../assets/work-bg.png';
 
 const Work = () => {
@@ -166,6 +167,7 @@ const Work = () => {
           </div>
         </section>
 
+        <FAQSection pageFilter="work" title="Delivery & Process FAQ" description="Have questions about our engagement models, milestones, and codebase handovers?" />
         <Footer />
       </main>
     </>

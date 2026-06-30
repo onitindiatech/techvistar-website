@@ -13,6 +13,8 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { SECTION_TESTIMONIALS, TESTIMONIAL_AGGREGATE, TESTIMONIALS } from '@/data';
+import { HoverCard } from '@/components/animations/HoverCard';
+import { CountUp } from '@/components/animations/CountUp';
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -97,7 +99,9 @@ export const TestimonialsSection = () => {
                     key={`${testimonial.name}-${testimonial.company}`}
                     className="pl-3 md:pl-4 basis-[88%] sm:basis-[75%] md:basis-1/2 lg:basis-[38%] xl:basis-[32%]"
                   >
-                    <figure className="group relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl border border-slate-200/95 bg-white shadow-[0_10px_40px_-18px_rgba(15,23,42,0.12)] ring-1 ring-slate-950/[0.02] transition-shadow duration-300 hover:shadow-[0_20px_50px_-20px_rgba(15,23,42,0.14)]">
+                    <div
+                      className="group relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_10px_35px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_45px_rgba(34,197,94,0.12)] hover:border-emerald-500/50 hover:bg-emerald-500/[0.04] transition-all duration-300 hover:-translate-y-1"
+                    >
                       <div
                         className="h-1 w-full shrink-0 bg-gradient-to-r from-primary via-emerald-500 to-teal-600"
                         aria-hidden
@@ -105,7 +109,7 @@ export const TestimonialsSection = () => {
 
                       <div className="relative flex flex-1 flex-col p-6 sm:p-7">
                         <Quote
-                          className="pointer-events-none absolute right-5 top-5 h-12 w-12 text-primary/[0.06] sm:h-14 sm:w-14"
+                          className="pointer-events-none absolute right-5 top-5 h-12 w-12 text-primary/[0.06] sm:h-14 sm:w-14 transition-transform duration-300 group-hover:scale-105"
                           strokeWidth={1}
                           aria-hidden
                         />
@@ -133,12 +137,22 @@ export const TestimonialsSection = () => {
                           <span className="text-slate-300">&rdquo;</span>
                         </blockquote>
 
-                        <figcaption className="relative z-[1] mt-6 flex items-center gap-4 border-t border-slate-100 pt-5">
+                        <div className="relative z-[1] mt-6 flex items-center gap-4 border-t border-slate-100 pt-5">
                           <div
-                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-emerald-600 text-xs font-bold tracking-tight text-white shadow-md ring-2 ring-white sm:h-12 sm:w-12 sm:text-sm"
+                            className="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-slate-100 shadow-md ring-2 ring-white sm:h-12 sm:w-12"
                             aria-hidden
                           >
-                            {initials(testimonial.name)}
+                            {testimonial.avatar ? (
+                              <img
+                                src={testimonial.avatar}
+                                alt={testimonial.name}
+                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary to-emerald-600 text-xs font-bold tracking-tight text-white">
+                                {initials(testimonial.name)}
+                              </div>
+                            )}
                           </div>
                           <div className="min-w-0 flex-1 text-left">
                             <div className="font-display text-sm font-bold tracking-tight text-slate-900 sm:text-base">
@@ -156,9 +170,9 @@ export const TestimonialsSection = () => {
                               ) : null}
                             </div>
                           </div>
-                        </figcaption>
+                        </div>
                       </div>
-                    </figure>
+                    </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
@@ -180,21 +194,43 @@ export const TestimonialsSection = () => {
             {SECTION_TESTIMONIALS.deliveryIndicatorsLabel}
           </p>
           <div className="grid grid-cols-1 divide-y divide-slate-100 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:divide-slate-100">
-            {TESTIMONIAL_AGGREGATE.map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col items-center justify-center px-4 py-6 text-center first:pt-0 last:pb-0 sm:py-4 sm:first:pt-4 sm:last:pb-4"
-              >
-                <div className="font-display text-3xl font-bold tabular-nums tracking-tight text-slate-900 md:text-[2rem]">
-                  <span className="bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-                    {stat.value}
-                  </span>
+            {TESTIMONIAL_AGGREGATE.map((stat, idx) => {
+              const percentage = idx === 0 ? 98 : idx === 1 ? 75 : 98;
+              const radius = 38;
+              const circumference = 2 * Math.PI * radius;
+              const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+              return (
+                <div
+                  key={stat.label}
+                  className="flex flex-col items-center justify-center px-4 py-8 text-center first:pt-0 last:pb-0 sm:py-6 sm:first:pt-6 sm:last:pb-6"
+                >
+                  <div className="relative flex items-center justify-center h-24 w-24 mb-4 select-none">
+                    <svg className="absolute w-full h-full transform -rotate-90">
+                      <circle cx="48" cy="48" r={radius} className="stroke-slate-100 fill-none" strokeWidth="5" />
+                      <motion.circle
+                        cx="48"
+                        cy="48"
+                        r={radius}
+                        className="stroke-emerald-500 fill-none"
+                        strokeWidth="5"
+                        strokeLinecap="round"
+                        initial={{ strokeDashoffset: circumference }}
+                        animate={isInView ? { strokeDashoffset } : {}}
+                        transition={{ duration: 1.6, delay: 0.2 + idx * 0.1, ease: "easeOut" }}
+                        style={{ strokeDasharray: circumference }}
+                      />
+                    </svg>
+                    <span className="font-display text-xl sm:text-2xl font-black text-slate-900 z-10">
+                      <CountUp value={stat.value} />
+                    </span>
+                  </div>
+                  <div className="max-w-[14rem] text-xs font-bold leading-snug text-slate-600 sm:text-[0.85rem]">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="mt-2 max-w-[14rem] text-xs font-medium leading-snug text-slate-600 sm:text-[0.8125rem]">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <p className="mt-6 text-center text-[11px] leading-relaxed text-slate-400">
             {SECTION_TESTIMONIALS.footnote}

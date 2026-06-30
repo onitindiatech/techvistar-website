@@ -6,12 +6,12 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, ChevronDown, ChevronUp, Briefcase, MapPin, Calendar, Clock, GraduationCap } from 'lucide-react';
+import { Check, Briefcase, MapPin, Calendar, Clock, GraduationCap } from 'lucide-react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { FAQSection } from '@/components/faq';
 import careersBg from '../assets/careers-bg.png';
 
 const Careers = () => {
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -31,7 +31,7 @@ const Careers = () => {
   const fullTimePositions = activeCareers.filter((c) => c.employmentType === 'Full-Time');
   const internshipPositions = activeCareers.filter((c) => c.employmentType === 'Internship');
 
-  const { hero, whyJoin, benefits, hiringProcess, faqs, applyCTA } = CAREERS_PAGE_DATA;
+  const { hero, whyJoin, benefits, hiringProcess, applyCTA } = CAREERS_PAGE_DATA;
 
   return (
     <>
@@ -337,35 +337,8 @@ const Careers = () => {
           </div>
         </section>
 
-        {/* 7. FAQs Section */}
-        <section className="py-16 bg-white border-t border-slate-200">
-          <div className="container mx-auto px-4 max-w-3xl">
-            <h2 className="text-2xl md:text-3xl font-bold font-display text-slate-900 mb-10 text-center">
-              Careers FAQ
-            </h2>
-            <div className="space-y-3">
-              {faqs.map((faq, i) => {
-                const isOpen = openFaqIndex === i;
-                return (
-                  <div key={i} className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50/30">
-                    <button
-                      onClick={() => setOpenFaqIndex(isOpen ? null : i)}
-                      className="w-full flex items-center justify-between p-4 text-left font-semibold text-sm text-slate-800 hover:bg-slate-50 transition-colors"
-                    >
-                      <span>{faq.question}</span>
-                      {isOpen ? <ChevronUp className="h-4 w-4 text-slate-500" /> : <ChevronDown className="h-4 w-4 text-slate-500" />}
-                    </button>
-                    {isOpen && (
-                      <div className="px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100 bg-white">
-                        {faq.answer}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+        {/* 7. FAQs Section replaced with unified FAQSection */}
+        <FAQSection pageFilter="careers" title="Careers FAQ" description="Have questions about our interview cycles, hiring timelines, and workplace culture?" />
 
         {/* 8. Apply CTA Banner */}
         <section className="py-16 bg-slate-50 border-t border-slate-200">

@@ -9,6 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Check, ArrowRight } from 'lucide-react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { FAQSection } from '@/components/faq';
 import servicesBg from '../assets/services-bg.png';
 
 const Services = () => {
@@ -301,6 +302,7 @@ const Services = () => {
           </div>
         </section>
 
+        <FAQSection pageFilter="services" title="Services FAQ" description="Have questions about our tech stack, processes, and service delivery?" />
         <Footer />
       </main>
     </>

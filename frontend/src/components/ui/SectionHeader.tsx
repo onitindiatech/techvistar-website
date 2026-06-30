@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { AnimatedHeading } from '@/components/animations/AnimatedHeading';
 
 interface SectionHeaderProps {
   tag: string;
@@ -26,15 +27,15 @@ export const SectionHeader = ({
 }: SectionHeaderProps) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55 }}
+      transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
       className={cn('mx-auto mb-14 max-w-3xl text-center md:mb-16', className)}
     >
-      <div className="mb-5 flex flex-col items-center gap-3">
+      <div className="mb-4 flex flex-col items-center gap-2">
         <span
           className={cn(
-            'text-[0.6875rem] font-semibold uppercase tracking-[0.22em]',
+            'text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em]',
             light ? 'text-primary' : 'text-emerald-300'
           )}
         >
@@ -42,8 +43,10 @@ export const SectionHeader = ({
         </span>
         <span
           className={cn(
-            'h-px w-12 rounded-full',
-            light ? 'bg-primary/35' : 'bg-emerald-400/40'
+            'h-0.5 w-8 rounded-full transition-all duration-500',
+            isInView 
+              ? (light ? 'bg-primary w-12' : 'bg-emerald-400 w-12')
+              : 'w-0'
           )}
           aria-hidden
         />
@@ -51,16 +54,20 @@ export const SectionHeader = ({
       <h2
         id={headingId}
         className={cn(
-          'mb-5 font-display text-3xl font-bold leading-[1.15] tracking-tight md:text-4xl lg:text-[2.75rem]',
-          light ? 'text-slate-900' : 'text-white'
+          'mb-5 font-display text-3xl font-extrabold leading-[1.15] tracking-tight md:text-4xl lg:text-[2.75rem]',
+          light ? 'text-slate-950' : 'text-white'
         )}
       >
-        {title}{' '}
-        <span className="gradient-text">{highlight}</span>
+        <AnimatedHeading
+          text={`${title} ${highlight}`}
+          as="h2"
+          highlightWords={[highlight]}
+          highlightClassName="gradient-text"
+        />
       </h2>
       <p
         className={cn(
-          'mx-auto max-w-2xl text-base leading-relaxed md:text-lg',
+          'mx-auto max-w-2xl text-base leading-relaxed md:text-lg font-medium',
           light ? 'text-slate-600' : 'text-slate-300'
         )}
       >

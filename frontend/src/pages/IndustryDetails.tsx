@@ -64,15 +64,15 @@ export const IndustryDetails = () => {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4 pt-20">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm text-center">
-            <h1 className="text-2xl md:text-3xl font-bold font-display text-slate-900 tracking-tight mb-3">
+        <main className="min-h-screen flex flex-col items-center justify-center bg-[#fafbfa] px-4 pt-20">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200/60 bg-white p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center">
+            <h1 className="text-2xl md:text-3xl font-black font-display text-teal-955 tracking-tight mb-3">
               Industry Not Found
             </h1>
-            <p className="text-slate-600 text-sm leading-relaxed mb-8">
+            <p className="text-slate-650 text-xs sm:text-sm leading-relaxed mb-8 font-medium">
               We couldn't find the industry sector you were looking for. It may have been moved or updated.
             </p>
-            <Button asChild className="w-full bg-primary text-white hover:bg-primary/95">
+            <Button asChild className="w-full bg-primary text-white hover:bg-primary/95 rounded-xl font-bold">
               <Link to="/industries">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Industries
@@ -96,7 +96,7 @@ export const IndustryDetails = () => {
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
-      <main id="main-content" className="min-h-screen bg-slate-50">
+      <main id="main-content" className="min-h-screen bg-[#fafbfa]">
         <Navbar />
 
         {/* Hero Section */}
@@ -107,11 +107,11 @@ export const IndustryDetails = () => {
           transition={{ duration: 0.6 }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative overflow-hidden bg-zinc-950 pt-24 pb-16 md:pt-28 md:pb-24 border-b border-zinc-900"
+          className="relative overflow-hidden bg-gradient-to-b from-zinc-950 via-[#06211e] to-zinc-950 pt-24 pb-16 md:pt-32 md:pb-24 border-b border-emerald-950/40"
         >
           {/* Background Mesh Wave */}
           <motion.div 
-            className="absolute inset-0 opacity-80 pointer-events-none z-0"
+            className="absolute inset-0 opacity-70 pointer-events-none z-0"
             style={{ 
               backgroundImage: `url(${servicesBg})`,
               backgroundSize: 'auto 100%',
@@ -119,8 +119,8 @@ export const IndustryDetails = () => {
               backgroundRepeat: 'no-repeat',
             }}
             animate={{
-              x: [0, 5, 0],
-              y: [0, -3, 0],
+              x: [0, 4, 0],
+              y: [0, -2, 0],
             }}
             transition={{
               duration: 25,
@@ -137,23 +137,23 @@ export const IndustryDetails = () => {
                 backgroundRepeat: 'no-repeat',
               }}
               animate={{
-                x: mousePosition.x * 6,
-                y: mousePosition.y * 6,
+                x: mousePosition.x * 5,
+                y: mousePosition.y * 5,
               }}
               transition={{ type: "tween", ease: "easeOut", duration: 0.4 }}
             />
           </motion.div>
 
           {/* Grid pattern overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.02)_1px,transparent_1px)] bg-[size:35px_35px] pointer-events-none" />
 
           {/* Dynamic background glow matching industry color */}
-          <div className={`absolute right-1/4 top-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-gradient-to-br ${industry.industriesColor} opacity-[0.08] blur-[100px] pointer-events-none`} />
+          <div className={`absolute right-1/4 top-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-gradient-to-br ${industry.industriesColor} opacity-[0.07] blur-[110px] pointer-events-none`} />
 
           <div className="container-custom max-w-5xl mx-auto px-4 relative z-10">
             <Link 
               to="/industries" 
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-450 hover:text-emerald-350 transition-colors mb-6"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-400 hover:text-emerald-350 transition-colors mb-6"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>Back to Industries</span>
@@ -162,26 +162,26 @@ export const IndustryDetails = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mt-2">
               <div className="lg:col-span-8">
                 <div className="flex flex-wrap gap-2 items-center mb-4">
-                  <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-bold uppercase tracking-wider text-[10px] px-2 py-0.5">
+                  <Badge variant="outline" className="bg-emerald-500/15 text-emerald-400 border-emerald-500/25 font-black uppercase tracking-[0.15em] text-[10px] px-2.5 py-0.5 rounded-full">
                     Industry Specialization
                   </Badge>
                   {relatedProjectsData.length > 0 && (
-                    <Badge variant="secondary" className="bg-white/10 text-white font-semibold text-[10px] px-2 py-0.5 border border-white/5">
+                    <Badge variant="secondary" className="bg-white/10 text-white font-semibold text-[10px] px-2.5 py-0.5 border border-white/5 rounded-full">
                       {relatedProjectsData.length} Case Studies Deployed
                     </Badge>
                   )}
                 </div>
-                <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight">
+                <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter leading-[1.15]">
                   {industry.title}
                 </h1>
-                <p className="mt-6 text-base sm:text-lg md:text-xl text-slate-350 font-medium leading-relaxed max-w-3xl">
+                <p className="mt-6 text-sm sm:text-base md:text-lg text-slate-300 font-semibold leading-relaxed max-w-3xl">
                   {industry.shortDescription}
                 </p>
               </div>
 
               <div className="lg:col-span-4 flex justify-start lg:justify-end">
-                <div className={`p-8 rounded-3xl bg-gradient-to-br ${industry.industriesColor} text-white shadow-xl shadow-emerald-950/20 ring-4 ring-white/5`}>
-                  <Icon className="h-16 w-16" />
+                <div className="p-7 rounded-2xl bg-emerald-50/10 text-emerald-400 border border-emerald-500/20 shadow-xl shadow-emerald-950/20 backdrop-blur-md shrink-0">
+                  <Icon className="h-14 w-14" />
                 </div>
               </div>
             </div>
@@ -192,7 +192,7 @@ export const IndustryDetails = () => {
         <Breadcrumb />
 
         {/* Core Layout Grid */}
-        <section className="py-12 md:py-20 container-custom max-w-5xl mx-auto px-4">
+        <section className="py-16 md:py-24 container-custom max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             
             {/* Main Content Column */}
@@ -200,10 +200,10 @@ export const IndustryDetails = () => {
               
               {/* Overview Section */}
               <div className="space-y-4">
-                <h2 className="font-display text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                <h2 className="font-display text-2xl md:text-3xl font-extrabold text-teal-955 tracking-tight">
                   Overview & Focus
                 </h2>
-                <p className="text-slate-650 text-sm sm:text-base leading-relaxed font-medium">
+                <p className="text-slate-650 text-sm sm:text-base leading-relaxed font-semibold">
                   {industry.description}
                 </p>
               </div>
@@ -212,17 +212,17 @@ export const IndustryDetails = () => {
               <div className="space-y-6">
                 <div className="flex items-center gap-2">
                   <AlertTriangle className="h-5 w-5 text-rose-500 shrink-0" />
-                  <h2 className="font-display text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold text-teal-955 tracking-tight">
                     Business Challenges
                   </h2>
                 </div>
                 <div className="grid grid-cols-1 gap-4">
                   {industry.challenges.map((challenge, index) => (
-                    <Card key={index} className="border border-slate-200/80 bg-white p-5 rounded-2xl shadow-sm">
-                      <h3 className="font-display font-bold text-slate-900 text-base mb-2">
+                    <Card key={index} className="border border-slate-200/50 bg-white p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(10,46,43,0.02)]">
+                      <h3 className="font-display font-extrabold text-teal-955 text-base mb-2">
                         {index + 1}. {challenge.title}
                       </h3>
-                      <p className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed">
+                      <p className="text-slate-500 text-xs sm:text-sm font-medium leading-relaxed">
                         {challenge.description}
                       </p>
                     </Card>
@@ -234,22 +234,22 @@ export const IndustryDetails = () => {
               <div className="space-y-6">
                 <div className="flex items-center gap-2">
                   <Lightbulb className="h-5 w-5 text-emerald-500 shrink-0" />
-                  <h2 className="font-display text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold text-teal-955 tracking-tight">
                     Our Solutions
                   </h2>
                 </div>
                 <div className="grid grid-cols-1 gap-4">
                   {industry.solutions.map((solution, index) => (
-                    <Card key={index} className="border border-emerald-100 bg-emerald-50/[0.25] p-5 rounded-2xl shadow-sm">
+                    <Card key={index} className="border border-emerald-100 bg-emerald-50/[0.15] p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(16,185,129,0.02)]">
                       <div className="flex gap-3">
                         <div className="h-5 w-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 mt-0.5">
                           <Check className="h-3.5 w-3.5" />
                         </div>
                         <div>
-                          <h3 className="font-display font-bold text-slate-900 text-base mb-1.5">
+                          <h3 className="font-display font-extrabold text-teal-955 text-base mb-1.5">
                             {solution.title}
                           </h3>
-                          <p className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed">
+                          <p className="text-slate-500 text-xs sm:text-sm font-medium leading-relaxed">
                             {solution.description}
                           </p>
                         </div>
@@ -263,8 +263,8 @@ export const IndustryDetails = () => {
               {relatedServicesData.length > 0 && (
                 <div className="space-y-6">
                   <div className="flex items-center gap-2">
-                    <Layers className="h-5 w-5 text-slate-650 shrink-0" />
-                    <h2 className="font-display text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    <Layers className="h-5 w-5 text-teal-900 shrink-0" />
+                    <h2 className="font-display text-2xl md:text-3xl font-extrabold text-teal-955 tracking-tight">
                       Related Services
                     </h2>
                   </div>
@@ -275,17 +275,17 @@ export const IndustryDetails = () => {
                         <Link 
                           key={svc.id} 
                           to={`/services/${svc.slug}`}
-                          className="group block border border-slate-200 bg-white p-5 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-500/20 transition-all"
+                          className="group block border border-slate-200/50 bg-white p-5 rounded-2xl shadow-[0_4px_20px_-4px_rgba(10,46,43,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-emerald-500/20 transition-all"
                         >
                           <div className="flex items-center gap-3 mb-3">
-                            <span className="p-2 rounded-xl bg-slate-100 text-slate-700 group-hover:bg-primary group-hover:text-white transition-colors">
-                              <SvcIcon className="h-5 w-5" />
+                            <span className="p-2 rounded-xl bg-slate-50 text-slate-700 group-hover:bg-primary group-hover:text-white border border-slate-100 transition-colors">
+                              <SvcIcon className="h-4.5 w-4.5" />
                             </span>
-                            <h3 className="font-display font-bold text-slate-900 group-hover:text-primary transition-colors text-sm sm:text-base">
+                            <h3 className="font-display font-extrabold text-teal-955 group-hover:text-primary transition-colors text-sm sm:text-base">
                               {svc.title}
                             </h3>
                           </div>
-                          <p className="text-slate-500 text-xs font-semibold leading-relaxed line-clamp-2">
+                          <p className="text-slate-550 text-xs font-medium leading-relaxed line-clamp-2">
                             {svc.shortDescription}
                           </p>
                         </Link>
@@ -299,8 +299,8 @@ export const IndustryDetails = () => {
               {relatedProjectsData.length > 0 && (
                 <div className="space-y-6">
                   <div className="flex items-center gap-2">
-                    <Briefcase className="h-5 w-5 text-slate-650 shrink-0" />
-                    <h2 className="font-display text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    <Briefcase className="h-5 w-5 text-teal-900 shrink-0" />
+                    <h2 className="font-display text-2xl md:text-3xl font-extrabold text-teal-955 tracking-tight">
                       Related Case Studies
                     </h2>
                   </div>
@@ -309,10 +309,10 @@ export const IndustryDetails = () => {
                       <Link 
                         key={proj.id} 
                         to={`/work/${proj.slug}`}
-                        className="group flex flex-col sm:flex-row gap-4 border border-slate-200 bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-all"
+                        className="group flex flex-col sm:flex-row gap-4 border border-slate-200/50 bg-white p-4 rounded-2xl shadow-[0_4px_20px_-4px_rgba(10,46,43,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all"
                       >
                         {proj.thumbnail && (
-                          <div className="w-full sm:w-1/3 h-32 rounded-xl overflow-hidden shrink-0 bg-slate-100">
+                          <div className="w-full sm:w-1/3 h-32 rounded-xl overflow-hidden shrink-0 bg-slate-50">
                             <img 
                               src={proj.thumbnail} 
                               alt={proj.title} 
@@ -320,12 +320,12 @@ export const IndustryDetails = () => {
                             />
                           </div>
                         )}
-                        <div className="flex-grow flex flex-col justify-between py-1">
+                        <div className="flex-grow flex flex-col justify-between py-1 px-1">
                           <div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-primary">
                               {proj.category}
                             </span>
-                            <h3 className="font-display font-bold text-slate-900 group-hover:text-primary transition-colors text-sm sm:text-base mt-1">
+                            <h3 className="font-display font-extrabold text-teal-955 group-hover:text-primary transition-colors text-sm sm:text-base mt-1">
                               {proj.title}
                             </h3>
                             <p className="text-slate-500 text-xs font-semibold leading-relaxed line-clamp-2 mt-2">
@@ -351,18 +351,17 @@ export const IndustryDetails = () => {
               {/* Delivery Process Section */}
               <div className="space-y-6">
                 <div className="flex items-center gap-2">
-                  <Workflow className="h-5 w-5 text-slate-650 shrink-0" />
-                  <h2 className="font-display text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  <Workflow className="h-5 w-5 text-teal-900 shrink-0" />
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold text-teal-955 tracking-tight">
                     Our Delivery Process
                   </h2>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-slate-600 text-xs sm:text-sm font-semibold leading-relaxed">
+                  <p className="text-slate-500 text-xs sm:text-sm font-semibold leading-relaxed">
                     We follow our structured, governance-first delivery framework to ensure all integrations, security layers, and data contracts remain auditable.
                   </p>
-                  <div className="relative border-l border-slate-200 ml-3 pl-6 space-y-8 mt-6">
+                  <div className="relative border-l border-slate-200/80 ml-3 pl-6 space-y-8 mt-6">
                     {PROCESS_STEPS.map((step, idx) => {
-                      const StepIcon = step.icon;
                       return (
                         <div key={idx} className="relative">
                           {/* Dot step indicator */}
@@ -370,15 +369,15 @@ export const IndustryDetails = () => {
                             {idx + 1}
                           </span>
                           <div>
-                            <h3 className="font-display font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+                            <h3 className="font-display font-extrabold text-teal-955 text-sm sm:text-base">
                               {step.title}
                             </h3>
-                            <p className="text-slate-500 text-xs font-semibold mt-1 leading-relaxed max-w-2xl">
+                            <p className="text-slate-500 text-xs font-medium mt-1 leading-relaxed max-w-2xl">
                               {step.description}
                             </p>
                             <div className="mt-3 flex flex-wrap gap-1.5">
                               {step.deliverables.map((deliv, dIdx) => (
-                                <Badge key={dIdx} variant="outline" className="text-[10px] bg-slate-50 text-slate-600 border-slate-200 font-medium py-0.5 px-2">
+                                <Badge key={dIdx} variant="outline" className="text-[9px] bg-slate-50/50 text-slate-500 border-slate-200/60 font-semibold py-0.5 px-2 rounded-lg">
                                   {deliv}
                                 </Badge>
                               ))}
@@ -395,8 +394,8 @@ export const IndustryDetails = () => {
               {industry.faqs.length > 0 && (
                 <div className="space-y-6">
                   <div className="flex items-center gap-2">
-                    <HelpCircle className="h-5 w-5 text-slate-650 shrink-0" />
-                    <h2 className="font-display text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    <HelpCircle className="h-5 w-5 text-teal-900 shrink-0" />
+                    <h2 className="font-display text-2xl md:text-3xl font-extrabold text-teal-955 tracking-tight">
                       Frequently Asked Questions
                     </h2>
                   </div>
@@ -405,12 +404,12 @@ export const IndustryDetails = () => {
                       <AccordionItem 
                         key={index} 
                         value={`item-${index}`}
-                        className="border border-slate-200 bg-white rounded-xl px-4 overflow-hidden"
+                        className="border border-slate-200/50 bg-white rounded-2xl px-4 overflow-hidden shadow-[0_4px_20px_-4px_rgba(10,46,43,0.02)]"
                       >
-                        <AccordionTrigger className="hover:no-underline font-display font-bold text-slate-800 text-xs sm:text-sm text-left py-4">
+                        <AccordionTrigger className="hover:no-underline font-display font-extrabold text-teal-955 text-xs sm:text-sm text-left py-4">
                           {faq.question}
                         </AccordionTrigger>
-                        <AccordionContent className="text-slate-600 text-xs sm:text-sm font-semibold leading-relaxed pt-0 pb-4">
+                        <AccordionContent className="text-slate-500 text-xs sm:text-sm font-semibold leading-relaxed pt-0 pb-4">
                           {faq.answer}
                         </AccordionContent>
                       </AccordionItem>
@@ -425,8 +424,8 @@ export const IndustryDetails = () => {
             <div className="lg:col-span-4 space-y-6">
               
               {/* Stats Card */}
-              <Card className="border border-slate-200 bg-white p-6 rounded-2xl shadow-sm">
-                <h3 className="font-display font-bold text-slate-900 text-sm uppercase tracking-wider mb-4">
+              <Card className="border border-slate-200/50 bg-white p-6 rounded-2xl shadow-[0_4px_25px_-4px_rgba(10,46,43,0.03)]">
+                <h3 className="font-display font-extrabold text-teal-955 text-xs uppercase tracking-wider mb-5">
                   Metrics & Impact
                 </h3>
                 <div className="space-y-6">
@@ -435,7 +434,7 @@ export const IndustryDetails = () => {
                       <div className={`text-3xl font-black bg-gradient-to-r ${industry.industriesColor} bg-clip-text text-transparent`}>
                         {stat.value}
                       </div>
-                      <div className="text-slate-800 text-xs sm:text-sm font-bold mt-1">
+                      <div className="text-teal-955 text-xs sm:text-sm font-bold mt-1">
                         {stat.label}
                       </div>
                       {stat.description && (
@@ -449,10 +448,10 @@ export const IndustryDetails = () => {
               </Card>
 
               {/* Technologies Card */}
-              <Card className="border border-slate-200 bg-white p-6 rounded-2xl shadow-sm">
+              <Card className="border border-slate-200/50 bg-white p-6 rounded-2xl shadow-[0_4px_25px_-4px_rgba(10,46,43,0.03)]">
                 <div className="flex items-center gap-2 mb-4">
-                  <Cpu className="h-4.5 w-4.5 text-slate-700" />
-                  <h3 className="font-display font-bold text-slate-900 text-sm uppercase tracking-wider">
+                  <Cpu className="h-4 w-4 text-slate-700" />
+                  <h3 className="font-display font-extrabold text-teal-955 text-xs uppercase tracking-wider">
                     Core Stacks
                   </h3>
                 </div>
@@ -460,7 +459,7 @@ export const IndustryDetails = () => {
                   {industry.technologies.map((tech) => (
                     <Badge 
                       key={tech} 
-                      className="bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 font-semibold px-2.5 py-1 rounded-lg text-xs"
+                      className="bg-slate-50 hover:bg-slate-150 text-slate-650 border border-slate-200/60 font-bold px-2.5 py-1 rounded-lg text-xs"
                     >
                       {tech}
                     </Badge>
@@ -474,18 +473,18 @@ export const IndustryDetails = () => {
         </section>
 
         {/* Dynamic CTA Section */}
-        <section className="bg-zinc-950 border-t border-zinc-900 py-16 md:py-20 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-zinc-950 via-[#031c19] to-zinc-950 border-t border-emerald-950/40 py-16 md:py-20 relative overflow-hidden">
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-emerald-550/5 blur-[120px] pointer-events-none" />
           
           <div className="container-custom max-w-4xl mx-auto text-center px-4 relative z-10">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-450 mb-3 block">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-3 block">
               {industry.title} Partnering
             </span>
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tighter">
               {industry.cta.title}
             </h2>
             {industry.cta.subtitle && (
-              <p className="mt-4 text-slate-400 max-w-xl mx-auto text-xs sm:text-sm font-medium leading-relaxed">
+              <p className="mt-4 text-slate-300 max-w-xl mx-auto text-xs sm:text-sm font-semibold leading-relaxed">
                 {industry.cta.subtitle}
               </p>
             )}

@@ -8,7 +8,7 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, ChevronRight, HelpCircle, Lightbulb, AlertTriangle, Cpu, Layers } from 'lucide-react';
+import { Search, ChevronRight, HelpCircle, Lightbulb, AlertTriangle, Cpu, Layers, Image } from 'lucide-react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
 import servicesBg from '../assets/services-bg.png'; // Reusing premium background asset
@@ -73,7 +73,7 @@ export const Industries = () => {
       <main id="main-content" className="min-h-screen bg-[#fafbfa]">
         <Navbar />
 
-        {/* Premium Industries Hero */}
+        {/* Premium Redesigned Industries Hero */}
         <motion.section 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -81,11 +81,11 @@ export const Industries = () => {
           transition={{ duration: 0.6 }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative overflow-hidden bg-gradient-to-b from-zinc-950 via-[#06211e] to-zinc-950 pt-20 pb-16 md:pt-28 md:pb-24 border-b border-emerald-950/40"
+          className="relative overflow-hidden bg-gradient-to-b from-zinc-950 via-[#041d1a] to-zinc-950 pt-20 pb-20 md:pt-32 md:pb-28 border-b border-emerald-950/40"
         >
           {/* Animated Mesh Waves + Mouse Parallax */}
           <motion.div 
-            className="absolute inset-0 opacity-70 pointer-events-none z-0"
+            className="absolute inset-0 opacity-60 pointer-events-none z-0"
             style={{ 
               backgroundImage: `url(${servicesBg})`,
               backgroundSize: 'auto 100%',
@@ -93,11 +93,11 @@ export const Industries = () => {
               backgroundRepeat: 'no-repeat',
             }}
             animate={{
-              x: [0, 5, 0],
+              x: [0, 4, 0],
               y: [0, -2, 0],
             }}
             transition={{
-              duration: 20,
+              duration: 22,
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -118,51 +118,25 @@ export const Industries = () => {
             />
           </motion.div>
 
-          {/* Grid pulse background */}
-          <motion.div 
-            className="absolute inset-0 pointer-events-none z-0"
-            style={{
-              backgroundImage: `linear-gradient(to right, rgba(16, 185, 129, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(16, 185, 129, 0.03) 1px, transparent 1px)`,
-              backgroundSize: '40px 40px',
-            }}
-            animate={{
-              opacity: [0.1, 0.2, 0.1],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
+          {/* Grid pattern overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.02)_1px,transparent_1px)] bg-[size:35px_35px] pointer-events-none" />
 
-          {/* Gradient Ambient Glow */}
-          <motion.div 
-            className="absolute left-1/4 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-emerald-500/10 blur-[100px] pointer-events-none z-0"
-            animate={{
-              scale: [1, 1.05, 1],
-              opacity: [0.35, 0.45, 0.35],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
+          {/* Ambient light glow */}
+          <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none z-0 animate-pulse" />
 
-          {/* Core Content Container */}
           <div className="container-custom relative z-10 text-center max-w-4xl mx-auto px-4 mt-6">
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.5 }}
             >
-              <Badge variant="outline" className="mb-4 bg-emerald-500/15 text-emerald-400 border-emerald-500/25 font-black uppercase tracking-[0.2em] text-[10px] px-3.5 py-1 rounded-full">
-                Enterprise Verticals
+              <Badge variant="outline" className="mb-4 bg-emerald-500/10 text-emerald-450 border-emerald-500/20 font-black uppercase tracking-[0.2em] text-[10px] px-3.5 py-1 rounded-full">
+                Custom Vertical Architecture
               </Badge>
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter leading-[1.1] mb-6">
-                Driving Digital Innovation <br />
+                Redefining Digitization <br />
                 <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-                  Across Key Industries
+                  In Global Industries
                 </span>
               </h1>
               <p className="mt-6 text-sm sm:text-base md:text-lg text-slate-300 max-w-2xl mx-auto font-semibold leading-relaxed">
@@ -203,20 +177,21 @@ export const Industries = () => {
         {/* Breadcrumb Navigation */}
         <Breadcrumb />
 
-        {/* Dynamic Industries Grid Section */}
+        {/* Dynamic Industries Asymmetrical Grid Section */}
         <section className="py-16 md:py-24 container-custom max-w-6xl mx-auto px-4 relative">
-          {/* Subtle background glow */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full bg-emerald-500/[0.02] blur-[120px] pointer-events-none" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full bg-emerald-500/[0.015] blur-[120px] pointer-events-none" />
 
           <AnimatePresence mode="popLayout">
             {filteredIndustries.length > 0 ? (
               <motion.div 
                 layout
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               >
-                {filteredIndustries.map((ind: Industry) => {
+                {filteredIndustries.map((ind: Industry, index: number) => {
                   const Icon = ind.icon;
                   const colors = resolveSpotlightColors(ind.id);
+                  const isFeatured = index % 3 === 0; // Alternates card styling to avoid repetitive layouts
+
                   return (
                     <motion.div
                       key={ind.id}
@@ -225,111 +200,128 @@ export const Industries = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.96 }}
                       transition={{ duration: 0.4 }}
+                      className={isFeatured ? 'md:col-span-2' : 'md:col-span-1'}
                     >
                       <SpotlightCard 
                         spotlightColor={colors.spotlight}
                         borderColor={colors.border}
-                        className="h-full flex flex-col border border-slate-200/50 bg-white shadow-[0_4px_25px_-4px_rgba(10,46,43,0.03)] hover:shadow-[0_18px_38px_-8px_rgba(10,46,43,0.09)] hover:scale-[1.01] hover:-translate-y-1 transition-all duration-300 rounded-2xl overflow-hidden"
+                        className={`h-full flex flex-col border border-slate-200/40 bg-white shadow-[0_4px_25px_-4px_rgba(10,46,43,0.025)] hover:shadow-[0_20px_40px_-8px_rgba(10,46,43,0.08)] hover:scale-[1.005] hover:-translate-y-1 transition-all duration-300 rounded-2xl overflow-hidden`}
                       >
-                        {/* Elegant Teal/Emerald Gradient strip */}
-                        <div className={`h-1.5 bg-gradient-to-r ${ind.industriesColor}`} />
-
-                        <CardHeader className="p-6 pb-4">
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="p-3 rounded-xl bg-emerald-50/80 text-emerald-600 border border-emerald-100/60 shadow-sm shrink-0 group-hover:rotate-6 group-hover:scale-110 transition-transform duration-300">
-                              <Icon className="h-5 w-5" />
+                        {/* Split layout for featured horizontal cards */}
+                        <div className={`flex flex-col ${isFeatured ? 'md:flex-row' : ''} h-full`}>
+                          
+                          {/* Card cover image */}
+                          <div className={`relative overflow-hidden shrink-0 bg-slate-100 ${isFeatured ? 'w-full md:w-[38%] h-48 md:h-auto border-b md:border-b-0 md:border-r border-slate-250/20' : 'w-full h-44 border-b border-slate-250/20'}`}>
+                            {ind.heroImage ? (
+                              <img 
+                                src={ind.heroImage} 
+                                alt={ind.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-slate-50 flex items-center justify-center">
+                                <Image className="h-8 w-8 text-slate-300" />
+                              </div>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+                            <div className="absolute top-4 left-4 p-2.5 rounded-xl bg-white/90 backdrop-blur text-emerald-600 border border-emerald-100/30 shadow-sm shrink-0 group-hover:rotate-6 group-hover:scale-110 transition-transform duration-300">
+                              <Icon className="h-4.5 w-4.5" />
                             </div>
-                            {ind.statistics.length > 0 && (
-                              <Badge className="bg-slate-50 hover:bg-slate-50 text-slate-650 font-bold border border-slate-200/60 rounded-lg text-[10px]">
-                                {ind.statistics[0].value} {ind.statistics[0].label}
-                              </Badge>
-                            )}
                           </div>
-                          <CardTitle className="font-display text-xl font-extrabold text-teal-955 tracking-tight leading-snug">
-                            {ind.title}
-                          </CardTitle>
-                          <CardDescription className="text-slate-500 font-medium text-xs mt-2.5 line-clamp-2 leading-relaxed">
-                            {ind.shortDescription}
-                          </CardDescription>
-                        </CardHeader>
 
-                        <CardContent className="p-6 pt-0 flex-grow flex flex-col justify-between">
-                          <div className="space-y-4">
-                            {/* Key Challenge Highlight */}
-                            {ind.challenges.length > 0 && (
-                              <div className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-100/80">
-                                <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.1em] text-rose-600 mb-1.5">
-                                  <AlertTriangle className="h-3 w-3" />
-                                  <span>Core Challenge</span>
-                                </div>
-                                <p className="text-slate-700 text-xs font-semibold leading-relaxed">
-                                  {ind.challenges[0].title}: <span className="font-medium text-slate-500">{ind.challenges[0].description}</span>
-                                </p>
-                              </div>
-                            )}
-
-                            {/* Key Solution Highlight */}
-                            {ind.solutions.length > 0 && (
-                              <div className="bg-emerald-50/30 p-3.5 rounded-xl border border-emerald-100/40">
-                                <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.1em] text-emerald-700 mb-1.5">
-                                  <Lightbulb className="h-3 w-3" />
-                                  <span>Our Approach</span>
-                                </div>
-                                <p className="text-slate-800 text-xs font-semibold leading-relaxed">
-                                  {ind.solutions[0].title}: <span className="font-medium text-slate-500">{ind.solutions[0].description}</span>
-                                </p>
-                              </div>
-                            )}
-
-                            {/* Associated Services */}
+                          {/* Card text details */}
+                          <div className="flex-grow flex flex-col justify-between p-6">
                             <div>
-                              <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.1em] text-slate-400 mb-2">
-                                <Layers className="h-3 w-3" />
-                                <span>Key Solutions</span>
+                              <div className="flex items-center justify-between mb-3.5">
+                                <span className="text-[9px] font-black uppercase tracking-[0.15em] text-primary">
+                                  Enterprise Vertical
+                                </span>
+                                {ind.statistics.length > 0 && (
+                                  <Badge className="bg-slate-50 hover:bg-slate-50 text-slate-600 font-bold border border-slate-200/60 rounded-lg text-[9px]">
+                                    {ind.statistics[0].value} {ind.statistics[0].label}
+                                  </Badge>
+                                )}
                               </div>
-                              <div className="flex flex-wrap gap-1.5">
-                                {ind.services.slice(0, 3).map((svcSlug) => (
-                                  <Badge key={svcSlug} variant="secondary" className="bg-teal-50/60 hover:bg-teal-50 text-[10px] text-teal-800 font-bold border border-teal-100/30 px-2 py-0.5 rounded-lg transition-all duration-200 hover:scale-[1.03]">
+                              <CardTitle className="font-display text-xl sm:text-2xl font-black text-teal-955 tracking-tight leading-snug">
+                                {ind.title}
+                              </CardTitle>
+                              <CardDescription className="text-slate-500 font-medium text-xs mt-2.5 leading-relaxed">
+                                {ind.shortDescription}
+                              </CardDescription>
+
+                              {/* Asymmetrical detail listing */}
+                              <div className="space-y-3.5 mt-5">
+                                {/* Challenge summary */}
+                                {ind.challenges.length > 0 && (
+                                  <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100/80">
+                                    <div className="flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-[0.1em] text-rose-600 mb-1">
+                                      <AlertTriangle className="h-3 w-3" />
+                                      <span>Core Challenge</span>
+                                    </div>
+                                    <p className="text-slate-700 text-xs font-semibold leading-relaxed line-clamp-2">
+                                      {ind.challenges[0].title}: <span className="font-medium text-slate-500">{ind.challenges[0].description}</span>
+                                    </p>
+                                  </div>
+                                )}
+
+                                {/* Solution summary (rendered on featured cards only to vary layout depth) */}
+                                {isFeatured && ind.solutions.length > 0 && (
+                                  <div className="bg-emerald-50/20 p-3 rounded-xl border border-emerald-100/30">
+                                    <div className="flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-[0.1em] text-emerald-700 mb-1">
+                                      <Lightbulb className="h-3 w-3" />
+                                      <span>Our Solution</span>
+                                    </div>
+                                    <p className="text-slate-800 text-xs font-semibold leading-relaxed line-clamp-2">
+                                      {ind.solutions[0].title}: <span className="font-medium text-slate-500">{ind.solutions[0].description}</span>
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Tags and badges */}
+                            <div className="mt-6 space-y-4">
+                              {/* Solutions stack */}
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <Layers className="h-3 w-3 text-slate-400 mr-0.5" />
+                                {ind.services.slice(0, isFeatured ? 4 : 2).map((svcSlug) => (
+                                  <Badge key={svcSlug} variant="secondary" className="bg-teal-50/50 hover:bg-teal-50 text-[9.5px] text-teal-800 font-bold border border-teal-100/20 px-2 py-0.5 rounded-lg transition-all hover:scale-[1.03]">
                                     {resolveServiceTitle(svcSlug)}
                                   </Badge>
                                 ))}
                               </div>
-                            </div>
 
-                            {/* Technologies utilized */}
-                            <div>
-                              <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.1em] text-slate-400 mb-2">
-                                <Cpu className="h-3 w-3" />
-                                <span>Technologies</span>
-                              </div>
-                              <div className="flex flex-wrap gap-1.5">
-                                {ind.technologies.slice(0, 4).map((tech) => (
-                                  <Badge key={tech} variant="outline" className="text-[10px] text-slate-500 border-slate-200 bg-white font-semibold px-2 py-0.5 rounded-lg transition-all duration-200 hover:scale-[1.03]">
+                              {/* Tech stack */}
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <Cpu className="h-3 w-3 text-slate-400 mr-0.5" />
+                                {ind.technologies.slice(0, isFeatured ? 5 : 3).map((tech) => (
+                                  <Badge key={tech} variant="outline" className="text-[9.5px] text-slate-500 border-slate-200 bg-white font-semibold px-2 py-0.5 rounded-lg transition-all hover:scale-[1.03]">
                                     {tech}
                                   </Badge>
                                 ))}
                               </div>
+
+                              {/* Bottom conversion details */}
+                              <div className="pt-4 border-t border-slate-100/80 flex items-center justify-between">
+                                <span className="text-[10px] font-bold text-slate-400">
+                                  {ind.caseStudies.length} Anonymized Case Study Linked
+                                </span>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50/50 font-bold flex items-center gap-1 group/btn p-0 px-2.5 rounded-lg text-xs"
+                                  asChild
+                                >
+                                  <Link to={`/industries/${ind.slug}`}>
+                                    <span>Explore details</span>
+                                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-1.5" />
+                                  </Link>
+                                </Button>
+                              </div>
                             </div>
                           </div>
 
-                          {/* Detail Link */}
-                          <div className="mt-6 pt-4 border-t border-slate-100/80 flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-slate-400">
-                              {ind.caseStudies.length} Case Study Linked
-                            </span>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50/50 font-bold flex items-center gap-1 group/btn p-0 px-2 rounded-lg text-xs"
-                              asChild
-                            >
-                              <Link to={`/industries/${ind.slug}`}>
-                                <span>Explore details</span>
-                                <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-1.5" />
-                              </Link>
-                            </Button>
-                          </div>
-                        </CardContent>
+                        </div>
                       </SpotlightCard>
                     </motion.div>
                   );
@@ -358,12 +350,15 @@ export const Industries = () => {
           </AnimatePresence>
         </section>
 
-        {/* Global CTA Section */}
-        <section className="bg-gradient-to-br from-zinc-950 via-[#031c19] to-zinc-950 border-t border-emerald-950/40 py-16 md:py-24 relative overflow-hidden">
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
+        {/* Global Redesigned CTA Section */}
+        <section className="bg-gradient-to-br from-zinc-950 via-[#031d1b] to-zinc-950 border-t border-emerald-950/40 py-20 md:py-28 relative overflow-hidden">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
           
           <div className="container-custom max-w-4xl mx-auto text-center px-4 relative z-10">
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-tight">
+            <Badge variant="outline" className="mb-4 bg-emerald-500/10 text-emerald-450 border-emerald-500/20 font-black uppercase tracking-[0.2em] text-[10px] px-3.5 py-1 rounded-full">
+              Enterprise Collaboration
+            </Badge>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-tight mt-3">
               Looking for a custom enterprise platform?
             </h2>
             <p className="mt-6 text-slate-300 max-w-xl mx-auto text-sm sm:text-base font-semibold leading-relaxed">

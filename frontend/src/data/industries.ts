@@ -65,7 +65,7 @@ export const INDUSTRIES: readonly Industry[] = [
     title: 'Healthcare',
     shortDescription: 'HIPAA-compliant custom software, telehealth portals, and AI diagnostics built for modern medicine.',
     description: 'We design and build secure, regulatory-compliant digital systems for healthcare providers, medical device manufacturers, and healthtech startups. From EHR integrations and remote patient monitoring to telehealth apps and medical billing systems, our solutions prioritize data security, interoperability, and fluid patient experiences.',
-    heroImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1200&auto=format&fit=crop',
     icon: Heart,
     industriesColor: 'from-emerald-500 to-teal-600',
     challenges: [
@@ -134,7 +134,7 @@ export const INDUSTRIES: readonly Industry[] = [
     title: 'Education',
     shortDescription: 'Scalable LMS platforms, virtual classrooms, and interactive educational content delivery networks.',
     description: 'We develop learning management systems (LMS), student information systems (SIS), and online education platforms that make learning interactive, accessible, and scalable. Our systems support rich media delivery, automated student tracking, and gamified assessments.',
-    heroImage: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop',
     icon: GraduationCap,
     industriesColor: 'from-blue-500 to-indigo-600',
     challenges: [
@@ -191,7 +191,7 @@ export const INDUSTRIES: readonly Industry[] = [
     title: 'Finance',
     shortDescription: 'Bank-grade security fintech systems, custom accounting platforms, and payment integrations.',
     description: 'We construct secure fintech products, transaction ledgers, investment dashboards, and custom banking modules. Our platforms utilize strong security controls, multi-factor authorization, and real-time transaction processing.',
-    heroImage: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=1200&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop',
     icon: Landmark,
     industriesColor: 'from-amber-600 to-yellow-500',
     challenges: [
@@ -248,7 +248,7 @@ export const INDUSTRIES: readonly Industry[] = [
     title: 'Retail & E-commerce',
     shortDescription: 'High-conversion checkout funnels, head-less commerce solutions, and inventory tracking portals.',
     description: 'We engineer dynamic e-commerce platforms designed for lightning-fast speeds and high conversion rates. Our headless CMS solutions integrate product management, localized pricing, discount campaigns, and real-time inventory systems.',
-    heroImage: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=1200&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop',
     icon: ShoppingCart,
     industriesColor: 'from-pink-500 to-rose-600',
     challenges: [
@@ -362,7 +362,7 @@ export const INDUSTRIES: readonly Industry[] = [
     title: 'Real Estate',
     shortDescription: 'Virtual tour portals, custom CRM dashboards, and transaction management platforms.',
     description: 'We build digital solutions for real estate developers, agencies, and proptech startups. Our services include property listings, search engines, CRM dashboards, and digital contract signing.',
-    heroImage: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1200&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1558036117-15d82a90b9b1?q=80&w=1200&auto=format&fit=crop',
     icon: Home,
     industriesColor: 'from-cyan-500 to-blue-600',
     challenges: [
@@ -476,7 +476,7 @@ export const INDUSTRIES: readonly Industry[] = [
     title: 'Agriculture',
     shortDescription: 'Precision farming telemetry, crop health imaging dashboards, and market supply trackers.',
     description: 'We construct precision agriculture dashboards, IoT sensor monitors, and supply-chain databases for modern growers. We build systems that parse satellite images and field metrics to maximize crop outputs.',
-    heroImage: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=1200&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1628102422497-6f9c69889a01?q=80&w=1200&auto=format&fit=crop',
     icon: Sprout,
     industriesColor: 'from-green-500 to-emerald-600',
     challenges: [

@@ -12,7 +12,9 @@ import { Search, ChevronRight, HelpCircle, Lightbulb, AlertTriangle, Cpu, Layers
 import { Breadcrumb } from '@/components/common/Breadcrumb';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
 import { AuroraBackground, Spotlight3DBackground } from '@/components/animations/PremiumBackground';
+import { PremiumImage } from '@/components/common/PremiumImage';
 import { BlurReveal, ScaleIn, StaggerContainer, StaggerItem } from '@/components/animations/ScrollAnimations';
+
 
 // Shared color utility for premium spotlight rendering
 export const resolveSpotlightColors = (id: string) => {
@@ -133,12 +135,13 @@ export const Industries = () => {
                           <div className={`flex flex-col ${isFeatured ? 'md:flex-row' : ''} h-full`}>
                             
                             {/* Card cover image */}
-                            <div className={`relative overflow-hidden shrink-0 bg-slate-100 ${isFeatured ? 'w-full md:w-[38%] h-48 md:h-auto border-b md:border-b-0 md:border-r border-slate-250/20' : 'w-full h-44 border-b border-slate-250/20'}`}>
+                            <div className={`relative overflow-hidden shrink-0 ${isFeatured ? 'w-full md:w-[38%] border-b md:border-b-0 md:border-r border-slate-200/40' : 'w-full border-b border-slate-200/40'}`}>
                               {ind.heroImage ? (
-                                <img 
+                                <PremiumImage 
                                   src={ind.heroImage} 
                                   alt={ind.title}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                  aspectRatioClassName={isFeatured ? 'aspect-[4/3] md:aspect-auto md:h-full' : 'aspect-[16/10]'}
+                                  className="group-hover:scale-[1.05] transition-transform duration-500"
                                 />
                               ) : (
                                 <div className="w-full h-full bg-slate-50 flex items-center justify-center">

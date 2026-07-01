@@ -32,7 +32,9 @@ import { Breadcrumb } from '@/components/common/Breadcrumb';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
 import { AuroraBackground, Spotlight3DBackground } from '@/components/animations/PremiumBackground';
 import { resolveSpotlightColors } from './Industries';
+import { PremiumImage } from '@/components/common/PremiumImage';
 import { BlurReveal, ScaleIn, StaggerContainer, StaggerItem } from '@/components/animations/ScrollAnimations';
+
 
 export const IndustryDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -126,19 +128,21 @@ export const IndustryDetails = () => {
               <div className="lg:col-span-5 flex justify-center lg:justify-end">
                 <BlurReveal duration={0.6} delay={0.15} className="w-full max-w-sm">
                   {/* Dynamically renders cover image inside rounded container */}
-                  <div className="relative group/cover rounded-3xl overflow-hidden border border-white/15 shadow-2xl w-full h-64 bg-slate-800">
+                  <div className="relative group/cover rounded-3xl overflow-hidden border border-white/15 shadow-2xl w-full aspect-[4/3] bg-slate-800">
                     {industry.heroImage ? (
-                      <img 
+                      <PremiumImage 
                         src={industry.heroImage} 
-                        alt={industry.title} 
-                        className="w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-500"
+                        alt={industry.title}
+                        aspectRatioClassName="aspect-[4/3]"
+                        className="group-hover/cover:scale-[1.05] transition-transform duration-500"
+                        showOverlay={false}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-slate-900">
                         <Image className="h-10 w-10 text-slate-700" />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/70 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/45 via-transparent to-transparent pointer-events-none" />
                     <div className="absolute bottom-5 left-5 p-3 rounded-2xl bg-white/90 backdrop-blur text-emerald-600 border border-emerald-100/35 shadow-md">
                       <Icon className="h-6 w-6" />
                     </div>

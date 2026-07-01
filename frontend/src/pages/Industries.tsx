@@ -304,10 +304,11 @@ export const Industries = () => {
                               className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 font-bold flex items-center gap-1 group/btn p-0 px-2 rounded-lg"
                               asChild
                             >
-                              <Link to={ind.cta.buttonLink}>
+                              <Link to={`/industries/${ind.slug}`}>
                                 <span>Explore details</span>
                                 <ChevronRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-0.5" />
                               </Link>
+
                             </Button>
                           </div>
                         </CardContent>

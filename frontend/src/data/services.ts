@@ -27,9 +27,21 @@ import serviceMobileApp from '../assets/mobile_phone_devloper.png';
 import serviceUiUx from '../assets/ui_ux_designer.png';
 import serviceAiAutomation from '../assets/Ai_and_atomation.png';
 import serviceCloudDevops from '../assets/Claud_Devops.png';
-import serviceBranding from '../assets/brand_and_creative_design.png';
+import serviceBranding from '../assets/service_branding.png';
 import serviceDigitalMarketing from '../assets/digital_marketing.png';
 import serviceCustomSoftware from '../assets/custom_software_devlopment.png';
+import serviceAi from '../assets/service_ai.png';
+import serviceAutomation from '../assets/service_automation.png';
+import serviceEnterpriseAi from '../assets/service_enterprise_ai.png';
+import serviceCloud from '../assets/service_cloud.png';
+import serviceDevops from '../assets/service_devops.png';
+import serviceCloudInfra from '../assets/service_cloud_infra.png';
+import serviceCreativeDesign from '../assets/service_creative_design.png';
+import serviceProductDesign from '../assets/service_product_design.png';
+import serviceSaas from '../assets/service_saas.png';
+import serviceProductEng from '../assets/service_product_eng.png';
+import serviceRevenueWeb from '../assets/service_revenue_web.png';
+import serviceDocsResearch from '../assets/service_docs_research.png';
 
 export interface ServiceStat {
   value: string;
@@ -446,8 +458,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We design high-availability cloud solutions tailored to enterprise workloads. By setting up virtual networks, redundant storage arrays, multi-region load balancers, and continuous security scanners, we establish resilient systems built to scale seamlessly during massive traffic spikes.',
     category: 'Infrastructure',
     icon: Cloud,
-    coverImage: serviceCloudDevops,
-    thumbnail: serviceCloudDevops,
+    coverImage: serviceCloud,
+    thumbnail: serviceCloud,
     overview: 'Establish secure, elastic, and high-performance cloud networks under industry-standard isolation models.',
     offerings: [
       'AWS Deployments',
@@ -528,8 +540,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We streamline development flows by bridging code changes with production servers. Through Infrastructure as Code (IaC), scriptable build nodes, Docker containerization, and automated test integrations, we help technical teams launch updates faster with minimal manual friction.',
     category: 'Infrastructure',
     icon: Settings,
-    coverImage: serviceCloudDevops,
-    thumbnail: serviceCloudDevops,
+    coverImage: serviceDevops,
+    thumbnail: serviceDevops,
     overview: 'Automate build runs and standardize hosting nodes using clean Infrastructure as Code templates.',
     offerings: [
       'CI/CD Pipelines',
@@ -610,8 +622,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We engineer complex machine learning architectures. By designing custom data pipelines, compiling training datasets, fine-tuning state-of-the-art open-source LLMs, and setting up secure GPU inference servers, we construct advanced cognitive models tailored to domain-specific knowledge bases.',
     category: 'Advanced Technology',
     icon: Brain,
-    coverImage: serviceAiAutomation,
-    thumbnail: serviceAiAutomation,
+    coverImage: serviceAi,
+    thumbnail: serviceAi,
     overview: 'Develop specialized cognitive architectures capable of parsing complex tabular and text resources.',
     offerings: [
       'LLM Fine-Tuning',
@@ -692,8 +704,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We eliminate manual click work by bridging digital operations. By setting up event listener nodes, scheduled background tasks, automated data entry workers, and API translation wrappers, we build reliable system-to-system connections that run silently 24/7.',
     category: 'Advanced Technology',
     icon: Repeat,
-    coverImage: serviceAiAutomation,
-    thumbnail: serviceAiAutomation,
+    coverImage: serviceAutomation,
+    thumbnail: serviceAutomation,
     overview: 'Connect disjointed software tools using clean automation paths and custom webhooks.',
     offerings: [
       'n8n Orchestration',
@@ -855,8 +867,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We craft compelling digital artwork and kinetic media designed to engage online audiences. From marketing banner ads and corporate slide sheets to social media vectors and custom site illustrations, we support campaign needs with fast execution pipelines.',
     category: 'Design',
     icon: Layers,
-    coverImage: serviceBranding,
-    thumbnail: serviceBranding,
+    coverImage: serviceCreativeDesign,
+    thumbnail: serviceCreativeDesign,
     overview: 'Design interactive, animated, and visual assets tailored for digital platforms and social campaigns.',
     offerings: [
       'Graphic Design Assets',
@@ -936,8 +948,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We translate digital ideas into tangible web products. By mapping user flows, defining feature lists, sketching low-fidelity layout structures, and building clickable prototype mockups, we validate interface directions before committing engineering resources.',
     category: 'Design',
     icon: Layers,
-    coverImage: serviceBranding,
-    thumbnail: serviceBranding,
+    coverImage: serviceProductDesign,
+    thumbnail: serviceProductDesign,
     overview: 'Conceptualize and refine complex digital structures into elegant, click-tested interactive frameworks.',
     offerings: [
       'Product Wireframing',
@@ -1101,8 +1113,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We build subscription software platforms engineered to handle growing user workloads. From configuring database multi-tenancy and Stripe payment webhooks to coding custom dashboards and structuring user privilege roles, we build the core engines of SaaS businesses.',
     category: 'Development',
     icon: Layers,
-    coverImage: serviceCustomSoftware,
-    thumbnail: serviceCustomSoftware,
+    coverImage: serviceSaas,
+    thumbnail: serviceSaas,
     overview: 'Deploy secure, scalable, and audit-friendly SaaS software frameworks.',
     offerings: [
       'Multi-Tenant Databases',
@@ -1182,8 +1194,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We connect cutting-edge cognitive models with traditional corporate database systems. By configuring secure API wrappers, building custom data retrieval pipelines (RAG), establishing safety guardrails, and setting up vector databases, we make advanced artificial intelligence safe and useful for enterprise operations.',
     category: 'Advanced Technology',
     icon: Cpu,
-    coverImage: serviceAiAutomation,
-    thumbnail: serviceAiAutomation,
+    coverImage: serviceEnterpriseAi,
+    thumbnail: serviceEnterpriseAi,
     overview: 'Deploy secure cognitive adapters to connect LLMs with proprietary company records.',
     offerings: [
       'Legacy AI Integrations',
@@ -1263,8 +1275,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We build the foundational engines of digital applications. By setting up messaging broker structures, database pools, caching systems, and REST API controllers, we build backend systems engineered to handle millions of requests with low memory footprints.',
     category: 'Development',
     icon: Code2,
-    coverImage: serviceCustomSoftware,
-    thumbnail: serviceCustomSoftware,
+    coverImage: serviceProductEng,
+    thumbnail: serviceProductEng,
     overview: 'Build robust, message-driven system backends that run with low latency profiles.',
     offerings: [
       'API Core Design',
@@ -1344,8 +1356,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We turn web traffic into revenue. By optimizing page speed metrics, scripting custom user events, building landing pages, and conducting conversion tests, we increase the yield of marketing campaigns and help sales pages convert higher.',
     category: 'Development',
     icon: LineChart,
-    coverImage: serviceWebDev,
-    thumbnail: serviceWebDev,
+    coverImage: serviceRevenueWeb,
+    thumbnail: serviceRevenueWeb,
     overview: 'Deploy fast, responsive landing pages configured for conversion tracking and funnel analytics.',
     offerings: [
       'Speed Optimizations',
@@ -1425,8 +1437,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We translate complex code structures into readable technical documentation. From drafting API references and configuring OpenAPI/Swagger layouts to illustrating database schemas and writing developer SOW guides, we establish clear reference resources.',
     category: 'Design',
     icon: BookOpen,
-    coverImage: serviceBranding,
-    thumbnail: serviceBranding,
+    coverImage: serviceDocsResearch,
+    thumbnail: serviceDocsResearch,
     overview: 'Compile clean, comprehensive developer guidelines, schemas, and API files.',
     offerings: [
       'API Reference Manuals',
@@ -1591,8 +1603,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We construct secure corporate network environments on major global cloud providers. From setting up private networks and directory integrations to scripting server builds and implementing security scanners, we build standard operational baselines.',
     category: 'Infrastructure',
     icon: HardDrive,
-    coverImage: serviceCloudDevops,
-    thumbnail: serviceCloudDevops,
+    coverImage: serviceCloudInfra,
+    thumbnail: serviceCloudInfra,
     overview: 'Launch and configure enterprise private hosting topologies under industry isolation models.',
     offerings: [
       'Enterprise AWS Layouts',

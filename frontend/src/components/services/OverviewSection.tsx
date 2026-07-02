@@ -1,17 +1,7 @@
 import { Service } from '@/data/services';
 import { Brain, Lightbulb } from 'lucide-react';
 import '../ui/GlassIcons.css';
-
-// Import high-fidelity dashboard assets
-import aiOverviewIllustration from '../../assets/ai_overview_illustration.png';
-import mobilityDashboard from '../../assets/mobility_routing_dashboard.png';
-import sustainabilityDashboard from '../../assets/sustainability_dashboard.png';
-import aiTranslator from '../../assets/ai_translator.png';
-import aiTranslatorBatches from '../../assets/ai_translator_batches.png';
-import clinicalRiskScoring from '../../assets/clinical_risk_scoring.png';
-import cropHealthAnalysis from '../../assets/crop_health_analysis.png';
-import sentimentNlpDashboard from '../../assets/sentiment_nlp_dashboard.png';
-import resumeReviewAssistant from '../../assets/resume_review_assistant.png';
+import { OverviewIllustration } from './OverviewIllustration';
 
 interface SectionProps {
   service: Service;
@@ -19,27 +9,6 @@ interface SectionProps {
 
 export const OverviewSection = ({ service }: SectionProps) => {
   const IconComponent = service.icon || Brain;
-
-  // Dynamically map high-fidelity project images based on the service data
-  const getDashboardImage = () => {
-    if (!service.dashboardImage) {
-      return sustainabilityDashboard;
-    }
-    
-    const mapping: Record<string, string> = {
-      ai_overview_illustration: aiOverviewIllustration,
-      mobility_routing_dashboard: mobilityDashboard,
-      sustainability_dashboard: sustainabilityDashboard,
-      ai_translator: aiTranslator,
-      ai_translator_batches: aiTranslatorBatches,
-      clinical_risk_scoring: clinicalRiskScoring,
-      crop_health_analysis: cropHealthAnalysis,
-      sentiment_nlp_dashboard: sentimentNlpDashboard,
-      resume_review_assistant: resumeReviewAssistant
-    };
-
-    return mapping[service.dashboardImage] || sustainabilityDashboard;
-  };
 
   return (
     <section id="overview" className="bg-white border border-slate-200/80 rounded-3xl p-6 md:p-8 scroll-mt-24 shadow-sm relative overflow-hidden">
@@ -94,17 +63,15 @@ export const OverviewSection = ({ service }: SectionProps) => {
           </div>
         </div>
 
-        {/* Right Dashboard Image Column */}
+        {/* Right Dashboard Image Column - Render dynamic monochrome emerald green 3D glass illustration */}
         <div className="md:col-span-5 flex justify-center items-center">
-          <div className="relative group/image">
+          <div className="relative group/image w-full">
             {/* Soft background glow */}
-            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-sky-500/10 opacity-75 blur-lg group-hover/image:opacity-100 transition duration-300" />
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-500/10 to-sky-500/10 opacity-75 blur-xl group-hover/image:opacity-100 transition duration-300 pointer-events-none" />
             
-            <img 
-              src={getDashboardImage()} 
-              alt={`${service.title} Overview Illustration`} 
-              className="relative w-full max-w-[230px] md:max-w-full h-auto object-contain transition-transform duration-300 group-hover/image:scale-[1.04] mix-blend-multiply"
-            />
+            <div className="relative z-10 w-full transition-transform duration-300 group-hover/image:scale-[1.03]">
+              <OverviewIllustration slug={service.slug} />
+            </div>
           </div>
         </div>
       </div>

@@ -49,12 +49,13 @@ export const Solutions = () => {
 
   return (
     <>
-      <main id="main-content" className="min-h-screen bg-[#05070B] text-white animate-fade-in pb-16">
+      {/* Light Theme Background matching About, Services, and Industries */}
+      <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 animate-fade-in pb-16">
         <Navbar />
 
         {/* HERO SECTION - Matching Portfolio and About */}
         <section 
-          className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24 border-b border-white/5"
+          className="relative overflow-hidden bg-zinc-950 pt-28 pb-16 md:pt-36 md:pb-24 border-b border-zinc-900 text-white"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
@@ -115,9 +116,9 @@ export const Solutions = () => {
         {/* SECTION: BUSINESS SOLUTIONS */}
         <section className="container-custom max-w-7xl mx-auto px-6 py-16">
           <div className="mb-10 space-y-2">
-            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Optimize Operations</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Business Solutions</h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-semibold max-w-2xl">
+            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Optimize Operations</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Business Solutions</h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-semibold max-w-2xl">
               Replace fragmented tools with centralized enterprise platforms built to automate workflows and preserve database compliance.
             </p>
           </div>
@@ -129,13 +130,13 @@ export const Solutions = () => {
                 <motion.div 
                   key={sol.title}
                   whileHover={{ y: -3 }}
-                  className="bg-zinc-900/40 border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl hover:border-emerald-500/25 transition-colors"
+                  className="bg-white border border-slate-200/60 rounded-2xl p-6 space-y-4 shadow-md hover:border-emerald-500/25 transition-colors text-slate-900"
                 >
-                  <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 w-fit">
+                  <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 w-fit">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-extrabold text-white text-base">{sol.title}</h3>
-                  <p className="text-xs text-slate-400 font-semibold leading-relaxed">{sol.desc}</p>
+                  <h3 className="font-extrabold text-slate-900 text-base">{sol.title}</h3>
+                  <p className="text-xs text-slate-500 font-semibold leading-relaxed">{sol.desc}</p>
                 </motion.div>
               );
             })}
@@ -143,11 +144,11 @@ export const Solutions = () => {
         </section>
 
         {/* SECTION: AI SOLUTIONS */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-white/5">
+        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
           <div className="mb-10 space-y-2">
-            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Cognitive Systems</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">AI Solutions</h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-semibold max-w-2xl">
+            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Cognitive Systems</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">AI Solutions</h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-semibold max-w-2xl">
               Integrate autonomous intelligence agents, document classification solvers, and predictive models into your business backend.
             </p>
           </div>
@@ -159,13 +160,13 @@ export const Solutions = () => {
                 <motion.div 
                   key={sol.title}
                   whileHover={{ y: -3 }}
-                  className="bg-zinc-900/40 border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl hover:border-emerald-500/25 transition-colors"
+                  className="bg-white border border-slate-200/60 rounded-2xl p-6 space-y-4 shadow-md hover:border-emerald-500/25 transition-colors text-slate-900"
                 >
-                  <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 w-fit">
+                  <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 w-fit">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-extrabold text-white text-base">{sol.title}</h3>
-                  <p className="text-xs text-slate-400 font-semibold leading-relaxed">{sol.desc}</p>
+                  <h3 className="font-extrabold text-slate-900 text-base">{sol.title}</h3>
+                  <p className="text-xs text-slate-500 font-semibold leading-relaxed">{sol.desc}</p>
                 </motion.div>
               );
             })}
@@ -173,11 +174,11 @@ export const Solutions = () => {
         </section>
 
         {/* SECTION: DIGITAL SOLUTIONS */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-white/5">
+        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
           <div className="mb-10 space-y-2">
-            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Infrastructure & Security</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Digital Solutions</h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-semibold max-w-2xl">
+            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Infrastructure & Security</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Digital Solutions</h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-semibold max-w-2xl">
               Establish secure API endpoints, redundant container networks, and encryption compliance protocols.
             </p>
           </div>
@@ -189,13 +190,13 @@ export const Solutions = () => {
                 <motion.div 
                   key={sol.title}
                   whileHover={{ y: -3 }}
-                  className="bg-zinc-900/40 border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl hover:border-emerald-500/25 transition-colors"
+                  className="bg-white border border-slate-200/60 rounded-2xl p-6 space-y-4 shadow-md hover:border-emerald-500/25 transition-colors text-slate-900"
                 >
-                  <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 w-fit">
+                  <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 w-fit">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-extrabold text-white text-base">{sol.title}</h3>
-                  <p className="text-xs text-slate-400 font-semibold leading-relaxed">{sol.desc}</p>
+                  <h3 className="font-extrabold text-slate-900 text-base">{sol.title}</h3>
+                  <p className="text-xs text-slate-500 font-semibold leading-relaxed">{sol.desc}</p>
                 </motion.div>
               );
             })}
@@ -203,15 +204,15 @@ export const Solutions = () => {
         </section>
 
         {/* TRUSTED BY CLIENT LOGOS SECTION */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-6 border-t border-white/5 mt-10 relative z-10 text-center space-y-6">
-          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Trusted by innovative companies worldwide</p>
+        <section className="container-custom max-w-7xl mx-auto px-6 py-6 border-t border-slate-200/80 mt-10 relative z-10 text-center space-y-6">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Trusted by innovative companies worldwide</p>
           <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-16 opacity-45">
-            <span className="text-sm font-bold tracking-wider hover:opacity-100 hover:text-emerald-400 transition-all cursor-default">Microsoft</span>
-            <span className="text-sm font-bold tracking-wider hover:opacity-100 hover:text-emerald-400 transition-all cursor-default">Google</span>
-            <span className="text-sm font-bold tracking-wider hover:opacity-100 hover:text-emerald-400 transition-all cursor-default">AWS</span>
-            <span className="text-sm font-bold tracking-wider hover:opacity-100 hover:text-emerald-400 transition-all cursor-default">Airbnb</span>
-            <span className="text-sm font-bold tracking-wider hover:opacity-100 hover:text-emerald-400 transition-all cursor-default">Intel</span>
-            <span className="text-sm font-bold tracking-wider hover:opacity-100 hover:text-emerald-400 transition-all cursor-default">Netflix</span>
+            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Microsoft</span>
+            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Google</span>
+            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">AWS</span>
+            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Airbnb</span>
+            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Intel</span>
+            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Netflix</span>
           </div>
         </section>
 
@@ -219,14 +220,14 @@ export const Solutions = () => {
         <section className="container-custom max-w-7xl mx-auto px-6 py-12">
           <motion.div 
             whileHover={{ y: -2 }}
-            className="rounded-3xl bg-gradient-to-br from-zinc-900 to-[#05070B] border border-white/10 p-8 sm:p-12 text-center relative overflow-hidden shadow-2xl"
+            className="rounded-3xl bg-gradient-to-br from-slate-100 to-white border border-slate-200/85 p-8 sm:p-12 text-center relative overflow-hidden shadow-md text-slate-900"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-600/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-600/5 rounded-full blur-2xl pointer-events-none" />
             
             <div className="max-w-2xl mx-auto relative z-10 space-y-6">
-              <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Ready to Deploy a Solution?</h3>
-              <p className="text-slate-400 font-semibold text-sm sm:text-base leading-relaxed">
+              <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Ready to Deploy a Solution?</h3>
+              <p className="text-slate-600 font-semibold text-sm sm:text-base leading-relaxed">
                 Connect with our engineering leads to outline timelines, compliance metrics, and technical requirements.
               </p>
               <div className="pt-2 flex flex-wrap justify-center gap-4">
@@ -236,7 +237,7 @@ export const Solutions = () => {
                   </Button>
                 </Link>
                 <Link to="/contact">
-                  <Button variant="outline" className="h-12 px-8 border-white/10 hover:bg-white/5 hover:text-white font-bold rounded-xl text-slate-300 text-sm">
+                  <Button variant="outline" className="h-12 px-8 border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-slate-700 text-sm">
                     Contact Us
                   </Button>
                 </Link>

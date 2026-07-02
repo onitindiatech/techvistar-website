@@ -26,7 +26,7 @@ const BrandLogos = {
     </svg>
   ),
   nextjs: (
-    <svg viewBox="0 0 180 180" className="w-7 h-7 fill-current text-white transition-transform duration-300">
+    <svg viewBox="0 0 180 180" className="w-7 h-7 fill-current text-slate-900 transition-transform duration-300">
       <mask id="next-mask"><circle cx="90" cy="90" r="90" fill="white"/></mask>
       <circle cx="90" cy="90" r="90" fill="black"/>
       <path d="M149.508 157.52L69.142 54H54v72h14.4v-46.043l71.183 91.24c3.957-3.92 7.575-8.243 10.772-12.893z" fill="white" mask="url(#next-mask)"/>
@@ -39,7 +39,7 @@ const BrandLogos = {
     </svg>
   ),
   python: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current text-[#ffde57] transition-transform duration-300">
+    <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current text-[#306998] transition-transform duration-300">
       <path d="M11.9 0A5.3 5.3 0 0 0 6.6 5.3v2H8.7V5.3a3.3 3.3 0 0 1 6.6 0v1.1h2.1V5.3A5.3 5.3 0 0 0 12.1 0h-.2zm-3.2 8.7a5.3 5.3 0 0 0-5.3 5.3v1.1h2.1v-1.1a3.3 3.3 0 0 1 6.6 0v2H12.3v-2a5.3 5.3 0 0 0-5.3-5.3h-.3zm11.9 0a5.3 5.3 0 0 0-5.3 5.3v1.1h2.1v-1.1a3.3 3.3 0 0 1 6.6 0v-5.3a5.3 5.3 0 0 0-5.3-5.3v2.1z" />
     </svg>
   ),
@@ -70,7 +70,7 @@ const BrandLogos = {
   ),
   openai: (
     <svg viewBox="0 0 24 24" className="w-7 h-7 fill-[#10a37f] transition-transform duration-300">
-      <path d="M22.5 12.5c0-.6-.2-1.1-.5-1.5.3-.4.5-1 .5-1.6 0-.7-.3-1.4-.8-1.8.2-.5.3-1 .2-1.6-.1-.7-.5-1.3-1.1-1.7-.3-.2-.7-.3-1.1-.3-.3-.4-.7-.7-1.2-.8-.7-.2-1.4-.1-2 .3-.4-.3-1-.5-1.6-.5s-1.2.2-1.6.5c-.6-.4-1.3-.5-2-.3-.5.1-.9.4-1.2.8-.4 0-.8.1-1.1.3-.6.4-1 1-1.1 1.7-.1.6 0 1.1.2 1.6-.5.4-.8 1.1-.8 1.8 0 .6.2 1.2.5 1.6-.3.4-.5 1-.5 1.5 0 .7.3 1.4.8 1.8-.2.5-.3 1-.2 1.6.1.7.5 1.3 1.1 1.7.3.2.7.3 1.1.3.3.4.7.7 1.2.8.7.2 1.4.1 2-.3.4.3 1 .5 1.6.5s1.2-.2 1.6-.5c.6.4 1.3.5 2 .3.5-.1.9-.4 1.2-.8.4 0 .8-.1 1.1-.3.6-.4 1-1 1.1-1.7.1-.6 0-1.1-.2-1.6.5-.4.8-1.1.8-1.8z" />
+      <path d="M22.5 12.5c0-.6-.2-1.1-.5-1.5.3-.4.5-1 .5-1.6 0-.7-.3-1.4-.8-1.8.2-.5.3-1 .2-1.6-.1-.7-.5-1.3-1.1-1.7-.3-.2-.7-.3-1.1-.3-.3-.4-.7-.7-1.2-.8-.7-.2-1.4-.1-2 .3-.4-.3-1-.5-1.6-.5s-1.2.2-1.6.5c-.6-.4-1.3-.5-2-.3-.5.1-.9.4-1.2.8-.4 0-.8.1-1.1.3-.6.4-1 1-1.1 1.7-.1.6 0 1.1.2 1.6-.5.4-.8 1.1-.8 1.8 0 .6.2 1.2.5 1.6-.3.4-.5 1-.5 1.5 0 .7.3 1.4.8 1.8-.2.5-.3 1-.2 1.6.1.7.5 1.3 1.1 1.7.3.2.7.3 1.1.3.3.4.7.7 1.2.8.7.2 1.4.1 2-.3.4.3 1 .5 1.6.5s1.2-.2 1.6-.5c.6.4 1.3.5 2 .3.5-.1.9-.4 1.2-.8.4 0-.8-.1 1.1-.3.6-.4 1-1 1.1-1.7.1-.6 0-1.1-.2-1.6.5-.4.8-1.1.8-1.8z" />
     </svg>
   ),
   flutter: (
@@ -88,46 +88,45 @@ const BrandLogos = {
 // Realistic Industry SVG Icons
 const IndustryIcons = {
   healthcare: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-400">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" className="hidden" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" />
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6M12 9v6" />
     </svg>
   ),
   finance: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-400">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 21V3m0 18a9 9 0 100-18 9 9 0 000 18zM8 8h8M8 12h8M8 16h8" />
     </svg>
   ),
   education: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-400">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0v7M6 18.8V12m12 6.8V12" />
     </svg>
   ),
   logistics: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-400">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM19.5 18.75a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
       <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3.75h3l1.5 9h10.5l2.25-6.75H6" />
     </svg>
   ),
   realestate: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-400">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
       <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5M4.5 21V6.75a2.25 2.25 0 012.25-2.25h10.5a2.25 2.25 0 012.25 2.25V21M7.5 7.5h1.5M7.5 12h1.5M7.5 16.5h1.5M15 7.5h1.5M15 12h1.5M15 16.5h1.5" />
     </svg>
   ),
   manufacturing: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-400">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
       <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
       <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
   ),
   retail: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-400">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
     </svg>
   ),
   government: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-400">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
     </svg>
   ),
@@ -220,17 +219,10 @@ export const Work = () => {
     { q: 'Do you offer ongoing production maintenance?', a: 'Yes. We provide structured SLA tiers covering server health checks, dependency upgrades, security patching, and scaling.' }
   ];
 
-  const scrollToForm = () => {
-    const element = document.getElementById('contact-form-section');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
-
   return (
     <>
-      {/* Unified Deep Black Base (#05070B) consistent with Home/About */}
-      <main id="main-content" className="min-h-screen bg-[#05070B] text-white animate-fade-in pb-16 relative">
+      {/* Light Theme Background matching About, Services, and Industries */}
+      <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 animate-fade-in pb-16 relative">
         <Navbar />
 
         {/* SECTION 1 — HERO */}
@@ -357,64 +349,64 @@ export const Work = () => {
         {featuredProject && (
           <section className="container-custom max-w-7xl mx-auto px-6 py-16">
             <div className="mb-8">
-              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Featured Case Study</span>
+              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Featured Case Study</span>
             </div>
             
             <motion.div 
               whileHover={{ y: -3 }}
-              className="bg-zinc-900/40 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl grid md:grid-cols-12 gap-8 items-center"
+              className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg grid md:grid-cols-12 gap-8 items-center text-slate-900"
             >
               {/* Left side: Project Image */}
-              <div className="md:col-span-6 h-72 sm:h-96 rounded-2xl overflow-hidden relative border border-white/5 bg-[#05070B] flex items-center justify-center">
+              <div className="md:col-span-6 h-72 sm:h-96 rounded-2xl overflow-hidden relative border border-slate-200/60 bg-slate-100 flex items-center justify-center">
                 <img 
                   src={featuredProject.thumbnail} 
                   alt={featuredProject.title} 
-                  className="w-full h-full object-cover opacity-85 hover:scale-103 transition-transform duration-500"
+                  className="w-full h-full object-cover opacity-95 hover:scale-103 transition-transform duration-500"
                 />
               </div>
 
               {/* Right side: Project Details */}
               <div className="md:col-span-6 space-y-6">
                 <div className="flex flex-wrap items-center gap-2.5">
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-[10px] font-bold uppercase tracking-wider">
                     {featuredProject.category}
                   </span>
-                  <span className="text-xs text-slate-500 font-semibold">
+                  <span className="text-xs text-slate-400 font-semibold">
                     {featuredProject.date.split('-')[0]}
                   </span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-white">
+                <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">
                   {featuredProject.title}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-slate-400 font-semibold leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed">
                   {featuredProject.description}
                 </p>
 
                 {/* Meta details list */}
-                <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-4">
+                <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-4">
                   <div>
-                    <span className="text-[10px] text-slate-500 font-bold uppercase block">Client Partner</span>
-                    <span className="text-xs text-white font-bold mt-1 block">{featuredProject.client}</span>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase block">Client Partner</span>
+                    <span className="text-xs text-slate-900 font-bold mt-1 block">{featuredProject.client}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 font-bold uppercase block">Our Role</span>
-                    <span className="text-xs text-white font-bold mt-1 block">{featuredProject.role}</span>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase block">Our Role</span>
+                    <span className="text-xs text-slate-900 font-bold mt-1 block">{featuredProject.role}</span>
                   </div>
                 </div>
 
                 {/* Tech Chips */}
                 <div className="flex flex-wrap gap-2 pt-2">
                   {featuredProject.technologies.map(tech => (
-                    <span key={tech} className="px-2 py-0.5 rounded bg-white/[0.04] border border-white/5 text-[10px] text-slate-300 font-semibold">
+                    <span key={tech} className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200/60 text-[10px] text-slate-600 font-semibold">
                       {tech}
                     </span>
                   ))}
                 </div>
 
                 {/* Buttons */}
-                <div className="flex flex-wrap gap-4 pt-4 border-t border-white/5">
+                <div className="flex flex-wrap gap-4 pt-4 border-t border-slate-100">
                   <Link to={`/work/${featuredProject.slug}`}>
                     <Button className="h-10 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-md">
                       <span>View Case Study</span>
@@ -422,7 +414,7 @@ export const Work = () => {
                     </Button>
                   </Link>
                   <a href={featuredProject.liveUrl} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" className="h-10 border-white/10 hover:bg-white/5 hover:text-white font-bold rounded-xl text-slate-300">
+                    <Button variant="outline" className="h-10 border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-slate-700">
                       <span>Live Demo</span>
                     </Button>
                   </a>
@@ -433,17 +425,17 @@ export const Work = () => {
         )}
 
         {/* SECTION 3 — PROJECT FILTERS */}
-        <section className="sticky top-20 z-40 bg-[#05070B]/80 backdrop-blur-md border-y border-white/5 py-4">
+        <section className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-y border-slate-200/80 py-4">
           <div className="container-custom max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Search Input */}
             <div className="relative w-full md:w-72">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <Input
                 type="text"
                 placeholder="Search case studies..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 h-11 bg-zinc-900 border-white/10 focus-visible:ring-emerald-500/20 text-white rounded-xl text-xs font-semibold"
+                className="pl-10 pr-4 h-11 bg-white border-slate-200 text-slate-900 rounded-xl text-xs font-semibold focus-visible:ring-emerald-500/20"
               />
             </div>
 
@@ -452,7 +444,7 @@ export const Work = () => {
               <select
                 value={selectedIndustry}
                 onChange={(e) => setSelectedIndustry(e.target.value)}
-                className="h-11 bg-zinc-900 border border-white/10 text-xs font-semibold rounded-xl px-4 text-slate-300 focus:outline-none"
+                className="h-11 bg-white border border-slate-200 text-xs font-semibold rounded-xl px-4 text-slate-700 focus:outline-none"
               >
                 <option value="">All Industries</option>
                 {industries.map(ind => <option key={ind} value={ind}>{ind}</option>)}
@@ -461,7 +453,7 @@ export const Work = () => {
               <select
                 value={selectedService}
                 onChange={(e) => setSelectedService(e.target.value)}
-                className="h-11 bg-zinc-900 border border-white/10 text-xs font-semibold rounded-xl px-4 text-slate-300 focus:outline-none"
+                className="h-11 bg-white border border-slate-200 text-xs font-semibold rounded-xl px-4 text-slate-700 focus:outline-none"
               >
                 <option value="">All Services</option>
                 {services.map(srv => <option key={srv} value={srv}>{srv}</option>)}
@@ -470,7 +462,7 @@ export const Work = () => {
               <select
                 value={selectedTechnology}
                 onChange={(e) => setSelectedTechnology(e.target.value)}
-                className="h-11 bg-zinc-900 border border-white/10 text-xs font-semibold rounded-xl px-4 text-slate-300 focus:outline-none"
+                className="h-11 bg-white border border-slate-200 text-xs font-semibold rounded-xl px-4 text-slate-700 focus:outline-none"
               >
                 <option value="">All Technologies</option>
                 {technologies.map(tech => <option key={tech} value={tech}>{tech}</option>)}
@@ -479,7 +471,7 @@ export const Work = () => {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="h-11 bg-zinc-900 border border-white/10 text-xs font-semibold rounded-xl px-4 text-slate-300 focus:outline-none"
+                className="h-11 bg-white border border-slate-200 text-xs font-semibold rounded-xl px-4 text-slate-700 focus:outline-none"
               >
                 <option value="">All Statuses</option>
                 {statuses.map(st => <option key={st} value={st}>{st}</option>)}
@@ -496,15 +488,15 @@ export const Work = () => {
                 <motion.div
                   key={project.id}
                   whileHover={{ y: -4 }}
-                  className="bg-zinc-900/60 border border-white/5 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between group"
+                  className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between group text-slate-900"
                 >
                   <div className="space-y-4">
                     {/* Cover image container */}
-                    <div className="h-48 overflow-hidden bg-[#05070B] relative border-b border-white/5">
+                    <div className="h-48 overflow-hidden bg-slate-100 relative border-b border-slate-100">
                       <img 
                         src={project.thumbnail} 
                         alt={project.title} 
-                        className="w-full h-full object-cover opacity-80 group-hover:scale-104 transition-transform duration-500"
+                        className="w-full h-full object-cover opacity-90 group-hover:scale-104 transition-transform duration-500"
                       />
                       <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-bold uppercase tracking-wider z-10 shadow-md">
                         {project.industry}
@@ -512,22 +504,22 @@ export const Work = () => {
                     </div>
 
                     <div className="p-5 space-y-3">
-                      <h4 className="text-base font-bold text-white group-hover:text-emerald-400 transition-colors">
+                      <h4 className="text-base font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
                         {project.title}
                       </h4>
-                      <p className="text-xs text-slate-400 font-semibold leading-relaxed line-clamp-3">
+                      <p className="text-xs text-slate-600 font-semibold leading-relaxed line-clamp-3">
                         {project.description}
                       </p>
 
                       {/* Tech Stack Pills */}
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {project.technologies.slice(0, 3).map(tech => (
-                          <span key={tech} className="px-2 py-0.5 rounded bg-white/[0.04] text-[9px] text-slate-400 font-semibold border border-white/5">
+                          <span key={tech} className="px-2 py-0.5 rounded bg-slate-50 text-[9px] text-slate-500 font-semibold border border-slate-100">
                             {tech}
                           </span>
                         ))}
                         {project.technologies.length > 3 && (
-                          <span className="text-[9px] text-slate-500 font-semibold self-center ml-1">
+                          <span className="text-[9px] text-slate-400 font-semibold self-center ml-1">
                             +{project.technologies.length - 3} more
                           </span>
                         )}
@@ -535,14 +527,14 @@ export const Work = () => {
                     </div>
                   </div>
 
-                  <div className="p-5 border-t border-white/5 flex gap-3">
+                  <div className="p-5 border-t border-slate-100 flex gap-3">
                     <Link to={`/work/${project.slug}`} className="flex-1">
                       <Button className="w-full h-9 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-all shadow-md">
                         View Project
                       </Button>
                     </Link>
                     <Link to={`/work/${project.slug}`}>
-                      <Button variant="outline" className="h-9 border-white/10 hover:bg-white/5 hover:text-white font-bold rounded-lg text-xs text-slate-300 px-3.5">
+                      <Button variant="outline" className="h-9 border-slate-200 hover:bg-slate-50 font-bold rounded-lg text-xs text-slate-600 px-3.5">
                         Case Study
                       </Button>
                     </Link>
@@ -551,33 +543,33 @@ export const Work = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 bg-zinc-900/40 border border-white/5 rounded-2xl max-w-md mx-auto px-6 shadow-sm">
-              <h3 className="text-base font-bold text-slate-300 mb-1">No case studies match.</h3>
-              <p className="text-slate-500 text-xs font-semibold">Try modifying your text search query or filter tags.</p>
+            <div className="text-center py-16 bg-white border border-slate-200/60 rounded-2xl max-w-md mx-auto px-6 shadow-sm">
+              <h3 className="text-base font-bold text-slate-700 mb-1">No case studies match.</h3>
+              <p className="text-slate-400 text-xs font-semibold">Try modifying your text search query or filter tags.</p>
             </div>
           )}
         </section>
 
         {/* SECTION 5 — CLIENT SUCCESS */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-white/5">
+        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Trusted by Businesses Across Industries</h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-semibold">Delivering high-performance architecture that drives product conversion.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Trusted by Businesses Across Industries</h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-semibold">Delivering high-performance architecture that drives product conversion.</p>
           </div>
 
           <div className="grid md:grid-cols-12 gap-8 items-stretch">
             <div className="md:col-span-8 space-y-6">
-              <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-6 shadow-xl space-y-4">
-                <div className="flex gap-1 text-emerald-400">
+              <div className="bg-white border border-slate-200/60 rounded-2xl p-6 shadow-md space-y-4">
+                <div className="flex gap-1 text-emerald-500">
                   <Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" />
                 </div>
-                <p className="text-slate-300 font-semibold text-sm sm:text-base leading-relaxed italic">
+                <p className="text-slate-700 font-semibold text-sm sm:text-base leading-relaxed italic">
                   "TechVistar delivered our route optimization system ahead of schedule. The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag."
                 </p>
-                <div className="border-t border-white/5 pt-4 flex items-center justify-between">
+                <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
                   <div>
-                    <h5 className="text-xs font-extrabold text-white">Chief of Operations</h5>
-                    <span className="text-[10px] text-slate-500 font-semibold">Logistics Fleet Management Company</span>
+                    <h5 className="text-xs font-extrabold text-slate-900">Chief of Operations</h5>
+                    <span className="text-[10px] text-slate-400 font-semibold">Logistics Fleet Management Company</span>
                   </div>
                 </div>
               </div>
@@ -585,9 +577,9 @@ export const Work = () => {
 
             <div className="md:col-span-4 grid grid-cols-2 gap-4">
               {successMetrics.map(met => (
-                <div key={met.label} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-5 flex flex-col justify-between shadow-xl">
-                  <h4 className="text-2xl sm:text-3xl font-extrabold text-emerald-500 leading-none">{met.val}</h4>
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-2 block leading-snug">{met.label}</span>
+                <div key={met.label} className="bg-white border border-slate-200/60 rounded-2xl p-5 flex flex-col justify-between shadow-md">
+                  <h4 className="text-2xl sm:text-3xl font-extrabold text-emerald-600 leading-none">{met.val}</h4>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2 block leading-snug">{met.label}</span>
                 </div>
               ))}
             </div>
@@ -595,31 +587,31 @@ export const Work = () => {
         </section>
 
         {/* SECTION 6 — DEVELOPMENT PROCESS */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-white/5">
+        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Development Process</h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-semibold">Our structural path from product constraints to production deployment.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Development Process</h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-semibold">Our structural path from product constraints to production deployment.</p>
           </div>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
             {processSteps.map((step, idx) => (
               <div 
                 key={step.title}
-                className="bg-zinc-900/60 border border-white/5 rounded-xl p-5 space-y-3 relative shadow-md"
+                className="bg-white border border-slate-200/60 rounded-xl p-5 space-y-3 relative shadow-sm"
               >
-                <span className="text-[10px] font-bold text-emerald-500/80">Step 0{idx + 1}</span>
-                <h4 className="font-extrabold text-white text-sm">{step.title}</h4>
-                <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">{step.desc}</p>
+                <span className="text-[10px] font-bold text-emerald-600">Step 0{idx + 1}</span>
+                <h4 className="font-extrabold text-slate-900 text-sm">{step.title}</h4>
+                <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* SECTION 7 — TECHNOLOGY STACK */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-white/5">
+        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Technology Stack</h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-semibold">Production-hardened libraries we leverage across architecture frameworks.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Technology Stack</h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-semibold">Production-hardened libraries we leverage across architecture frameworks.</p>
           </div>
 
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
@@ -633,26 +625,26 @@ export const Work = () => {
                   borderColor: 'rgba(16,185,129,0.3)'
                 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="bg-zinc-900/60 border border-white/5 rounded-xl p-5 flex flex-col items-center justify-center gap-3.5 shadow-md transition-colors cursor-pointer group/tech"
+                className="bg-white border border-slate-200/60 rounded-xl p-5 flex flex-col items-center justify-center gap-3.5 shadow-sm transition-colors cursor-pointer group/tech"
               >
                 {/* Brand Logo with hover rotation & enlargement */}
                 <motion.div 
-                  className="flex items-center justify-center p-2.5 rounded-xl bg-white/[0.02] border border-white/5 group-hover/tech:bg-emerald-500/10 group-hover/tech:border-emerald-500/20 group-hover/tech:scale-110 transition-all duration-300"
+                  className="flex items-center justify-center p-2.5 rounded-xl bg-slate-50 border border-slate-100 group-hover/tech:bg-emerald-500/10 group-hover/tech:border-emerald-500/20 group-hover/tech:scale-110 transition-all duration-300"
                   whileHover={{ rotate: 7 }}
                 >
                   {tech.logo}
                 </motion.div>
-                <span className="text-[11px] font-bold text-slate-300 group-hover/tech:text-emerald-400 transition-colors">{tech.name}</span>
+                <span className="text-[11px] font-bold text-slate-700 group-hover/tech:text-emerald-600 transition-colors">{tech.name}</span>
               </motion.div>
             ))}
           </div>
         </section>
 
         {/* SECTION 8 — INDUSTRIES */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-white/5">
+        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Industries We Serve</h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-semibold">Deploying tailored digital capabilities optimized for industry regulations.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Industries We Serve</h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-semibold">Deploying tailored digital capabilities optimized for industry regulations.</p>
           </div>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -666,29 +658,29 @@ export const Work = () => {
                   borderColor: 'rgba(16,185,129,0.3)'
                 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="bg-zinc-900/60 border border-white/5 rounded-2xl p-6 space-y-4 shadow-md cursor-pointer group/ind"
+                className="bg-white border border-slate-200/60 rounded-2xl p-6 space-y-4 shadow-sm cursor-pointer group/ind"
               >
                 {/* Realistic Icon with hover animation */}
                 <motion.div 
-                  className="p-3 rounded-xl bg-white/[0.02] border border-white/5 w-fit group-hover/ind:bg-emerald-500/10 group-hover/ind:border-emerald-500/20 group-hover/ind:scale-110 transition-all duration-300"
+                  className="p-3 rounded-xl bg-slate-50 border border-slate-100 w-fit group-hover/ind:bg-emerald-500/10 group-hover/ind:border-emerald-500/20 group-hover/ind:scale-110 transition-all duration-300"
                   whileHover={{ rotate: 7 }}
                 >
                   {ind.icon}
                 </motion.div>
-                <h4 className="font-extrabold text-white text-sm group-hover/ind:text-emerald-400 transition-colors">{ind.name}</h4>
-                <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">{ind.desc}</p>
+                <h4 className="font-extrabold text-slate-900 text-sm group-hover/ind:text-emerald-600 transition-colors">{ind.name}</h4>
+                <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">{ind.desc}</p>
               </motion.div>
             ))}
           </div>
         </section>
 
         {/* SECTION 9 — FAQ */}
-        <section className="container-custom max-w-4xl mx-auto px-6 py-16 border-t border-white/5">
+        <section className="container-custom max-w-4xl mx-auto px-6 py-16 border-t border-slate-200/80">
           <div className="text-center mb-10 space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Frequently Asked Questions</h2>
-            <p className="text-xs text-slate-400 font-semibold">Find quick answers regarding delivery timelines, support and ownership.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Frequently Asked Questions</h2>
+            <p className="text-xs text-slate-500 font-semibold">Find quick answers regarding delivery timelines, support and ownership.</p>
           </div>
-          <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div className="bg-white border border-slate-200/60 rounded-2xl p-6 sm:p-8 shadow-md">
             {faqList.map((faq) => (
               <FAQAccordion key={faq.q} question={faq.q} answer={faq.a} />
             ))}
@@ -699,14 +691,14 @@ export const Work = () => {
         <section className="container-custom max-w-7xl mx-auto px-6 py-12">
           <motion.div 
             whileHover={{ y: -2 }}
-            className="rounded-3xl bg-gradient-to-br from-zinc-900 to-[#05070B] border border-white/10 p-8 sm:p-12 text-center relative overflow-hidden shadow-2xl"
+            className="rounded-3xl bg-gradient-to-br from-slate-100 to-white border border-slate-200/85 p-8 sm:p-12 text-center relative overflow-hidden shadow-md text-slate-900"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-600/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-600/5 rounded-full blur-2xl pointer-events-none" />
             
             <div className="max-w-2xl mx-auto relative z-10 space-y-6">
-              <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Ready to Build Your Next Product?</h3>
-              <p className="text-slate-400 font-semibold text-sm sm:text-base leading-relaxed">
+              <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Ready to Build Your Next Product?</h3>
+              <p className="text-slate-600 font-semibold text-sm sm:text-base leading-relaxed">
                 Let's discuss your idea. Connect with our engineering leads to outline timelines, compliance metrics, and technical requirements.
               </p>
               <div className="pt-2 flex flex-wrap justify-center gap-4">
@@ -716,7 +708,7 @@ export const Work = () => {
                   </Button>
                 </Link>
                 <Link to="/contact">
-                  <Button variant="outline" className="h-12 px-8 border-white/10 hover:bg-white/5 hover:text-white font-bold rounded-xl text-slate-300 text-sm">
+                  <Button variant="outline" className="h-12 px-8 border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-slate-700 text-sm">
                     Contact Us
                   </Button>
                 </Link>
@@ -741,13 +733,13 @@ interface FAQAccordionProps {
 const FAQAccordion = ({ question, answer }: FAQAccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="border-b border-white/5 py-4 last:border-0">
+    <div className="border-b border-slate-100 py-4 last:border-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex justify-between items-center w-full text-left font-display font-extrabold text-base sm:text-lg text-white hover:text-emerald-400 transition-colors py-1"
+        className="flex justify-between items-center w-full text-left font-display font-extrabold text-base sm:text-lg text-slate-900 hover:text-emerald-600 transition-colors py-1"
       >
         <span>{question}</span>
-        <span className="text-emerald-500 font-normal text-xl ml-4">{isOpen ? "−" : "+"}</span>
+        <span className="text-emerald-600 font-normal text-xl ml-4">{isOpen ? "−" : "+"}</span>
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
@@ -758,7 +750,7 @@ const FAQAccordion = ({ question, answer }: FAQAccordionProps) => {
             transition={{ duration: 0.25, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <p className="text-slate-400 text-sm leading-relaxed mt-2.5 font-medium">{answer}</p>
+            <p className="text-slate-500 text-sm leading-relaxed mt-2.5 font-semibold">{answer}</p>
           </motion.div>
         )}
       </AnimatePresence>

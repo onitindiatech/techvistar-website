@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Mail, Phone, MapPin, Clock, ShieldCheck, Sparkles, 
@@ -146,7 +147,7 @@ export const Contact = () => {
     <>
       <Navbar />
       
-      <main id="main-content" className="min-h-screen bg-slate-950 text-white pt-28 pb-20 relative overflow-hidden">
+      <main id="main-content" className="min-h-screen bg-[#05070B] text-white pt-28 pb-20 relative overflow-hidden">
         {/* Subtle mesh background glows */}
         <div className="absolute top-0 inset-0 pointer-events-none overflow-hidden -z-10">
           <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-emerald-500/[0.03] blur-[120px]" />
@@ -282,7 +283,7 @@ export const Contact = () => {
 
             {/* Right Side: Form Container */}
             <div className="lg:col-span-7">
-              <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-6 sm:p-8 shadow-2xl relative">
+              <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-6 sm:p-8 shadow-2xl relative">
                 <div className="flex items-center gap-3 pb-4 mb-6 border-b border-white/5">
                   <Mail className="w-5.5 h-5.5 text-emerald-400" />
                   <div>
@@ -303,7 +304,7 @@ export const Contact = () => {
                         placeholder="Enter your full name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className="w-full h-11 bg-slate-950 border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors"
+                        className="w-full h-11 bg-[#05070B] border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -315,7 +316,7 @@ export const Contact = () => {
                         placeholder="Enter your work email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="w-full h-11 bg-slate-950 border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors"
+                        className="w-full h-11 bg-[#05070B] border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -330,7 +331,7 @@ export const Contact = () => {
                         placeholder="Your contact number"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        className="w-full h-11 bg-slate-950 border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors"
+                        className="w-full h-11 bg-[#05070B] border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -341,7 +342,7 @@ export const Contact = () => {
                         placeholder="Your company name"
                         value={formData.company}
                         onChange={(e) => handleInputChange('company', e.target.value)}
-                        className="w-full h-11 bg-slate-950 border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors"
+                        className="w-full h-11 bg-[#05070B] border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -353,7 +354,7 @@ export const Contact = () => {
                       id="inquiryType"
                       value={formData.inquiryType}
                       onChange={(e) => handleInputChange('inquiryType', e.target.value)}
-                      className="w-full h-11 bg-slate-950 border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white focus:outline-none transition-colors appearance-none"
+                      className="w-full h-11 bg-[#05070B] border border-white/10 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-semibold text-white focus:outline-none transition-colors appearance-none"
                     >
                       <option value="Web Development">Web Development</option>
                       <option value="Mobile Development">Mobile Development</option>
@@ -373,7 +374,7 @@ export const Contact = () => {
                       placeholder="Share your project details, goals, and requirements..."
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
-                      className="w-full bg-slate-950 border border-white/10 focus:border-emerald-500/60 rounded-xl p-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors resize-none"
+                      className="w-full bg-[#05070B] border border-white/10 focus:border-emerald-500/60 rounded-xl p-4 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none transition-colors resize-none"
                     />
                   </div>
 
@@ -394,7 +395,7 @@ export const Contact = () => {
 
         {/* HEADQUARTERS MAP & DIRECTIONS BANNER */}
         <section className="container-custom max-w-7xl mx-auto px-6 mb-20 relative z-10">
-          <div className="w-full rounded-2xl overflow-hidden border border-white/10 bg-slate-900/40 p-4 sm:p-6 shadow-2xl grid md:grid-cols-12 gap-6 items-center">
+          <div className="w-full rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/40 p-4 sm:p-6 shadow-2xl grid md:grid-cols-12 gap-6 items-center">
             
             {/* Grayscale OSM Map representation */}
             <div className="md:col-span-8 h-80 rounded-xl overflow-hidden relative border border-white/5">
@@ -440,7 +441,7 @@ export const Contact = () => {
             {/* Card 1: Noida */}
             <motion.div 
               whileHover={{ y: -3 }}
-              className="bg-slate-900/60 border border-white/5 rounded-2xl overflow-hidden shadow-xl"
+              className="bg-zinc-900/60 border border-white/5 rounded-2xl overflow-hidden shadow-xl"
             >
               <div className="h-44 w-full bg-emerald-950/20 border-b border-white/5 relative flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent z-10" />
@@ -471,7 +472,7 @@ export const Contact = () => {
             {/* Card 2: Dubai */}
             <motion.div 
               whileHover={{ y: -3 }}
-              className="bg-slate-900/60 border border-white/5 rounded-2xl overflow-hidden shadow-xl"
+              className="bg-zinc-900/60 border border-white/5 rounded-2xl overflow-hidden shadow-xl"
             >
               <div className="h-44 w-full bg-emerald-950/20 border-b border-white/5 relative flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent z-10" />
@@ -500,7 +501,7 @@ export const Contact = () => {
             {/* Card 3: USA */}
             <motion.div 
               whileHover={{ y: -3 }}
-              className="bg-slate-900/60 border border-white/5 rounded-2xl overflow-hidden shadow-xl"
+              className="bg-zinc-900/60 border border-white/5 rounded-2xl overflow-hidden shadow-xl"
             >
               <div className="h-44 w-full bg-emerald-950/20 border-b border-white/5 relative flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent z-10" />
@@ -531,7 +532,7 @@ export const Contact = () => {
 
         {/* PILLARS BAR SECTION */}
         <section className="container-custom max-w-7xl mx-auto px-6 mb-20 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-slate-900/40 border border-white/5 rounded-2xl p-6 shadow-sm">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-zinc-900/40 border border-white/5 rounded-2xl p-6 shadow-sm">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
                 <span className="p-1 rounded-md bg-emerald-500/10"><CheckCircle2 className="w-4 h-4" /></span>
@@ -574,7 +575,7 @@ export const Contact = () => {
                 <p className="text-xs text-slate-400 font-semibold mt-1">Get quick answers regarding scope, timeline, and support SLAs.</p>
               </div>
 
-              <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-6 shadow-xl">
+              <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-6 shadow-xl">
                 {faqs.map((faq) => (
                   <FAQAccordion key={faq.q} question={faq.q} answer={faq.a} />
                 ))}
@@ -595,7 +596,7 @@ export const Contact = () => {
 
             {/* Call Out Banner on Right */}
             <div className="lg:col-span-5 h-full">
-              <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-8 flex flex-col justify-between h-full relative overflow-hidden shadow-2xl">
+              <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-8 flex flex-col justify-between h-full relative overflow-hidden shadow-2xl">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none" />
                 
                 <div className="space-y-4">

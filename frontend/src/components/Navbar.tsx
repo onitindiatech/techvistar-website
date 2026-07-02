@@ -87,9 +87,9 @@ export const Navbar = () => {
   ];
 
   const bizSolutions = [
-    { label: 'Enterprise Software', to: '/work', icon: Building2, desc: 'Core business platforms.' },
-    { label: 'CRM Systems', to: '/work', icon: Target, desc: 'Customer insights & workflows.' },
-    { label: 'ERP Platforms', to: '/work', icon: Layers, desc: 'Integrated resource databases.' },
+    { label: 'Enterprise Software', to: '/solutions', icon: Building2, desc: 'Core business platforms.' },
+    { label: 'CRM Systems', to: '/solutions', icon: Target, desc: 'Customer insights & workflows.' },
+    { label: 'ERP Platforms', to: '/solutions', icon: Layers, desc: 'Integrated resource databases.' },
     { label: 'Business Automation', to: '/services/ai-automation', icon: Repeat, desc: 'Operations orchestrators.' },
   ];
 
@@ -623,7 +623,7 @@ export const Navbar = () => {
                 </div>
 
                 <Link 
-                  to="/work" 
+                  to="/solutions" 
                   onClick={() => setActiveDropdown(null)}
                   className="inline-flex items-center justify-center gap-2 mt-4 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition-all text-center group-hover/featured:scale-102 active:scale-98"
                 >
@@ -649,7 +649,7 @@ export const Navbar = () => {
               <div className="space-y-2">
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-[15px] font-bold text-slate-800 border-b border-slate-100">Home</Link>
                 <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-[15px] font-bold text-slate-800 border-b border-slate-100">Services</Link>
-                <Link to="/work" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-[15px] font-bold text-slate-800 border-b border-slate-100">Solutions</Link>
+                <Link to="/solutions" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-[15px] font-bold text-slate-800 border-b border-slate-100">Solutions</Link>
                 <Link to="/industries" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-[15px] font-bold text-slate-800 border-b border-slate-100">Industries</Link>
                 <Link to="/work" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-[15px] font-bold text-slate-800 border-b border-slate-100">Portfolio</Link>
                 <Link to="/careers" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-[15px] font-bold text-slate-800 border-b border-slate-100">Careers</Link>

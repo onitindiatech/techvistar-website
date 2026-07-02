@@ -68,22 +68,22 @@ export const Navbar = () => {
   const devServices = [
     { label: 'Web Development', to: '/services/web-development', icon: Code2, desc: 'Scalable web applications.' },
     { label: 'Mobile Development', to: '/services/mobile-app-development', icon: Smartphone, desc: 'iOS & Android design.' },
-    { label: 'Custom Software', to: '/services/ai-automation', icon: Cpu, desc: 'Tailored enterprise code.' },
-    { label: 'SaaS Platforms', to: '/services/cloud-devops', icon: Cloud, desc: 'Multi-tenant applications.' },
+    { label: 'Custom Software', to: '/services/custom-software-development', icon: Cpu, desc: 'Tailored enterprise code.' },
+    { label: 'SaaS Platforms', to: '/services/saas-platforms', icon: Cloud, desc: 'Multi-tenant applications.' },
   ];
 
   const designServices = [
-    { label: 'UI/UX', to: '/services/brand-creative-design', icon: Palette, desc: 'User-centric products.' },
+    { label: 'UI/UX', to: '/services/ui-ux-design', icon: Palette, desc: 'User-centric products.' },
     { label: 'Branding', to: '/services/brand-creative-design', icon: Sparkles, desc: 'Unified visual identity.' },
-    { label: 'Product Design', to: '/services/brand-creative-design', icon: Target, desc: 'Prototyping & validation.' },
+    { label: 'Product Design', to: '/services/product-design', icon: Target, desc: 'Prototyping & validation.' },
     { label: 'Creative Design', to: '/services/brand-creative-design', icon: Layers, desc: 'Visual assets & illustrations.' },
   ];
 
   const cloudServices = [
-    { label: 'Cloud', to: '/services/cloud-devops', icon: Cloud, desc: 'Secure cloud hosting & migrations.' },
-    { label: 'DevOps', to: '/services/cloud-devops', icon: Settings, desc: 'Automation of CI/CD pipelines.' },
-    { label: 'AI', to: '/services/ai-automation', icon: Brain, desc: 'Cognitive models & AI agents.' },
-    { label: 'Automation', to: '/services/ai-automation', icon: Repeat, desc: 'RPA & workflow optimizers.' },
+    { label: 'Cloud', to: '/services/cloud', icon: Cloud, desc: 'Secure cloud hosting & migrations.' },
+    { label: 'DevOps', to: '/services/devops', icon: Settings, desc: 'Automation of CI/CD pipelines.' },
+    { label: 'AI', to: '/services/ai', icon: Brain, desc: 'Cognitive models & AI agents.' },
+    { label: 'Automation', to: '/services/automation', icon: Repeat, desc: 'RPA & workflow optimizers.' },
   ];
 
   const bizSolutions = [
@@ -485,7 +485,7 @@ export const Navbar = () => {
                 </div>
 
                 <Link 
-                  to="/services" 
+                  to="/services/enterprise-ai-integration" 
                   onClick={() => setActiveDropdown(null)}
                   className="inline-flex items-center justify-center gap-2 mt-4 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition-all text-center group-hover/featured:scale-102 active:scale-98"
                 >

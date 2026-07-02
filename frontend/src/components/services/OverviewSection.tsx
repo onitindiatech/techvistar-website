@@ -6,6 +6,12 @@ import '../ui/GlassIcons.css';
 import aiOverviewIllustration from '../../assets/ai_overview_illustration.png';
 import mobilityDashboard from '../../assets/mobility_routing_dashboard.png';
 import sustainabilityDashboard from '../../assets/sustainability_dashboard.png';
+import aiTranslator from '../../assets/ai_translator.png';
+import aiTranslatorBatches from '../../assets/ai_translator_batches.png';
+import clinicalRiskScoring from '../../assets/clinical_risk_scoring.png';
+import cropHealthAnalysis from '../../assets/crop_health_analysis.png';
+import sentimentNlpDashboard from '../../assets/sentiment_nlp_dashboard.png';
+import resumeReviewAssistant from '../../assets/resume_review_assistant.png';
 
 interface SectionProps {
   service: Service;
@@ -13,19 +19,26 @@ interface SectionProps {
 
 export const OverviewSection = ({ service }: SectionProps) => {
   const IconComponent = service.icon || Brain;
-  const isAiService = service.slug === 'ai-automation';
 
-  // Dynamically map high-fidelity project images based on the service slug
+  // Dynamically map high-fidelity project images based on the service data
   const getDashboardImage = () => {
-    switch (service.slug) {
-      case 'ai-automation':
-        return aiOverviewIllustration;
-      case 'custom-software-development':
-      case 'custom-software':
-        return mobilityDashboard;
-      default:
-        return sustainabilityDashboard;
+    if (!service.dashboardImage) {
+      return sustainabilityDashboard;
     }
+    
+    const mapping: Record<string, string> = {
+      ai_overview_illustration: aiOverviewIllustration,
+      mobility_routing_dashboard: mobilityDashboard,
+      sustainability_dashboard: sustainabilityDashboard,
+      ai_translator: aiTranslator,
+      ai_translator_batches: aiTranslatorBatches,
+      clinical_risk_scoring: clinicalRiskScoring,
+      crop_health_analysis: cropHealthAnalysis,
+      sentiment_nlp_dashboard: sentimentNlpDashboard,
+      resume_review_assistant: resumeReviewAssistant
+    };
+
+    return mapping[service.dashboardImage] || sustainabilityDashboard;
   };
 
   return (
@@ -52,7 +65,7 @@ export const OverviewSection = ({ service }: SectionProps) => {
               <span className="icon-btn__back" style={{ background: 'linear-gradient(hsl(123, 90%, 40%), hsl(108, 90%, 40%))' }}></span>
               <span className="icon-btn__front">
                 <span className="icon-btn__icon">
-                  {isAiService ? <Brain className="w-6 h-6 text-white" /> : <IconComponent className="w-6 h-6 text-white" />}
+                  <IconComponent className="w-6 h-6 text-white" />
                 </span>
               </span>
             </div>

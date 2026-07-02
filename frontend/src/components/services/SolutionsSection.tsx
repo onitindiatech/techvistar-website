@@ -1,19 +1,16 @@
 import { Service } from '@/data/services';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Sparkles, Check } from 'lucide-react';
+import { 
+  ArrowRight, Sparkles, Check, Globe, Smartphone, Palette, Cpu, Cloud, 
+  PenTool, Megaphone, Terminal, MessageSquare, Bot, Repeat, Database, 
+  UserCheck, Settings, Code2, Target, Layers, Shield, Wrench, Search, 
+  Layout, FileText, CheckCircle, Brain, LayoutTemplate, Network, FileSearch
+} from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import '../ui/GlassIcons.css';
 
 interface SectionProps {
   service: Service;
-}
-
-interface DetailedOffering {
-  title: string;
-  description: string;
-  badges: string[];
-  illustration: React.ReactNode;
-  color: string;
 }
 
 const gradientMapping: Record<string, string> = {
@@ -25,99 +22,45 @@ const gradientMapping: Record<string, string> = {
   green: 'linear-gradient(hsl(123, 90%, 40%), hsl(108, 90%, 40%))'
 };
 
+const getIconElement = (iconName: string) => {
+  const icons: Record<string, React.ReactNode> = {
+    globe: <Globe className="w-6 h-6 text-white" />,
+    smartphone: <Smartphone className="w-6 h-6 text-white" />,
+    palette: <Palette className="w-6 h-6 text-white" />,
+    cpu: <Cpu className="w-6 h-6 text-white" />,
+    cloud: <Cloud className="w-6 h-6 text-white" />,
+    pentool: <PenTool className="w-6 h-6 text-white" />,
+    megaphone: <Megaphone className="w-6 h-6 text-white" />,
+    terminal: <Terminal className="w-6 h-6 text-white" />,
+    message: <MessageSquare className="w-6 h-6 text-white" />,
+    bot: <Bot className="w-6 h-6 text-white" />,
+    repeat: <Repeat className="w-6 h-6 text-white" />,
+    sparkles: <Sparkles className="w-6 h-6 text-white" />,
+    database: <Database className="w-6 h-6 text-white" />,
+    usercheck: <UserCheck className="w-6 h-6 text-white" />,
+    settings: <Settings className="w-6 h-6 text-white" />,
+    code: <Code2 className="w-6 h-6 text-white" />,
+    target: <Target className="w-6 h-6 text-white" />,
+    layers: <Layers className="w-6 h-6 text-white" />,
+    shield: <Shield className="w-6 h-6 text-white" />,
+    wrench: <Wrench className="w-6 h-6 text-white" />,
+    search: <Search className="w-6 h-6 text-white" />,
+    layout: <Layout className="w-6 h-6 text-white" />,
+    filetext: <FileText className="w-6 h-6 text-white" />,
+    checkcircle: <CheckCircle className="w-6 h-6 text-white" />,
+    brain: <Brain className="w-6 h-6 text-white" />,
+    layouttemplate: <LayoutTemplate className="w-6 h-6 text-white" />,
+    network: <Network className="w-6 h-6 text-white" />,
+    filesearch: <FileSearch className="w-6 h-6 text-white" />
+  };
+  return icons[iconName.toLowerCase()] || <Sparkles className="w-6 h-6 text-white" />;
+};
+
 export const SolutionsSection = ({ service }: SectionProps) => {
   const prefersReducedMotion = useReducedMotion();
 
-  // Custom data specifically for the AI & Automation page with color themes
-  const aiOfferings: DetailedOffering[] = [
-    {
-      title: 'AI Chatbots',
-      description: 'Intelligent conversational assistants powered by LLMs for automated customer service.',
-      badges: ['GPT-4', 'WhatsApp', 'Website'],
-      color: 'green',
-      illustration: (
-        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-        </svg>
-      )
-    },
-    {
-      title: 'AI Agents',
-      description: 'Autonomous agents that plan and execute multi-step workflows with external tools.',
-      badges: ['LangChain', 'CrewAI', 'Python'],
-      color: 'blue',
-      illustration: (
-        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="11" width="18" height="10" rx="2" />
-          <circle cx="12" cy="5" r="3" />
-          <path d="M12 8v3M9 16h6" strokeLinecap="round" />
-        </svg>
-      )
-    },
-    {
-      title: 'Workflow Automation',
-      description: 'Connect internal apps to automate data entries, syncs, and notification schedules.',
-      badges: ['n8n', 'Make', 'REST APIs'],
-      color: 'purple',
-      illustration: (
-        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="5" r="2.5" />
-          <circle cx="6" cy="15" r="2.5" />
-          <circle cx="18" cy="15" r="2.5" />
-          <path d="M12 7.5v5m0 0L7.75 14M12 12.5l4.25 1.5" strokeLinecap="round" />
-        </svg>
-      )
-    },
-    {
-      title: 'LLM Integration',
-      description: 'Wire state-of-the-art language models directly into your business services database.',
-      badges: ['OpenAI', 'Claude', 'Llama 3'],
-      color: 'orange',
-      illustration: (
-        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l.707.707m2.808 13.066l.233-1.296M16.657 6.343l-.707-.707" />
-        </svg>
-      )
-    },
-    {
-      title: 'RAG Systems',
-      description: 'Implement Retrieval-Augmented Generation to restrict LLMs to your secure documentation.',
-      badges: ['Pinecone', 'Pgvector', 'PDFs'],
-      color: 'red',
-      illustration: (
-        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17h6M9 13h6M9 9h6" strokeLinecap="round" />
-          <line x1="3" y1="10" x2="21" y2="10" />
-        </svg>
-      )
-    },
-    {
-      title: 'AI Assistants',
-      description: 'Custom integrated tools that run contextually inside slack, browsers or local software.',
-      badges: ['Copilot', 'Chrome Ext', 'Slack'],
-      color: 'indigo',
-      illustration: (
-        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M9.813 15.904L9 21l5.426-3.305L20 21V9a2 2 0 00-2-2h-8" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M11.5 5.5l1.5-1.5 1.5 1.5M13 4v4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )
-    },
-    {
-      title: 'Custom AI Solutions',
-      description: 'Completely customized models, data pipelines, and private servers configured for operations.',
-      badges: ['PyTorch', 'AWS GPU', 'Custom API'],
-      color: 'green',
-      illustration: (
-        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0h1.5m-9-9v-1.5m0 16.5V18m-6-6l-1.05-1.05m14.1 14.1l-1.05-1.05m0-12l1.05-1.05M5.55 18.45l1.05-1.05" />
-        </svg>
-      )
-    }
-  ];
-
-  const isAiService = service.slug === 'ai-automation';
+  const offeringsData = service.detailedOfferings || [];
+  const hasDetailedOfferings = offeringsData.length > 0;
 
   // Animation variants
   const containerVariants = {
@@ -174,7 +117,7 @@ export const SolutionsSection = ({ service }: SectionProps) => {
         <h2 className="text-xl font-bold text-slate-900 font-display">Offerings</h2>
       </div>
 
-      {isAiService ? (
+      {hasDetailedOfferings ? (
         /* Premium redesigned offerings grid */
         <motion.div
           variants={containerVariants}
@@ -183,7 +126,7 @@ export const SolutionsSection = ({ service }: SectionProps) => {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10"
         >
-          {aiOfferings.map((offering, idx) => (
+          {offeringsData.map((offering, idx) => (
             <motion.div
               key={idx}
               variants={cardVariants}
@@ -199,7 +142,7 @@ export const SolutionsSection = ({ service }: SectionProps) => {
                     <span className="icon-btn__back" style={getBackgroundStyle(offering.color)}></span>
                     <span className="icon-btn__front">
                       <span className="icon-btn__icon">
-                        {offering.illustration}
+                        {getIconElement(offering.iconName)}
                       </span>
                     </span>
                   </div>

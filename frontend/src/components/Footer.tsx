@@ -50,7 +50,14 @@ export const Footer = () => {
     <footer className="relative overflow-hidden bg-[#05070B] border-t border-zinc-900 text-slate-400 py-16 md:py-24 select-none">
       
       {/* Background DotGrid Animation */}
-      <DotGrid baseColor="#1B1F24" activeColor="#18C37E" opacity={0.35} />
+      <DotGrid 
+        dotSize={5} 
+        gap={15} 
+        baseColor="#2F293A" 
+        activeColor="#306035" 
+        proximity={120} 
+        opacity={0.35} 
+      />
 
       {/* Subtle emerald radial glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none -z-10" />

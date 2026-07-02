@@ -77,7 +77,7 @@ const ServiceDetails = () => {
         <ServiceSectionNavigation />
 
         {/* Dynamic Detail Modules Content Area */}
-        <section className="container mx-auto px-4 max-w-5xl mt-8">
+        <section className="container mx-auto px-4 max-w-6xl mt-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* Left/Main Column for Detail Blocks */}

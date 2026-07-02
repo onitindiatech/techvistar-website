@@ -94,7 +94,7 @@ export const ServiceSectionNavigation = () => {
 
   return (
     <nav className="sticky top-12 sm:top-14 md:top-[4.25rem] z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm w-full transition-all duration-300">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto px-4 max-w-6xl">
         <div 
           ref={scrollContainerRef}
           className="flex overflow-x-auto scrollbar-none items-center py-3 gap-6 md:gap-8 whitespace-nowrap scroll-smooth"

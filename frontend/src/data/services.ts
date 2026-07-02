@@ -23,6 +23,13 @@ import serviceBranding from '../assets/brand_and_creative_design.png';
 import serviceDigitalMarketing from '../assets/digital_marketing.png';
 import serviceCustomSoftware from '../assets/custom_software_devlopment.png';
 
+export interface ServiceStat {
+  value: string;
+  label: string;
+  iconType: 'rocket' | 'clock' | 'dollar' | 'chart' | 'shield' | 'star';
+  colorTheme: 'green' | 'purple' | 'gold' | 'blue';
+}
+
 export interface Service {
   id: string;
   slug: string;
@@ -46,6 +53,7 @@ export interface Service {
   status: 'active' | 'draft';
   industries?: string[];
   whyChooseUs?: { title: string; description: string }[];
+  stats?: readonly ServiceStat[];
 }
 
 export const SERVICES: readonly Service[] = [
@@ -98,6 +106,12 @@ export const SERVICES: readonly Service[] = [
     whyChooseUs: [
       { title: 'Speed & SEO First', description: 'We optimize every website to score 90+ on Lighthouse/PageSpeed metrics.' },
       { title: 'Clean Architecture', description: 'Our custom React systems are modular, easy to maintain, and completely editable.' }
+    ],
+    stats: [
+      { value: '90+', label: 'Lighthouse Speed', iconType: 'rocket', colorTheme: 'green' },
+      { value: '50%', label: 'Bounce Reduction', iconType: 'clock', colorTheme: 'purple' },
+      { value: '2.5x', label: 'Conversion Boost', iconType: 'chart', colorTheme: 'gold' },
+      { value: '100%', label: 'Responsive Build', iconType: 'shield', colorTheme: 'blue' }
     ]
   },
   {
@@ -144,6 +158,12 @@ export const SERVICES: readonly Service[] = [
     whyChooseUs: [
       { title: 'Native-Grade Performance', description: 'Our React Native and Flutter systems are optimized to consume minimal battery and memory.' },
       { title: 'Offline-First Capabilities', description: 'We build local storage syncing so users can use the app seamlessly in remote areas.' }
+    ],
+    stats: [
+      { value: '60fps', label: 'Fluid Animation', iconType: 'rocket', colorTheme: 'green' },
+      { value: '4.8★', label: 'Average Rating', iconType: 'star', colorTheme: 'purple' },
+      { value: '50%', label: 'Faster Delivery', iconType: 'clock', colorTheme: 'gold' },
+      { value: '100%', label: 'Offline Syncing', iconType: 'shield', colorTheme: 'blue' }
     ]
   },
   {
@@ -191,6 +211,12 @@ export const SERVICES: readonly Service[] = [
     whyChooseUs: [
       { title: 'Research-Based Design', description: 'Every visual layout we produce is backed by user testing and concrete design conventions.' },
       { title: 'Scalable Systems', description: 'We construct organized Figma design systems that developers can translate into code 2x faster.' }
+    ],
+    stats: [
+      { value: '40%+', label: 'Engagement Lift', iconType: 'rocket', colorTheme: 'green' },
+      { value: '3x', label: 'Hand-off Speed', iconType: 'clock', colorTheme: 'purple' },
+      { value: '100%', label: 'Component Reuse', iconType: 'chart', colorTheme: 'gold' },
+      { value: '0', label: 'UI Inconsistencies', iconType: 'shield', colorTheme: 'blue' }
     ]
   },
   {
@@ -227,7 +253,8 @@ export const SERVICES: readonly Service[] = [
     benefits: [
       'Substantial reduction in manual administrative support ticket volume',
       'Faster data processing and automated entry times',
-      'Secure, localized data containment meeting audit needs'
+      'Secure, localized data containment meeting audit needs',
+      'Custom AI guardrails for accuracy and cost control'
     ],
     cta: 'Automate Your Core Operations',
     featured: true,
@@ -237,6 +264,12 @@ export const SERVICES: readonly Service[] = [
     whyChooseUs: [
       { title: 'Governance & Guardrails', description: 'We enforce safety parameters so the models strictly use only your data.' },
       { title: 'Cost Optimization', description: 'We optimize prompt tokens and select lighter models to minimize running fees.' }
+    ],
+    stats: [
+      { value: '70%+', label: 'Efficiency Increase', iconType: 'rocket', colorTheme: 'green' },
+      { value: '60%', label: 'Time Saved', iconType: 'clock', colorTheme: 'purple' },
+      { value: '40%', label: 'Cost Reduction', iconType: 'dollar', colorTheme: 'gold' },
+      { value: '98%', label: 'Accuracy Improvement', iconType: 'chart', colorTheme: 'blue' }
     ]
   },
   {

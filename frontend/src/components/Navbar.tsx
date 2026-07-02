@@ -37,6 +37,7 @@ export const Navbar = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -46,6 +47,23 @@ export const Navbar = () => {
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleMouseEnter = (menu: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setActiveDropdown(menu);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 200);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -108,7 +126,6 @@ export const Navbar = () => {
     return location.pathname.startsWith(path);
   };
 
-  // Megamenu services configuration
   const devServices = [
     { label: 'Web Development', to: '/services/web-development', icon: Code2, desc: 'Scalable web applications.' },
     { label: 'Mobile Development', to: '/services/mobile-app-development', icon: Smartphone, desc: 'iOS & Android design.' },
@@ -139,11 +156,11 @@ export const Navbar = () => {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 sm:h-22 flex items-center',
           isScrolled 
-            ? 'bg-white/90 backdrop-blur-md shadow-md shadow-slate-100/40 border-b border-slate-200/50' 
+            ? 'bg-white/90 backdrop-blur-md shadow-md shadow-slate-100/45 border-b border-slate-200/50' 
             : 'bg-white border-b border-slate-100'
         )}
       >
-        <div className="container-custom w-full max-w-7xl mx-auto flex items-center justify-between px-6 relative" ref={dropdownRef}>
+        <div className="container-custom w-full max-w-7xl mx-auto flex items-center justify-between px-6 relative h-full" ref={dropdownRef}>
           {/* Logo Branding */}
           <Link to="/" className="flex items-center gap-3 group shrink-0">
             <img
@@ -157,7 +174,7 @@ export const Navbar = () => {
           </Link>
 
           {/* Centered Navigation */}
-          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-3">
+          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-3 h-full">
             {/* Home */}
             <Link
               to="/"
@@ -170,161 +187,33 @@ export const Navbar = () => {
             </Link>
 
             {/* Services (Megamenu Dropdown Trigger) */}
-            <div className="relative">
+            <div 
+              className="h-full flex items-center"
+              onMouseEnter={() => handleMouseEnter('services')}
+              onMouseLeave={handleMouseLeave}
+            >
               <button
-                onMouseEnter={() => setActiveDropdown('services')}
                 onClick={() => setActiveDropdown(activeDropdown === 'services' ? null : 'services')}
                 className={cn(
-                  'flex items-center gap-1 text-[15px] font-semibold transition-all px-4 py-2.5 rounded-lg hover:bg-slate-50 tracking-wide',
+                  'flex items-center gap-1 text-[15px] font-semibold transition-all px-4 py-2.5 rounded-lg hover:bg-slate-50 tracking-wide h-11',
                   activeDropdown === 'services' || isLinkActive('/services') ? 'text-emerald-600 bg-emerald-50/40' : 'text-slate-800 hover:text-emerald-600'
                 )}
               >
                 <span>Services</span>
                 <ChevronDown className={cn('w-4 h-4 transition-transform duration-300', activeDropdown === 'services' && 'rotate-180')} />
               </button>
-
-              <AnimatePresence>
-                {activeDropdown === 'services' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 15 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                    className="absolute left-1/2 -translate-x-1/2 mt-4 w-[1000px] bg-white/95 backdrop-blur-md border border-slate-200/60 rounded-3xl shadow-2xl p-8 z-50 grid grid-cols-12 gap-8 text-left"
-                  >
-                    <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-t-3xl" />
-                    
-                    {/* Column 1: Development Services */}
-                    <div className="col-span-3 space-y-5">
-                      <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2 px-2">Development Services</h4>
-                      <div className="space-y-1">
-                        {devServices.map((srv) => {
-                          const IconComp = srv.icon;
-                          return (
-                            <Link
-                              key={srv.label}
-                              to={srv.to}
-                              onClick={() => setActiveDropdown(null)}
-                              className="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-200 hover:-translate-y-0.5"
-                            >
-                              <span className="p-2 rounded-lg bg-emerald-50 text-emerald-600 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-colors mt-0.5 shrink-0">
-                                <IconComp className="w-4 h-4" />
-                              </span>
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm font-bold text-slate-800 group-hover/item:text-emerald-600 transition-colors leading-none">{srv.label}</span>
-                                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all" />
-                                </div>
-                                <p className="text-[11px] text-slate-400 font-medium mt-1 leading-normal">{srv.desc}</p>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Column 2: Design Services */}
-                    <div className="col-span-3 space-y-5">
-                      <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2 px-2">Design Services</h4>
-                      <div className="space-y-1">
-                        {designServices.map((srv) => {
-                          const IconComp = srv.icon;
-                          return (
-                            <Link
-                              key={srv.label}
-                              to={srv.to}
-                              onClick={() => setActiveDropdown(null)}
-                              className="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-200 hover:-translate-y-0.5"
-                            >
-                              <span className="p-2 rounded-lg bg-emerald-50 text-emerald-600 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-colors mt-0.5 shrink-0">
-                                <IconComp className="w-4 h-4" />
-                              </span>
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm font-bold text-slate-800 group-hover/item:text-emerald-600 transition-colors leading-none">{srv.label}</span>
-                                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all" />
-                                </div>
-                                <p className="text-[11px] text-slate-400 font-medium mt-1 leading-normal">{srv.desc}</p>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Column 3: Cloud & AI */}
-                    <div className="col-span-3 space-y-5">
-                      <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2 px-2">Cloud & AI</h4>
-                      <div className="space-y-1">
-                        {cloudServices.map((srv) => {
-                          const IconComp = srv.icon;
-                          return (
-                            <Link
-                              key={srv.label}
-                              to={srv.to}
-                              onClick={() => setActiveDropdown(null)}
-                              className="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-200 hover:-translate-y-0.5"
-                            >
-                              <span className="p-2 rounded-lg bg-emerald-50 text-emerald-600 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-colors mt-0.5 shrink-0">
-                                <IconComp className="w-4 h-4" />
-                              </span>
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm font-bold text-slate-800 group-hover/item:text-emerald-600 transition-colors leading-none">{srv.label}</span>
-                                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all" />
-                                </div>
-                                <p className="text-[11px] text-slate-400 font-medium mt-1 leading-normal">{srv.desc}</p>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Column 4: Featured Service Card */}
-                    <div className="col-span-3 bg-gradient-to-br from-slate-900 to-zinc-950 text-white rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden group/featured shadow-lg">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none" />
-                      
-                      <div className="space-y-3 relative z-10">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Featured Service</span>
-                        
-                        {/* Illustration Container */}
-                        <div className="w-full h-24 rounded-lg bg-emerald-950/40 border border-emerald-900/30 flex items-center justify-center mb-1 overflow-hidden relative">
-                          <svg className="w-16 h-16 text-emerald-400" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="25" y="25" width="50" height="50" rx="8" stroke="currentColor" strokeWidth="2.5" strokeDasharray="4 4" className="animate-spin" style={{ transformOrigin: 'center', animationDuration: '20s' }} />
-                            <circle cx="50" cy="50" r="14" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="2" />
-                            <path d="M50 42V58M42 50H58" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                          </svg>
-                        </div>
-                        
-                        <h5 className="text-sm font-extrabold font-display">Enterprise AI Integration</h5>
-                        <p className="text-[11px] text-slate-400 font-semibold leading-relaxed">
-                          Automate business intelligence processes and integrate responsive LLM agents into your workflow.
-                        </p>
-                      </div>
-
-                      <Link 
-                        to="/services" 
-                        onClick={() => setActiveDropdown(null)}
-                        className="inline-flex items-center justify-center gap-2 mt-4 px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-500 transition-all text-center"
-                      >
-                        <span>Explore Services</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover/featured:translate-x-0.5 transition-transform" />
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
 
             {/* Solutions (Dropdown Trigger) */}
-            <div className="relative">
+            <div 
+              className="h-full flex items-center relative"
+              onMouseEnter={() => handleMouseEnter('solutions')}
+              onMouseLeave={handleMouseLeave}
+            >
               <button
-                onMouseEnter={() => setActiveDropdown('solutions')}
                 onClick={() => setActiveDropdown(activeDropdown === 'solutions' ? null : 'solutions')}
                 className={cn(
-                  'flex items-center gap-1 text-[15px] font-semibold transition-all px-4 py-2.5 rounded-lg hover:bg-slate-50 tracking-wide',
+                  'flex items-center gap-1 text-[15px] font-semibold transition-all px-4 py-2.5 rounded-lg hover:bg-slate-50 tracking-wide h-11',
                   activeDropdown === 'solutions' ? 'text-emerald-600 bg-emerald-50/40' : 'text-slate-800 hover:text-emerald-600'
                 )}
               >
@@ -335,19 +224,17 @@ export const Navbar = () => {
               <AnimatePresence>
                 {activeDropdown === 'solutions' && (
                   <motion.div
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2 }}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                    className="absolute left-1/2 -translate-x-1/2 mt-3 w-72 bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50"
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-0 w-72 bg-white border border-slate-200/60 rounded-xl shadow-xl p-3 z-50 text-left"
                   >
-                    <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
-                    <div className="space-y-1">
+                    <div className="space-y-0.5">
                       <Link
                         to="/work"
                         onClick={() => setActiveDropdown(null)}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 text-sm font-semibold text-slate-800 hover:text-emerald-600 transition-colors"
+                        className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-50 text-sm font-semibold text-slate-800 hover:text-emerald-600 transition-colors"
                       >
                         <FolderGit2 className="w-4.5 h-4.5 text-emerald-600" />
                         <span>Case Studies</span>
@@ -355,7 +242,7 @@ export const Navbar = () => {
                       <Link
                         to="/work?featured=true"
                         onClick={() => setActiveDropdown(null)}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 text-sm font-semibold text-slate-800 hover:text-emerald-600 transition-colors"
+                        className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-50 text-sm font-semibold text-slate-800 hover:text-emerald-600 transition-colors"
                       >
                         <Briefcase className="w-4.5 h-4.5 text-emerald-600" />
                         <span>Featured Projects</span>
@@ -363,7 +250,7 @@ export const Navbar = () => {
                       <Link
                         to="/industries"
                         onClick={() => setActiveDropdown(null)}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 text-sm font-semibold text-slate-800 hover:text-emerald-600 transition-colors"
+                        className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-50 text-sm font-semibold text-slate-800 hover:text-emerald-600 transition-colors"
                       >
                         <Building2 className="w-4.5 h-4.5 text-emerald-600" />
                         <span>Industries</span>
@@ -440,6 +327,140 @@ export const Navbar = () => {
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
+
+          {/* Services Megamenu dropdown aligned flush to the container bottom */}
+          <AnimatePresence>
+            {activeDropdown === 'services' && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.22, ease: 'easeOut' }}
+                onMouseEnter={() => handleMouseEnter('services')}
+                onMouseLeave={handleMouseLeave}
+                className="absolute left-6 right-6 top-full mt-0 bg-white/95 backdrop-blur-md border border-slate-200/60 rounded-2xl shadow-xl shadow-slate-200/25 p-7 z-50 grid grid-cols-12 gap-6 text-left"
+              >
+                {/* Column 1: Development Services */}
+                <div className="col-span-3 space-y-4">
+                  <h4 className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-1 px-3">Development Services</h4>
+                  <div className="space-y-0.5">
+                    {devServices.map((srv) => {
+                      const IconComp = srv.icon;
+                      return (
+                        <Link
+                          key={srv.label}
+                          to={srv.to}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group/item flex items-start gap-3.5 py-3 px-3 rounded-xl hover:bg-emerald-500/[0.03] transition-all duration-200 hover:-translate-y-0.5"
+                        >
+                          <span className="p-2 rounded-lg bg-slate-50 text-slate-500 group-hover/item:bg-emerald-100 group-hover/item:text-emerald-700 transition-all duration-300 mt-0.5 shrink-0">
+                            <IconComp className="w-4 h-4 group-hover/item:scale-110 transition-transform" />
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-bold text-slate-800 group-hover/item:text-emerald-700 transition-colors leading-none">{srv.label}</span>
+                              <ArrowRight className="w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all" />
+                            </div>
+                            <p className="text-[11px] text-slate-400 font-medium mt-1 leading-normal">{srv.desc}</p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Column 2: Design Services */}
+                <div className="col-span-3 space-y-4">
+                  <h4 className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-1 px-3">Design Services</h4>
+                  <div className="space-y-0.5">
+                    {designServices.map((srv) => {
+                      const IconComp = srv.icon;
+                      return (
+                        <Link
+                          key={srv.label}
+                          to={srv.to}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group/item flex items-start gap-3.5 py-3 px-3 rounded-xl hover:bg-emerald-500/[0.03] transition-all duration-200 hover:-translate-y-0.5"
+                        >
+                          <span className="p-2 rounded-lg bg-slate-50 text-slate-500 group-hover/item:bg-emerald-100 group-hover/item:text-emerald-700 transition-all duration-300 mt-0.5 shrink-0">
+                            <IconComp className="w-4 h-4 group-hover/item:scale-110 transition-transform" />
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-bold text-slate-800 group-hover/item:text-emerald-700 transition-colors leading-none">{srv.label}</span>
+                              <ArrowRight className="w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all" />
+                            </div>
+                            <p className="text-[11px] text-slate-400 font-medium mt-1 leading-normal">{srv.desc}</p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Column 3: Cloud & AI */}
+                <div className="col-span-3 space-y-4">
+                  <h4 className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-1 px-3">Cloud & AI</h4>
+                  <div className="space-y-0.5">
+                    {cloudServices.map((srv) => {
+                      const IconComp = srv.icon;
+                      return (
+                        <Link
+                          key={srv.label}
+                          to={srv.to}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group/item flex items-start gap-3.5 py-3 px-3 rounded-xl hover:bg-emerald-500/[0.03] transition-all duration-200 hover:-translate-y-0.5"
+                        >
+                          <span className="p-2 rounded-lg bg-slate-50 text-slate-500 group-hover/item:bg-emerald-100 group-hover/item:text-emerald-700 transition-all duration-300 mt-0.5 shrink-0">
+                            <IconComp className="w-4 h-4 group-hover/item:scale-110 transition-transform" />
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-bold text-slate-800 group-hover/item:text-emerald-700 transition-colors leading-none">{srv.label}</span>
+                              <ArrowRight className="w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all" />
+                            </div>
+                            <p className="text-[11px] text-slate-400 font-medium mt-1 leading-normal">{srv.desc}</p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Column 4: Featured Service Card */}
+                <div className="col-span-3 bg-gradient-to-br from-slate-900 to-zinc-950 text-white rounded-xl p-5 flex flex-col justify-between h-full relative overflow-hidden group/featured shadow-md border border-slate-850">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none" />
+                  
+                  <div className="space-y-3.5 relative z-10">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Featured Service</span>
+                    
+                    {/* Illustration Container */}
+                    <div className="w-full h-24 rounded-lg bg-emerald-950/40 border border-emerald-900/30 flex items-center justify-center overflow-hidden relative">
+                      <svg className="w-14 h-14 text-emerald-400" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="25" y="25" width="50" height="50" rx="8" stroke="currentColor" strokeWidth="2.5" strokeDasharray="4 4" className="animate-spin" style={{ transformOrigin: 'center', animationDuration: '20s' }} />
+                        <circle cx="50" cy="50" r="14" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="2" />
+                        <path d="M50 42V58M42 50H58" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                    </div>
+                    
+                    <h5 className="text-sm font-extrabold font-display">Enterprise AI Integration</h5>
+                    <p className="text-[11px] text-slate-400 font-semibold leading-relaxed">
+                      Automate business intelligence processes and integrate responsive LLM agents into your workflow.
+                    </p>
+                  </div>
+
+                  <Link 
+                    to="/services" 
+                    onClick={() => setActiveDropdown(null)}
+                    className="inline-flex items-center justify-center gap-2 mt-4 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition-all text-center group-hover/featured:scale-102 active:scale-98"
+                  >
+                    <span>Explore Services</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/featured:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Mobile menu panel */}

@@ -1,6 +1,6 @@
 import { 
   Building2, Brain, Sparkles, Cloud, Target, 
-  Layers, Code2, Cpu, Repeat, Settings, FolderGit2, Shield 
+  Layers, Code2, Cpu, Repeat, Settings, FolderGit2, Shield, Clock
 } from 'lucide-react';
 
 export interface SolutionDetail {

@@ -77,11 +77,11 @@ export const CaseStudiesSection = ({ service }: SectionProps) => {
               className="group/card flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100/80 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.12)] transition-all duration-300 overflow-hidden h-full"
             >
               <div>
-              <div className="relative h-44 overflow-hidden bg-transparent border-b border-slate-100/50">
+              <div className="relative h-44 overflow-hidden bg-white border-b border-slate-100/50 flex items-center justify-center">
                 <img 
                   src={project.thumbnail} 
                   alt={project.title} 
-                  className="w-full h-full object-contain p-3 transition-transform duration-500 group-hover/card:scale-105 mix-blend-multiply contrast-115 brightness-102" 
+                  className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover/card:scale-103" 
                 />
                 {/* Status Overlay */}
                 <Badge variant="outline" className="absolute top-3 right-3 text-[9px] border-emerald-500/20 text-emerald-700 bg-emerald-50/90 backdrop-blur-sm px-2 py-0.5 rounded-md shadow-sm">

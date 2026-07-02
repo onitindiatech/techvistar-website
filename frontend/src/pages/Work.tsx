@@ -492,11 +492,11 @@ export const Work = () => {
                 >
                   <div className="space-y-4">
                     {/* Cover image container */}
-                    <div className="h-48 overflow-hidden bg-slate-100 relative border-b border-slate-100">
+                    <div className="h-48 overflow-hidden bg-white relative border-b border-slate-100">
                       <img 
                         src={project.thumbnail} 
                         alt={project.title} 
-                        className="w-full h-full object-cover opacity-90 group-hover:scale-104 transition-transform duration-500"
+                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-102"
                       />
                       <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-bold uppercase tracking-wider z-10 shadow-md">
                         {project.industry}

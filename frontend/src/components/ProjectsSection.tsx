@@ -121,7 +121,7 @@ export const ProjectsSection = () => {
                           <img
                             src={project.thumbnail}
                             alt={project.title}
-                            className="h-full w-full object-cover transition-transform duration-750 ease-out transform-gpu group-hover:scale-105"
+                            className="h-full w-full object-contain p-4 bg-white transition-transform duration-750 ease-out transform-gpu group-hover:scale-102"
                             loading="lazy"
                           />
                         </Link>

@@ -96,24 +96,24 @@ export const Navbar = () => {
   ];
 
   const bizSolutions = [
-    { label: 'Enterprise Software', to: '/solutions', icon: Building2, desc: 'Core business platforms.' },
-    { label: 'CRM Systems', to: '/solutions', icon: Target, desc: 'Customer insights & workflows.' },
-    { label: 'ERP Platforms', to: '/solutions', icon: Layers, desc: 'Integrated resource databases.' },
-    { label: 'Business Automation', to: '/services/ai-automation', icon: Repeat, desc: 'Operations orchestrators.' },
+    { label: 'Enterprise Software', to: '/solutions/enterprise-software', icon: Building2, desc: 'Core business platforms.' },
+    { label: 'CRM Systems', to: '/solutions/crm-systems', icon: Target, desc: 'Customer insights & workflows.' },
+    { label: 'ERP Platforms', to: '/solutions/erp-platforms', icon: Layers, desc: 'Integrated resource databases.' },
+    { label: 'Business Automation', to: '/solutions/business-automation', icon: Repeat, desc: 'Operations orchestrators.' },
   ];
 
   const aiSolutions = [
-    { label: 'AI Chatbots', to: '/services/ai-automation', icon: Brain, desc: 'Conversational support agents.' },
-    { label: 'AI Agents', to: '/services/ai-automation', icon: Cpu, desc: 'Autonomous task executors.' },
-    { label: 'Generative AI', to: '/services/ai-automation', icon: Sparkles, desc: 'Model fine-tuning services.' },
-    { label: 'Document Intelligence', to: '/services/ai-automation', icon: FolderGit2, desc: 'Automated OCR & extraction.' },
+    { label: 'AI Chatbots', to: '/solutions/ai-chatbots', icon: Brain, desc: 'Conversational support agents.' },
+    { label: 'AI Agents', to: '/solutions/ai-agents', icon: Cpu, desc: 'Autonomous task executors.' },
+    { label: 'Generative AI', to: '/solutions/generative-ai', icon: Sparkles, desc: 'Model fine-tuning services.' },
+    { label: 'Document Intelligence', to: '/solutions/document-intelligence', icon: FolderGit2, desc: 'Automated OCR & extraction.' },
   ];
 
   const digSolutions = [
-    { label: 'Cloud Migration', to: '/services/cloud-devops', icon: Cloud, desc: 'Infrastructure hosting structures.' },
-    { label: 'API Integration', to: '/services/cloud-devops', icon: Code2, desc: 'Third-party unified API systems.' },
-    { label: 'Data Analytics', to: '/services/cloud-devops', icon: Settings, desc: 'Visual intelligence dashboards.' },
-    { label: 'Cyber Security', to: '/services/cloud-devops', icon: Shield, desc: 'Threat detection & lock-downs.' },
+    { label: 'Cloud Migration', to: '/solutions/cloud-migration', icon: Cloud, desc: 'Infrastructure hosting structures.' },
+    { label: 'API Integration', to: '/solutions/api-integration', icon: Code2, desc: 'Third-party unified API systems.' },
+    { label: 'Data Analytics', to: '/solutions/data-analytics', icon: Settings, desc: 'Visual intelligence dashboards.' },
+    { label: 'Cyber Security', to: '/solutions/cyber-security', icon: Shield, desc: 'Threat detection & lock-downs.' },
   ];
 
   // Framer Motion variants for stagger entry

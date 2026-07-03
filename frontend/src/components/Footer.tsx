@@ -73,51 +73,55 @@ export const Footer = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8"
         >
           {/* Column 1: Left Premium Contact Card */}
-          <motion.div variants={itemFadeUp} className="lg:col-span-4 space-y-6">
+          <motion.div variants={itemFadeUp} className="lg:col-span-4 md:col-span-2 space-y-6">
             <Link to="/" className="inline-flex items-center gap-3">
               <img src={logo} alt="TechVistar" className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-500/10" />
               <span className="text-xl font-bold font-display text-white tracking-tight">TechVistar</span>
             </Link>
             
-            <p className="text-xs sm:text-sm leading-relaxed text-slate-400 font-semibold max-w-sm">
+            <p className="text-xs sm:text-sm leading-relaxed text-slate-200 font-bold max-w-sm">
               Deploying enterprise software architecture, cognitive AI models, and secure cloud infrastructures engineered for scalable conversions.
             </p>
 
             {/* Info details with subtle hover glow */}
-            <div className="space-y-3.5 border-t border-white/5 pt-5 text-xs sm:text-sm font-semibold">
+            <div className="space-y-3.5 border-t border-white/5 pt-5 text-xs sm:text-sm font-bold">
               <div className="flex items-center gap-3 group/info">
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover/info:bg-emerald-500/20 transition-all duration-300">
                   <Phone className="w-4 h-4" />
                 </div>
-                <a href="tel:+918800000000" className="hover:text-emerald-400 transition-colors">+91 88000 00000</a>
+                <a href="tel:+918800000000" className="text-slate-200 hover:text-emerald-400 transition-colors font-bold">+91 88000 00000</a>
               </div>
               <div className="flex items-center gap-3 group/info">
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover/info:bg-emerald-500/20 transition-all duration-300">
                   <Mail className="w-4 h-4" />
                 </div>
-                <a href="mailto:hello@techvistar.com" className="hover:text-emerald-400 transition-colors">hello@techvistar.com</a>
+                <a href="mailto:hello@techvistar.com" className="text-slate-200 hover:text-emerald-400 transition-colors font-bold">hello@techvistar.com</a>
               </div>
               <div className="flex items-start gap-3 group/info">
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover/info:bg-emerald-500/20 transition-all duration-300 mt-0.5">
                   <MapPin className="w-4 h-4" />
                 </div>
-                <span className="text-slate-400 leading-relaxed">A-75, Sector 4, Noida, UP 201301</span>
+                <span className="text-slate-200 leading-relaxed font-bold">A-75, Sector 4, Noida, UP 201301</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
                   <Clock className="w-4 h-4" />
                 </div>
-                <span className="text-slate-500">Mon - Fri: 9:00 AM - 6:00 PM</span>
+                <span className="text-slate-400 font-bold">Mon - Fri: 9:00 AM - 6:00 PM</span>
               </div>
             </div>
 
-            {/* Google Rating Section */}
-            <motion.div 
-              whileHover={{ y: -2 }}
-              className="inline-flex items-center gap-3.5 bg-white/[0.02] border border-white/5 rounded-xl p-3.5 shadow-md hover:border-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.08)] transition-all duration-300 cursor-default"
+            {/* Google Rating Section - Themed Button */}
+            <motion.a 
+              href="https://google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -3, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-flex items-center gap-3.5 bg-emerald-950/20 hover:bg-emerald-900/40 border border-emerald-500/20 hover:border-emerald-500/50 rounded-xl p-3 px-4 shadow-[0_0_15px_rgba(16,185,129,0.03)] hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-300 cursor-pointer"
             >
               {/* Google G icon */}
-              <div className="h-7 w-7 rounded-full bg-white flex items-center justify-center shadow-sm">
+              <div className="h-7 w-7 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
                 <svg viewBox="0 0 24 24" className="w-4 h-4">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                   <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -131,16 +135,16 @@ export const Footer = () => {
                 </div>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="text-white text-xs font-bold">4.9 / 5</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Trusted by businesses</span>
+                  <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Trusted by businesses</span>
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           </motion.div>
 
           {/* Column 2: Services List */}
-          <motion.div variants={itemFadeUp} className="lg:col-span-2 space-y-5">
+          <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-5">
             <h4 className="font-extrabold font-display text-white text-xs uppercase tracking-widest border-b border-white/5 pb-2">Services</h4>
-            <ul className="space-y-3 font-semibold text-xs sm:text-sm">
+            <ul className="space-y-3 font-bold text-xs sm:text-sm">
               {[
                 { label: 'Web Development', href: '/services' },
                 { label: 'Mobile Apps', href: '/services' },
@@ -154,7 +158,7 @@ export const Footer = () => {
                 <li key={link.label}>
                   <Link 
                     to={link.href}
-                    className="hover:text-emerald-400 transition-colors inline-flex items-center gap-1.5 group/lnk"
+                    className="text-slate-300 hover:text-emerald-400 transition-colors inline-flex items-center gap-1.5 group/lnk"
                   >
                     <span>{link.label}</span>
                     <ArrowRight className="w-3 h-3 text-emerald-400 opacity-0 group-hover/lnk:opacity-100 group-hover/lnk:translate-x-1 transition-all duration-300" />
@@ -165,9 +169,9 @@ export const Footer = () => {
           </motion.div>
 
           {/* Column 3: Industries Serve List */}
-          <motion.div variants={itemFadeUp} className="lg:col-span-2 space-y-5">
+          <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-5">
             <h4 className="font-extrabold font-display text-white text-xs uppercase tracking-widest border-b border-white/5 pb-2">Industries</h4>
-            <ul className="space-y-3 font-semibold text-xs sm:text-sm">
+            <ul className="space-y-3 font-bold text-xs sm:text-sm">
               {[
                 { label: 'Healthcare', href: '/industries' },
                 { label: 'Finance & Banking', href: '/industries' },
@@ -181,7 +185,7 @@ export const Footer = () => {
                 <li key={link.label}>
                   <Link 
                     to={link.href}
-                    className="hover:text-emerald-400 transition-colors inline-flex items-center gap-1.5 group/lnk"
+                    className="text-slate-300 hover:text-emerald-400 transition-colors inline-flex items-center gap-1.5 group/lnk"
                   >
                     <span>{link.label}</span>
                     <ArrowRight className="w-3 h-3 text-emerald-400 opacity-0 group-hover/lnk:opacity-100 group-hover/lnk:translate-x-1 transition-all duration-300" />
@@ -192,9 +196,9 @@ export const Footer = () => {
           </motion.div>
 
           {/* Column 4: Company Links */}
-          <motion.div variants={itemFadeUp} className="lg:col-span-2 space-y-5">
+          <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-5">
             <h4 className="font-extrabold font-display text-white text-xs uppercase tracking-widest border-b border-white/5 pb-2">Company</h4>
-            <ul className="space-y-3 font-semibold text-xs sm:text-sm">
+            <ul className="space-y-3 font-bold text-xs sm:text-sm">
               {[
                 { label: 'About Us', href: '/about' },
                 { label: 'Our Portfolio', href: '/work' },
@@ -209,7 +213,7 @@ export const Footer = () => {
                 <li key={link.label}>
                   <Link 
                     to={link.href}
-                    className="hover:text-emerald-400 transition-colors inline-flex items-center gap-1.5 group/lnk"
+                    className="text-slate-300 hover:text-emerald-400 transition-colors inline-flex items-center gap-1.5 group/lnk"
                   >
                     <span>{link.label}</span>
                     <ArrowRight className="w-3 h-3 text-emerald-400 opacity-0 group-hover/lnk:opacity-100 group-hover/lnk:translate-x-1 transition-all duration-300" />
@@ -220,12 +224,12 @@ export const Footer = () => {
           </motion.div>
 
           {/* Column 5: Premium Newsletter Card */}
-          <motion.div variants={itemFadeUp} className="lg:col-span-2 space-y-5">
+          <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-5">
             <h4 className="font-extrabold font-display text-white text-xs uppercase tracking-widest border-b border-white/5 pb-2">Newsletter</h4>
             
             <div className="space-y-3">
               <h5 className="text-white text-xs font-bold leading-snug">Stay updated with TechVistar</h5>
-              <p className="text-[11px] text-slate-500 font-semibold leading-relaxed">
+              <p className="text-[11px] text-slate-300 font-semibold leading-relaxed">
                 Get product updates, technology insights, and engineering articles.
               </p>
             </div>

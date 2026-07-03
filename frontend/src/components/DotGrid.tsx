@@ -189,6 +189,17 @@ export const DotGrid = ({
     const onMove = (e: MouseEvent) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const isInside = e.clientX >= rect.left && e.clientX <= rect.right &&
+                       e.clientY >= rect.top && e.clientY <= rect.bottom;
+
+      if (!isInside) {
+        // Move pointer far away so dots return to their base state when mouse leaves the footer
+        pointerRef.current.x = -1000;
+        pointerRef.current.y = -1000;
+        return;
+      }
       
       const now = performance.now();
       const pr = pointerRef.current;
@@ -211,7 +222,6 @@ export const DotGrid = ({
       pr.vy = vy;
       pr.speed = speed;
 
-      const rect = canvas.getBoundingClientRect();
       pr.x = e.clientX - rect.left;
       pr.y = e.clientY - rect.top;
 
@@ -249,6 +259,11 @@ export const DotGrid = ({
       if (!canvas) return;
       
       const rect = canvas.getBoundingClientRect();
+      const isInside = e.clientX >= rect.left && e.clientX <= rect.right &&
+                       e.clientY >= rect.top && e.clientY <= rect.bottom;
+
+      if (!isInside) return;
+
       const cx = e.clientX - rect.left;
       const cy = e.clientY - rect.top;
       for (const dot of dotsRef.current) {
@@ -281,18 +296,13 @@ export const DotGrid = ({
 
     const throttledMove = throttle(onMove, 30);
     
-    // Attach event listeners to the wrapper to restrict mouse reaction specifically to the footer bounds
-    const wrapper = wrapperRef.current;
-    if (wrapper) {
-      wrapper.addEventListener('mousemove', throttledMove, { passive: true });
-      wrapper.addEventListener('click', onClick);
-    }
+    // Attach event listeners to the window so we track movement even when mouse is over overlapping z-index elements
+    window.addEventListener('mousemove', throttledMove, { passive: true });
+    window.addEventListener('click', onClick);
 
     return () => {
-      if (wrapper) {
-        wrapper.removeEventListener('mousemove', throttledMove);
-        wrapper.removeEventListener('click', onClick);
-      }
+      window.removeEventListener('mousemove', throttledMove);
+      window.removeEventListener('click', onClick);
     };
   }, [maxSpeed, speedTrigger, proximity, returnDuration, shockRadius, shockStrength]);
 

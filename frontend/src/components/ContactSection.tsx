@@ -36,21 +36,34 @@ export const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      const params = new URLSearchParams();
-      params.append('category', formData.category);
-      params.append('name', formData.name);
-      params.append('email', formData.email);
-      params.append('phone', formData.phone);
-      params.append('message', formData.message);
+      const serviceMapping: Record<string, string> = {
+        'web': 'web-development',
+        'mobile': 'mobile-development',
+        'design': 'ui-ux',
+        'ai': 'other',
+        'software': 'other',
+        'devops': 'other',
+        'other': 'other'
+      };
+
+      const serviceInterested = serviceMapping[formData.category] || 'other';
 
       const response = await fetch(
-        CONTACT_FORM.actionUrl,
+        'http://localhost:5000/api/contact',
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
           },
-          body: params.toString(),
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company: '', // Default to empty if not collected in this form
+            serviceInterested,
+            message: formData.message,
+            budget: ''
+          }),
         }
       );
 
@@ -61,12 +74,17 @@ export const ContactSection = () => {
         });
         setFormData(initialFormData);
       } else {
-        throw new Error('Failed to send message');
+        const errorData = await response.json().catch(() => ({}));
+        const description = errorData.errors && Array.isArray(errorData.errors)
+          ? errorData.errors.map((err: any) => err.message).join(', ')
+          : errorData.message || 'Please check your inputs and try again.';
+
+        throw new Error(description);
       }
-    } catch {
+    } catch (err: any) {
       toast({
         title: CONTACT_FORM.toasts.error.title,
-        description: CONTACT_FORM.toasts.error.description,
+        description: err.message || CONTACT_FORM.toasts.error.description,
         variant: 'destructive',
       });
     } finally {

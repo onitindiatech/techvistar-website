@@ -111,7 +111,7 @@ export const ABOUT_PAGE = {
 } as const;
 
 export const NAVBAR_REGISTER_FORM = {
-  actionUrl: 'https://script.google.com/macros/s/AKfycbyVFalUML0Mnb-S2RuoCA68d5422p5MvMWF_id4Uw-MIQyiH5PxiglxPGdHDV47QJ22/exec',
+  actionUrl: '',
   headerButtonText: 'Register now',
   dialog: {
     title: 'Register now',

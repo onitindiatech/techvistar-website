@@ -36,7 +36,7 @@ export const CONTACT_SIDEBAR = {
 } as const;
 
 export const CONTACT_FORM = {
-  actionUrl: 'https://script.google.com/macros/s/AKfycbyVFalUML0Mnb-S2RuoCA68d5422p5MvMWF_id4Uw-MIQyiH5PxiglxPGdHDV47QJ22/exec',
+  actionUrl: 'http://localhost:5000/api/contact',
   fields: {
     name: {
       label: 'Full name',

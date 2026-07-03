@@ -19,6 +19,7 @@
 import { Router, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import healthRouter from './health.routes';
+import contactRouter from './contact.routes';
 import { RATE_LIMIT } from '@/constants';
 
 const router = Router();
@@ -42,6 +43,7 @@ router.use(globalRateLimiter);
 
 // ─── Route mounts ─────────────────────────────────────────────────────────────
 router.use('/health', healthRouter);
+router.use('/contact', contactRouter);
 
 // ─── API root info ─────────────────────────────────────────────────────────────
 // GET /api → Basic API info (not a real endpoint, just useful for developers)

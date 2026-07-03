@@ -27,7 +27,7 @@ export const FOOTER_LINKS = {
 } as const;
 
 export const FOOTER_NEWSLETTER = {
-  actionUrl: 'https://script.google.com/macros/s/AKfycbxBjqGscTRlKH9XHiT022xxGJ4BKYRj9p3c0aiKP30mj_11ZVRExsQfL114Y7DOVwwE/exec',
+  actionUrl: '',
   title: 'Updates',
   description: 'Occasional notes on product delivery and tech tips.',
   placeholder: 'Email address',

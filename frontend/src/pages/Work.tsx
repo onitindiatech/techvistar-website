@@ -7,12 +7,12 @@ import { Footer } from '@/components/Footer';
 import { TechStackSection } from '@/components/TechStackSection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { 
-  Briefcase, Cpu, Layers, Search, 
-  ArrowRight, Sparkles, Star, Clock 
+  Search, ArrowRight, Sparkles, Star, Briefcase, Building2, Smile, Award
 } from 'lucide-react';
 import workBg from '../assets/work-bg.png';
+import portfolioLaptopImg from '../assets/portfolio_laptop_mockup.jpg';
+import TextType from '@/components/ui/TextType';
 
 // High Quality Brand SVG Logos
 const BrandLogos = {
@@ -86,53 +86,6 @@ const BrandLogos = {
   ),
 };
 
-// Realistic Industry SVG Icons
-const IndustryIcons = {
-  healthcare: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6M12 9v6" />
-    </svg>
-  ),
-  finance: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21V3m0 18a9 9 0 100-18 9 9 0 000 18zM8 8h8M8 12h8M8 16h8" />
-    </svg>
-  ),
-  education: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0v7M6 18.8V12m12 6.8V12" />
-    </svg>
-  ),
-  logistics: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM19.5 18.75a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3.75h3l1.5 9h10.5l2.25-6.75H6" />
-    </svg>
-  ),
-  realestate: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5M4.5 21V6.75a2.25 2.25 0 012.25-2.25h10.5a2.25 2.25 0 012.25 2.25V21M7.5 7.5h1.5M7.5 12h1.5M7.5 16.5h1.5M15 7.5h1.5M15 12h1.5M15 16.5h1.5" />
-    </svg>
-  ),
-  manufacturing: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  ),
-  retail: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-    </svg>
-  ),
-  government: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="w-6 h-6 text-emerald-600">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-    </svg>
-  ),
-};
-
 export const Work = () => {
   const filterHook = useProjectFilters();
   const { 
@@ -169,7 +122,7 @@ export const Work = () => {
     setMousePosition({ x: 0, y: 0 });
   };
 
-  const featuredProject = filteredProjects.find(p => p.featured) || filteredProjects[0];
+  const featuredProjects = filteredProjects.slice(0, 4);
 
   const processSteps = [
     { title: 'Discovery', desc: 'Understanding your product requirements, constraints, and business metrics.' },
@@ -181,37 +134,11 @@ export const Work = () => {
     { title: 'Support', desc: 'Continuous SLAs, telemetry monitoring, and feature iteration cycles.' }
   ];
 
-  const techStack = [
-    { name: 'React', logo: BrandLogos.react },
-    { name: 'Next.js', logo: BrandLogos.nextjs },
-    { name: 'Node.js', logo: BrandLogos.nodejs },
-    { name: 'Python', logo: BrandLogos.python },
-    { name: 'TypeScript', logo: BrandLogos.typescript },
-    { name: 'AWS', logo: BrandLogos.aws },
-    { name: 'Docker', logo: BrandLogos.docker },
-    { name: 'MongoDB', logo: BrandLogos.mongodb },
-    { name: 'PostgreSQL', logo: BrandLogos.postgresql },
-    { name: 'OpenAI', logo: BrandLogos.openai },
-    { name: 'Flutter', logo: BrandLogos.flutter },
-    { name: 'Kubernetes', logo: BrandLogos.kubernetes }
-  ];
-
-  const industriesList = [
-    { name: 'Healthcare', icon: IndustryIcons.healthcare, desc: 'HIPAA-compliant telemedicine platforms and operational databases.' },
-    { name: 'Finance', icon: IndustryIcons.finance, desc: 'High-security transaction systems and digital banking analytics.' },
-    { name: 'Education', icon: IndustryIcons.education, desc: 'Custom LMS architectures and student tracking dashboards.' },
-    { name: 'Logistics', icon: IndustryIcons.logistics, desc: 'Route optimization solvers, capacity scheduling, and GPS trackers.' },
-    { name: 'Real Estate', icon: IndustryIcons.realestate, desc: 'Multi-tenant property portals and CRM pipelines.' },
-    { name: 'Manufacturing', icon: IndustryIcons.manufacturing, desc: 'IoT sensor telemetry platforms and predictive maintenance schedulers.' },
-    { name: 'Retail', icon: IndustryIcons.retail, desc: 'Scalable headless eCommerce backends and custom checkouts.' },
-    { name: 'Government', icon: IndustryIcons.government, desc: 'Secure civic portal databases and administrative dashboards.' }
-  ];
-
   const successMetrics = [
-    { label: 'Cloud Cost Saved', val: '40%' },
-    { label: 'API Uptime SLA', val: '99.99%' },
-    { label: 'Page Speed Rank', val: 'A+' },
-    { label: 'Customer Growth', val: '2.4x' }
+    { label: 'Projects Delivered', val: '50+', icon: <Briefcase className="w-5 h-5 text-emerald-600" /> },
+    { label: 'Industries', val: '15+', icon: <Building2 className="w-5 h-5 text-emerald-600" /> },
+    { label: 'Client Satisfaction', val: '98%', icon: <Smile className="w-5 h-5 text-emerald-600" /> },
+    { label: 'Years Experience', val: '5+', icon: <Award className="w-5 h-5 text-emerald-600" /> }
   ];
 
   const faqList = [
@@ -222,211 +149,136 @@ export const Work = () => {
 
   return (
     <>
-      {/* Light Theme Background matching About, Services, and Industries */}
-      <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 animate-fade-in pb-16 relative">
+      {/* Light Theme Background matching reference exactly */}
+      <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 animate-fade-in pb-16 relative overflow-x-hidden">
         <Navbar />
 
-        {/* SECTION 1 — HERO */}
+        {/* HERO SECTION */}
         <section 
-          className="relative overflow-hidden bg-zinc-950 pt-28 pb-16 md:pt-36 md:pb-24 border-b border-zinc-900 text-white"
+          className="relative overflow-hidden bg-slate-50 pt-20 pb-6 md:pt-24 md:pb-8 border-b border-slate-100"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Animated Mesh Waves + Mouse Parallax */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none z-0"
-            style={{
-              x: mousePosition.x * 25,
-              y: mousePosition.y * 25,
-            }}
-            animate={{
-              scale: [1, 1.03, 1],
-            }}
-            transition={{
-              duration: 28,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          >
-            {/* Background Image */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-screen"
-              style={{ backgroundImage: `url(${workBg})` }}
-            />
+          {/* Subtle grid pattern background */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000004_1px,transparent_1px),linear-gradient(to_bottom,#00000004_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-60 z-0 pointer-events-none" />
+          
+          <div className="container-custom max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-12 gap-12 items-center">
             
-            {/* Shifting green waves / glow effect */}
-            <motion.div 
-              animate={{ 
-                x: [0, 20, -15, 0],
-                y: [0, -15, 20, 0],
-                scale: [1, 1.15, 0.9, 1]
-              }}
-              transition={{
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute left-1/4 top-1/4 h-[350px] w-[350px] rounded-full bg-emerald-500/10 blur-[130px]" 
-            />
-            <motion.div 
-              animate={{ 
-                x: [0, -25, 20, 0],
-                y: [0, 20, -25, 0],
-                scale: [1, 0.85, 1.15, 1]
-              }}
-              transition={{
-                duration: 22,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute right-1/4 bottom-1/4 h-[350px] w-[350px] rounded-full bg-teal-500/10 blur-[130px]" 
-            />
-          </motion.div>
-
-          {/* Tiny Floating Background Particles */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 z-0">
-            {[...Array(15)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-emerald-400/80 rounded-full"
-                style={{
-                  left: `${(i * 13) % 100}%`,
-                  top: `${(i * 17) % 100}%`,
-                }}
-                animate={{
-                  y: [0, -35, 0],
-                  x: [0, 15, 0],
-                  opacity: [0.1, 0.8, 0.1],
-                }}
-                transition={{
-                  duration: 8 + (i % 5) * 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: i * 0.3,
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="container-custom max-w-7xl mx-auto px-6 relative z-10 space-y-12">
-            <div className="max-w-3xl space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" />
+            {/* Left side: Heading and badge */}
+            <div className="lg:col-span-7 space-y-6 pb-12 md:pb-16">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Our Portfolio</span>
               </div>
               
-              <h1 className="text-4xl sm:text-6xl font-extrabold font-display text-white tracking-tight leading-[1.1]">
+              <h1 className="text-5xl sm:text-7xl font-extrabold font-display text-slate-900 tracking-tight leading-[1.05]">
                 Our Work
               </h1>
               
-              <p className="text-slate-400 text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-2xl">
+              <p className="text-slate-500 text-base sm:text-lg leading-relaxed font-semibold max-w-2xl">
                 Showcase production-ready digital products, enterprise platforms, AI solutions, SaaS applications and scalable software engineered for modern businesses.
               </p>
+
+              <div className="pt-4 flex flex-wrap gap-4 items-center">
+                <a href="#projects-grid">
+                  <Button className="h-12 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2">
+                    <span>Explore Our Projects</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
             </div>
 
-            {/* Glassmorphism Statistics Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl">
-              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 shadow-xl">
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-emerald-500">50+</h3>
-                <p className="text-[10px] text-slate-500 font-bold uppercase mt-1">Projects Delivered</p>
-              </div>
-              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 shadow-xl">
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-emerald-500">15+</h3>
-                <p className="text-[10px] text-slate-500 font-bold uppercase mt-1">Industries</p>
-              </div>
-              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 shadow-xl">
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-emerald-500">98%</h3>
-                <p className="text-[10px] text-slate-500 font-bold uppercase mt-1">Client Satisfaction</p>
-              </div>
-              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 shadow-xl">
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-emerald-500">5+</h3>
-                <p className="text-[10px] text-slate-500 font-bold uppercase mt-1">Years Experience</p>
-              </div>
+            {/* Right side: 3D/Illustration Laptop Mockup Layout */}
+            <div className="lg:col-span-5 relative flex justify-center items-center">
+              <motion.div
+                className="relative w-full max-w-[550px] -top-8 md:-top-12"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                {/* Background glow shadow */}
+                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-emerald-100/40 to-teal-50/20 blur-3xl opacity-75" />
+                
+                <img
+                  src={portfolioLaptopImg}
+                  alt="TechVistar SaaS Mockup Illustration"
+                  className="w-full h-auto object-contain relative z-10"
+                />
+              </motion.div>
             </div>
           </div>
         </section>
 
-        {/* SECTION 2 — FEATURED PROJECT */}
-        {featuredProject && (
-          <section className="container-custom max-w-7xl mx-auto px-6 py-16">
-            <div className="mb-8">
-              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Featured Case Study</span>
-            </div>
-            
-            <motion.div 
-              whileHover={{ y: -3 }}
-              className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg grid md:grid-cols-12 gap-8 items-center text-slate-900"
-            >
-              {/* Left side: Project Image */}
-              <div className="md:col-span-6 h-72 sm:h-96 rounded-2xl overflow-hidden relative border border-slate-200/60 bg-slate-100 flex items-center justify-center">
-                <img 
-                  src={featuredProject.thumbnail} 
-                  alt={featuredProject.title} 
-                  className="w-full h-full object-cover opacity-95 hover:scale-103 transition-transform duration-500"
-                />
-              </div>
-
-              {/* Right side: Project Details */}
-              <div className="md:col-span-6 space-y-6">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-[10px] font-bold uppercase tracking-wider">
-                    {featuredProject.category}
-                  </span>
-                  <span className="text-xs text-slate-400 font-semibold">
-                    {featuredProject.date.split('-')[0]}
-                  </span>
+        {/* Stats pill row container below hero */}
+        <div className="max-w-5xl mx-auto px-6 -mt-16 md:-mt-20 relative z-20">
+          <div className="bg-white border border-slate-200/60 rounded-[24px] shadow-lg py-4 sm:py-5 px-6 sm:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
+            {successMetrics.map((met) => (
+              <div key={met.label} className="flex flex-col items-center text-center space-y-1">
+                <div className="p-2 bg-emerald-50 rounded-xl border border-emerald-100/50 mb-1">
+                  {met.icon}
                 </div>
-
-                <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">
-                  {featuredProject.title}
+                <h3 className="text-3xl font-extrabold text-emerald-600 leading-none">
+                  {met.val}
                 </h3>
-
-                <p className="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed">
-                  {featuredProject.description}
-                </p>
-
-                {/* Meta details list */}
-                <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-4">
-                  <div>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase block">Client Partner</span>
-                    <span className="text-xs text-slate-900 font-bold mt-1 block">{featuredProject.client}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase block">Our Role</span>
-                    <span className="text-xs text-slate-900 font-bold mt-1 block">{featuredProject.role}</span>
-                  </div>
-                </div>
-
-                {/* Tech Chips */}
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {featuredProject.technologies.map(tech => (
-                    <span key={tech} className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200/60 text-[10px] text-slate-600 font-semibold">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Buttons */}
-                <div className="flex flex-wrap gap-4 pt-4 border-t border-slate-100">
-                  <Link to={`/work/${featuredProject.slug}`}>
-                    <Button className="h-10 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-md">
-                      <span>View Case Study</span>
-                      <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
-                    </Button>
-                  </Link>
-                  <a href={featuredProject.liveUrl} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" className="h-10 border-slate-200 hover:bg-slate-50 font-bold rounded-xl text-slate-700">
-                      <span>Live Demo</span>
-                    </Button>
-                  </a>
-                </div>
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{met.label}</p>
               </div>
-            </motion.div>
-          </section>
-        )}
+            ))}
+          </div>
+        </div>
+
+        {/* SECTION 2 — RECENT WORK / FEATURED PROJECTS */}
+        <section className="container-custom max-w-7xl mx-auto px-6 pt-16 md:pt-20 pb-20">
+          <div className="text-center space-y-2 mb-12">
+            <span className="text-xs font-extrabold text-emerald-600 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+              Recent Work
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-display">Featured Projects</h2>
+            <p className="text-sm text-slate-500 font-semibold">Innovative solutions that drive real business impact</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProjects.map((project) => (
+              <motion.div
+                key={project.id}
+                whileHover={{ y: -6 }}
+                className="bg-white border border-slate-200/60 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.15)] transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between group text-slate-900"
+              >
+                <div className="space-y-4">
+                  {/* Category Badge & Cover image */}
+                  <div className="h-44 overflow-hidden bg-slate-50 border-b border-slate-100 flex items-center justify-center relative">
+                    <img 
+                      src={project.thumbnail} 
+                      alt={project.title} 
+                      className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-103"
+                    />
+                    <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-bold uppercase tracking-wider z-10 shadow-md">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  <div className="p-5 space-y-2.5">
+                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-emerald-600 transition-colors font-display line-clamp-1 leading-snug">
+                      {project.title}
+                    </h4>
+                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                      {project.description}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-5 pb-5 pt-3 border-t border-slate-100/60 flex items-center justify-between">
+                  <Link to={`/work/${project.slug}`} className="text-xs font-bold text-emerald-600 flex items-center gap-1 hover:text-emerald-700 transition-colors">
+                    View Case Study
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 duration-300" />
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
 
         {/* SECTION 3 — PROJECT FILTERS */}
-        <section className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-y border-slate-200/80 py-4">
+        <section id="projects-grid" className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-y border-slate-200/80 py-4">
           <div className="container-custom max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Search Input */}
             <div className="relative w-full md:w-72">
@@ -447,8 +299,8 @@ export const Work = () => {
                 onChange={(e) => setSelectedIndustry(e.target.value)}
                 className="h-11 bg-white border border-slate-200 text-xs font-semibold rounded-xl px-4 text-slate-700 focus:outline-none"
               >
-                <option value="">All Industries</option>
-                {industries.map(ind => <option key={ind} value={ind}>{ind}</option>)}
+                <option value="All">All Industries</option>
+                {industries.filter(ind => ind !== 'All').map(ind => <option key={ind} value={ind}>{ind}</option>)}
               </select>
 
               <select
@@ -456,8 +308,8 @@ export const Work = () => {
                 onChange={(e) => setSelectedService(e.target.value)}
                 className="h-11 bg-white border border-slate-200 text-xs font-semibold rounded-xl px-4 text-slate-700 focus:outline-none"
               >
-                <option value="">All Services</option>
-                {services.map(srv => <option key={srv} value={srv}>{srv}</option>)}
+                <option value="All">All Services</option>
+                {services.filter(srv => srv !== 'All').map(srv => <option key={srv} value={srv}>{srv}</option>)}
               </select>
 
               <select
@@ -465,8 +317,8 @@ export const Work = () => {
                 onChange={(e) => setSelectedTechnology(e.target.value)}
                 className="h-11 bg-white border border-slate-200 text-xs font-semibold rounded-xl px-4 text-slate-700 focus:outline-none"
               >
-                <option value="">All Technologies</option>
-                {technologies.map(tech => <option key={tech} value={tech}>{tech}</option>)}
+                <option value="All">All Technologies</option>
+                {technologies.filter(tech => tech !== 'All').map(tech => <option key={tech} value={tech}>{tech}</option>)}
               </select>
 
               <select
@@ -474,8 +326,8 @@ export const Work = () => {
                 onChange={(e) => setSelectedStatus(e.target.value)}
                 className="h-11 bg-white border border-slate-200 text-xs font-semibold rounded-xl px-4 text-slate-700 focus:outline-none"
               >
-                <option value="">All Statuses</option>
-                {statuses.map(st => <option key={st} value={st}>{st}</option>)}
+                <option value="All">All Statuses</option>
+                {statuses.filter(st => st !== 'All').map(st => <option key={st} value={st}>{st}</option>)}
               </select>
             </div>
           </div>
@@ -488,12 +340,12 @@ export const Work = () => {
               {filteredProjects.map((project) => (
                 <motion.div
                   key={project.id}
-                  whileHover={{ y: -4 }}
-                  className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between group text-slate-900"
+                  whileHover={{ y: -6 }}
+                  className="bg-white border border-slate-200/60 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.15)] transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between group text-slate-900"
                 >
                   <div className="space-y-4">
                     {/* Cover image container */}
-                    <div className="h-48 overflow-hidden bg-white relative border-b border-slate-100">
+                    <div className="h-48 overflow-hidden bg-white relative border-b border-slate-100 flex items-center justify-center">
                       <img 
                         src={project.thumbnail} 
                         alt={project.title} 
@@ -530,7 +382,7 @@ export const Work = () => {
 
                   <div className="p-5 border-t border-slate-100 flex gap-3">
                     <Link to={`/work/${project.slug}`} className="flex-1">
-                      <Button className="w-full h-9 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-all shadow-md">
+                      <Button className="w-full h-9 bg-[#0F172A] hover:bg-slate-800 text-white font-bold rounded-lg text-xs transition-all shadow-md">
                         View Project
                       </Button>
                     </Link>
@@ -561,12 +413,24 @@ export const Work = () => {
           <div className="grid md:grid-cols-12 gap-8 items-stretch">
             <div className="md:col-span-8 space-y-6">
               <div className="bg-white border border-slate-200/60 rounded-2xl p-6 shadow-md space-y-4">
-                <div className="flex gap-1 text-emerald-500">
+                <div className="flex gap-1 text-amber-400 border border-slate-200/80 rounded-full px-3 py-1 w-fit bg-amber-50/30">
                   <Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" />
                 </div>
-                <p className="text-slate-700 font-semibold text-sm sm:text-base leading-relaxed italic">
-                  "TechVistar delivered our route optimization system ahead of schedule. The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag."
-                </p>
+                <div className="text-slate-700 font-semibold text-sm sm:text-base leading-relaxed italic">
+                  "
+                  <TextType 
+                    text={[
+                      "TechVistar delivered our route optimization system ahead of schedule.",
+                      "The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag."
+                    ]}
+                    typingSpeed={40}
+                    pauseDuration={3000}
+                    showCursor={true}
+                    cursorCharacter="|"
+                    as="span"
+                  />
+                  "
+                </div>
                 <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
                   <div>
                     <h5 className="text-xs font-extrabold text-slate-900">Chief of Operations</h5>
@@ -577,17 +441,27 @@ export const Work = () => {
             </div>
 
             <div className="md:col-span-4 grid grid-cols-2 gap-4">
-              {successMetrics.map(met => (
-                <div key={met.label} className="bg-white border border-slate-200/60 rounded-2xl p-5 flex flex-col justify-between shadow-md">
-                  <h4 className="text-2xl sm:text-3xl font-extrabold text-emerald-600 leading-none">{met.val}</h4>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2 block leading-snug">{met.label}</span>
-                </div>
-              ))}
+              <div className="bg-white border border-slate-200/60 rounded-2xl p-5 flex flex-col justify-between shadow-md">
+                <h4 className="text-2xl sm:text-3xl font-extrabold text-emerald-600 leading-none">40%</h4>
+                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2 block leading-snug">Cloud Cost Saved</span>
+              </div>
+              <div className="bg-white border border-slate-200/60 rounded-2xl p-5 flex flex-col justify-between shadow-md">
+                <h4 className="text-2xl sm:text-3xl font-extrabold text-emerald-600 leading-none">99.99%</h4>
+                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2 block leading-snug">API Uptime SLA</span>
+              </div>
+              <div className="bg-white border border-slate-200/60 rounded-2xl p-5 flex flex-col justify-between shadow-md">
+                <h4 className="text-2xl sm:text-3xl font-extrabold text-emerald-600 leading-none">A+</h4>
+                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2 block leading-snug">Page Speed Rank</span>
+              </div>
+              <div className="bg-white border border-slate-200/60 rounded-2xl p-5 flex flex-col justify-between shadow-md">
+                <h4 className="text-2xl sm:text-3xl font-extrabold text-emerald-600 leading-none">2.4x</h4>
+                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2 block leading-snug">Customer Growth</span>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* SECTION 6 — DEVELOPMENT PROCESS */}
+        {/* SECTION 6 — DEVELOPMENT PROCESS (UNTOUCHED) */}
         <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
             <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Development Process</h2>
@@ -651,7 +525,7 @@ export const Work = () => {
           </motion.div>
         </section>
 
-        {/* SECTION 7 — TECHNOLOGY STACK */}
+        {/* SECTION 7 — TECHNOLOGY STACK (UNTOUCHED) */}
         <TechStackSection />
 
         {/* SECTION 8 — INDUSTRIES */}
@@ -662,7 +536,16 @@ export const Work = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {industriesList.map((ind) => (
+            {[
+              { name: 'Healthcare', desc: 'HIPAA-compliant telemedicine platforms and operational databases.' },
+              { name: 'Finance', desc: 'High-security transaction systems and digital banking analytics.' },
+              { name: 'Education', desc: 'Custom LMS architectures and student tracking dashboards.' },
+              { name: 'Logistics', desc: 'Route optimization solvers, capacity scheduling, and GPS trackers.' },
+              { name: 'Real Estate', desc: 'Multi-tenant property portals and CRM pipelines.' },
+              { name: 'Manufacturing', desc: 'IoT sensor telemetry platforms and predictive maintenance schedulers.' },
+              { name: 'Retail', desc: 'Scalable headless eCommerce backends and custom checkouts.' },
+              { name: 'Government', desc: 'Secure civic portal databases and administrative dashboards.' }
+            ].map((ind) => (
               <motion.div
                 key={ind.name}
                 whileHover={{ 
@@ -674,13 +557,6 @@ export const Work = () => {
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className="bg-white border border-slate-200/60 rounded-2xl p-6 space-y-4 shadow-sm cursor-pointer group/ind"
               >
-                {/* Realistic Icon with hover animation */}
-                <motion.div 
-                  className="p-3 rounded-xl bg-slate-50 border border-slate-100 w-fit group-hover/ind:bg-emerald-500/10 group-hover/ind:border-emerald-500/20 group-hover/ind:scale-110 transition-all duration-300"
-                  whileHover={{ rotate: 7 }}
-                >
-                  {ind.icon}
-                </motion.div>
                 <h4 className="font-extrabold text-slate-900 text-sm group-hover/ind:text-emerald-600 transition-colors">{ind.name}</h4>
                 <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">{ind.desc}</p>
               </motion.div>

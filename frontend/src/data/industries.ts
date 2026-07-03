@@ -8,6 +8,7 @@ import {
   Truck,
   Sprout,
   Utensils,
+  Zap,
   LucideIcon
 } from 'lucide-react';
 
@@ -582,6 +583,63 @@ export const INDUSTRIES: readonly Industry[] = [
       subtitle: 'Build direct booking portals and custom guest check-in systems.',
       buttonText: 'Request Booking Engine Audit',
       buttonLink: '/contact?industry=hospitality'
+    }
+  },
+  {
+    id: 'energy-utilities',
+    slug: 'energy-utilities',
+    title: 'Energy & Utilities',
+    shortDescription: 'Smart grid telemetry, renewable energy dashboards, and utility asset management systems.',
+    description: 'We build high-performance software for grid operators, solar/wind developers, and energy service providers. From IoT sensor pipelines to compliance reports, our systems optimize resource allocation.',
+    heroImage: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=1200&auto=format&fit=crop',
+    icon: Zap,
+    industriesColor: 'from-amber-500 to-yellow-500',
+    challenges: [
+      {
+        title: 'Grid Telemetry Overload',
+        description: 'Operators process millions of metrics per second from smart meters, overloading legacy storage.'
+      },
+      {
+        title: 'Distributed Generation Sync',
+        description: 'Integrating fluctuating solar/wind resources requires rapid load-balancing and forecasting.'
+      }
+    ],
+    solutions: [
+      {
+        title: 'Time-Series Data Lakes',
+        description: 'Highly-optimized databases capable of storing and querying massive IoT telemetry instantly.'
+      },
+      {
+        title: 'Live Balancing Dashboards',
+        description: 'Real-time grid monitors tracking generation deficits and directing storage reserves.'
+      }
+    ],
+    services: ['web-development', 'custom-software-development', 'cloud-devops'],
+    technologies: ['React', 'TypeScript', 'TimescaleDB', 'Python', 'Go', 'Kafka'],
+    caseStudies: ['sustainability-dashboard'],
+    faqs: [
+      {
+        question: 'Do you support smart meter integrations?',
+        answer: 'Yes, we integrate with industry-standard telemetry networks and AMI database APIs.'
+      }
+    ],
+    statistics: [
+      {
+        value: '99.999%',
+        label: 'Grid Reliability',
+        description: 'Engineered for high-availability grid monitoring.'
+      },
+      {
+        value: '30%',
+        label: 'Carbon Auditing Speedup',
+        description: 'Faster compliance reporting for green energy producers.'
+      }
+    ],
+    cta: {
+      title: 'Optimize your utility network',
+      subtitle: 'Consult with our smart grid telemetry engineers.',
+      buttonText: 'Consult Energy Architects',
+      buttonLink: '/contact?industry=energy'
     }
   }
 ];

@@ -64,14 +64,14 @@ export const Industries = () => {
         <Navbar />
 
         {/* Premium Redesigned Industries Hero with Aurora Background */}
-        <AuroraBackground className="bg-gradient-to-b from-zinc-950 via-[#021815] to-zinc-950 pt-20 pb-20 md:pt-32 md:pb-28 border-b border-emerald-950/40 relative overflow-hidden">
+        <AuroraBackground className="bg-gradient-to-b from-zinc-950 via-[#021815] to-zinc-950 pt-24 pb-10 md:pt-32 md:pb-14 border-b border-emerald-950/40 relative overflow-hidden">
           {/* Decorative mesh background */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
           
           {/* Glowing colorful backdrop blobs */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-gradient-to-r from-emerald-500/10 to-teal-500/10 blur-[120px] rounded-full pointer-events-none" />
 
-          <div className="container-custom relative z-10 max-w-6xl mx-auto px-4 mt-6">
+          <div className="container-custom relative z-10 max-w-6xl mx-auto px-4 mt-2">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               {/* Left Column: Text Content + Search */}
               <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -116,31 +116,81 @@ export const Industries = () => {
                 </BlurReveal>
               </div>
 
-              {/* Right Column: Globe + Floating Panels */}
-              <div className="lg:col-span-6 relative h-[480px] lg:h-[550px] w-full flex items-center justify-center overflow-hidden mt-10 lg:mt-0">
-                {/* Globe Core */}
-                <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-transparent flex items-center justify-center border border-emerald-500/30 shadow-[0_0_80px_rgba(16,185,129,0.15)] animate-[pulse_3s_infinite]">
-                  {/* Spinning outer rings */}
-                  <div className="absolute inset-[-15px] rounded-full border border-dashed border-emerald-500/20 animate-[spin_60s_linear_infinite]" />
-                  <div className="absolute inset-[-30px] rounded-full border border-dashed border-teal-500/10 animate-[spin_40s_linear_infinite_reverse]" />
-                  <div className="absolute inset-[-45px] rounded-full border border-emerald-500/5 animate-[spin_80s_linear_infinite]" />
+              {/* Right Column: Globe + Floating Panels (Hidden on mobile for clean UX) */}
+              <div className="hidden lg:flex lg:col-span-6 relative h-[460px] w-full max-w-[500px] mx-auto items-center justify-center overflow-visible mt-0">
+                
+                {/* Connecting lines from panels to globe */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none z-10 hidden sm:block" viewBox="0 0 500 500" fill="none">
+                  {/* Healthcare line */}
+                  <path d="M 120,95 C 170,110 200,160 215,215" stroke="rgba(16, 185, 129, 0.4)" strokeWidth="1" strokeDasharray="3 3" />
+                  <circle cx="215" cy="215" r="2.5" fill="#10b981" className="animate-ping" />
+                  <circle cx="215" cy="215" r="1.5" fill="#10b981" />
+                  
+                  {/* Finance line */}
+                  <path d="M 110,265 C 160,265 180,255 210,248" stroke="rgba(16, 185, 129, 0.4)" strokeWidth="1" strokeDasharray="3 3" />
+                  <circle cx="210" cy="248" r="2.5" fill="#10b981" className="animate-ping" />
+                  <circle cx="210" cy="248" r="1.5" fill="#10b981" />
 
-                  {/* Styled SVG Globe grid */}
-                  <svg className="w-56 h-56 sm:w-64 sm:h-64 text-emerald-400/30" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
-                    <circle cx="50" cy="50" r="45" />
-                    <circle cx="50" cy="50" r="35" />
-                    <circle cx="50" cy="50" r="20" />
-                    <path d="M50,5 Q50,95" />
-                    <path d="M5,50 Q95,50" />
-                    <path d="M50,5 Q70,50 50,95" />
-                    <path d="M50,5 Q30,50 50,95" />
-                    <path d="M50,5 Q85,50 50,95" />
-                    <path d="M50,5 Q15,50 50,95" />
+                  {/* Logistics line */}
+                  <path d="M 120,435 C 170,410 190,340 215,290" stroke="rgba(16, 185, 129, 0.4)" strokeWidth="1" strokeDasharray="3 3" />
+                  <circle cx="215" cy="290" r="2.5" fill="#10b981" className="animate-ping" />
+                  <circle cx="215" cy="290" r="1.5" fill="#10b981" />
+
+                  {/* Manufacturing line */}
+                  <path d="M 380,75 C 330,95 310,160 285,215" stroke="rgba(16, 185, 129, 0.4)" strokeWidth="1" strokeDasharray="3 3" />
+                  <circle cx="285" cy="215" r="2.5" fill="#10b981" className="animate-ping" />
+                  <circle cx="285" cy="215" r="1.5" fill="#10b981" />
+
+                  {/* Retail line */}
+                  <path d="M 390,210 C 340,230 320,240 290,248" stroke="rgba(16, 185, 129, 0.4)" strokeWidth="1" strokeDasharray="3 3" />
+                  <circle cx="290" cy="248" r="2.5" fill="#10b981" className="animate-ping" />
+                  <circle cx="290" cy="248" r="1.5" fill="#10b981" />
+
+                  {/* Education line */}
+                  <path d="M 380,390 C 330,360 310,340 285,290" stroke="rgba(16, 185, 129, 0.4)" strokeWidth="1" strokeDasharray="3 3" />
+                  <circle cx="285" cy="290" r="2.5" fill="#10b981" className="animate-ping" />
+                  <circle cx="285" cy="290" r="1.5" fill="#10b981" />
+                </svg>
+
+                {/* Globe Core */}
+                <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full bg-gradient-to-br from-emerald-950/80 via-teal-950/40 to-zinc-950/90 flex items-center justify-center border border-emerald-500/30 shadow-[0_0_80px_rgba(16,185,129,0.2),inset_0_0_40px_rgba(16,185,129,0.3)] animate-[pulse_3s_infinite] overflow-hidden">
+                  
+                  {/* Atmospheric gradient overlay */}
+                  <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/90 pointer-events-none z-10" />
+
+                  {/* Styled SVG Globe grid with detailed continents */}
+                  <svg className="w-56 h-56 sm:w-64 sm:h-64 text-emerald-400/40 absolute" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+                    {/* Atmospheric grid lines */}
+                    <circle cx="50" cy="50" r="45" strokeDasharray="2 2" className="animate-[spin_40s_linear_infinite]" />
+                    <circle cx="50" cy="50" r="35" className="animate-[spin_20s_linear_infinite_reverse]" />
+                    <circle cx="50" cy="50" r="20" strokeDasharray="3 1" />
+                    
+                    {/* Detailed world map contours */}
+                    <g className="text-emerald-500/20 fill-emerald-500/10 stroke-none animate-[spin_55s_linear_infinite] origin-[50px_50px]">
+                      {/* North America */}
+                      <path d="M15,22 C18,20 22,18 26,19 C28,21 32,24 35,22 C36,25 38,27 35,30 C32,32 30,28 27,29 C24,31 22,34 18,33 C15,31 12,28 15,22 Z" />
+                      {/* South America */}
+                      <path d="M22,38 C25,37 28,40 29,43 C28,47 26,52 24,57 C22,62 23,68 20,72 C18,70 17,65 17,60 C18,55 16,50 15,45 C15,41 18,39 22,38 Z" />
+                      {/* Africa */}
+                      <path d="M42,40 C46,38 52,36 56,40 C58,42 62,45 61,48 C59,51 55,54 53,58 C51,62 48,65 45,69 C43,67 43,62 45,58 C47,54 44,50 42,46 C41,43 41,41 42,40 Z" />
+                      {/* Europe & Asia */}
+                      <path d="M44,22 C48,20 54,19 60,21 C65,22 70,18 75,21 C78,23 82,21 85,24 C83,28 78,30 75,32 C74,35 70,38 67,36 C64,38 60,35 56,36 C52,38 48,35 45,37 C43,35 42,28 44,22 Z" />
+                      {/* Southeast Asia & Australia */}
+                      <path d="M72,42 C74,40 76,43 78,45 C75,47 73,45 72,42 Z M78,55 C82,53 86,55 88,58 C86,61 82,63 78,61 C76,59 76,57 78,55 Z" />
+                    </g>
+                    
+                    {/* Curved orbital rings at an angle */}
+                    <ellipse cx="50" cy="50" rx="48" ry="12" transform="rotate(-30 50 50)" stroke="rgba(16, 185, 129, 0.15)" strokeWidth="0.8" />
+                    <ellipse cx="50" cy="50" rx="48" ry="12" transform="rotate(30 50 50)" stroke="rgba(16, 185, 129, 0.15)" strokeWidth="0.8" />
                   </svg>
 
                   {/* Globe center glow */}
-                  <div className="absolute w-24 h-24 rounded-full bg-emerald-400/20 blur-xl" />
+                  <div className="absolute w-24 h-24 rounded-full bg-emerald-400/20 blur-xl z-20 pointer-events-none" />
                 </div>
+
+                {/* Spinning outer rings */}
+                <div className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full border border-dashed border-emerald-500/20 animate-[spin_60s_linear_infinite] pointer-events-none" />
+                <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full border border-dashed border-teal-500/10 animate-[spin_40s_linear_infinite_reverse] pointer-events-none" />
 
                 {/* Floating Panels */}
                 {/* Healthcare */}

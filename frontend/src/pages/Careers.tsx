@@ -6,10 +6,27 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, Briefcase, MapPin, Calendar, Clock, GraduationCap } from 'lucide-react';
+import { Check, Briefcase, MapPin, Calendar, Clock, GraduationCap, Users, Cpu } from 'lucide-react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
 import { FAQSection } from '@/components/faq';
 import careersBg from '../assets/careers-bg.png';
+import frontendImg from '../assets/mobile_phone_devloper.png';
+import backendImg from '../assets/Claud_Devops.png';
+import designImg from '../assets/ui_ux_designer.png';
+import reactInternImg from '../assets/overview_web_dev.png';
+import fullStackInternImg from '../assets/custom_software_devlopment.png';
+import marketingInternImg from '../assets/digital_marketing.png';
+import campusAmbassadorImg from '../assets/brand_and_creative_design.png';
+
+const jobImages: Record<string, string> = {
+  'frontend-developer': frontendImg,
+  'backend-developer': backendImg,
+  'ui-ux-designer': designImg,
+  'react-intern': reactInternImg,
+  'full-stack-intern': fullStackInternImg,
+  'marketing-intern': marketingInternImg,
+  'campus-ambassador': campusAmbassadorImg,
+};
 
 const Careers = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -185,12 +202,37 @@ const Careers = () => {
               Why Join TechVistar?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {whyJoin.map((item, idx) => (
-                <div key={idx} className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                  <h3 className="text-base font-bold text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">{item.description}</p>
-                </div>
-              ))}
+              {whyJoin.map((item, idx) => {
+                const icons = [
+                  <Users className="h-5 w-5 text-emerald-600" />,
+                  <Briefcase className="h-5 w-5 text-blue-600" />,
+                  <Cpu className="h-5 w-5 text-indigo-600" />
+                ];
+                const iconBgColors = [
+                  'bg-emerald-50 border-emerald-100/50',
+                  'bg-blue-50 border-blue-100/50',
+                  'bg-indigo-50 border-indigo-100/50'
+                ];
+                const hoverEffects = [
+                  'hover:border-emerald-300/40 hover:shadow-[0_12px_24px_-10px_rgba(16,185,129,0.12)]',
+                  'hover:border-blue-300/40 hover:shadow-[0_12px_24px_-10px_rgba(59,130,246,0.12)]',
+                  'hover:border-indigo-300/40 hover:shadow-[0_12px_24px_-10px_rgba(99,102,241,0.12)]'
+                ];
+                return (
+                  <motion.div 
+                    key={idx} 
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    className={`bg-white border border-slate-200 rounded-2xl p-6 shadow-sm transition-all duration-300 flex flex-col items-start ${hoverEffects[idx % hoverEffects.length]}`}
+                  >
+                    <div className={`h-10 w-10 rounded-xl border flex items-center justify-center mb-4 ${iconBgColors[idx % iconBgColors.length]}`}>
+                      {icons[idx % icons.length]}
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-2">{item.title}</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed font-semibold">{item.description}</p>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -206,9 +248,18 @@ const Careers = () => {
             </div>
 
             {fullTimePositions.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {fullTimePositions.map((job) => (
-                  <Card key={job.id} className="border-slate-200 hover:border-primary/20 hover:shadow-md transition-all flex flex-col bg-white">
+                  <Card key={job.id} className="border-slate-200 hover:border-primary/20 hover:shadow-md transition-all flex flex-col bg-white overflow-hidden">
+                    {jobImages[job.slug] && (
+                      <div className="h-44 overflow-hidden bg-slate-50 border-b border-slate-100 flex items-center justify-center relative p-3">
+                        <img 
+                          src={jobImages[job.slug]} 
+                          alt={job.title} 
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    )}
                     <CardHeader className="p-5 pb-3">
                       <div className="flex justify-between items-start gap-2 mb-2">
                         <Badge className="bg-primary/10 text-primary hover:bg-primary/15 border-none font-medium text-[10px]">
@@ -256,9 +307,26 @@ const Careers = () => {
             </div>
 
             {internshipPositions.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {internshipPositions.map((job) => (
-                  <Card key={job.id} className="border-slate-200 hover:border-primary/20 hover:shadow-md transition-all flex flex-col bg-white">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                {internshipPositions.map((job, idx) => {
+                  const colors = [
+                    'bg-emerald-50/40 border-emerald-200/60',
+                    'bg-blue-50/40 border-blue-200/60',
+                    'bg-amber-50/40 border-amber-200/60',
+                    'bg-indigo-50/40 border-indigo-200/60'
+                  ];
+                  const colorClass = colors[idx % colors.length];
+                  return (
+                    <Card key={job.id} className={`hover:shadow-md transition-all flex flex-col ${colorClass} overflow-hidden`}>
+                      {jobImages[job.slug] && (
+                        <div className="h-44 overflow-hidden bg-white/30 border-b border-slate-200/40 flex items-center justify-center relative p-3">
+                          <img 
+                            src={jobImages[job.slug]} 
+                            alt={job.title} 
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                      )}
                     <CardHeader className="p-5 pb-3">
                       <div className="flex justify-between items-start gap-2 mb-2">
                         <Badge className="bg-emerald-550/10 text-emerald-650 hover:bg-emerald-550/15 border-none font-medium text-[10px]">
@@ -285,7 +353,8 @@ const Careers = () => {
                       </Button>
                     </CardContent>
                   </Card>
-                ))}
+                );
+                })}
               </div>
             ) : (
               <p className="text-sm text-slate-500 bg-white border border-slate-200 p-6 rounded-lg text-center">
@@ -322,23 +391,33 @@ const Careers = () => {
               Our Hiring Process
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-200 md:before:hidden">
-              {hiringProcess.map((step) => (
-                <div key={step.step} className="bg-white border border-slate-200 rounded-xl p-5 relative flex gap-4 md:flex-col md:gap-0">
-                  <div className="h-8 w-8 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mb-3 border-4 border-white shadow-sm">
-                    {step.step}
-                  </div>
+              {hiringProcess.map((step, idx) => {
+                const stepStyles = [
+                  { badge: 'bg-emerald-500', card: 'bg-emerald-50/30 border-slate-200' },
+                  { badge: 'bg-blue-500', card: 'bg-blue-50/30 border-slate-200' },
+                  { badge: 'bg-indigo-500', card: 'bg-indigo-50/30 border-slate-200' },
+                  { badge: 'bg-amber-500', card: 'bg-amber-50/30 border-slate-200' },
+                  { badge: 'bg-rose-500', card: 'bg-rose-50/30 border-slate-200' }
+                ];
+                const currentStyle = stepStyles[idx % stepStyles.length];
+                return (
+                  <div key={step.step} className={`border rounded-xl p-5 relative flex gap-4 md:flex-col md:gap-0 transition-all ${currentStyle.card}`}>
+                    <div className={`h-8 w-8 rounded-full ${currentStyle.badge} text-white text-xs font-bold flex items-center justify-center shrink-0 mb-3 border-4 border-white shadow-sm`}>
+                      {step.step}
+                    </div>
                   <div>
                     <h3 className="text-xs font-bold text-slate-900 mb-1 md:mt-2">{step.title}</h3>
                     <p className="text-[10px] text-slate-500 leading-relaxed">{step.description}</p>
                   </div>
                 </div>
-              ))}
+              );
+            })}
             </div>
           </div>
         </section>
 
         {/* 7. FAQs Section replaced with unified FAQSection */}
-        <FAQSection pageFilter="careers" title="Careers FAQ" description="Have questions about our interview cycles, hiring timelines, and workplace culture?" />
+        <FAQSection pageFilter="careers" title="Careers" layout="split" description="Have questions about our interview cycles, hiring timelines, and workplace culture?" />
 
         {/* 8. Apply CTA Banner */}
         <section className="py-16 bg-slate-50 border-t border-slate-200">

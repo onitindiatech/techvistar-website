@@ -105,6 +105,9 @@ export const VALIDATION = {
   PHONE_REGEX: /^\+?[0-9\s\-()]{7,25}$/,
   VALID_SERVICES: ['web-development', 'mobile-development', 'ui-ux', 'consulting', 'other'] as const,
   NEWSLETTER_SOURCES: ['footer', 'blog_popup', 'contact_form', 'hero'] as const,
+  JOB_DEPARTMENTS: ['Engineering', 'Design', 'Marketing', 'Sales', 'Product', 'Operations', 'Other'] as const,
+  JOB_EMPLOYMENT_TYPES: ['Full-time', 'Part-time', 'Contract', 'Internship'] as const,
+  JOB_STATUSES: ['active', 'closed', 'draft'] as const,
   LIMITS: {
     NAME_MAX:    100,
     PHONE_MAX:   30,

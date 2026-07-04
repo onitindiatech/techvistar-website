@@ -106,7 +106,7 @@ const jobSchema = new Schema<IJob>(
 );
 
 // Slug auto-generation fallback logic
-jobSchema.pre('validate', function (this: any, next: any) {
+jobSchema.pre('validate', function (this: any) {
   if (this.title && !this.slug) {
     this.slug = this.title
       .toLowerCase()
@@ -115,11 +115,9 @@ jobSchema.pre('validate', function (this: any, next: any) {
       .replace(/\s+/g, '-') // Replace spaces with dashes
       .replace(/-+/g, '-'); // Collapse double dashes
   }
-  next();
 });
 
 // Indexes for performance optimization
-jobSchema.index({ slug: 1 }, { unique: true });
 jobSchema.index({ status: 1, featured: -1 });
 jobSchema.index({ department: 1 });
 jobSchema.index({ status: 1, createdAt: -1 });

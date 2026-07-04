@@ -64,7 +64,7 @@ export const Industries = () => {
         <Navbar />
 
         {/* Premium Redesigned Industries Hero with Aurora Background */}
-        <AuroraBackground className="bg-gradient-to-b from-zinc-950 via-[#021815] to-zinc-950 pt-24 pb-10 md:pt-32 md:pb-14 border-b border-emerald-950/40 relative overflow-hidden">
+        <AuroraBackground className="bg-gradient-to-b from-zinc-950 via-[#021815] to-zinc-950 pt-16 pb-10 md:pt-24 md:pb-14 border-b border-emerald-950/40 relative overflow-hidden">
           {/* Decorative mesh background */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
           

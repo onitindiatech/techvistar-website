@@ -7,6 +7,7 @@ import { TechStackSection } from '@/components/TechStackSection';
 import { ProcessSection } from '@/components/ProcessSection';
 import { BenefitsSection } from '@/components/BenefitsSection';
 import { ProjectsSection } from '@/components/ProjectsSection';
+import { DomeGallerySection } from '@/components/DomeGallerySection';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
 import { JoinTeamPreview } from '@/components/JoinTeamPreview';
 import { FAQSection } from '@/components/faq';
@@ -30,8 +31,9 @@ const Index = () => {
         <ProcessSection />
         <BenefitsSection />
         <TestimonialsSection />
+        <DomeGallerySection />
         <JoinTeamPreview />
-        <FAQSection pageFilter="home" limit={6} showViewAll />
+        <FAQSection pageFilter="home" limit={6} showViewAll layout="split" />
         <ContactSection />
         <Footer />
       </main>

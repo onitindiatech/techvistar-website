@@ -328,7 +328,7 @@ export const TechStackSection = () => {
   const fullRow2 = [...row2Techs, ...row2Techs, ...row2Techs];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-tr from-sky-50/45 via-white to-emerald-50/25 py-24 md:py-28 border-y border-slate-100">
+    <section className="relative overflow-hidden bg-gradient-to-tr from-sky-50/45 via-white to-emerald-50/25 pt-10 pb-10 md:pt-12 md:pb-12 border-y border-slate-100">
       
       {/* Background Connecting network lines (constellation SVG) */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] select-none" aria-hidden="true">

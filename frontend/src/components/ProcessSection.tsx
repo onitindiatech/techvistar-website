@@ -39,7 +39,7 @@ export const ProcessSection = () => {
   };
 
   return (
-    <SiteSection ref={ref} id="process" variant="default" aria-labelledby="process-heading" className="relative overflow-hidden py-24 md:py-32">
+    <SiteSection ref={ref} id="process" variant="default" aria-labelledby="process-heading" className="relative overflow-hidden pt-12 pb-12 md:pt-16 md:pb-16">
       {/* Background radial highlight */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/[0.02] blur-[130px]" aria-hidden />
 
@@ -58,7 +58,7 @@ export const ProcessSection = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45, delay: 0.08, ease }}
-          className="mx-auto mb-16 max-w-3xl"
+          className="mx-auto mb-8 md:mb-10 max-w-3xl"
         >
           <p className="mb-4 text-center text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-slate-400">
             Operating principles
@@ -182,7 +182,7 @@ export const ProcessSection = () => {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: 0.32 }}
-          className="mx-auto mt-16 max-w-2xl text-center text-sm leading-relaxed text-slate-500 font-medium"
+          className="mx-auto mt-8 md:mt-10 max-w-2xl text-center text-sm leading-relaxed text-slate-500 font-medium"
         >
           {SECTION_PROCESS.footnote}
         </motion.p>

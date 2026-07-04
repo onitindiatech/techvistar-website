@@ -38,7 +38,7 @@ export const BenefitsSection = () => {
   const { ref, isInView } = useAnimatedSection();
 
   return (
-    <SiteSection ref={ref} id="benefits" variant="muted" aria-labelledby="benefits-heading" className="lg:pb-36">
+    <SiteSection ref={ref} id="benefits" variant="muted" aria-labelledby="benefits-heading" className="!pt-12 !pb-12 md:!pt-16 md:!pb-16 lg:!pb-20">
       <div className="container-custom relative z-10">
         <SectionHeader
           tag={SECTION_BENEFITS.tag}

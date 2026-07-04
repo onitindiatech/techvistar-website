@@ -40,7 +40,7 @@ export const ProjectsSection = () => {
   );
 
   return (
-    <SiteSection ref={ref} id="projects" variant="default" className="relative overflow-hidden" aria-labelledby="projects-heading">
+    <SiteSection ref={ref} id="projects" variant="default" className="relative overflow-hidden !pt-10 !pb-12 md:!pt-14 md:!pb-16" aria-labelledby="projects-heading">
       {/* Subtle Background Ambient Blur Blobs */}
       <div className="absolute top-1/4 left-10 -z-10 w-72 h-72 rounded-full bg-primary/5 opacity-[0.03] blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-10 -z-10 w-96 h-96 rounded-full bg-emerald-500/5 opacity-[0.03] blur-3xl pointer-events-none" />
@@ -215,7 +215,7 @@ export const ProjectsSection = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45, delay: 0.15 }}
-          className="mt-12 text-center"
+          className="mt-6 md:mt-8 text-center"
         >
           <a
             href="/#contact"

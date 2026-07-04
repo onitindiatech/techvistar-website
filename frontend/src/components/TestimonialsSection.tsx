@@ -48,7 +48,7 @@ export const TestimonialsSection = () => {
   );
 
   return (
-    <SiteSection ref={ref} id="testimonials" variant="slate" aria-labelledby="testimonials-heading">
+    <SiteSection ref={ref} id="testimonials" variant="slate" aria-labelledby="testimonials-heading" className="!pt-12 !pb-12 md:!pt-16 md:!pb-16">
       <div
         className="pointer-events-none absolute -right-[min(40%,320px)] top-1/2 h-[min(90vw,520px)] w-[min(90vw,520px)] -translate-y-1/2 rounded-full bg-primary/[0.06] blur-[100px]"
         aria-hidden

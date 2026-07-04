@@ -1675,6 +1675,73 @@ export const SERVICES: readonly Service[] = [
       { value: 'VPC', label: 'Isolation', iconType: 'shield', colorTheme: 'blue' }
     ],
     dashboardImage: 'ai_translator'
+  },
+  {
+    id: '19',
+    slug: 'cybersecurity-compliance',
+    title: 'Cybersecurity & Compliance',
+    shortDescription: 'Penetration testing, security vulnerability assessments, security policy structures, and compliance setups.',
+    longDescription: 'We secure your digital assets against threat patterns. By running custom penetration tests, auditing firewall protocols, defining access constraints, and preparing security logs, we establish systems ready for compliance checks.',
+    category: 'Security',
+    icon: Shield,
+    coverImage: serviceCloudInfra,
+    thumbnail: serviceCloudInfra,
+    overview: 'Establish secure baseline controls and complete auditing guidelines covering your digital systems.',
+    offerings: [
+      'Vulnerability Scanning',
+      'Penetration Testing',
+      'IAM Policy Configs',
+      'Firewall Rule Tuning',
+      'Compliance Log Scans'
+    ],
+    detailedOfferings: [
+      {
+        title: 'Penetration Testing',
+        description: 'Locate and resolve potential system entry points before threats exploit them.',
+        badges: ['OWASP', 'BurpSuite', 'API Audit'],
+        color: 'red',
+        iconName: 'shield'
+      },
+      {
+        title: 'Compliance Setups',
+        description: 'Map internal network controls and audit trails to align with standard compliance targets.',
+        badges: ['SOC2', 'ISO 27001', 'HIPAA'],
+        color: 'blue',
+        iconName: 'checkcircle'
+      }
+    ],
+    process: [
+      { step: 1, title: 'Security Auditing', description: 'Analyze server access lists, database roles, and open API ports.' },
+      { step: 2, title: 'Vulnerability Analysis', description: 'Run scanners and manual testing protocols against APIs.' },
+      { step: 3, title: 'Control Configuration', description: 'Tweak firewall configurations and restrict access credentials.' },
+      { step: 4, title: 'Audit Verification', description: 'Confirm safety checks pass and compile final security reports.' }
+    ],
+    caseStudies: [],
+    technologies: ['OWASP ZAP', 'Nmap', 'Burp Suite', 'CloudTrail', 'AWS IAM'],
+    faqs: [
+      { question: 'Do you help write security policies?', answer: 'Yes, we assist engineering teams in structuring SOW security parameters and IAM policies.' }
+    ],
+    benefits: [
+      'Complete security logs tracking access changes',
+      'Standard system configurations passing audits',
+      'Reduced threat profiles across database layers'
+    ],
+    cta: 'Discuss Your Security Framework',
+    featured: false,
+    order: 19,
+    status: 'active',
+    industries: ['Fintech Startups', 'Healthcare Platforms', 'Enterprise IT', 'Data Providers'],
+    whyChooseUs: [
+      { title: 'Security First', description: 'We follow strict least-privilege constraints to protect codebases.' },
+      { title: 'Continuous Checks', description: 'We deploy daily checkers monitoring server states.' }
+    ],
+    stats: [
+      { value: 'SOC2', label: 'Ready top', iconType: 'shield', colorTheme: 'green' },
+      { value: '100%', label: 'Sanitized Data', iconType: 'shield', colorTheme: 'purple' },
+      { value: 'Zero', label: 'Vulnerabilities', iconType: 'shield', colorTheme: 'gold' },
+      { value: 'Audit', label: 'Compliance Pass', iconType: 'shield', colorTheme: 'blue' }
+    ],
+    dashboardImage: 'clinical_risk_scoring'
   }
 ];
 

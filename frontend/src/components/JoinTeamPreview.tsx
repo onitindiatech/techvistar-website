@@ -19,7 +19,7 @@ export const JoinTeamPreview = () => {
   ];
 
   return (
-    <section className="py-24 bg-slate-50 relative overflow-hidden border-t border-slate-200/60">
+    <section className="pt-12 pb-12 md:pt-16 md:pb-16 bg-slate-50 relative overflow-hidden border-t border-slate-200/60">
       {/* Grid Pattern Background */}
       <div 
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff_1.5px,transparent_1.5px),linear-gradient(to_bottom,#ffffff_1.5px,transparent_1.5px)] bg-[size:4rem_4rem] opacity-40" 

@@ -125,7 +125,8 @@ export default function DomeGallery({
   openedImageHeight = '350px',
   imageBorderRadius = '30px',
   openedImageBorderRadius = '30px',
-  grayscale = true
+  grayscale = true,
+  onImageClick
 }) {
   const rootRef = useRef(null);
   const mainRef = useRef(null);
@@ -256,6 +257,22 @@ export default function DomeGallery({
 
   useEffect(() => {
     applyTransform(rotationRef.current.x, rotationRef.current.y);
+
+    let frameId;
+    const loop = () => {
+      frameId = requestAnimationFrame(loop);
+
+      const isEnlarged = rootRef.current?.getAttribute('data-enlarging') === 'true';
+      if (!draggingRef.current && !inertiaRAF.current && !isEnlarged && !openingRef.current) {
+        rotationRef.current.y = wrapAngleSigned(rotationRef.current.y + 0.08);
+        applyTransform(rotationRef.current.x, rotationRef.current.y);
+      }
+    };
+
+    frameId = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
   }, []);
 
   const stopInertia = useCallback(() => {
@@ -438,13 +455,13 @@ export default function DomeGallery({
       };
       animatingOverlay.addEventListener('transitionend', cleanup, { once: true });
     };
-    scrim.addEventListener('click', close);
+    viewerRef.current?.addEventListener('click', close);
     const onKey = e => {
       if (e.key === 'Escape') close();
     };
     window.addEventListener('keydown', onKey);
     return () => {
-      scrim.removeEventListener('click', close);
+      viewerRef.current?.removeEventListener('click', close);
       window.removeEventListener('keydown', onKey);
     };
   }, [enlargeTransitionMs, unlockScroll]);
@@ -502,6 +519,7 @@ export default function DomeGallery({
       overlay.style.height = frameR.height + 'px';
       overlay.style.opacity = '0';
       overlay.style.zIndex = '30';
+      overlay.style.pointerEvents = 'auto';
       overlay.style.willChange = 'transform, opacity';
       overlay.style.transformOrigin = 'top left';
       overlay.style.transition = `transform ${enlargeTransitionMs}ms ease, opacity ${enlargeTransitionMs}ms ease`;
@@ -569,9 +587,18 @@ export default function DomeGallery({
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+
+      if (onImageClick) {
+        const clickedSrc = e.currentTarget.parentElement.dataset.src;
+        const index = images.findIndex(img => img.src === clickedSrc);
+        if (index !== -1) {
+          onImageClick(index);
+          return;
+        }
+      }
       openItemFromElement(e.currentTarget);
     },
-    [openItemFromElement]
+    [images, onImageClick, openItemFromElement]
   );
 
   const onTilePointerUp = useCallback(
@@ -581,9 +608,18 @@ export default function DomeGallery({
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+
+      if (onImageClick) {
+        const clickedSrc = e.currentTarget.parentElement.dataset.src;
+        const index = images.findIndex(img => img.src === clickedSrc);
+        if (index !== -1) {
+          onImageClick(index);
+          return;
+        }
+      }
       openItemFromElement(e.currentTarget);
     },
-    [openItemFromElement]
+    [images, onImageClick, openItemFromElement]
   );
 
   useEffect(() => {

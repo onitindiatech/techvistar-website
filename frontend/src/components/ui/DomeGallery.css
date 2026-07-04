@@ -164,6 +164,7 @@ main.sphere-main {
   z-index: 30;
   border-radius: var(--enlarge-radius, 32px);
   overflow: hidden;
+  pointer-events: auto;
   transition:
     transform 500ms ease,
     opacity 500ms ease;

@@ -1,6 +1,9 @@
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { Send, Clock, ShieldCheck, Award } from 'lucide-react';
+import { 
+  Send, Clock, ShieldCheck, Award, 
+  Globe, Smartphone, Palette, Brain, Laptop, Cloud 
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,9 +11,11 @@ import { useToast } from '@/hooks/use-toast';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
 import { CONTACT_FORM } from '@/data';
+import { cn } from '@/lib/utils';
 
 interface FormData {
   category: string;
+  budget: string;
   name: string;
   email: string;
   phone: string;
@@ -19,11 +24,28 @@ interface FormData {
 
 const initialFormData: FormData = {
   category: '',
+  budget: '',
   name: '',
   email: '',
   phone: '',
   message: '',
 };
+
+const CATEGORIES = [
+  { id: 'web', label: 'Web Dev', icon: Globe },
+  { id: 'mobile', label: 'Mobile Apps', icon: Smartphone },
+  { id: 'design', label: 'UI/UX Design', icon: Palette },
+  { id: 'ai', label: 'AI Solutions', icon: Brain },
+  { id: 'software', label: 'Software', icon: Laptop },
+  { id: 'devops', label: 'Cloud/DevOps', icon: Cloud },
+];
+
+const BUDGETS = [
+  { id: 'under_10k', label: '< $10k' },
+  { id: '10k_25k', label: '$10k - $25k' },
+  { id: '25k_50k', label: '$25k - $50k' },
+  { id: 'over_50k', label: '$50k+' },
+];
 
 export const ContactSection = () => {
   const { ref, isInView } = useAnimatedSection();
@@ -33,11 +55,29 @@ export const ContactSection = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.category) {
+      toast({
+        title: 'Selection Required',
+        description: 'Please select a project category.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    if (!formData.budget) {
+      toast({
+        title: 'Selection Required',
+        description: 'Please select your estimated budget range.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
       const params = new URLSearchParams();
       params.append('category', formData.category);
+      params.append('budget', formData.budget);
       params.append('name', formData.name);
       params.append('email', formData.email);
       params.append('phone', formData.phone);
@@ -74,7 +114,7 @@ export const ContactSection = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -109,7 +149,7 @@ export const ContactSection = () => {
           </p>
         </motion.div>
 
-        {/* Hover Lift & Glow Container Card */}
+        {/* Lead Capture form card grid */}
         <motion.div 
           initial={{ opacity: 0, y: 25 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -117,9 +157,8 @@ export const ContactSection = () => {
           transition={{ duration: 0.4 }}
           className="grid lg:grid-cols-12 rounded-3xl border border-slate-200/80 overflow-hidden shadow-xl bg-white hover:border-emerald-500/20"
         >
-          {/* Left Block: "How It Works" split section */}
+          {/* Left Block: "How It Works" list */}
           <div className="lg:col-span-5 bg-slate-50/60 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-slate-200/60 p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
-            {/* Subtle light pattern */}
             <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-500/[0.02] rounded-full blur-[80px] pointer-events-none" />
 
             <div className="space-y-10 relative z-10">
@@ -177,28 +216,40 @@ export const ContactSection = () => {
             </div>
           </div>
 
-          {/* Right Block: Lead Capture Form */}
-          <div className="lg:col-span-7 bg-white p-8 md:p-10">
+          {/* Right Block: Redesigned Interactive Form */}
+          <div className="lg:col-span-7 bg-white p-8 md:p-10 flex flex-col justify-center">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 h-11 text-slate-900 text-xs sm:text-sm font-bold focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 transition-all cursor-pointer appearance-none"
-                >
-                  <option value="" className="text-slate-400">Select Category</option>
-                  <option value="web" className="text-slate-800">Web Development</option>
-                  <option value="mobile" className="text-slate-800">Mobile Apps</option>
-                  <option value="design" className="text-slate-800">UI/UX Design</option>
-                  <option value="ai" className="text-slate-800">AI Solutions</option>
-                  <option value="software" className="text-slate-800">Custom Software</option>
-                  <option value="devops" className="text-slate-800">Cloud & DevOps</option>
-                  <option value="other" className="text-slate-800">Other</option>
-                </select>
+              
+              {/* Category Pills Selector */}
+              <div className="space-y-3">
+                <label className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-slate-400 block text-left">
+                  Project Category
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {CATEGORIES.map((cat) => {
+                    const Icon = cat.icon;
+                    const isSelected = formData.category === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, category: cat.id }))}
+                        className={cn(
+                          "flex items-center gap-2.5 p-3 rounded-xl border text-left transition-all duration-300 cursor-pointer select-none",
+                          isSelected 
+                            ? "bg-emerald-50/70 border-emerald-500/35 text-emerald-700 shadow-sm" 
+                            : "bg-slate-50/50 hover:bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900"
+                        )}
+                      >
+                        <Icon className={cn("w-4 h-4 shrink-0", isSelected ? "text-emerald-600" : "text-slate-400")} />
+                        <span className="text-[11px] sm:text-xs font-bold leading-none">{cat.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
+              {/* Name & Email Fields Row */}
               <div className="grid sm:grid-cols-2 gap-6">
                 <Input
                   name="name"
@@ -220,6 +271,7 @@ export const ContactSection = () => {
                 />
               </div>
 
+              {/* Phone Field */}
               <Input
                 name="phone"
                 type="tel"
@@ -230,21 +282,50 @@ export const ContactSection = () => {
                 className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm h-11 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-bold"
               />
 
+              {/* Description Textarea */}
               <Textarea
                 name="message"
                 placeholder="Describe your project, goals, and timeline..."
                 value={formData.message}
                 onChange={handleChange}
                 required
-                rows={5}
+                rows={4}
                 className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 resize-none font-bold"
               />
 
-              <div className="flex justify-end">
+              {/* Budget Range Pills Selector */}
+              <div className="space-y-3">
+                <label className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-slate-400 block text-left">
+                  Estimated Budget
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {BUDGETS.map((bud) => {
+                    const isSelected = formData.budget === bud.id;
+                    return (
+                      <button
+                        key={bud.id}
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, budget: bud.id }))}
+                        className={cn(
+                          "p-3 rounded-xl border text-center transition-all duration-300 cursor-pointer select-none text-xs font-bold",
+                          isSelected 
+                            ? "bg-emerald-50/70 border-emerald-500/35 text-emerald-700 shadow-sm" 
+                            : "bg-slate-50/50 hover:bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900"
+                        )}
+                      >
+                        {bud.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-end pt-2">
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="h-11 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] flex items-center gap-2"
+                  className="h-11 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] flex items-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                   <Send className="w-4 h-4" />

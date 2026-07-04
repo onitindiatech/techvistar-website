@@ -10,21 +10,38 @@ import {
   Phone, Mail, MapPin, Clock, ArrowRight, ArrowUp, Star,
   Linkedin, Github, Instagram, Twitter, Youtube
 } from 'lucide-react';
+import { subscribeNewsletter } from '@/services/newsletter.service';
 
 export const Footer = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+    setIsSubmitting(true);
     
-    // Simulate successful subscription toast
-    toast({
-      title: "Successfully Subscribed!",
-      description: "You've been added to our newsletter list for TechVistar engineering updates.",
-    });
-    setEmail('');
+    try {
+      await subscribeNewsletter({
+        email,
+        source: 'footer',
+      });
+
+      toast({
+        title: "Successfully Subscribed!",
+        description: "You've been added to our newsletter list for TechVistar engineering updates.",
+      });
+      setEmail('');
+    } catch (err: any) {
+      toast({
+        title: "Subscription Failed",
+        description: err.message || "Please check your inputs and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToTop = () => {
@@ -243,8 +260,8 @@ export const Footer = () => {
                 className="bg-white/[0.02] border-white/5 text-white placeholder:text-slate-600 text-xs h-10 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30"
                 required
               />
-              <Button type="submit" size="default" className="w-full h-10 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-xs rounded-xl shadow-md transition-all hover:opacity-95">
-                Subscribe
+              <Button type="submit" disabled={isSubmitting} size="default" className="w-full h-10 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-xs rounded-xl shadow-md transition-all hover:opacity-95">
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </Button>
             </form>
           </motion.div>

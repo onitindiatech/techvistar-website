@@ -1,178 +1,28 @@
-import {
-  Globe,
-  Smartphone,
-  Palette,
-  Cpu,
-  Cloud,
-  PenTool,
-  Megaphone,
-  Terminal,
-  Settings,
-  Brain,
-  Repeat,
-  Layers,
-  Shield,
-  Briefcase,
-  Code2,
-  Workflow,
-  Search,
-  BookOpen,
-  LineChart,
-  HardDrive,
-  LucideIcon
-} from 'lucide-react';
+/**
+ * @file src/database/seedServices.ts
+ * @description Seeding script to migrate all 18 existing services from frontend to MongoDB.
+ */
 
-import serviceWebDev from '../assets/service_webdevlopment.png';
-import serviceMobileApp from '../assets/mobile_phone_devloper.png';
-import serviceUiUx from '../assets/ui_ux_designer.png';
-import serviceAiAutomation from '../assets/Ai_and_atomation.png';
-import serviceCloudDevops from '../assets/Claud_Devops.png';
-import serviceBranding from '../assets/service_branding.png';
-import serviceDigitalMarketing from '../assets/digital_marketing.png';
-import serviceCustomSoftware from '../assets/custom_software_devlopment.png';
-import serviceAi from '../assets/service_ai.png';
-import serviceAutomation from '../assets/service_automation.png';
-import serviceEnterpriseAi from '../assets/service_enterprise_ai.png';
-import serviceCloud from '../assets/service_cloud.png';
-import serviceDevops from '../assets/service_devops.png';
-import serviceCloudInfra from '../assets/service_cloud_infra.png';
-import serviceCreativeDesign from '../assets/service_creative_design.png';
-import serviceProductDesign from '../assets/service_product_design.png';
-import serviceSaas from '../assets/service_saas.png';
-import serviceProductEng from '../assets/service_product_eng.png';
-import serviceRevenueWeb from '../assets/service_revenue_web.png';
-import serviceDocsResearch from '../assets/service_docs_research.png';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import path from 'path';
+import { Service } from '../models/Service';
 
-export interface ServiceStat {
-  value: string;
-  label: string;
-  iconType: 'rocket' | 'clock' | 'dollar' | 'chart' | 'shield' | 'star';
-  colorTheme: 'green' | 'purple' | 'gold' | 'blue';
-}
+// Load environment variables
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
-export interface DetailedOffering {
-  title: string;
-  description: string;
-  badges: string[];
-  color: string;
-  iconName: string;
-}
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/techvistar';
 
-export interface Service {
-  id: string;
-  slug: string;
-  title: string;
-  shortDescription: string;
-  longDescription: string;
-  category: string;
-  icon: LucideIcon;
-  coverImage: string;
-  thumbnail: string;
-  overview: string;
-  offerings: string[];
-  process: { step: number; title: string; description: string }[];
-  caseStudies: { title: string; description: string; link?: string }[];
-  technologies: string[];
-  faqs: { question: string; answer: string }[];
-  benefits: string[];
-  cta: string;
-  featured: boolean;
-  order: number;
-  status: 'active' | 'draft';
-  industries?: string[];
-  whyChooseUs?: { title: string; description: string }[];
-  stats?: readonly ServiceStat[];
-  detailedOfferings?: DetailedOffering[];
-  dashboardImage?: string;
-}
-
-export const ICON_MAP: Record<string, LucideIcon> = {
-  Globe,
-  Smartphone,
-  Palette,
-  Cpu,
-  Cloud,
-  PenTool,
-  Megaphone,
-  Terminal,
-  Settings,
-  Brain,
-  Repeat,
-  Layers,
-  Shield,
-  Briefcase,
-  Code2,
-  Workflow,
-  Search,
-  BookOpen,
-  LineChart,
-  HardDrive
-};
-
-export const IMAGE_MAP: Record<string, string> = {
-  serviceWebDev,
-  serviceMobileApp,
-  serviceUiUx,
-  serviceAiAutomation,
-  serviceCloudDevops,
-  serviceBranding,
-  serviceDigitalMarketing,
-  serviceCustomSoftware,
-  serviceAi,
-  serviceAutomation,
-  serviceEnterpriseAi,
-  serviceCloud,
-  serviceDevops,
-  serviceCloudInfra,
-  serviceCreativeDesign,
-  serviceProductDesign,
-  serviceSaas,
-  serviceProductEng,
-  serviceRevenueWeb,
-  serviceDocsResearch
-};
-
-export function decorateService(apiService: any): Service {
-  return {
-    id: apiService._id || apiService.id,
-    slug: apiService.slug,
-    title: apiService.title,
-    shortDescription: apiService.shortDescription,
-    longDescription: apiService.fullDescription || apiService.shortDescription,
-    category: apiService.category,
-    icon: ICON_MAP[apiService.icon] || Globe,
-    coverImage: IMAGE_MAP[apiService.coverImage] || apiService.coverImage || '',
-    thumbnail: IMAGE_MAP[apiService.thumbnail] || apiService.thumbnail || '',
-    overview: apiService.overview,
-    offerings: apiService.offerings || [],
-    process: apiService.process || [],
-    caseStudies: apiService.caseStudies || [],
-    technologies: apiService.technologies || [],
-    faqs: apiService.faqs || [],
-    benefits: apiService.benefits || [],
-    cta: apiService.cta || '',
-    featured: apiService.featured || false,
-    order: apiService.displayOrder || 0,
-    status: apiService.status || 'active',
-    industries: apiService.industries || [],
-    whyChooseUs: apiService.whyChooseUs || [],
-    stats: apiService.stats || [],
-    detailedOfferings: apiService.detailedOfferings || [],
-    dashboardImage: apiService.dashboardImage || '',
-  };
-}
-
-export const SERVICES: readonly Service[] = [
+const SERVICES_DATA = [
   {
-    id: '1',
-    slug: 'web-development',
     title: 'Web Development',
+    slug: 'web-development',
     shortDescription: 'High-performance, secure, and SEO-optimized web systems and platforms built for conversion and scale.',
-    longDescription: 'We build fast, secure, and responsive web platforms that grow with your business. From custom corporate portals and portfolio showcases to high-conversion landing pages, e-commerce storefronts, and full-featured SaaS platforms, our systems are engineered for speed, clean UX, and seamless SEO implementation.',
+    fullDescription: 'We build fast, secure, and responsive web platforms that grow with your business. From custom corporate portals and portfolio showcases to high-conversion landing pages, e-commerce storefronts, and full-featured SaaS platforms, our systems are engineered for speed, clean UX, and seamless SEO implementation.',
     category: 'Development',
-    icon: Globe,
-    coverImage: serviceWebDev,
-    thumbnail: serviceWebDev,
+    icon: 'Globe',
+    coverImage: 'serviceWebDev',
+    thumbnail: 'serviceWebDev',
     overview: 'Complete lifecycle web engineering, building responsive systems from specification to production release.',
     offerings: [
       'Business Websites',
@@ -236,7 +86,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Discuss Your Web Project',
     featured: true,
-    order: 1,
+    displayOrder: 1,
     status: 'active',
     industries: ['E-Commerce & Retail', 'Healthcare & Wellness', 'Fintech', 'SaaS & Tech Startups'],
     whyChooseUs: [
@@ -252,15 +102,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'sustainability_dashboard'
   },
   {
-    id: '2',
-    slug: 'mobile-app-development',
     title: 'Mobile App Development',
+    slug: 'mobile-app-development',
     shortDescription: 'Native and cross-platform mobile solutions delivering fluid performance and premium user experience.',
-    longDescription: 'We develop feature-rich mobile applications that deliver native-grade performance. Utilizing cutting-edge framework stacks like React Native and Flutter alongside native platforms, we construct systems engineered for offline accessibility, smooth transitions, store compliance, and secure user data flows.',
+    fullDescription: 'We develop feature-rich mobile applications that deliver native-grade performance. Utilizing cutting-edge framework stacks like React Native and Flutter alongside native platforms, we construct systems engineered for offline accessibility, smooth transitions, store compliance, and secure user data flows.',
     category: 'Development',
-    icon: Smartphone,
-    coverImage: serviceMobileApp,
-    thumbnail: serviceMobileApp,
+    icon: 'Smartphone',
+    coverImage: 'serviceMobileApp',
+    thumbnail: 'serviceMobileApp',
     overview: 'Design, compilation, testing, and deployment of native and hybrid applications to App Store and Google Play.',
     offerings: [
       'Android Apps',
@@ -319,7 +168,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Build Your Mobile Application',
     featured: true,
-    order: 2,
+    displayOrder: 2,
     status: 'active',
     industries: ['Logistics & Supply Chain', 'On-Demand Delivery', 'Real Estate', 'Healthcare'],
     whyChooseUs: [
@@ -335,15 +184,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'mobility_routing_dashboard'
   },
   {
-    id: '3',
-    slug: 'ui-ux-design',
     title: 'UI/UX Design',
+    slug: 'ui-ux-design',
     shortDescription: 'User-centric visual architectures, interactive prototypes, and scalable systems built to engage.',
-    longDescription: 'We craft digital interfaces that are intuitive, accessible, and aligned with your brand identity. By conducting deep user research, compiling interactive wireframes, designing responsive design systems, and mapping custom dashboards, we translate business objectives into high-fidelity tactile layouts.',
+    fullDescription: 'We craft digital interfaces that are intuitive, accessible, and aligned with your brand identity. By conducting deep user research, compiling interactive wireframes, designing responsive design systems, and mapping custom dashboards, we translate business objectives into high-fidelity tactile layouts.',
     category: 'Design',
-    icon: Palette,
-    coverImage: serviceUiUx,
-    thumbnail: serviceUiUx,
+    icon: 'Palette',
+    coverImage: 'serviceUiUx',
+    thumbnail: 'serviceUiUx',
     overview: 'Translate user needs and brand assets into scalable, pixel-perfect design files and interactive prototypes.',
     offerings: [
       'UX Research',
@@ -403,7 +251,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Start Designing Your Interface',
     featured: false,
-    order: 3,
+    displayOrder: 3,
     status: 'active',
     industries: ['SaaS Platforms', 'Fintech & Banking', 'E-Learning & Edtech', 'Enterprise Software'],
     whyChooseUs: [
@@ -419,15 +267,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'sentiment_nlp_dashboard'
   },
   {
-    id: '4',
-    slug: 'ai-automation',
     title: 'AI & Automation',
+    slug: 'ai-automation',
     shortDescription: 'Smart AI integration, language models, custom retrieval systems, and workflow automation.',
-    longDescription: 'We bring artificial intelligence out of sandbox environments and embed it into daily workflows. From intelligent customer service chatbots and LLM prompt frameworks to workflow automation nodes and RAG document search engines, we construct AI systems with custom guardrails to control costs and eliminate accuracy concerns.',
+    fullDescription: 'We bring artificial intelligence out of sandbox environments and embed it into daily workflows. From intelligent customer service chatbots and LLM prompt frameworks to workflow automation nodes and RAG document search engines, we construct AI systems with custom guardrails to control costs and eliminate accuracy concerns.',
     category: 'Advanced Technology',
-    icon: Cpu,
-    coverImage: serviceAiAutomation,
-    thumbnail: serviceAiAutomation,
+    icon: 'Cpu',
+    coverImage: 'serviceAiAutomation',
+    thumbnail: 'serviceAiAutomation',
     overview: 'Deploy custom LLM structures, database retrievers, and background task handlers for operational efficiency.',
     offerings: [
       'AI Chatbots',
@@ -500,18 +347,17 @@ export const SERVICES: readonly Service[] = [
     faqs: [
       { question: 'How do you prevent AI hallucinations?', answer: 'We implement Retrieval-Augmented Generation (RAG) to restrict model contexts to verified internal documentation and apply strict content filters.' },
       { question: 'How do we manage API token costs and usage limits?', answer: 'We build semantic caching layers to reuse response structures, throttle heavy consumer requests, and route lighter queries to open-source models like Llama 3.' },
-      { question: 'Will our proprietary business data be used to train public LLMs?', answer: 'No. We configure private cloud instances (AWS/Azure VPC) and strictly utilize zero-data retention enterprise API contracts so your data remains entirely confidential.' },
-      { question: 'Can your AI workflows connect to our legacy internal systems?', answer: 'Yes. We construct custom webhooks, secure REST API bridges, and database synchronization pipelines to connect legacy platforms with modern orchestration frameworks.' }
+      { question: 'Will our proprietary data be trained?', answer: 'No. We configure private cloud instances and use secure corporate contracts.' },
+      { question: 'Can you connect to legacy systems?', answer: 'Yes, we construct custom webhooks, secure REST API bridges, and database sync pipelines.' }
     ],
     benefits: [
-      'Substantial reduction in manual administrative support ticket volume',
+      'Substantial reduction in manual support volume',
       'Faster data processing and automated entry times',
-      'Secure, localized data containment meeting audit needs',
-      'Custom AI guardrails for accuracy and cost control'
+      'Secure, localized data containment meeting audit needs'
     ],
     cta: 'Automate Your Core Operations',
     featured: true,
-    order: 4,
+    displayOrder: 4,
     status: 'active',
     industries: ['Customer Service', 'Fintech', 'Insurance', 'Healthcare Services'],
     whyChooseUs: [
@@ -527,15 +373,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'ai_overview_illustration'
   },
   {
-    id: '5',
-    slug: 'cloud',
     title: 'Cloud Solutions',
+    slug: 'cloud',
     shortDescription: 'Reliable cloud architectures, storage configurations, secure migrations, and zero-downtime hosting.',
-    longDescription: 'We design high-availability cloud solutions tailored to enterprise workloads. By setting up virtual networks, redundant storage arrays, multi-region load balancers, and continuous security scanners, we establish resilient systems built to scale seamlessly during massive traffic spikes.',
+    fullDescription: 'We design high-availability cloud solutions tailored to enterprise workloads. By setting up virtual networks, redundant storage arrays, multi-region load balancers, and continuous security scanners, we establish resilient systems built to scale seamlessly during massive traffic spikes.',
     category: 'Infrastructure',
-    icon: Cloud,
-    coverImage: serviceCloud,
-    thumbnail: serviceCloud,
+    icon: 'Cloud',
+    coverImage: 'serviceCloud',
+    thumbnail: 'serviceCloud',
     overview: 'Establish secure, elastic, and high-performance cloud networks under industry-standard isolation models.',
     offerings: [
       'AWS Deployments',
@@ -593,7 +438,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Discuss Your Cloud Topology',
     featured: false,
-    order: 5,
+    displayOrder: 5,
     status: 'active',
     industries: ['SaaS Ventures', 'Enterprise Logistics', 'Healthcare Providers', 'Large Retail Platforms'],
     whyChooseUs: [
@@ -609,15 +454,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'ai_translator'
   },
   {
-    id: '6',
-    slug: 'devops',
     title: 'DevOps & CI/CD',
+    slug: 'devops',
     shortDescription: 'Continuous Integration pipelines, infrastructure automation, Docker containers, and environment tuning.',
-    longDescription: 'We streamline development flows by bridging code changes with production servers. Through Infrastructure as Code (IaC), scriptable build nodes, Docker containerization, and automated test integrations, we help technical teams launch updates faster with minimal manual friction.',
+    fullDescription: 'We streamline development flows by bridging code changes with production servers. Through Infrastructure as Code (IaC), scriptable build nodes, Docker containerization, and automated test integrations, we help technical teams launch updates faster with minimal manual friction.',
     category: 'Infrastructure',
-    icon: Settings,
-    coverImage: serviceDevops,
-    thumbnail: serviceDevops,
+    icon: 'Settings',
+    coverImage: 'serviceDevops',
+    thumbnail: 'serviceDevops',
     overview: 'Automate build runs and standardize hosting nodes using clean Infrastructure as Code templates.',
     offerings: [
       'CI/CD Pipelines',
@@ -675,7 +519,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Streamline Your Deployment Pipeline',
     featured: false,
-    order: 6,
+    displayOrder: 6,
     status: 'active',
     industries: ['Tech Startups', 'Fintech Teams', 'SaaS Products', 'Corporate Engineering'],
     whyChooseUs: [
@@ -691,15 +535,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'crop_health_analysis'
   },
   {
-    id: '7',
-    slug: 'ai',
     title: 'Artificial Intelligence',
+    slug: 'ai',
     shortDescription: 'Cognitive models, custom LLM fine-tuning, neural networks, and semantic vector indexing.',
-    longDescription: 'We engineer complex machine learning architectures. By designing custom data pipelines, compiling training datasets, fine-tuning state-of-the-art open-source LLMs, and setting up secure GPU inference servers, we construct advanced cognitive models tailored to domain-specific knowledge bases.',
+    fullDescription: 'We engineer complex machine learning architectures. By designing custom data pipelines, compiling training datasets, fine-tuning state-of-the-art open-source LLMs, and setting up secure GPU inference servers, we construct advanced cognitive models tailored to domain-specific knowledge bases.',
     category: 'Advanced Technology',
-    icon: Brain,
-    coverImage: serviceAi,
-    thumbnail: serviceAi,
+    icon: 'Brain',
+    coverImage: 'serviceAi',
+    thumbnail: 'serviceAi',
     overview: 'Develop specialized cognitive architectures capable of parsing complex tabular and text resources.',
     offerings: [
       'LLM Fine-Tuning',
@@ -748,16 +591,16 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['Python', 'PyTorch', 'Hugging Face', 'Pinecone', 'vLLM', 'AWS GPU'],
     faqs: [
-      { question: 'Do you host models locally or use third-party APIs?', answer: 'We support both. We configure private cloud hosting for maximum control or use secure enterprise contracts with API providers.' }
+      { question: 'Do you host models?', answer: 'We support private cloud hosting or secure enterprise API endpoints.' }
     ],
     benefits: [
-      'Instant extraction of relevant insights from unstructured text',
+      'Instant extraction of insights from unstructured text',
       'Lower running fees compared to generic commercial models',
-      'Complete intellectual property control over your custom model weight variables'
+      'Complete intellectual property control'
     ],
     cta: 'Design Your Custom AI System',
     featured: false,
-    order: 7,
+    displayOrder: 7,
     status: 'active',
     industries: ['Fintech Analysts', 'Legal Documentation Teams', 'Healthcare Analytics', 'Enterprise Support'],
     whyChooseUs: [
@@ -773,15 +616,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'ai_overview_illustration'
   },
   {
-    id: '8',
-    slug: 'automation',
     title: 'Operations Automation',
+    slug: 'automation',
     shortDescription: 'Workflow orchestration, legacy API wrappers, background tasks, and scheduled data syncs.',
-    longDescription: 'We eliminate manual click work by bridging digital operations. By setting up event listener nodes, scheduled background tasks, automated data entry workers, and API translation wrappers, we build reliable system-to-system connections that run silently 24/7.',
+    fullDescription: 'We eliminate manual click work by bridging digital operations. By setting up event listener nodes, scheduled background tasks, automated data entry workers, and API translation wrappers, we build reliable system-to-system connections that run silently 24/7.',
     category: 'Advanced Technology',
-    icon: Repeat,
-    coverImage: serviceAutomation,
-    thumbnail: serviceAutomation,
+    icon: 'Repeat',
+    coverImage: 'serviceAutomation',
+    thumbnail: 'serviceAutomation',
     overview: 'Connect disjointed software tools using clean automation paths and custom webhooks.',
     offerings: [
       'n8n Orchestration',
@@ -830,7 +672,7 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['n8n', 'Node.js', 'PostgreSQL', 'Cron', 'REST APIs', 'Webhooks'],
     faqs: [
-      { question: 'What happens if an API is temporarily down?', answer: 'We implement automatic backoff retry queues and instant notifications on Slack/Discord to ensure no event is lost.' }
+      { question: 'What happens if an API is down?', answer: 'We implement automatic backoff retry queues and instant alerts.' }
     ],
     benefits: [
       'Fewer human typos in data entry operations',
@@ -839,7 +681,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Automate Your Workflows Today',
     featured: false,
-    order: 8,
+    displayOrder: 8,
     status: 'active',
     industries: ['Logistics Teams', 'Real Estate Agencies', 'Customer Support Departments', 'E-Commerce Retailers'],
     whyChooseUs: [
@@ -855,15 +697,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'crop_health_analysis'
   },
   {
-    id: '9',
-    slug: 'branding',
     title: 'Branding',
+    slug: 'branding',
     shortDescription: 'Distinct visual identities, logo marks, brand assets, and marketing collateral with cohesive brand narratives.',
-    longDescription: 'We translate your business goals into premium visual marks that establish immediate market trust. From logo creation and typography guidelines to packaging designs, marketing assets, presentations, and visual identity books, we establish unified standards that reflect your core values.',
+    fullDescription: 'We translate your business goals into premium visual marks that establish immediate market trust. From logo creation and typography guidelines to packaging designs, marketing assets, presentations, and visual identity books, we establish unified standards that reflect your core values.',
     category: 'Design',
-    icon: PenTool,
-    coverImage: serviceBranding,
-    thumbnail: serviceBranding,
+    icon: 'PenTool',
+    coverImage: 'serviceBranding',
+    thumbnail: 'serviceBranding',
     overview: 'Create and systemize brand logos, marketing assets, and corporate design elements.',
     offerings: [
       'Logo Design',
@@ -920,7 +761,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Develop Your Visual Brand',
     featured: false,
-    order: 9,
+    displayOrder: 9,
     status: 'active',
     industries: ['Retail & FMCG', 'Tech Startups', 'Corporate Agencies', 'Real Estate'],
     whyChooseUs: [
@@ -936,15 +777,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'resume_review_assistant'
   },
   {
-    id: '9-2',
-    slug: 'creative-design',
     title: 'Creative Design',
+    slug: 'creative-design',
     shortDescription: 'Motion graphics, digital illustrations, marketing creatives, and custom vector assets for campaigns.',
-    longDescription: 'We craft compelling digital artwork and kinetic media designed to engage online audiences. From marketing banner ads and corporate slide sheets to social media vectors and custom site illustrations, we support campaign needs with fast execution pipelines.',
+    fullDescription: 'We craft compelling digital artwork and kinetic media designed to engage online audiences. From marketing banner ads and corporate slide sheets to social media vectors and custom site illustrations, we support campaign needs with fast execution pipelines.',
     category: 'Design',
-    icon: Layers,
-    coverImage: serviceCreativeDesign,
-    thumbnail: serviceCreativeDesign,
+    icon: 'Layers',
+    coverImage: 'serviceCreativeDesign',
+    thumbnail: 'serviceCreativeDesign',
     overview: 'Design interactive, animated, and visual assets tailored for digital platforms and social campaigns.',
     offerings: [
       'Graphic Design Assets',
@@ -992,7 +832,7 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['After Effects', 'Photoshop', 'Illustrator', 'Figma', 'Premiere Pro'],
     faqs: [
-      { question: 'What file formats do you deliver for animation?', answer: 'We deliver in MP4, WebM, and Lottie (JSON) format for web micro-animations.' }
+      { question: 'What file formats do you deliver?', answer: 'We deliver in MP4, WebM, and Lottie (JSON) formats.' }
     ],
     benefits: [
       'Engaging animated elements enhancing interface interactions',
@@ -1001,7 +841,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Discuss Your Creative Project',
     featured: false,
-    order: 9,
+    displayOrder: 10,
     status: 'active',
     industries: ['SaaS platforms', 'Digital Advertisers', 'E-Commerce Brands', 'Social Media Agencies'],
     whyChooseUs: [
@@ -1017,15 +857,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'resume_review_assistant'
   },
   {
-    id: '10',
-    slug: 'product-design',
     title: 'Product Design',
+    slug: 'product-design',
     shortDescription: 'Tactile concept development, feature scoping, detailed wireframing, and interactive usability tests.',
-    longDescription: 'We translate digital ideas into tangible web products. By mapping user flows, defining feature lists, sketching low-fidelity layout structures, and building clickable prototype mockups, we validate interface directions before committing engineering resources.',
+    fullDescription: 'We translate digital ideas into tangible web products. By mapping user flows, defining feature lists, sketching low-fidelity layout structures, and building clickable prototype mockups, we validate interface directions before committing engineering resources.',
     category: 'Design',
-    icon: Layers,
-    coverImage: serviceProductDesign,
-    thumbnail: serviceProductDesign,
+    icon: 'Layers',
+    coverImage: 'serviceProductDesign',
+    thumbnail: 'serviceProductDesign',
     overview: 'Conceptualize and refine complex digital structures into elegant, click-tested interactive frameworks.',
     offerings: [
       'Product Wireframing',
@@ -1082,7 +921,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Scope Your Digital Product Design',
     featured: false,
-    order: 10,
+    displayOrder: 11,
     status: 'active',
     industries: ['SaaS Startups', 'Fintech Teams', 'Mobile App Ventures', 'Healthcare Portals'],
     whyChooseUs: [
@@ -1091,22 +930,21 @@ export const SERVICES: readonly Service[] = [
     ],
     stats: [
       { value: '3x', label: 'Fewer Dev Changes', iconType: 'clock', colorTheme: 'green' },
-      { value: '100%', label: 'Figma Auto-Layout', iconType: 'shield', colorTheme: 'purple' },
+      { value: '100%', label: 'Figma Auto-Layout', iconType: 'slate', colorTheme: 'purple' },
       { value: '25+', label: 'User Test Runs', iconType: 'star', colorTheme: 'gold' },
       { value: 'Interactive', label: 'Handoff Format', iconType: 'rocket', colorTheme: 'blue' }
     ],
     dashboardImage: 'sentiment_nlp_dashboard'
   },
   {
-    id: '11',
-    slug: 'custom-software-development',
     title: 'Custom Software Development',
+    slug: 'custom-software-development',
     shortDescription: 'Tailored enterprise software, ERP/CRM implementations, APIs, and custom SaaS foundations.',
-    longDescription: 'When standard SaaS tools are not enough, we develop custom enterprise software designed specifically for your workflows. We engineer robust, audit-friendly software ranging from internal management tools and secure database APIs to custom CRM implementations and multi-tenant SaaS products.',
+    fullDescription: 'When standard SaaS tools are not enough, we develop custom enterprise software designed specifically for your workflows. We engineer robust, audit-friendly software ranging from internal management tools and secure database APIs to custom CRM implementations and multi-tenant SaaS products.',
     category: 'Development',
-    icon: Terminal,
-    coverImage: serviceCustomSoftware,
-    thumbnail: serviceCustomSoftware,
+    icon: 'Terminal',
+    coverImage: 'serviceCustomSoftware',
+    thumbnail: 'serviceCustomSoftware',
     overview: 'Full-stack software engineering providing custom dashboards, integrations, databases, and secure APIs.',
     offerings: [
       'Enterprise Resource Planning (ERP)',
@@ -1148,16 +986,16 @@ export const SERVICES: readonly Service[] = [
       }
     ],
     process: [
-      { step: 1, title: 'Process Blueprinting', description: 'Interview administrative stakeholders and map legacy software hooks.' },
+      { step: 1, title: 'Process Blueprinting', description: 'Interview stakeholders and map legacy software hooks.' },
       { step: 2, title: 'Database Schema Design', description: 'Normalize database diagrams and configure access roles.' },
       { step: 3, title: 'API & Dashboard Development', description: 'Build backend pipelines and responsive administration interfaces.' },
       { step: 4, title: 'System Security Auditing', description: 'Implement authorization layers, logging trails, and penetration checks.' },
-      { step: 5, title: 'Onboarding & Launch', description: 'Conduct employee sandbox training and complete final staging migration.' }
+      { step: 5, title: 'Onboarding & Launch', description: 'Conduct employee sandbox training and staging migration.' }
     ],
     caseStudies: [],
     technologies: ['PostgreSQL', 'TypeScript', 'Node.js', 'Express', 'Prisma', 'React'],
     faqs: [
-      { question: 'Do you work with custom databases?', answer: 'Yes, we routinely build API wrappers and sync systems to connect custom legacy databases with modern SaaS platforms.' }
+      { question: 'Do you work with custom databases?', answer: 'Yes, we connect custom legacy databases with modern SaaS platforms.' }
     ],
     benefits: [
       'Software built to adapt perfectly to your business process',
@@ -1166,12 +1004,12 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Scope Your Custom Software Solution',
     featured: true,
-    order: 11,
+    displayOrder: 12,
     status: 'active',
     industries: ['Logistics & Storage', 'Hospital Management', 'Manufacturing Operations', 'Fintech Ventures'],
     whyChooseUs: [
-      { title: 'Uncompromising Security', description: 'All database queries are fully sanitized and run under strict authorization parameters.' },
-      { title: 'Zero User Licensing Fees', description: 'Since you own the software, you can onboard unlimited staff members without recurring costs.' }
+      { title: 'Uncompromising Security', description: 'All database queries are fully sanitized and run under authorization checks.' },
+      { title: 'Zero User Licensing Fees', description: 'Onboard unlimited staff members without recurring software user fees.' }
     ],
     stats: [
       { value: '0$', label: 'Licensing Fee', iconType: 'dollar', colorTheme: 'green' },
@@ -1182,15 +1020,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'mobility_routing_dashboard'
   },
   {
-    id: '12',
-    slug: 'saas-platforms',
     title: 'SaaS Platforms',
+    slug: 'saas-platforms',
     shortDescription: 'Multi-tenant databases, subscription gates, custom metrics, and scalable API layers.',
-    longDescription: 'We build subscription software platforms engineered to handle growing user workloads. From configuring database multi-tenancy and Stripe payment webhooks to coding custom dashboards and structuring user privilege roles, we build the core engines of SaaS businesses.',
+    fullDescription: 'We build subscription software platforms engineered to handle growing user workloads. From configuring database multi-tenancy and Stripe payment webhooks to coding custom dashboards and structuring user privilege roles, we build the core engines of SaaS businesses.',
     category: 'Development',
-    icon: Layers,
-    coverImage: serviceSaas,
-    thumbnail: serviceSaas,
+    icon: 'Layers',
+    coverImage: 'serviceSaas',
+    thumbnail: 'serviceSaas',
     overview: 'Deploy secure, scalable, and audit-friendly SaaS software frameworks.',
     offerings: [
       'Multi-Tenant Databases',
@@ -1238,7 +1075,7 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['React', 'Node.js', 'PostgreSQL', 'Stripe API', 'Prisma', 'JWT'],
     faqs: [
-      { question: 'How do you handle multi-tenancy?', answer: 'We typically use logical separation with a shared database and tenant columns, or physical schema separation depending on your compliance requirements.' }
+      { question: 'How do you handle multi-tenancy?', answer: 'We typically use logical separation with a shared database and tenant columns.' }
     ],
     benefits: [
       'Scalable multi-tenant databases holding separate client structures',
@@ -1247,7 +1084,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Build Your SaaS Core Platform',
     featured: false,
-    order: 12,
+    displayOrder: 13,
     status: 'active',
     industries: ['B2B SaaS Startups', 'E-Learning Products', 'Proptech Ventures', 'Corporate Platforms'],
     whyChooseUs: [
@@ -1263,15 +1100,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'ai_translator_batches'
   },
   {
-    id: '13',
-    slug: 'enterprise-ai-integration',
     title: 'Enterprise AI Integration',
+    slug: 'enterprise-ai-integration',
     shortDescription: 'Embed cognitive models into legacy platforms, vector databases, custom guardrails, and compliance logs.',
-    longDescription: 'We connect cutting-edge cognitive models with traditional corporate database systems. By configuring secure API wrappers, building custom data retrieval pipelines (RAG), establishing safety guardrails, and setting up vector databases, we make advanced artificial intelligence safe and useful for enterprise operations.',
+    fullDescription: 'We connect cutting-edge cognitive models with traditional corporate database systems. By configuring secure API wrappers, building custom data retrieval pipelines (RAG), establishing safety guardrails, and setting up vector databases, we make advanced artificial intelligence safe and useful for enterprise operations.',
     category: 'Advanced Technology',
-    icon: Cpu,
-    coverImage: serviceEnterpriseAi,
-    thumbnail: serviceEnterpriseAi,
+    icon: 'Cpu',
+    coverImage: 'serviceEnterpriseAi',
+    thumbnail: 'serviceEnterpriseAi',
     overview: 'Deploy secure cognitive adapters to connect LLMs with proprietary company records.',
     offerings: [
       'Legacy AI Integrations',
@@ -1319,7 +1155,7 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['Python', 'Pinecone', 'LangChain', 'Redis', 'AWS VPC', 'OpenAI Enterprise'],
     faqs: [
-      { question: 'Will our data be kept confidential?', answer: 'Yes, we use enterprise API agreements or self-hosted models ensuring no company files are ever logged or used to train public datasets.' }
+      { question: 'Will our data be kept confidential?', answer: 'Yes, we use enterprise API agreements or self-hosted models ensuring no company files are ever logged.' }
     ],
     benefits: [
       'Expose legacy data concepts to smart LLMs safely',
@@ -1328,7 +1164,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Integrate AI into Your Infrastructure',
     featured: true,
-    order: 13,
+    displayOrder: 14,
     status: 'active',
     industries: ['Insurance Analysts', 'Banking Operations', 'Legal Firms', 'Enterprise Logistics'],
     whyChooseUs: [
@@ -1344,15 +1180,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'clinical_risk_scoring'
   },
   {
-    id: '14',
-    slug: 'product-platform-engineering',
     title: 'Product & Platform Engineering',
+    slug: 'product-platform-engineering',
     shortDescription: 'Scalable system backends, service-oriented systems, message queues, and high-performance databases.',
-    longDescription: 'We build the foundational engines of digital applications. By setting up messaging broker structures, database pools, caching systems, and REST API controllers, we build backend systems engineered to handle millions of requests with low memory footprints.',
+    fullDescription: 'We build the foundational engines of digital applications. By setting up messaging broker structures, database pools, caching systems, and REST API controllers, we build backend systems engineered to handle millions of requests with low memory footprints.',
     category: 'Development',
-    icon: Code2,
-    coverImage: serviceProductEng,
-    thumbnail: serviceProductEng,
+    icon: 'Code2',
+    coverImage: 'serviceProductEng',
+    thumbnail: 'serviceProductEng',
     overview: 'Build robust, message-driven system backends that run with low latency profiles.',
     offerings: [
       'API Core Design',
@@ -1400,7 +1235,7 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['PostgreSQL', 'NodeJS', 'Redis', 'RabbitMQ', 'TypeScript', 'Docker'],
     faqs: [
-      { question: 'How do you handle heavy background tasks?', answer: 'We offload them from the main API thread using message queues like BullMQ or RabbitMQ to ensure the user interface remains responsive.' }
+      { question: 'How do you handle heavy background tasks?', answer: 'We offload them from the main API thread using message queues.' }
     ],
     benefits: [
       'Super-fast API load times under 150ms',
@@ -1409,7 +1244,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Engineer Your Platform Backend',
     featured: false,
-    order: 14,
+    displayOrder: 15,
     status: 'active',
     industries: ['B2B Platforms', 'On-Demand Delivery', 'Fintech Ventures', 'API Services'],
     whyChooseUs: [
@@ -1425,15 +1260,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'mobility_routing_dashboard'
   },
   {
-    id: '15',
-    slug: 'revenue-web-conversion-systems',
     title: 'Revenue Web Systems',
+    slug: 'revenue-web-conversion-systems',
     shortDescription: 'Conversion rate optimization, tracking pixels, speed tuning, and funnel optimizations.',
-    longDescription: 'We turn web traffic into revenue. By optimizing page speed metrics, scripting custom user events, building landing pages, and conducting conversion tests, we increase the yield of marketing campaigns and help sales pages convert higher.',
+    fullDescription: 'We turn web traffic into revenue. By optimizing page speed metrics, scripting custom user events, building landing pages, and conducting conversion tests, we increase the yield of marketing campaigns and help sales pages convert higher.',
     category: 'Development',
-    icon: LineChart,
-    coverImage: serviceRevenueWeb,
-    thumbnail: serviceRevenueWeb,
+    icon: 'LineChart',
+    coverImage: 'serviceRevenueWeb',
+    thumbnail: 'serviceRevenueWeb',
     overview: 'Deploy fast, responsive landing pages configured for conversion tracking and funnel analytics.',
     offerings: [
       'Speed Optimizations',
@@ -1466,7 +1300,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         title: 'Attribution Auditing',
-        description: 'Reconcile invoice databases with marketing dashboards to verify your exact ad spend ROI.',
+        description: 'Reconcile invoice databases with marketing dashboards to verify your ad spend ROI.',
         badges: ['SQL', 'Dashboard', 'Ad Attribution'],
         color: 'orange',
         iconName: 'search'
@@ -1481,16 +1315,16 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['Vite', 'Google Tag Manager', 'GA4', 'PostgreSQL', 'TailwindCSS', 'Sentry'],
     faqs: [
-      { question: 'Why is page speed important for conversion?', answer: 'A 1-second delay in page load time can reduce conversions by up to 20% on mobile devices.' }
+      { question: 'Why is page speed important?', answer: 'A 1-second delay can cut conversion by up to 20%.' }
     ],
     benefits: [
       'Lighthouse performance scores exceeding 95 points',
       'Accurate conversion metrics matching merchant records',
-      'Higher ROI on paid search and social campaigns'
+      'Higher ROI on paid campaigns'
     ],
     cta: 'Optimize Your Conversion Funnel',
     featured: false,
-    order: 15,
+    displayOrder: 16,
     status: 'active',
     industries: ['E-Commerce Retail', 'SaaS Marketing', 'Professional Services', 'Ad Agencies'],
     whyChooseUs: [
@@ -1506,15 +1340,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'sustainability_dashboard'
   },
   {
-    id: '16',
-    slug: 'documentation-research',
     title: 'Documentation & Research',
+    slug: 'documentation-research',
     shortDescription: 'Technical writing, API specifications, architectural schemas, and user guides.',
-    longDescription: 'We translate complex code structures into readable technical documentation. From drafting API references and configuring OpenAPI/Swagger layouts to illustrating database schemas and writing developer SOW guides, we establish clear reference resources.',
+    fullDescription: 'We translate complex code structures into readable technical documentation. From drafting API references and configuring OpenAPI/Swagger layouts to illustrating database schemas and writing developer SOW guides, we establish clear reference resources.',
     category: 'Design',
-    icon: BookOpen,
-    coverImage: serviceDocsResearch,
-    thumbnail: serviceDocsResearch,
+    icon: 'BookOpen',
+    coverImage: 'serviceDocsResearch',
+    thumbnail: 'serviceDocsResearch',
     overview: 'Compile clean, comprehensive developer guidelines, schemas, and API files.',
     offerings: [
       'API Reference Manuals',
@@ -1562,7 +1395,7 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['Markdown', 'Swagger', 'GitBook', 'Mermaid', 'YAML', 'Confluence'],
     faqs: [
-      { question: 'Do you help write internal software specifications?', answer: 'Yes, we assist product managers in scoping SOW requirements and defining database entities before coding begins.' }
+      { question: 'Do you help write software specs?', answer: 'Yes, we assist PMs in defining entities and SOW before coding.' }
     ],
     benefits: [
       'Faster onboarding of new engineers onto your codebase',
@@ -1571,7 +1404,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Organize Your Technical Documentation',
     featured: false,
-    order: 16,
+    displayOrder: 17,
     status: 'active',
     industries: ['Developer Platforms', 'Enterprise IT', 'SaaS Teams', 'API Startups'],
     whyChooseUs: [
@@ -1587,15 +1420,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'resume_review_assistant'
   },
   {
-    id: '17',
-    slug: 'digital-marketing',
     title: 'Digital Marketing',
+    slug: 'digital-marketing',
     shortDescription: 'Data-driven search engine optimization, paid advertising, social channels, and analytic setups.',
-    longDescription: 'We align marketing spend with measurable business growth. By implementing custom SEO optimizations, target search campaigns, analytical conversion funnels, and organic distribution setups, we convert simple web traffic into stable pipelines for lead acquisition.',
+    fullDescription: 'We align marketing spend with measurable business growth. By implementing custom SEO optimizations, target search campaigns, analytical conversion funnels, and organic distribution setups, we convert simple web traffic into stable pipelines for lead acquisition.',
     category: 'Marketing',
-    icon: Megaphone,
-    coverImage: serviceDigitalMarketing,
-    thumbnail: serviceDigitalMarketing,
+    icon: 'Megaphone',
+    coverImage: 'serviceDigitalMarketing',
+    thumbnail: 'serviceDigitalMarketing',
     overview: 'Configure advertising campaigns, clean up tracking pixels, and deploy search-optimized content engines.',
     offerings: [
       'Search Engine Optimization (SEO)',
@@ -1647,7 +1479,7 @@ export const SERVICES: readonly Service[] = [
     caseStudies: [],
     technologies: ['Google Analytics', 'Google Tag Manager', 'Semrush', 'Meta Business Suite', 'HubSpot'],
     faqs: [
-      { question: 'When will I see search engine updates?', answer: 'Organic SEO optimization changes typically take 3 to 6 months to register on major search indexes, while paid ads generate clicks immediately.' }
+      { question: 'When will I see search engine updates?', answer: 'Organic SEO optimization changes typically take 3 to 6 months.' }
     ],
     benefits: [
       'Clear calculation of acquisition costs and conversions',
@@ -1656,7 +1488,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Maximize Your Digital Marketing ROI',
     featured: true,
-    order: 17,
+    displayOrder: 18,
     status: 'active',
     industries: ['E-Commerce Storefronts', 'Professional Services', 'SaaS Products', 'Local Brands'],
     whyChooseUs: [
@@ -1672,15 +1504,14 @@ export const SERVICES: readonly Service[] = [
     dashboardImage: 'sentiment_nlp_dashboard'
   },
   {
-    id: '18',
-    slug: 'cloud-infrastructure',
     title: 'Cloud & Infrastructure',
+    slug: 'cloud-infrastructure',
     shortDescription: 'Enterprise cloud configurations, VPC isolation, continuous data replication, and monitoring setups.',
-    longDescription: 'We construct secure corporate network environments on major global cloud providers. From setting up private networks and directory integrations to scripting server builds and implementing security scanners, we build standard operational baselines.',
+    fullDescription: 'We construct secure corporate network environments on major global cloud providers. From setting up private networks and directory integrations to scripting server builds and implementing security scanners, we build standard operational baselines.',
     category: 'Infrastructure',
-    icon: HardDrive,
-    coverImage: serviceCloudInfra,
-    thumbnail: serviceCloudInfra,
+    icon: 'HardDrive',
+    coverImage: 'serviceCloudInfra',
+    thumbnail: 'serviceCloudInfra',
     overview: 'Launch and configure enterprise private hosting topologies under industry isolation models.',
     offerings: [
       'Enterprise AWS Layouts',
@@ -1699,7 +1530,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         title: 'Active Directory Syncs',
-        description: 'Connect internal employee identity lists with cloud resource permissions.',
+        description: 'Connect employee identity lists with cloud resource permissions.',
         badges: ['AD Sync', 'IAM', 'SSO'],
         color: 'purple',
         iconName: 'usercheck'
@@ -1737,7 +1568,7 @@ export const SERVICES: readonly Service[] = [
     ],
     cta: 'Audit Your Infrastructure Security',
     featured: false,
-    order: 18,
+    displayOrder: 19,
     status: 'active',
     industries: ['Enterprise IT', 'Fintech Startups', 'Healthcare Providers', 'Audit Services'],
     whyChooseUs: [
@@ -1754,11 +1585,25 @@ export const SERVICES: readonly Service[] = [
   }
 ];
 
-export const SECTION_SERVICES = {
-  tag: 'Our services',
-  title: 'Productized growth',
-  highlight: 'you can scope and measure',
-  description:
-    'Eighteen core service verticals—from custom software engineering to digital marketing and AI integrations—each designed with transparent processes, technologies, and outcomes. Build your digital foundation with us.',
-  cta: 'Request a customized proposal or SOW discussion',
-} as const;
+async function seed() {
+  try {
+    console.log('[Seed] Connecting to MongoDB Atlas...');
+    await mongoose.connect(MONGODB_URI);
+    console.log('[Seed] Connected successfully.');
+
+    console.log('[Seed] Cleaning up existing Services...');
+    await Service.deleteMany({});
+    console.log('[Seed] Cleaned successfully.');
+
+    console.log('[Seed] Inserting 18 services...');
+    await Service.insertMany(SERVICES_DATA);
+    console.log('[Seed] Seeding completed successfully!');
+  } catch (error) {
+    console.error('[Seed] Seeding error:', error);
+  } finally {
+    await mongoose.disconnect();
+    console.log('[Seed] Disconnected.');
+  }
+}
+
+seed();

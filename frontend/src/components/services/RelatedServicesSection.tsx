@@ -1,4 +1,6 @@
-import { Service, SERVICES } from '@/data/services';
+import { useQuery } from '@tanstack/react-query';
+import { getActiveServices } from '@/services/services.service';
+import { Service, decorateService } from '@/data/services';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -17,8 +19,15 @@ interface ServiceBrand {
 export const RelatedServicesSection = ({ service }: SectionProps) => {
   const prefersReducedMotion = useReducedMotion();
 
+  const { data: apiServices } = useQuery({
+    queryKey: ['activeServices'],
+    queryFn: getActiveServices,
+  });
+
+  const activeServices = (apiServices || []).map(decorateService);
+
   // Exclude current service and limit to 3 active ones
-  const relatedServices = SERVICES.filter((s) => s.id !== service.id && s.status === 'active')
+  const relatedServices = activeServices.filter((s) => s.id !== service.id && s.status === 'active')
     .slice(0, 3);
 
   if (relatedServices.length === 0) return null;

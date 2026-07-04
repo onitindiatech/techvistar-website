@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { SECTION_SERVICES, SERVICES } from "@/data";
+import { useQuery } from '@tanstack/react-query';
+import { getActiveServices } from '@/services/services.service';
+import { decorateService, SECTION_SERVICES } from '@/data/services';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
@@ -35,14 +37,19 @@ const ctaVariants = {
   },
 };
 
-
-
 export const ServicesSection = () => {
   const { ref, isInView } = useAnimatedSection();
 
+  const { data: apiServices } = useQuery({
+    queryKey: ['activeServices'],
+    queryFn: getActiveServices,
+  });
+
+  const activeServices = (apiServices || []).map(decorateService);
+
   // Distribute services: Left Column (0, 2, 4) and Right Column (1, 3, 5)
-  const leftServices = SERVICES.filter((_, idx) => idx % 2 === 0);
-  const rightServices = SERVICES.filter((_, idx) => idx % 2 !== 0);
+  const leftServices = activeServices.filter((_, idx) => idx % 2 === 0);
+  const rightServices = activeServices.filter((_, idx) => idx % 2 !== 0);
 
   return (
     <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative py-24 md:py-32">

@@ -1,6 +1,8 @@
 import { useParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { SERVICES } from '@/data/services';
+import { useQuery } from '@tanstack/react-query';
+import { getServiceBySlug } from '@/services/services.service';
+import { decorateService } from '@/data/services';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -25,8 +27,14 @@ import { RelatedServicesSection } from '@/components/services/RelatedServicesSec
 const ServiceDetails = () => {
   const { slug } = useParams<{ slug: string }>();
 
+  const { data: apiService, isLoading } = useQuery({
+    queryKey: ['serviceDetails', slug],
+    queryFn: () => getServiceBySlug(slug || ''),
+    enabled: !!slug,
+  });
+
   // Find current service
-  const service = SERVICES.find((s) => s.slug === slug && s.status === 'active');
+  const service = apiService ? decorateService(apiService) : undefined;
 
   // Set document title and scroll to top
   useEffect(() => {
@@ -37,6 +45,18 @@ const ServiceDetails = () => {
     }
     window.scrollTo(0, 0);
   }, [service]);
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen flex items-center justify-center bg-slate-50 pt-20">
+          <div className="text-slate-500 font-display">Loading service details...</div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   if (!service) {
     return (

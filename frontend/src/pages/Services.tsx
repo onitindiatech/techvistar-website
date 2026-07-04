@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { SERVICES, Service } from '@/data/services';
+import { useQuery } from '@tanstack/react-query';
+import { getActiveServices } from '@/services/services.service';
+import { Service, decorateService } from '@/data/services';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -29,8 +31,13 @@ const Services = () => {
     setMousePosition({ x: 0, y: 0 });
   };
 
+  const { data: apiServices, isLoading } = useQuery({
+    queryKey: ['activeServices'],
+    queryFn: getActiveServices,
+  });
+
   // Filter out active services
-  const activeServices = SERVICES.filter((s) => s.status === 'active');
+  const activeServices = (apiServices || []).map(decorateService);
 
   // Get unique categories dynamically
   const categories = ['All', ...Array.from(new Set(activeServices.map((s) => s.category)))];

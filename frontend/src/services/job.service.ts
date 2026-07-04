@@ -52,3 +52,42 @@ export async function getJobBySlug(slug: string): Promise<Job> {
   const result = await response.json();
   return result.data;
 }
+
+export interface JobApplicationInput {
+  jobId: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  currentLocation: string;
+  yearsOfExperience: number;
+  linkedin?: string;
+  portfolio?: string;
+  resumeUrl?: string;
+  coverLetter: string;
+  whyJoinTechVistar?: string;
+}
+
+/**
+ * Submits a new job application.
+ */
+export async function submitJobApplication(data: JobApplicationInput): Promise<any> {
+  const url = `${API_BASE_URL}/api/careers/apply`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const responseBody = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const description = responseBody.errors && Array.isArray(responseBody.errors)
+      ? responseBody.errors.map((err: any) => err.message).join(', ')
+      : responseBody.message || 'Failed to submit application. Please check details and try again.';
+    throw new Error(description);
+  }
+
+  return responseBody;
+}

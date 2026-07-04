@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getJobBySlug, Job } from '@/services/job.service';
+import { getJobBySlug, Job, submitJobApplication } from '@/services/job.service';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -23,9 +23,12 @@ const applicationSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
   phone: z.string().regex(phoneRegex, 'Invalid phone number format'),
+  currentLocation: z.string().min(2, 'Current location is required'),
+  yearsOfExperience: z.coerce.number().min(0, 'Years of experience cannot be negative'),
   linkedinUrl: z.string().url('Invalid URL').or(z.literal('')),
   portfolioUrl: z.string().url('Invalid URL').or(z.literal('')),
   coverLetter: z.string().min(20, 'Cover letter must be at least 20 characters'),
+  whyJoinTechVistar: z.string().optional(),
 });
 
 type ApplicationFormValues = z.infer<typeof applicationSchema>;
@@ -52,9 +55,12 @@ export const JobApplication = () => {
       fullName: '',
       email: '',
       phone: '',
+      currentLocation: '',
+      yearsOfExperience: 0,
       linkedinUrl: '',
       portfolioUrl: '',
       coverLetter: '',
+      whyJoinTechVistar: '',
     },
   });
 
@@ -71,19 +77,39 @@ export const JobApplication = () => {
   };
 
   const onSubmit = async (values: ApplicationFormValues) => {
+    if (!job) {
+      toast.error('Unable to submit. Job details not fully loaded.');
+      return;
+    }
     if (!selectedFile) {
       toast.error('Please upload your resume to complete the application.');
       return;
     }
 
     setIsSubmitting(true);
-    // Simulate API request delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
+    try {
+      await submitJobApplication({
+        jobId: job._id,
+        fullName: values.fullName,
+        email: values.email,
+        phone: values.phone,
+        currentLocation: values.currentLocation,
+        yearsOfExperience: values.yearsOfExperience,
+        linkedin: values.linkedinUrl,
+        portfolio: values.portfolioUrl,
+        coverLetter: values.coverLetter,
+        whyJoinTechVistar: values.whyJoinTechVistar || '',
+        resumeUrl: 'http://localhost:5000/resumes/placeholder.pdf', // Mock placeholder URL
+      });
 
-    toast.success('Application submitted successfully! Our talent acquisition team will review your application soon.');
-    reset();
-    setSelectedFile(null);
+      toast.success('Application submitted successfully! Our talent acquisition team will review your application soon.');
+      reset();
+      setSelectedFile(null);
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to submit application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoading) {
@@ -215,6 +241,41 @@ export const JobApplication = () => {
                     </div>
                   </div>
 
+                  {/* Current Location & Years of Experience Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="currentLocation" className="text-xs font-bold text-slate-700">Current Location *</Label>
+                      <Input
+                        id="currentLocation"
+                        placeholder="e.g. Hyderabad, India"
+                        className="border-slate-200 focus-visible:ring-emerald-500"
+                        {...register('currentLocation')}
+                      />
+                      {errors.currentLocation && (
+                        <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                          <AlertCircle className="h-3.5 w-3.5" /> {errors.currentLocation.message}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="yearsOfExperience" className="text-xs font-bold text-slate-700">Years of Experience *</Label>
+                      <Input
+                        id="yearsOfExperience"
+                        type="number"
+                        step="0.1"
+                        placeholder="e.g. 2.5"
+                        className="border-slate-200 focus-visible:ring-emerald-500"
+                        {...register('yearsOfExperience')}
+                      />
+                      {errors.yearsOfExperience && (
+                        <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                          <AlertCircle className="h-3.5 w-3.5" /> {errors.yearsOfExperience.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
                   {/* LinkedIn & Portfolio Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -291,6 +352,23 @@ export const JobApplication = () => {
                     {errors.coverLetter && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
                         <AlertCircle className="h-3.5 w-3.5" /> {errors.coverLetter.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Why Join TechVistar */}
+                  <div className="space-y-2">
+                    <Label htmlFor="whyJoinTechVistar" className="text-xs font-bold text-slate-700">Why do you want to join TechVistar?</Label>
+                    <Textarea
+                      id="whyJoinTechVistar"
+                      rows={3}
+                      placeholder="Share your motivation..."
+                      className="border-slate-200 focus-visible:ring-emerald-500 resize-none"
+                      {...register('whyJoinTechVistar')}
+                    />
+                    {errors.whyJoinTechVistar && (
+                      <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                        <AlertCircle className="h-3.5 w-3.5" /> {errors.whyJoinTechVistar.message}
                       </p>
                     )}
                   </div>

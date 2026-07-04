@@ -108,6 +108,7 @@ export const VALIDATION = {
   JOB_DEPARTMENTS: ['Engineering', 'Design', 'Marketing', 'Sales', 'Product', 'Operations', 'Other'] as const,
   JOB_EMPLOYMENT_TYPES: ['Full-time', 'Part-time', 'Contract', 'Internship'] as const,
   JOB_STATUSES: ['active', 'closed', 'draft'] as const,
+  JOB_APPLICATION_STATUSES: ['Pending', 'Shortlisted', 'Interview', 'Rejected', 'Selected'] as const,
   LIMITS: {
     NAME_MAX:    100,
     PHONE_MAX:   30,

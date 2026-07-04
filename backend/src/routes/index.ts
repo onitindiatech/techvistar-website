@@ -22,6 +22,7 @@ import healthRouter from './health.routes';
 import contactRouter from './contact.routes';
 import newsletterRouter from './newsletter.routes';
 import jobRouter from './job.routes';
+import jobApplicationRouter from './jobApplication.routes';
 import { RATE_LIMIT } from '@/constants';
 
 const router = Router();
@@ -48,6 +49,7 @@ router.use('/health', healthRouter);
 router.use('/contact', contactRouter);
 router.use('/newsletter', newsletterRouter);
 router.use('/careers/jobs', jobRouter);
+router.use('/careers/apply', jobApplicationRouter);
 
 // ─── API root info ─────────────────────────────────────────────────────────────
 // GET /api → Basic API info (not a real endpoint, just useful for developers)

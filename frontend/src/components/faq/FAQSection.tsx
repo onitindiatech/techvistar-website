@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { FAQs } from '@/data';
+import { useQuery } from '@tanstack/react-query';
+import { FAQs as STATIC_FAQS } from '@/data';
+import { getActiveFAQs } from '@/services/faq.service';
 import { FAQAccordion } from './FAQAccordion';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SiteSection } from '@/components/SiteSection';
@@ -33,8 +35,29 @@ export const FAQSection = ({
 }: FAQSectionProps) => {
   const { ref, isInView } = useAnimatedSection();
 
+  // ── Data source: API with static fallback ──────────────────────────────────
+  const { data: apiFAQs } = useQuery({
+    queryKey: ['faqs'],
+    queryFn:  getActiveFAQs,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // Map API response to the component-expected shape, or fall back to static data
+  const allFAQs = useMemo(() => {
+    if (!apiFAQs || apiFAQs.length === 0) return [...STATIC_FAQS];
+    return apiFAQs.map((f: any) => ({
+      id:       f.faqId,
+      question: f.question,
+      answer:   f.answer,
+      category: f.category,
+      page:     f.page,
+      tags:     f.tags ?? [],
+      featured: f.featured ?? false,
+    }));
+  }, [apiFAQs]);
+
   const filteredFAQs = useMemo(() => {
-    let items = [...FAQs];
+    let items = allFAQs;
 
     if (featuredOnly) {
       items = items.filter((faq) => faq.featured);
@@ -50,7 +73,7 @@ export const FAQSection = ({
     }
 
     return items;
-  }, [pageFilter, categoryFilter, featuredOnly, limit]);
+  }, [allFAQs, pageFilter, categoryFilter, featuredOnly, limit]);
 
   if (filteredFAQs.length === 0) return null;
 

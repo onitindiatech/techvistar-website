@@ -26,6 +26,7 @@ import jobApplicationRouter from './jobApplication.routes';
 import serviceRouter from './service.routes';
 import solutionRouter from './solution.routes';
 import projectRouter from './project.routes';
+import faqRouter    from './faq.routes';
 import { RATE_LIMIT } from '@/constants';
 
 const router = Router();
@@ -56,6 +57,7 @@ router.use('/careers/apply', jobApplicationRouter);
 router.use('/services', serviceRouter);
 router.use('/solutions', solutionRouter);
 router.use('/portfolio', projectRouter);
+router.use('/faqs',      faqRouter);
 
 // ─── API root info ─────────────────────────────────────────────────────────────
 // GET /api → Basic API info (not a real endpoint, just useful for developers)

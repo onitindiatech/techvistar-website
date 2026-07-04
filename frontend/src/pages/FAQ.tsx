@@ -1,23 +1,47 @@
 import { useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
 import { Badge } from '@/components/ui/badge';
-import { FAQs } from '@/data';
+import { FAQs as STATIC_FAQS } from '@/data';
 import { FAQSearch, FAQCategoryTabs, FAQAccordion } from '@/components/faq';
 import { MessageSquare, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { getActiveFAQs } from '@/services/faq.service';
 
 export const FAQ = () => {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
 
+  // ── Data source: API with static fallback ─────────────────────────────────
+  const { data: apiFAQs } = useQuery({
+    queryKey: ['faqs'],
+    queryFn:  getActiveFAQs,
+    staleTime: 5 * 60 * 1000, // 5 minutes cache
+  });
+
+  // Map MongoDB documents to the FAQ shape expected by the child components.
+  // faqId (backend) maps to id (frontend); all other fields are identical.
+  const FAQs = useMemo(() => {
+    if (!apiFAQs || apiFAQs.length === 0) return STATIC_FAQS;
+    return apiFAQs.map((f: any) => ({
+      id:       f.faqId,
+      question: f.question,
+      answer:   f.answer,
+      category: f.category,
+      page:     f.page,
+      tags:     f.tags ?? [],
+      featured: f.featured ?? false,
+    }));
+  }, [apiFAQs]);
+
   // Compute list of categories dynamically
   const categories = useMemo(() => {
     const list = new Set(FAQs.map((faq) => faq.category));
     return ['All', ...Array.from(list)];
-  }, []);
+  }, [FAQs]);
 
   // Compute counts for each category
   const counts = useMemo(() => {
@@ -26,7 +50,7 @@ export const FAQ = () => {
       countsMap[faq.category] = (countsMap[faq.category] || 0) + 1;
     });
     return countsMap;
-  }, []);
+  }, [FAQs]);
 
   // Filter FAQs based on search query and selected category
   const filteredFAQs = useMemo(() => {
@@ -39,7 +63,7 @@ export const FAQ = () => {
         faq.tags.some((t) => t.toLowerCase().includes(query.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
-  }, [query, activeCategory]);
+  }, [query, activeCategory, FAQs]);
 
   return (
     <>

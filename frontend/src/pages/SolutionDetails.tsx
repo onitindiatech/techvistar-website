@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { SOLUTIONS_DATA, SolutionDetail } from '@/data/solutions';
 import workBg from '../assets/work-bg.png';
+import challengesImg from '../assets/ai_overview_illustration.png';
 import { cn } from '@/lib/utils';
 
 // FAQ Accordion sub-component
@@ -206,7 +207,7 @@ export const SolutionDetails = () => {
 
               {/* 2. BUSINESS CHALLENGES */}
               <section className="container-custom max-w-7xl mx-auto px-6 py-16">
-                <div className="grid lg:grid-cols-12 gap-10 items-start">
+                <div className="grid lg:grid-cols-12 gap-10 items-stretch">
                   
                   {/* Left Column: Heading */}
                   <div className="lg:col-span-5 space-y-4">
@@ -215,13 +216,17 @@ export const SolutionDetails = () => {
                       The Business Challenges We Solve
                     </h2>
                     <div className="w-12 h-1 bg-emerald-500/50 mt-2 rounded-full" />
+                    <div className="mt-8 relative rounded-2xl overflow-hidden border border-slate-200/60 shadow-sm group">
+                      <div className="absolute inset-0 bg-emerald-500/10 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-0" />
+                      <img src={challengesImg} alt="Operational Challenges" className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105" />
+                    </div>
                   </div>
 
                   {/* Right Column: Challenges List */}
-                  <div className="lg:col-span-7 bg-white border border-slate-200/60 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+                  <div className="lg:col-span-7 bg-white border border-slate-200/60 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col">
                     <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-3">{solution.challenges.title}</h3>
                     
-                    <div className="space-y-4 font-semibold text-xs sm:text-sm text-slate-600">
+                    <div className="space-y-4 font-semibold text-xs sm:text-sm text-slate-600 flex-grow mt-6">
                       {solution.challenges.points.map((pt, index) => (
                         <div key={index} className="flex gap-3 items-start">
                           <span className="w-5 h-5 rounded-full bg-red-50 text-red-500 border border-red-100 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">!</span>

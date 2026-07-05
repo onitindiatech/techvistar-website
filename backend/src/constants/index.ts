@@ -132,6 +132,7 @@ export const API_VERSION = 'v1' as const;
 // Development origins — production origins come from env.clientUrl
 export const DEV_ORIGINS = [
   'http://localhost:8080',   // Vite dev server (frontend)
+  'http://localhost:8081',   // Vite dev server — fallback port when 8080 is occupied
   'http://localhost:3000',   // Future admin panel
   'http://localhost:5173',   // Alternative Vite port
 ] as const;

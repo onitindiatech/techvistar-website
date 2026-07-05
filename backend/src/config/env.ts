@@ -50,10 +50,10 @@ export const env = {
   mongoUri: optional('MONGODB_URI', 'mongodb://localhost:27017/techvistar'),
 
   // ── JWT Authentication (Phase 2) ──────────────────────────────────────────
-  jwtSecret:          optional('JWT_SECRET', 'change_me_before_production'),
-  jwtExpiresIn:       optional('JWT_EXPIRES_IN', '15m'),
+  jwtAccessSecret:    optional('JWT_ACCESS_SECRET', optional('JWT_SECRET', 'change_me_before_production')),
   jwtRefreshSecret:   optional('JWT_REFRESH_SECRET', 'change_me_refresh_before_production'),
-  jwtRefreshExpiresIn: optional('JWT_REFRESH_EXPIRES_IN', '7d'),
+  accessTokenExpiry:  optional('ACCESS_TOKEN_EXPIRY', '15m'),
+  refreshTokenExpiry: optional('REFRESH_TOKEN_EXPIRY', '7d'),
 
   // ── Cloudinary (Media Uploads — Phase 3) ─────────────────────────────────
   cloudinaryCloudName: optional('CLOUDINARY_CLOUD_NAME', ''),

@@ -52,7 +52,7 @@ export const ServicesSection = () => {
   const rightServices = activeServices.filter((_, idx) => idx % 2 !== 0);
 
   return (
-    <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative py-24 md:py-32">
+    <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative pt-12 pb-6 md:pt-16 md:pb-8">
       {/* Background decoration */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -z-10 w-[500px] h-[500px] rounded-full bg-emerald-500/[0.02] blur-[120px] pointer-events-none" />
 
@@ -156,10 +156,10 @@ export const ServicesSection = () => {
 
         {/* CTA Bar */}
         <motion.div
-          variants={ctaVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="mt-20 max-w-5xl mx-auto w-full"
+          initial={{ opacity: 0, y: 16 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-10 md:mt-12 max-w-5xl mx-auto w-full"
         >
           <SpotlightCard
             className="rounded-2xl border border-slate-200/80 bg-white shadow-[0_8px_30px_-12px_rgba(15,23,42,0.06)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.12)] hover:border-emerald-500/50 hover:bg-emerald-500/[0.04] transition-all duration-500 w-full"

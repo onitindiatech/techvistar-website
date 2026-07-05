@@ -13,55 +13,55 @@ export const FAQs: readonly FAQ[] = [
     id: 'faq-1',
     category: 'General',
     page: 'home',
-    tags: ['company', 'process'],
+    tags: ['company', 'services'],
     featured: true,
-    question: 'What is TechVistar\'s delivery methodology?',
-    answer: 'We run a modern, disciplined engineering process. We operate under clear deliverables, version-controlled repository updates, mirror environments to match production, and complete staging sign-offs. We avoid ambiguous timelines by structuring our projects into milestone-based handovers.'
+    question: 'What services does TechVistar offer?',
+    answer: 'We offer end-to-end digital solutions including Web & Mobile Development, AI Solutions, Cloud & DevOps, UI/UX Design, Automation, Data Analytics, and Product Engineering.'
   },
   {
     id: 'faq-2',
-    category: 'Services',
-    page: 'services',
-    tags: ['web', 'frontend'],
+    category: 'General',
+    page: 'home',
+    tags: ['quality', 'qa'],
     featured: true,
-    question: 'Which frontend frameworks and stacks do you support?',
-    answer: 'We primarily build core web architectures using React, TypeScript, Next.js, and TailwindCSS for styling. For state management, we utilize lightweight tools like Zustand or TanStack Query to keep pages fast, responsive, and easy to maintain.'
+    question: 'How do you ensure the quality of your work?',
+    answer: 'We ensure high standards by executing thorough unit testing, continuous integration checks, peer code reviews, and staging environment verification before release.'
   },
   {
     id: 'faq-3',
-    category: 'AI',
-    page: 'services',
-    tags: ['ai', 'automation'],
+    category: 'General',
+    page: 'home',
+    tags: ['process', 'milestones'],
     featured: true,
-    question: 'How do you design custom GenAI integrations securely?',
-    answer: 'We implement strict Retrieval-Augmented Generation (RAG) structures using vector databases (like Pinecone) to restrict LLMs to your verified data. We also configure prompt guardrails and rate-limiting to prevent hallucinations, secure data storage, and keep API token costs optimized.'
+    question: 'What is your typical project development process?',
+    answer: 'Our process follows a four-phase VISTAR methodology: align on vision and insight, lock detailed scope and milestones, execute clean iteration sprints, and complete production launch training.'
   },
   {
     id: 'faq-4',
-    category: 'Work',
-    page: 'work',
-    tags: ['pricing', 'contracts'],
+    category: 'General',
+    page: 'home',
+    tags: ['startups', 'clients'],
     featured: true,
-    question: 'Do you offer fixed-price or time-and-materials engagement models?',
-    answer: 'We support both models depending on project specifications. For well-defined scopes, we establish transparent fixed-price milestone terms. For dynamic R&D, scaling applications, or ongoing support, we utilize hourly sprint models with clear weekly logs.'
+    question: 'Do you work with startups and small businesses?',
+    answer: 'Yes, we build scalable software matching the budgets and timeline velocities of early-stage startups and small businesses, enabling rapid feature launches.'
   },
   {
     id: 'faq-5',
-    category: 'Contact',
-    page: 'contact',
-    tags: ['support', 'communication'],
+    category: 'General',
+    page: 'services',
+    tags: ['timeline', 'duration'],
     featured: true,
-    question: 'What is your response SLA for support inquiries?',
-    answer: 'For active clients, we operate under a strict 1-business-day response window for standard tickets, and 1-4 hour responses for critical system outages depending on your service level agreement terms.'
+    question: 'How long does a typical project take?',
+    answer: 'Depending on complexity, small MVP builds take 4 to 8 weeks, while comprehensive enterprise systems and digital transformations range from 3 to 6 months.'
   },
   {
     id: 'faq-6',
-    category: 'Careers',
-    page: 'careers',
-    tags: ['culture', 'hiring'],
-    featured: false,
-    question: 'What does the engineering interview cycle look like?',
-    answer: 'Our hiring process involves a brief intro conversation, a practical coding review (mirroring real-world assignments, no brainteasers), a technical design session, and a culture alignment meeting with our founders.'
+    category: 'General',
+    page: 'services',
+    tags: ['technologies', 'stack'],
+    featured: true,
+    question: 'What technologies do you use?',
+    answer: 'We use React, Next.js, TypeScript, TailwindCSS for frontend; Node.js, Go, Python for backend; AWS, Azure, Docker, Kubernetes for cloud operations.'
   },
   {
     id: 'faq-7',
@@ -83,15 +83,6 @@ export const FAQs: readonly FAQ[] = [
   },
   {
     id: 'faq-9',
-    category: 'General',
-    page: 'home',
-    tags: ['delivery', 'ownership'],
-    featured: true,
-    question: 'Will our internal team own the codebase after delivery?',
-    answer: 'Absolutely. Upon completing milestones and commercial handovers, we transfer complete IP ownership, version controls, documentation, training materials, and deployment credentials directly to your team.'
-  },
-  {
-    id: 'faq-10',
     category: 'Services',
     page: 'services',
     tags: ['devops', 'deployment'],

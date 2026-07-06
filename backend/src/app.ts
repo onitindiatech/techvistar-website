@@ -43,8 +43,8 @@ app.use(helmet({
 //   - In development: localhost:8080 (frontend), localhost:3000 (admin)
 //   - In production:  env.clientUrl (from .env)
 const allowedOrigins = env.isDev
-  ? [...DEV_ORIGINS]
-  : [env.clientUrl];
+  ? [...DEV_ORIGINS, 'https://techvistar-website.vercel.app']
+  : [env.clientUrl, 'https://techvistar-website.vercel.app'];
 
 app.use(cors({
   origin: (origin, callback) => {

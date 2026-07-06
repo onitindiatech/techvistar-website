@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getActiveSolutions } from '@/services/solutions.service';
 import { decorateSolution, SolutionDetail } from '@/data/solutions';
 import workBg from '../assets/work-bg.png';
+import { LogoCloud } from '@/components/LogoCloud';
 
 interface SolutionCategory {
   id: string;
@@ -411,16 +412,8 @@ export const Solutions = () => {
         </AnimatePresence>
 
         {/* TRUSTED BY CLIENT LOGOS SECTION */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-6 border-t border-slate-200/80 mt-10 relative z-10 text-center space-y-6">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Trusted by innovative companies worldwide</p>
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-16 opacity-45">
-            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Microsoft</span>
-            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Google</span>
-            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">AWS</span>
-            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Airbnb</span>
-            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Intel</span>
-            <span className="text-sm font-bold tracking-wider text-slate-600 hover:opacity-100 hover:text-emerald-600 transition-all cursor-default">Netflix</span>
-          </div>
+        <section className="container-custom max-w-7xl mx-auto px-6 mt-10 relative z-10 border-t border-slate-200/80">
+          <LogoCloud />
         </section>
 
         {/* FINAL CTA SECTION */}

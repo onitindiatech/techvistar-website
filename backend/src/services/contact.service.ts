@@ -54,6 +54,41 @@ export class ContactService {
 
     return contact;
   }
+
+  /**
+   * Retrieves all contact form submissions.
+   */
+  async getAllContacts(): Promise<IContact[]> {
+    logger.info('[ContactService] Retrieving all contacts');
+    return Contact.find().sort({ createdAt: -1 });
+  }
+
+  /**
+   * Updates contact status.
+   */
+  async updateContactStatus(id: string, status: string): Promise<IContact> {
+    logger.info('[ContactService] Updating contact status', { id, status });
+    const contact = await Contact.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    );
+    if (!contact) {
+      throw ApiError.notFound('Contact submission not found');
+    }
+    return contact;
+  }
+
+  /**
+   * Deletes a contact submission permanently.
+   */
+  async deleteContact(id: string): Promise<void> {
+    logger.info('[ContactService] Deleting contact submission', { id });
+    const result = await Contact.findByIdAndDelete(id);
+    if (!result) {
+      throw ApiError.notFound('Contact submission not found');
+    }
+  }
 }
 
 export const contactService = new ContactService();

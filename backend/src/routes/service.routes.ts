@@ -9,10 +9,18 @@ import {
   getPublicServiceBySlug,
   adminCreateService,
   adminUpdateService,
-  adminDeleteService
+  adminDeleteService,
+  adminGetServices
 } from '@/controllers/service.controller';
 
 const router = Router();
+
+// ─── Administrative CRUD Endpoints ───────────────────────────────────────────
+// (Note: To be protected by JWT auth middleware when Phase 2 authentication is implemented)
+router.get('/admin', adminGetServices);
+router.post('/admin', adminCreateService);
+router.put('/admin/:id', adminUpdateService);
+router.delete('/admin/:id', adminDeleteService);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
 // GET /api/services - Returns all active services sorted by displayOrder
@@ -20,11 +28,5 @@ router.get('/', getPublicServices);
 
 // GET /api/services/:slug - Returns details of a specific active service
 router.get('/:slug', getPublicServiceBySlug);
-
-// ─── Administrative CRUD Endpoints ───────────────────────────────────────────
-// (Note: To be protected by JWT auth middleware when Phase 2 authentication is implemented)
-router.post('/admin', adminCreateService);
-router.put('/admin/:id', adminUpdateService);
-router.delete('/admin/:id', adminDeleteService);
 
 export default router;

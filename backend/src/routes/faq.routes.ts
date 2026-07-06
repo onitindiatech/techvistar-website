@@ -23,9 +23,18 @@ import {
   adminDeleteFAQ,
   adminHideFAQ,
   adminUpdateFAQOrder,
+  adminGetFAQs,
 } from '@/controllers/faq.controller';
 
 const router = Router();
+
+// ─── Admin routes (to be JWT gated under authentication phase) ─────────────────
+router.get('/admin',             adminGetFAQs);
+router.post('/admin',            adminCreateFAQ);
+router.put('/admin/:id',         adminUpdateFAQ);
+router.delete('/admin/:id',      adminDeleteFAQ);
+router.patch('/admin/:id/hide',  adminHideFAQ);
+router.patch('/admin/:id/order', adminUpdateFAQOrder);
 
 // ─── Public routes ─────────────────────────────────────────────────────────────
 // GET /api/faqs — Returns all active FAQs
@@ -33,12 +42,5 @@ router.get('/', getPublicFAQs);
 
 // GET /api/faqs/:faqId — Returns a single FAQ by faqId
 router.get('/:faqId', getPublicFAQById);
-
-// ─── Admin routes (to be JWT gated under authentication phase) ─────────────────
-router.post('/admin',            adminCreateFAQ);
-router.put('/admin/:id',         adminUpdateFAQ);
-router.delete('/admin/:id',      adminDeleteFAQ);
-router.patch('/admin/:id/hide',  adminHideFAQ);
-router.patch('/admin/:id/order', adminUpdateFAQOrder);
 
 export default router;

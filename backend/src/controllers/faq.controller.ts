@@ -152,3 +152,24 @@ export async function adminUpdateFAQOrder(
     next(err);
   }
 }
+
+/**
+ * GET /api/faqs/admin
+ * Returns all FAQs (active + drafts) for administrative management.
+ */
+export async function adminGetFAQs(
+  _req: Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const faqs = await faqService.getAllFAQs();
+    ApiResponse.success(
+      res,
+      faqs,
+      'All FAQs fetched successfully'
+    );
+  } catch (err) {
+    next(err);
+  }
+}

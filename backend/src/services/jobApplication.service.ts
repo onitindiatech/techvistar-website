@@ -84,6 +84,14 @@ export class JobApplicationService {
   }
 
   /**
+   * Retrieves all job applications in the database.
+   */
+  async getAllApplications(): Promise<IJobApplication[]> {
+    logger.info('[JobApplicationService] Retrieving all applications');
+    return JobApplication.find().populate('jobId', 'title slug').sort({ createdAt: -1 });
+  }
+
+  /**
    * Deletes a job application permanently.
    */
   async deleteApplication(id: string): Promise<void> {

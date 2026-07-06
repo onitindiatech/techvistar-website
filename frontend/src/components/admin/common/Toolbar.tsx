@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -10,20 +10,25 @@ type ToolbarProps = {
 
 export const Toolbar = ({ placeholder = "Search", actionLabel, onAction }: ToolbarProps) => {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
-      <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-500 sm:min-w-[260px]">
-        <Search className="h-4 w-4" />
+    <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/60 bg-white p-3 shadow-[0_2px_10px_rgba(0,0,0,0.02)] sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative group sm:w-80">
+        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+          <Search className="h-4 w-4 text-slate-400 group-focus-within:text-emerald-600 transition-colors" />
+        </div>
         <Input
-          className="border-0 bg-transparent p-0 shadow-none focus-visible:ring-0"
+          className="pl-10 h-10 border-slate-200 bg-slate-50 focus-visible:ring-emerald-500 rounded-xl text-sm transition-all"
           placeholder={placeholder}
         />
-      </label>
+      </div>
 
-      {actionLabel ? (
-        <Button onClick={onAction} size="sm">
-          {actionLabel}
-        </Button>
-      ) : null}
+      <div className="flex items-center gap-3">
+        {actionLabel ? (
+          <Button onClick={onAction} variant="outline" className="h-10 px-4 gap-2 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-semibold shadow-sm transition-all">
+            <SlidersHorizontal className="h-4 w-4" />
+            {actionLabel}
+          </Button>
+        ) : null}
+      </div>
     </div>
   );
 };

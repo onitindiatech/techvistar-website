@@ -494,7 +494,7 @@ export const Navbar = () => {
                 </div>
 
                 <Link 
-                  to="/services/enterprise-ai-integration" 
+                  to="/services" 
                   onClick={() => setActiveDropdown(null)}
                   className="inline-flex items-center justify-center gap-2 mt-4 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition-all text-center group-hover/featured:scale-102 active:scale-98"
                 >

@@ -12,6 +12,7 @@ import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
 import { CONTACT_FORM } from '@/data';
 import { submitContactForm } from '@/services/contact.service';
+import { cn } from '@/lib/utils';
 
 interface FormData {
   category: string;

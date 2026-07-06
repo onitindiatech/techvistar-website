@@ -115,3 +115,24 @@ export async function adminDeleteService(
     next(err);
   }
 }
+
+/**
+ * GET /api/services/admin
+ * Returns all services (active + drafts) for administrative management.
+ */
+export async function adminGetServices(
+  _req: Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const services = await serviceService.getAllServices();
+    ApiResponse.success(
+      res,
+      services,
+      'All services fetched successfully'
+    );
+  } catch (err) {
+    next(err);
+  }
+}

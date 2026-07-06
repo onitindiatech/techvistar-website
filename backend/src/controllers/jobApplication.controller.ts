@@ -135,3 +135,25 @@ export async function deleteApplication(
     next(err);
   }
 }
+
+/**
+ * GET /api/careers/apply
+ * Lists all job applications.
+ */
+export async function getAllApplications(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const applications = await jobApplicationService.getAllApplications();
+    ApiResponse.success(
+      res,
+      applications,
+      'All job applications retrieved successfully',
+      HTTP_STATUS.OK
+    );
+  } catch (err) {
+    next(err);
+  }
+}

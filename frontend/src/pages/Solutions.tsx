@@ -211,10 +211,6 @@ export const Solutions = () => {
               exit={{ opacity: 0 }}
               className="container-custom max-w-7xl mx-auto px-6 py-16 space-y-16"
             >
-              {/* Featured Skeleton */}
-              <div className="bg-slate-200/50 animate-pulse rounded-3xl h-96 w-full border border-slate-200" />
-              
-              {/* Categories Skeletons */}
               <div className="space-y-10">
                 <div className="h-6 w-48 bg-slate-200/60 rounded animate-pulse" />
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -237,102 +233,15 @@ export const Solutions = () => {
               transition={{ duration: 0.3 }}
             >
               
-              {/* 2. FEATURED SOLUTION SECTION */}
-              <section className="container-custom max-w-7xl mx-auto px-6 pt-16">
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.5 }}
-                  className="rounded-3xl border border-slate-200/80 bg-white p-8 md:p-12 shadow-lg overflow-hidden relative flex flex-col lg:flex-row gap-10 items-center justify-between"
-                >
-                  <div className="absolute -top-1/4 -right-1/4 w-[400px] h-[400px] bg-emerald-500/[0.03] rounded-full blur-[100px] pointer-events-none" />
-                  
-                  <div className="space-y-6 lg:max-w-xl">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 text-xs font-bold uppercase tracking-wider">
-                      <Sparkle className="w-3.5 h-3.5 fill-current" />
-                      <span>Featured Solution</span>
-                    </div>
-
-                    <h2 className="text-3xl sm:text-4.5xl font-extrabold font-display text-slate-900 tracking-tight leading-none">
-                      Intelligent Workflows
-                    </h2>
-
-                    <p className="text-slate-600 font-semibold text-sm sm:text-base leading-relaxed">
-                      Transform enterprise operations by deploying cognitive agents that run autonomous file consolidation, reporting, and webhook orchestrations under absolute security compliance.
-                    </p>
-
-                    <div className="grid grid-cols-3 gap-6 border-y border-slate-100 py-6 font-bold text-xs sm:text-sm">
-                      <div>
-                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">40%</span>
-                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">Cost Reduction</span>
-                      </div>
-                      <div>
-                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">99.9%</span>
-                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">SLA Uptime</span>
-                      </div>
-                      <div>
-                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">10x</span>
-                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">Process Speed</span>
-                      </div>
-                    </div>
-
-                    <Link to="/solutions/business-automation">
-                      <Button className="h-11 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all shadow-md mt-2 flex items-center gap-2">
-                        <span>Explore Solution</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </Link>
-                  </div>
-
-                  {/* Animated Mock Illustration */}
-                  <div className="w-full lg:w-[460px] h-72 sm:h-80 rounded-2xl bg-slate-50 border border-slate-200/80 p-6 flex flex-col justify-between shadow-inner relative overflow-hidden shrink-0">
-                    <div className="flex justify-between items-center pb-4 border-b border-slate-200/80">
-                      <div className="flex gap-1.5">
-                        <span className="w-3 h-3 rounded-full bg-red-400" />
-                        <span className="w-3 h-3 rounded-full bg-yellow-400" />
-                        <span className="w-3 h-3 rounded-full bg-emerald-400" />
-                      </div>
-                      <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest">Workflow Engine</span>
-                    </div>
-
-                    <div className="space-y-4 pt-4">
-                      <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-slate-200/60 shadow-sm">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 font-bold text-xs">01</div>
-                        <div>
-                          <h4 className="text-xs font-bold text-slate-800 leading-none">Business Automation</h4>
-                          <span className="text-[9px] text-slate-400 font-bold block mt-1">Consolidating monthly financial ledger files...</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-slate-200/60 shadow-sm">
-                        <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100 font-bold text-xs">02</div>
-                        <div>
-                          <h4 className="text-xs font-bold text-slate-800 leading-none">AI Orchestration</h4>
-                          <span className="text-[9px] text-slate-400 font-bold block mt-1">Executing classification mapping algorithms...</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between items-center text-[10px] text-emerald-600 font-extrabold uppercase pt-4 border-t border-slate-200/85">
-                      <div className="flex items-center gap-1">
-                        <Loader2 className="w-3 h-3 animate-spin" />
-                        <span>Active Run</span>
-                      </div>
-                      <span>100% Secure</span>
-                    </div>
-                  </div>
-                </motion.div>
-              </section>
-
-              {/* 3. STICKY CATEGORY NAVIGATION */}
-              <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-y border-slate-200/80 py-4 mt-12 shadow-sm select-none">
+              {/* STICKY CATEGORY NAVIGATION */}
+              <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-y border-slate-200/80 py-4 mt-0 shadow-sm select-none">
                 <div className="container-custom max-w-7xl mx-auto px-6 flex justify-center gap-4 sm:gap-8 text-xs sm:text-sm font-bold">
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
                       onClick={() => scrollToSection(cat.id as any)}
                       className={cn(
-                        "relative pb-1 px-1 transition-colors hover:text-emerald-600",
+                         "relative pb-1 px-1 transition-colors hover:text-emerald-600",
                         activeCategory === cat.id ? "text-emerald-600" : "text-slate-500"
                       )}
                     >
@@ -410,6 +319,92 @@ export const Solutions = () => {
                   </section>
                 ))}
               </div>
+
+              {/* 2. OPTIONAL FEATURED SOLUTION SECTION BELOW THE LISTINGS */}
+              <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/40">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.5 }}
+                  className="rounded-3xl border border-slate-200/80 bg-white p-8 md:p-12 shadow-lg overflow-hidden relative flex flex-col lg:flex-row gap-10 items-center justify-between"
+                >
+                  <div className="absolute -top-1/4 -right-1/4 w-[400px] h-[400px] bg-emerald-500/[0.03] rounded-full blur-[100px] pointer-events-none" />
+                  
+                  <div className="space-y-6 lg:max-w-xl">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 text-xs font-bold uppercase tracking-wider">
+                      <Sparkle className="w-3.5 h-3.5 fill-current" />
+                      <span>Featured Solution Capability</span>
+                    </div>
+
+                    <h2 className="text-3xl sm:text-4.5xl font-extrabold font-display text-slate-900 tracking-tight leading-none">
+                      Intelligent Workflows
+                    </h2>
+
+                    <p className="text-slate-600 font-semibold text-sm sm:text-base leading-relaxed">
+                      Transform enterprise operations by deploying cognitive agents that run autonomous file consolidation, reporting, and webhook orchestrations under absolute security compliance.
+                    </p>
+
+                    <div className="grid grid-cols-3 gap-6 border-y border-slate-100 py-6 font-bold text-xs sm:text-sm">
+                      <div>
+                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">40%</span>
+                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">Cost Reduction</span>
+                      </div>
+                      <div>
+                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">99.9%</span>
+                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">SLA Uptime</span>
+                      </div>
+                      <div>
+                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">10x</span>
+                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">Process Speed</span>
+                      </div>
+                    </div>
+
+                    <Link to="/solutions/business-automation">
+                      <Button className="h-11 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all shadow-md mt-2 flex items-center gap-2">
+                        <span>Explore Featured Solution</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+
+                  <div className="w-full lg:w-[460px] h-72 sm:h-80 rounded-2xl bg-slate-50 border border-slate-200/80 p-6 flex flex-col justify-between shadow-inner relative overflow-hidden shrink-0">
+                    <div className="flex justify-between items-center pb-4 border-b border-slate-200/80">
+                      <div className="flex gap-1.5">
+                        <span className="w-3 h-3 rounded-full bg-red-400" />
+                        <span className="w-3 h-3 rounded-full bg-yellow-400" />
+                        <span className="w-3 h-3 rounded-full bg-emerald-400" />
+                      </div>
+                      <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest">Workflow Engine</span>
+                    </div>
+
+                    <div className="space-y-4 pt-4">
+                      <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-slate-200/60 shadow-sm">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 font-bold text-xs">01</div>
+                        <div>
+                          <h4 className="text-xs font-bold text-slate-800 leading-none">Business Automation</h4>
+                          <span className="text-[9px] text-slate-400 font-bold block mt-1">Consolidating monthly financial ledger files...</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-slate-200/60 shadow-sm">
+                        <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100 font-bold text-xs">02</div>
+                        <div>
+                          <h4 className="text-xs font-bold text-slate-800 leading-none">AI Orchestration</h4>
+                          <span className="text-[9px] text-slate-400 font-bold block mt-1">Executing classification mapping algorithms...</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center text-[10px] text-emerald-600 font-extrabold uppercase pt-4 border-t border-slate-200/85">
+                      <div className="flex items-center gap-1">
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        <span>Active Run</span>
+                      </div>
+                      <span>100% Secure</span>
+                    </div>
+                  </div>
+                </motion.div>
+              </section>
 
             </motion.div>
           )}

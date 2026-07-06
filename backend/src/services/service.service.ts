@@ -84,8 +84,15 @@ export class ServiceService {
   }
 
   /**
+   * Retrieves all services (active + drafts).
+   */
+  async getAllServices(): Promise<IService[]> {
+    logger.info('[ServiceService] Retrieving all services (active + drafts)');
+    return Service.find().sort({ displayOrder: 1, createdAt: -1 });
+  }
+
+  /**
    * Retrieves a single active service by slug.
-   * Throws 404 if not found or status is draft.
    */
   async getServiceBySlug(slug: string): Promise<IService> {
     logger.info('[ServiceService] Retrieving active service by slug', { slug });

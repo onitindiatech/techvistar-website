@@ -115,3 +115,24 @@ export async function adminDeleteSolution(
     next(err);
   }
 }
+
+/**
+ * GET /api/solutions/admin
+ * Returns all solutions (active + drafts) for administrative management.
+ */
+export async function adminGetSolutions(
+  _req: Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const solutions = await solutionService.getAllSolutions();
+    ApiResponse.success(
+      res,
+      solutions,
+      'All solutions fetched successfully'
+    );
+  } catch (err) {
+    next(err);
+  }
+}

@@ -82,6 +82,14 @@ export class SolutionService {
   }
 
   /**
+   * Retrieves all solutions (active + drafts).
+   */
+  async getAllSolutions(): Promise<ISolution[]> {
+    logger.info('[SolutionService] Retrieving all solutions (active + drafts)');
+    return Solution.find().sort({ displayOrder: 1, createdAt: -1 });
+  }
+
+  /**
    * Retrieves details of a single active solution by its slug.
    */
   async getSolutionBySlug(slug: string): Promise<ISolution> {

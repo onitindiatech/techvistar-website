@@ -23,6 +23,14 @@ export class FAQService {
   }
 
   /**
+   * Returns all FAQs (active + drafts).
+   */
+  async getAllFAQs(): Promise<IFAQ[]> {
+    logger.info('[FAQService] Retrieving all FAQs (active + drafts)');
+    return FAQModel.find().sort({ displayOrder: 1, createdAt: -1 });
+  }
+
+  /**
    * Returns a single FAQ by its unique faqId string.
    * Used by GET /api/faqs/:faqId
    */

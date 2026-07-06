@@ -1,15 +1,11 @@
-/**
- * @file src/routes/contact.routes.ts
- * @description Route definition for Contact Module.
- *
- * ARCHITECTURE DECISION:
- *   Exposes the public POST endpoint for form submissions.
- *   Mounted onto the index API router under /api/contact.
- */
-
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
-import { submitContactForm } from '@/controllers/contact.controller';
+import { 
+  submitContactForm, 
+  listContacts, 
+  updateContactStatus, 
+  deleteContact 
+} from '@/controllers/contact.controller';
 import { CONTACT_RATE_LIMIT } from '@/constants';
 
 const router = Router();
@@ -27,9 +23,13 @@ const contactRateLimiter = rateLimit({
   },
 });
 
-// POST /api/contact
-// Public submission route
+// POST /api/contact - Public submission route
 router.post('/', contactRateLimiter, submitContactForm);
+
+// Admin endpoints (JWT gated in Phase 3, but available to frontend now)
+router.get('/', listContacts);
+router.patch('/:id/status', updateContactStatus);
+router.delete('/:id', deleteContact);
 
 export default router;
 

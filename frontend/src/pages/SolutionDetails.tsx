@@ -139,6 +139,18 @@ export const SolutionDetails = () => {
       <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 pb-20 relative overflow-hidden">
         
         <AnimatePresence mode="wait">
+          {isDetailLoading ? (
+            <motion.div 
+              key="loading-skeletons"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-slate-50 flex flex-col items-center justify-center gap-4"
+            >
+              <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+              <span className="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Loading Solution...</span>
+            </motion.div>
+          ) : (
             <motion.div
               key="page-content"
               initial={{ opacity: 0 }}
@@ -537,6 +549,7 @@ export const SolutionDetails = () => {
               </section>
 
             </motion.div>
+          )}
         </AnimatePresence>
 
       </main>

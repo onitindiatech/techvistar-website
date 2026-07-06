@@ -1,15 +1,11 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import {
   ArrowLeft,
   Check,
   ArrowRight,
   Sparkles,
   Send,
-  Lock,
   Rocket,
   Clock,
   DollarSign,
@@ -18,53 +14,14 @@ import {
   Star
 } from 'lucide-react';
 import { Service } from '@/data/services';
-import { useToast } from '@/hooks/use-toast';
-import ElectricBorder from '@/components/ui/ElectricBorder';
+import { ConsultationForm } from './ConsultationForm';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 interface ServiceHeroProps {
   service: Service;
 }
 
 export const ServiceHero = ({ service }: ServiceHeroProps) => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    company: '',
-    email: '',
-    phone: '',
-    budget: '',
-    timeline: '',
-    description: '',
-    agree: false,
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.agree) {
-      toast({
-        title: 'Validation Error',
-        description: 'Please fill out all required fields and accept the agreement.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    toast({
-      title: 'Inquiry Submitted',
-      description: `Thank you, ${formData.name}! We will get back to you in under 4 business hours regarding ${service.title}.`,
-    });
-
-    setFormData({
-      name: '',
-      company: '',
-      email: '',
-      phone: '',
-      budget: '',
-      timeline: '',
-      description: '',
-      agree: false,
-    });
-  };
 
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -134,11 +91,11 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to all services
         </Link>
 
-        {/* Main Grid: Left Side Content (spans 8 cols) vs Right Side Consultation Card (spans 4 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Main Grid: Centered Content */}
+        <div className="flex flex-col gap-12 w-full relative z-10">
           
-          {/* Left Columns (8/12 width) */}
-          <div className="lg:col-span-8 space-y-6">
+          {/* Main Content Area */}
+          <div className="w-full space-y-6">
             
             {/* Top Half: Text Details & Robot Illustration side by side */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
@@ -216,11 +173,16 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
 
               {/* Actions */}
               <div className="flex flex-wrap gap-3">
-                <Button asChild className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center gap-2 px-6 rounded-lg transition-all shadow-sm">
-                  <a href="#inquiry-form-card" onClick={scrollToSection('inquiry-form-card')}>
-                    <Send className="h-3.5 w-3.5" /> Request Proposal
-                  </a>
-                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center gap-2 px-6 rounded-lg transition-all shadow-sm">
+                      <Send className="h-3.5 w-3.5" /> Request Proposal
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="border-none bg-transparent shadow-none p-0 w-[calc(100%-2rem)] sm:w-full max-w-2xl">
+                    <ConsultationForm serviceTitle={service.title} />
+                  </DialogContent>
+                </Dialog>
                 <Button variant="outline" className="border-slate-200 text-slate-700 bg-white hover:bg-slate-50 font-semibold rounded-lg transition-all" asChild>
                   <a href="#case-studies" onClick={scrollToSection('case-studies')}>
                     View Case Studies <ArrowRight className="h-3.5 w-3.5 ml-1" />
@@ -229,156 +191,6 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
               </div>
 
             </div>
-          </div>
-
-          {/* Right Column: Inquiry Form Card (4/12 width) */}
-          <div id="inquiry-form-card" className="lg:col-span-4 scroll-mt-24 w-full">
-            <ElectricBorder
-              color="#10b981"
-              speed={0}
-              chaos={0}
-              borderRadius={16}
-            >
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-6 md:p-7 shadow-sm">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100">
-                    <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900">
-                    Request Free Consultation
-                  </h3>
-                </div>
-                <p className="text-[11px] text-slate-500 mb-5 leading-relaxed">
-                  Describe your requirements and obtain a custom SOW draft from our engineering leads.
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label htmlFor="inquiry-name" className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      id="inquiry-name"
-                      type="text"
-                      required
-                      placeholder="Jane Doe"
-                      className="bg-white border-slate-200 text-xs h-9"
-                      value={formData.name}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label htmlFor="inquiry-company" className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                        Company Name
-                      </label>
-                      <Input
-                        id="inquiry-company"
-                        type="text"
-                        placeholder="Acme Corp"
-                        className="bg-white border-slate-200 text-xs h-9"
-                        value={formData.company}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, company: e.target.value }))}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="inquiry-phone" className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                        Phone Number
-                      </label>
-                      <Input
-                        id="inquiry-phone"
-                        type="tel"
-                        placeholder="+1 (555) 019-2834"
-                        className="bg-white border-slate-200 text-xs h-9"
-                        value={formData.phone}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="inquiry-email" className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                      Business Email <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      id="inquiry-email"
-                      type="email"
-                      required
-                      placeholder="jane@company.com"
-                      className="bg-white border-slate-200 text-xs h-9"
-                      value={formData.email}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label htmlFor="inquiry-budget" className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                        Estimated Budget
-                      </label>
-                      <Input
-                        id="inquiry-budget"
-                        type="text"
-                        placeholder="e.g. $10k - $20k"
-                        className="bg-white border-slate-200 text-xs h-9"
-                        value={formData.budget}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, budget: e.target.value }))}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="inquiry-timeline" className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                        Timeline
-                      </label>
-                      <Input
-                        id="inquiry-timeline"
-                        type="text"
-                        placeholder="e.g. 2-3 months"
-                        className="bg-white border-slate-200 text-xs h-9"
-                        value={formData.timeline}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, timeline: e.target.value }))}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="inquiry-desc" className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                      Project Description
-                    </label>
-                    <Textarea
-                      id="inquiry-desc"
-                      placeholder="Outline your milestones or technical stack goals..."
-                      className="bg-white border-slate-200 text-xs min-h-[60px]"
-                      value={formData.description}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-                    />
-                  </div>
-
-                  <div className="flex items-start gap-2 pt-1">
-                    <input
-                      id="inquiry-agree"
-                      type="checkbox"
-                      required
-                      className="mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 h-3.5 w-3.5"
-                      checked={formData.agree}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, agree: e.target.checked }))}
-                    />
-                    <label htmlFor="inquiry-agree" className="text-[10px] text-slate-500 leading-snug cursor-pointer selection:bg-transparent">
-                      I agree to be contacted by the TechVistar engineering team.
-                    </label>
-                  </div>
-
-                  <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold py-2 rounded-lg transition-colors h-10">
-                    Request Free Consultation
-                  </Button>
-                </form>
-
-                <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 mt-4 font-medium">
-                  <Lock className="h-3 w-3 text-slate-400" />
-                  <span>Your information is secure and confidential.</span>
-                </div>
-              </div>
-            </ElectricBorder>
           </div>
         </div>
       </div>

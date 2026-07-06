@@ -4,11 +4,9 @@ import { HeroSection } from '@/components/HeroSection';
 
 import { ServicesSection } from '@/components/ServicesSection';
 import { TechStackSection } from '@/components/TechStackSection';
-import { ProcessSection } from '@/components/ProcessSection';
 import { BenefitsSection } from '@/components/BenefitsSection';
 import { ProjectsSection } from '@/components/ProjectsSection';
 import { DomeGallerySection } from '@/components/DomeGallerySection';
-import { TestimonialsSection } from '@/components/TestimonialsSection';
 import { JoinTeamPreview } from '@/components/JoinTeamPreview';
 import { FAQSection } from '@/components/faq';
 import { ContactSection } from '@/components/ContactSection';
@@ -28,12 +26,10 @@ const Index = () => {
         <ServicesSection />
         <TechStackSection />
         <ProjectsSection />
-        <ProcessSection />
         <BenefitsSection />
-        <TestimonialsSection />
         <DomeGallerySection />
         <JoinTeamPreview />
-        <FAQSection pageFilter="home" limit={6} showViewAll layout="split" />
+        <FAQSection pageFilter="home" limit={4} showViewAll layout="split" />
         <ContactSection />
         <Footer />
       </main>

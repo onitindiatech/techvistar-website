@@ -140,7 +140,7 @@ export const SolutionDetails = () => {
         
         {/* LOADING SKELETON */}
         <AnimatePresence mode="wait">
-          {isLoading ? (
+          {isDetailLoading ? (
             <motion.div 
               key="loading-skeletons"
               initial={{ opacity: 0 }}

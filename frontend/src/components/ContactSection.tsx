@@ -125,7 +125,7 @@ export const ContactSection = () => {
       variant="muted" 
       showGrid={false} 
       aria-labelledby="contact-heading" 
-      className="relative overflow-hidden py-16 md:py-24 bg-[#f4faf8] border-t border-slate-200/80 select-none"
+      className="relative overflow-hidden py-8 md:py-10 bg-[#f4faf8] border-t border-slate-200/80 select-none"
     >
       {/* Background Radial Glow */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[min(90vw,620px)] w-[min(90vw,620px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/[0.04] blur-[100px] -z-10" />
@@ -135,7 +135,7 @@ export const ContactSection = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45 }}
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="text-center max-w-2xl mx-auto mb-8"
         >
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-100 px-3.5 py-1.5 rounded-full">
             START A PROJECT

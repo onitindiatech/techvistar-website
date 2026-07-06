@@ -10,6 +10,24 @@ export interface FAQ {
 
 export const FAQs: readonly FAQ[] = [
   {
+    id: 'faq-methodology',
+    category: 'General',
+    page: 'home',
+    tags: ['methodology', 'process'],
+    featured: true,
+    question: "What is TechVistar's delivery methodology?",
+    answer: 'We use an iterative, milestone-driven delivery process. It begins with aligning on vision, locking in the scope, executing clean development sprints with regular demos, and finalizing with production launch and handover training.'
+  },
+  {
+    id: 'faq-codebase',
+    category: 'General',
+    page: 'home',
+    tags: ['codebase', 'ownership'],
+    featured: true,
+    question: 'Will our internal team own the codebase after delivery?',
+    answer: 'Yes. Upon project completion and sign-off, you receive full intellectual property rights, the complete codebase, and comprehensive documentation so your internal team can fully own and maintain the system.'
+  },
+  {
     id: 'faq-1',
     category: 'General',
     page: 'home',

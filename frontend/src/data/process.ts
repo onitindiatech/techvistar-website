@@ -16,23 +16,11 @@ export const SECTION_PROCESS = {
     'The same phases apply whether discovery is a focused workshop or a full audit, and whether build is one squad or several—governance, documentation, and sign-off stay consistent throughout.',
 } as const;
 
-export const PROCESS_PILLARS = ['Vision', 'Insight', 'Strategy', 'Results'] as const;
+export const PROCESS_PILLARS = ['Insight', 'Strategy', 'Results'] as const;
 
 export const PROCESS_STEPS = [
   {
     step: '01',
-    title: 'Vision & scope',
-    description:
-      'We align on goals, constraints, funnel truth, and success criteria—then produce a written scope, milestone plan, and risk register.',
-    icon: FileSearch,
-    deliverables: [
-      'Scope, milestones, and assumptions in writing',
-      'Risk register and dependency map',
-      'Agreed demo, analytics, and reporting cadence',
-    ] as const,
-  },
-  {
-    step: '02',
     title: 'Insight & build',
     description:
       'Iterative delivery with demos, code review, and test evidence. You see product and metrics on a steady cadence—not a black box.',
@@ -44,7 +32,7 @@ export const PROCESS_STEPS = [
     ] as const,
   },
   {
-    step: '03',
+    step: '02',
     title: 'Strategy & integration',
     description:
       'Deployment to your environments, integrations with CRM and ops tools, runbooks, and knowledge transfer so your team can operate and extend what we ship.',
@@ -56,7 +44,7 @@ export const PROCESS_STEPS = [
     ] as const,
   },
   {
-    step: '04',
+    step: '03',
     title: 'Technology & acceleration',
     description:
       'Post-launch fixes, enhancements, performance and cost tuning—with SLAs, escalation paths, and optimization tied to agreed KPIs.',

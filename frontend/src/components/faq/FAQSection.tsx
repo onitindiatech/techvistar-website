@@ -78,7 +78,7 @@ export const FAQSection = ({
   if (filteredFAQs.length === 0) return null;
 
   return (
-    <SiteSection ref={ref} id="faq-section" variant="muted" className="!pt-12 !pb-12 md:!pt-16 md:!pb-16 border-t border-slate-100 relative">
+    <SiteSection ref={ref} id="faq-section" variant="muted" className="!pt-6 !pb-6 md:!pt-8 md:!pb-8 border-t border-slate-100 relative">
       <div className="container-custom relative z-10">
         {layout === 'split' ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
@@ -144,7 +144,7 @@ export const FAQSection = ({
               <FAQAccordion faqs={filteredFAQs} />
 
               {showViewAll && (
-                <div className="text-center mt-10">
+                <div className="text-center mt-6">
                   <Button asChild variant="outline" className="border-slate-200 hover:bg-slate-50 rounded-xl h-11 px-6 font-bold group">
                     <Link to="/faq" className="inline-flex items-center gap-2">
                       View All FAQs
@@ -169,7 +169,7 @@ export const FAQSection = ({
               <FAQAccordion faqs={filteredFAQs} />
 
               {showViewAll && (
-                <div className="text-center mt-10">
+                <div className="text-center mt-6">
                   <Button asChild variant="outline" className="border-slate-200 hover:bg-slate-50 rounded-xl h-11 px-6 font-bold group">
                     <Link to="/faq" className="inline-flex items-center gap-2">
                       View All FAQs

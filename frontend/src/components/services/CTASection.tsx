@@ -2,29 +2,14 @@ import { Service } from '@/data/services';
 import { Button } from '@/components/ui/button';
 import { MessageSquare, Calendar, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
+import { ConsultationForm } from './ConsultationForm';
 
 interface SectionProps {
   service: Service;
 }
 
 export const CTASection = ({ service }: SectionProps) => {
-  const scrollToForm = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const element = document.getElementById('inquiry-form-card');
-    if (element) {
-      const offset = 140;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-    }
-  };
-
   return (
     <motion.section 
       initial={{ opacity: 0, y: 30 }}
@@ -63,15 +48,21 @@ export const CTASection = ({ service }: SectionProps) => {
         </p>
         
         <div className="flex flex-wrap gap-4 justify-center pt-2">
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
-            <Button 
-              onClick={scrollToForm} 
-              className="bg-white text-emerald-700 hover:bg-slate-50 font-bold border-none shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] px-7 py-3 rounded-xl inline-flex items-center gap-2 transition-all h-11 text-xs md:text-sm"
-            >
-              <Calendar className="h-4.5 w-4.5" />
-              Book Free Consultation
-            </Button>
-          </motion.div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
+                <Button 
+                  className="bg-white text-emerald-700 hover:bg-slate-50 font-bold border-none shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] px-7 py-3 rounded-xl inline-flex items-center gap-2 transition-all h-11 text-xs md:text-sm"
+                >
+                  <Calendar className="h-4.5 w-4.5" />
+                  Book Free Consultation
+                </Button>
+              </motion.div>
+            </DialogTrigger>
+            <DialogContent className="border-none bg-transparent shadow-none p-0 w-[calc(100%-2rem)] sm:w-full max-w-2xl">
+              <ConsultationForm serviceTitle={service.title} />
+            </DialogContent>
+          </Dialog>
           
           <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
             <Button 

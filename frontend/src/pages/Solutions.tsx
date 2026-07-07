@@ -27,7 +27,7 @@ interface SolutionCategory {
 export const Solutions = () => {
   const { data: apiSolutions, isLoading } = useQuery({
     queryKey: ['activeSolutions'],
-    queryFn: getActiveSolutions,
+    queryFn: () => getActiveSolutions(),
   });
 
   const solutionsData = (apiSolutions || []).map(decorateSolution);

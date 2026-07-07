@@ -19,9 +19,17 @@ export interface IJob extends BaseDocument {
   requirements: string[];
   responsibilities: string[];
   benefits: string[];
+  displayOrder: number;
   status: typeof VALIDATION.JOB_STATUSES[number];
   featured: boolean;
   applicationDeadline?: Date;
+
+  // Audit and Soft Delete
+  isDeleted?: boolean;
+  deletedAt?: Date | null;
+  deletedBy?: string;
+  createdBy?: string;
+  updatedBy?: string;
 }
 
 const jobSchema = new Schema<IJob>(
@@ -87,6 +95,10 @@ const jobSchema = new Schema<IJob>(
       type: [String],
       default: [],
     },
+    displayOrder: {
+      type: Number,
+      default: 0,
+    },
     status: {
       type: String,
       enum: VALIDATION.JOB_STATUSES,
@@ -98,6 +110,26 @@ const jobSchema = new Schema<IJob>(
     },
     applicationDeadline: {
       type: Date,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    deletedBy: {
+      type: String,
+      default: '',
+    },
+    createdBy: {
+      type: String,
+      default: '',
+    },
+    updatedBy: {
+      type: String,
+      default: '',
     },
   },
   {
@@ -111,13 +143,14 @@ jobSchema.pre('validate', function (this: any) {
     this.slug = this.title
       .toLowerCase()
       .trim()
-      .replace(/[^a-z0-9 -]/g, '') // Remove non-alphanumeric chars (except dashes and spaces)
-      .replace(/\s+/g, '-') // Replace spaces with dashes
-      .replace(/-+/g, '-'); // Collapse double dashes
+      .replace(/[^a-z0-9 -]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
   }
 });
 
 // Indexes for performance optimization
+jobSchema.index({ status: 1, displayOrder: 1 });
 jobSchema.index({ status: 1, featured: -1 });
 jobSchema.index({ department: 1 });
 jobSchema.index({ status: 1, createdAt: -1 });

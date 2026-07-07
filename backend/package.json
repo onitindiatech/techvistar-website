@@ -8,7 +8,9 @@
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
     "type-check": "tsc --noEmit",
-    "seed:industries": "ts-node-dev --transpile-only -r tsconfig-paths/register src/database/seedIndustries.ts"
+    "seed:industries": "ts-node-dev --transpile-only -r tsconfig-paths/register src/database/seedIndustries.ts",
+    "seed:solutions": "ts-node-dev --transpile-only -r tsconfig-paths/register src/database/seedSolutions.ts",
+    "seed:portfolio": "ts-node-dev --transpile-only -r tsconfig-paths/register src/database/seedPortfolio.ts"
   },
   "keywords": [
     "express",

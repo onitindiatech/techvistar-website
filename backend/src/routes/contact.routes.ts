@@ -1,35 +1,45 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
-import { 
-  submitContactForm, 
-  listContacts, 
-  updateContactStatus, 
-  deleteContact 
+import {
+  submitContactForm,
+  adminGetContacts,
+  adminUpdateContactStatus,
+  adminDeleteContact,
+  adminRestoreContact,
+  adminPermanentlyDeleteContact,
+  adminBulkDeleteContacts,
+  adminBulkRestoreContacts,
+  adminBulkStatusContacts,
 } from '@/controllers/contact.controller';
+import { authMiddleware } from '@/middleware/auth.middleware';
 import { CONTACT_RATE_LIMIT } from '@/constants';
 
 const router = Router();
 
 const contactRateLimiter = rateLimit({
-  windowMs:        CONTACT_RATE_LIMIT.WINDOW_MS,
-  max:             CONTACT_RATE_LIMIT.MAX_REQUESTS,
+  windowMs: CONTACT_RATE_LIMIT.WINDOW_MS,
+  max: CONTACT_RATE_LIMIT.MAX_REQUESTS,
   standardHeaders: true,
-  legacyHeaders:   false,
+  legacyHeaders: false,
   message: {
-    success:    false,
+    success: false,
     statusCode: 429,
-    code:       'TOO_MANY_REQUESTS',
-    message:    'Too many submissions from this IP. Please try again after 15 minutes.',
+    code: 'TOO_MANY_REQUESTS',
+    message: 'Too many submissions from this IP. Please try again after 15 minutes.',
   },
 });
 
-// POST /api/contact - Public submission route
+// ─── Administrative Endpoints ──────────────────────────────────────────────────
+router.get('/admin', authMiddleware, adminGetContacts);
+router.patch('/admin/:id/status', authMiddleware, adminUpdateContactStatus);
+router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteContacts);
+router.post('/admin/bulk-restore', authMiddleware, adminBulkRestoreContacts);
+router.post('/admin/bulk-status', authMiddleware, adminBulkStatusContacts);
+router.post('/admin/:id/restore', authMiddleware, adminRestoreContact);
+router.delete('/admin/:id/permanent', authMiddleware, adminPermanentlyDeleteContact);
+router.delete('/admin/:id', authMiddleware, adminDeleteContact);
+
+// ─── Public Endpoints ────────────────────────────────────────────────────────
 router.post('/', contactRateLimiter, submitContactForm);
 
-// Admin endpoints (JWT gated in Phase 3, but available to frontend now)
-router.get('/', listContacts);
-router.patch('/:id/status', updateContactStatus);
-router.delete('/:id', deleteContact);
-
 export default router;
-

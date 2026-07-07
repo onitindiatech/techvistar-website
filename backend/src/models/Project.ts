@@ -31,6 +31,11 @@ export interface IProject extends BaseDocument {
   displayOrder: number;
   seoTitle?: string;
   seoDescription?: string;
+  isDeleted?: boolean;
+  deletedAt?: Date | null;
+  deletedBy?: string;
+  createdBy?: string;
+  updatedBy?: string;
 }
 
 const projectSchema = new Schema<IProject>(
@@ -146,6 +151,26 @@ const projectSchema = new Schema<IProject>(
     seoDescription: {
       type: String,
       trim: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    deletedBy: {
+      type: String,
+      default: '',
+    },
+    createdBy: {
+      type: String,
+      default: '',
+    },
+    updatedBy: {
+      type: String,
+      default: '',
     },
   },
   {

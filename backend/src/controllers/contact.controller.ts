@@ -1,36 +1,22 @@
 /**
  * @file src/controllers/contact.controller.ts
  * @description Controller for the Contact module.
- *
- * ARCHITECTURE DECISION:
- *   Keeps the controller layer clean. It only validates the request body,
- *   hands it off to the contact service, and sends a standard 201 Created
- *   response back using ApiResponse.
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { validateContactInput } from '@/validators/contact.validator';
+import { validateContactInput, validateContactStatusUpdate } from '@/validators/contact.validator';
 import { contactService } from '@/services/contact.service';
 import { ApiResponse } from '@/utils/ApiResponse';
 import { HTTP_STATUS } from '@/constants';
 
-/**
- * POST /api/contact
- * Handles new contact form submissions.
- */
 export async function submitContactForm(
-  req:  Request,
-  res:  Response,
+  req: Request,
+  res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    // 1. Run validator to parse and validate request payload
     const validatedData = validateContactInput(req.body);
-
-    // 2. Invoke contact service to save inquiry to MongoDB
     const contact = await contactService.createContact(validatedData);
-
-    // 3. Respond with standard API envelope
     ApiResponse.success(
       res,
       contact,
@@ -38,75 +24,138 @@ export async function submitContactForm(
       HTTP_STATUS.CREATED
     );
   } catch (err) {
-    // Pass errors directly to global error handler
     next(err);
   }
 }
 
-/**
- * GET /api/contact
- * Lists all contact inquiries.
- */
-export async function listContacts(
-  _req: Request,
-  res:  Response,
+export async function adminGetContacts(
+  req: Request,
+  res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    const contacts = await contactService.getAllContacts();
-    ApiResponse.success(
-      res,
-      contacts,
-      'Contact inquiries retrieved successfully',
-      HTTP_STATUS.OK
+    const { page, limit, search, status, trash, sortBy, sortOrder } = req.query;
+    const result = await contactService.getAllContacts({
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
+      search: search ? String(search) : undefined,
+      status: status ? String(status) : undefined,
+      trash: trash ? String(trash) : undefined,
+      sortBy: sortBy ? String(sortBy) : undefined,
+      sortOrder: sortOrder ? (String(sortOrder) as 'asc' | 'desc') : undefined,
+    });
+
+    const paginationMeta = ApiResponse.buildPagination(
+      result.pagination.total,
+      result.pagination.page,
+      result.pagination.limit
     );
+
+    ApiResponse.paginated(res, result.data, paginationMeta, 'Contact inquiries retrieved successfully');
   } catch (err) {
     next(err);
   }
 }
 
-/**
- * PATCH /api/contact/:id/status
- * Updates the status (e.g. read/unread) of a contact inquiry.
- */
-export async function updateContactStatus(
-  req:  Request,
-  res:  Response,
+export async function adminUpdateContactStatus(
+  req: Request,
+  res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
     const { id } = req.params;
-    const { status } = req.body;
-    const contact = await contactService.updateContactStatus(id, status);
-    ApiResponse.success(
-      res,
-      contact,
-      'Contact inquiry status updated successfully',
-      HTTP_STATUS.OK
-    );
+    const { status } = validateContactStatusUpdate(req.body);
+    const updaterEmail = (req as any).user?.email || 'Admin';
+    const contact = await contactService.updateContactStatus(id, status, updaterEmail);
+    ApiResponse.success(res, contact, 'Contact inquiry status updated successfully', HTTP_STATUS.OK);
   } catch (err) {
     next(err);
   }
 }
 
-/**
- * DELETE /api/contact/:id
- * Deletes a contact inquiry permanently.
- */
-export async function deleteContact(
-  req:  Request,
-  res:  Response,
+export async function adminDeleteContact(
+  req: Request,
+  res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
     const { id } = req.params;
-    await contactService.deleteContact(id);
-    ApiResponse.success(
-      res,
-      null,
-      'Contact inquiry deleted successfully',
-      HTTP_STATUS.OK
-    );
+    const deleterEmail = (req as any).user?.email || 'Admin';
+    await contactService.deleteContact(id, deleterEmail);
+    ApiResponse.success(res, null, 'Contact inquiry moved to trash');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminRestoreContact(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { id } = req.params;
+    await contactService.restoreContact(id);
+    ApiResponse.success(res, null, 'Contact inquiry restored successfully');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminPermanentlyDeleteContact(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { id } = req.params;
+    await contactService.permanentlyDeleteContact(id);
+    ApiResponse.success(res, null, 'Contact inquiry permanently deleted');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminBulkDeleteContacts(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids } = req.body;
+    const deleterEmail = (req as any).user?.email || 'Admin';
+    await contactService.bulkDeleteContacts(ids, deleterEmail);
+    ApiResponse.success(res, null, 'Contacts bulk moved to trash');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminBulkRestoreContacts(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids } = req.body;
+    await contactService.bulkRestoreContacts(ids);
+    ApiResponse.success(res, null, 'Contacts bulk restored');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminBulkStatusContacts(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids, status } = req.body;
+    const validated = validateContactStatusUpdate({ status });
+    const updaterEmail = (req as any).user?.email || 'Admin';
+    await contactService.bulkUpdateStatus(ids, validated.status, updaterEmail);
+    ApiResponse.success(res, null, 'Contacts bulk status updated');
   } catch (err) {
     next(err);
   }

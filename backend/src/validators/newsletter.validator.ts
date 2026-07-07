@@ -51,3 +51,29 @@ export function validateNewsletterInput(input: NewsletterInput): {
     source: finalSource,
   };
 }
+
+const NEWSLETTER_STATUSES = ['subscribed', 'unsubscribed'] as const;
+
+export function validateNewsletterStatusUpdate(input: { status?: unknown }): {
+  status: typeof NEWSLETTER_STATUSES[number];
+} {
+  const errors: Array<{ field: string; message: string }> = [];
+
+  if (input.status === undefined || input.status === null || String(input.status).trim() === '') {
+    errors.push({ field: 'status', message: 'Status is required' });
+  } else {
+    const statusStr = String(input.status).trim();
+    if (!NEWSLETTER_STATUSES.includes(statusStr as typeof NEWSLETTER_STATUSES[number])) {
+      errors.push({
+        field: 'status',
+        message: `Status must be one of: ${NEWSLETTER_STATUSES.join(', ')}`,
+      });
+    }
+  }
+
+  if (errors.length > 0) {
+    throw ApiError.validationError('Validation failed', errors);
+  }
+
+  return { status: String(input.status).trim() as typeof NEWSLETTER_STATUSES[number] };
+}

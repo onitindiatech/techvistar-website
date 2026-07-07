@@ -7,7 +7,7 @@ import { Service, IService } from '@/models/Service';
 import { ApiError } from '@/utils/ApiError';
 import { logger } from '@/utils/logger';
 
-const FALLBACK_SERVICES: Array<Partial<IService>> = [
+const FALLBACK_SERVICES: Record<string, unknown>[] = [
   {
     title: 'Web Development',
     slug: 'web-development',
@@ -111,7 +111,7 @@ export class ServiceService {
       }
     }
 
-    const service = await Service.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+    const service = await Service.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true });
     if (!service) {
       throw ApiError.notFound('Service listing not found');
     }
@@ -128,7 +128,7 @@ export class ServiceService {
     const result = await Service.findByIdAndUpdate(
       id,
       { isDeleted: true, deletedAt: new Date(), deletedBy: deletedBy || 'System' },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!result) {
       throw ApiError.notFound('Service listing not found');
@@ -144,7 +144,7 @@ export class ServiceService {
     const result = await Service.findByIdAndUpdate(
       id,
       { isDeleted: false, deletedAt: null, deletedBy: '' },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!result) {
       throw ApiError.notFound('Service listing not found');

@@ -59,34 +59,79 @@ const Dashboard = () => {
     queryFn: () => getAllIndustries({ page: 1, limit: 1 }),
   });
   const industriesCount = industriesResponse?.pagination?.total ?? 0;
-  const { data: solutions = [] } = useQuery({ queryKey: ["admin", "solutions"], queryFn: getAllSolutions });
-  const { data: projects = [] } = useQuery({ queryKey: ["admin", "portfolio"], queryFn: getAllProjects });
-  const { data: faqs = [] } = useQuery({ queryKey: ["admin", "faqs"], queryFn: getAllFAQs });
-  const { data: jobs = [] } = useQuery({ queryKey: ["admin", "jobs"], queryFn: getAllJobs });
-  const { data: applications = [] } = useQuery({ queryKey: ["admin", "applications"], queryFn: getAllApplications });
-  const { data: contacts = [] } = useQuery({ queryKey: ["admin", "contacts"], queryFn: getAllContacts });
-  const { data: subscribers = [] } = useQuery({ queryKey: ["admin", "subscribers"], queryFn: getAllSubscribers });
+  const { data: solutionsResponse } = useQuery({
+    queryKey: ["admin", "solutions", "stats"],
+    queryFn: () => getAllSolutions({ page: 1, limit: 1 }),
+  });
+  const solutionsCount = solutionsResponse?.pagination?.total ?? 0;
+  const { data: projectsResponse } = useQuery({
+    queryKey: ["admin", "portfolio", "stats"],
+    queryFn: () => getAllProjects({ page: 1, limit: 1 }),
+  });
+  const projectsCount = projectsResponse?.pagination?.total ?? 0;
+
+  const { data: projectsRecentResponse } = useQuery({
+    queryKey: ["admin", "portfolio", "recent"],
+    queryFn: () => getAllProjects({ page: 1, limit: 3 }),
+  });
+  const projects = projectsRecentResponse?.projects || [];
+  const { data: faqsResponse } = useQuery({
+    queryKey: ["admin", "faqs", "stats"],
+    queryFn: () => getAllFAQs({ page: 1, limit: 1 }),
+  });
+  const faqsCount = faqsResponse?.pagination?.total ?? 0;
+  const { data: jobsResponse } = useQuery({ queryKey: ["admin", "jobs", "stats"], queryFn: () => getAllJobs({ page: 1, limit: 1 }) });
+  const jobsCount = jobsResponse?.pagination?.total ?? 0;
+  const { data: applicationsResponse } = useQuery({
+    queryKey: ["admin", "applications", "stats"],
+    queryFn: () => getAllApplications({ page: 1, limit: 1 }),
+  });
+  const applicationsCount = applicationsResponse?.pagination?.total ?? 0;
+
+  const { data: applicationsRecentResponse } = useQuery({
+    queryKey: ["admin", "applications", "recent"],
+    queryFn: () => getAllApplications({ page: 1, limit: 3 }),
+  });
+  const applications = applicationsRecentResponse?.applications || [];
+
+  const { data: contactsResponse } = useQuery({
+    queryKey: ["admin", "contacts", "stats"],
+    queryFn: () => getAllContacts({ page: 1, limit: 1 }),
+  });
+  const contactsCount = contactsResponse?.pagination?.total ?? 0;
+
+  const { data: contactsRecentResponse } = useQuery({
+    queryKey: ["admin", "contacts", "recent"],
+    queryFn: () => getAllContacts({ page: 1, limit: 3 }),
+  });
+  const contacts = contactsRecentResponse?.contacts || [];
+
+  const { data: subscribersResponse } = useQuery({
+    queryKey: ["admin", "subscribers", "stats"],
+    queryFn: () => getAllSubscribers({ page: 1, limit: 1 }),
+  });
+  const subscribersCount = subscribersResponse?.pagination?.total ?? 0;
 
   // Map live counts
   const cmsStats = [
     { title: "Total Services", value: String(services.length).padStart(2, '0'), description: "CMS Services", icon: Wrench, trend: 12.5, data: [{value:5},{value:6},{value:6},{value:7},{value:services.length}] },
     { title: "Total Industries", value: String(industriesCount).padStart(2, '0'), description: "CMS Industries", icon: Building, trend: 6.2, data: [{value:8},{value:9},{value:9},{value:10},{value:industriesCount}] },
-    { title: "Total Solutions", value: String(solutions.length).padStart(2, '0'), description: "CMS Solutions", icon: Shapes, trend: 4.8, data: [{value:8},{value:9},{value:10},{value:11},{value:solutions.length}] },
-    { title: "Portfolio Projects", value: String(projects.length).padStart(2, '0'), description: "Showcased projects", icon: Package, trend: 15.2, data: [{value:15},{value:18},{value:20},{value:22},{value:projects.length}] },
-    { title: "Total FAQs", value: String(faqs.length).padStart(2, '0'), description: "CMS Q&As", icon: MessageSquareText, trend: 0.0, data: [{value:16},{value:16},{value:16},{value:16},{value:faqs.length}] },
-    { title: "Total Jobs", value: String(jobs.length).padStart(2, '0'), description: "Active listings", icon: BriefcaseBusiness, trend: -5.0, data: [{value:7},{value:7},{value:6},{value:6},{value:jobs.length}] },
-    { title: "Total Applications", value: String(applications.length).padStart(2, '0'), description: "Received applications", icon: FileText, trend: 32.4, data: [{value:25},{value:28},{value:32},{value:38},{value:applications.length}] },
-    { title: "Contact Inquiries", value: String(contacts.length).padStart(2, '0'), description: "Total submissions", icon: Contact, trend: 8.5, data: [{value:12},{value:15},{value:14},{value:17},{value:contacts.length}] },
-    { title: "Newsletter Subscribers", value: String(subscribers.length), description: "Active subscribers", icon: Mail, trend: 5.8, data: [{value:1050},{value:1100},{value:1120},{value:1180},{value:subscribers.length}] },
+    { title: "Total Solutions", value: String(solutionsCount).padStart(2, '0'), description: "CMS Solutions", icon: Shapes, trend: 4.8, data: [{value:8},{value:9},{value:10},{value:11},{value:solutionsCount}] },
+    { title: "Portfolio Projects", value: String(projectsCount).padStart(2, '0'), description: "Showcased projects", icon: Package, trend: 15.2, data: [{value:15},{value:18},{value:20},{value:22},{value:projectsCount}] },
+    { title: "Total FAQs", value: String(faqsCount).padStart(2, '0'), description: "CMS Q&As", icon: MessageSquareText, trend: 0.0, data: [{value:16},{value:16},{value:16},{value:16},{value:faqsCount}] },
+    { title: "Total Jobs", value: String(jobsCount).padStart(2, '0'), description: "Active listings", icon: BriefcaseBusiness, trend: -5.0, data: [{value:7},{value:7},{value:6},{value:6},{value:jobsCount}] },
+    { title: "Total Applications", value: String(applicationsCount).padStart(2, '0'), description: "Received applications", icon: FileText, trend: 32.4, data: [{value:25},{value:28},{value:32},{value:38},{value:applicationsCount}] },
+    { title: "Contact Inquiries", value: String(contactsCount).padStart(2, '0'), description: "Total submissions", icon: Contact, trend: 8.5, data: [{value:12},{value:15},{value:14},{value:17},{value:contactsCount}] },
+    { title: "Newsletter Subscribers", value: String(subscribersCount), description: "Active subscribers", icon: Mail, trend: 5.8, data: [{value:1050},{value:1100},{value:1120},{value:1180},{value:subscribersCount}] },
   ];
 
   // Dynamic Chart Distribution from MongoDB
   const contentDistributionData = [
     { name: "Services", value: services.length || 1, color: "#10b981" },
-    { name: "Solutions", value: solutions.length || 1, color: "#0ea5e9" },
-    { name: "Portfolio", value: projects.length || 1, color: "#f59e0b" },
-    { name: "FAQs", value: faqs.length || 1, color: "#8b5cf6" },
-    { name: "Jobs", value: jobs.length || 1, color: "#ef4444" },
+    { name: "Solutions", value: solutionsCount || 1, color: "#0ea5e9" },
+    { name: "Portfolio", value: projectsCount || 1, color: "#f59e0b" },
+    { name: "FAQs", value: faqsCount || 1, color: "#8b5cf6" },
+    { name: "Jobs", value: jobsCount || 1, color: "#ef4444" },
   ];
 
   // Application status distribution
@@ -143,9 +188,9 @@ const Dashboard = () => {
       const factor = (idx + 1) / months.length;
       return {
         name: m,
-        contacts: Math.round((contacts.length || 10) * factor),
-        applications: Math.round((applications.length || 15) * factor),
-        subscribers: Math.round((subscribers.length || 100) * factor)
+        contacts: Math.round((contactsCount || 10) * factor),
+        applications: Math.round((applicationsCount || 15) * factor),
+        subscribers: Math.round((subscribersCount || 100) * factor)
       };
     });
   };

@@ -1,14 +1,9 @@
 /**
  * @file src/services/contact.service.ts
  * @description Contact service containing business logic for managing contact submissions.
- *
- * ARCHITECTURE DECISION:
- *   This service is decoupled from HTTP requests. It receives pre-validated DTO inputs,
- *   performs database persistence, logs successfully handled operations, and manages
- *   future transactional tasks (like triggering client/admin email confirmations).
  */
 
-import { Contact, IContact } from '@/models/Contact';
+import { Contact, IContact, ContactStatus } from '@/models/Contact';
 import { logger } from '@/utils/logger';
 import { ApiError } from '@/utils/ApiError';
 
@@ -22,12 +17,17 @@ export interface CreateContactDTO {
   message: string;
 }
 
+export interface ContactListOptions {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+  trash?: boolean | string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
 export class ContactService {
-  /**
-   * Persists a validated contact inquiry submission.
-   *
-   * @param data Validated submission details
-   */
   async createContact(data: CreateContactDTO): Promise<IContact> {
     logger.info('[ContactService] Processing new contact submission', {
       email: data.email,
@@ -46,33 +46,68 @@ export class ContactService {
       email: contact.email,
     });
 
-    // TODO Phase 3: Integrate Nodemailer to dispatch confirmation emails here:
-    // try {
-    //   await emailService.sendContactConfirmation(contact);
-    // } catch (mailErr) {
-    //   logger.error('[ContactService] Failed to send confirmation email', { error: mailErr });
-    // }
-
     return contact;
   }
 
-  /**
-   * Retrieves all contact form submissions.
-   */
-  async getAllContacts(): Promise<IContact[]> {
-    logger.info('[ContactService] Retrieving all contacts');
-    return Contact.find().sort({ createdAt: -1 });
+  async getAllContacts(options: ContactListOptions = {}): Promise<{
+    data: IContact[];
+    pagination: { total: number; page: number; limit: number; totalPages: number };
+  }> {
+    logger.info('[ContactService] Retrieving contacts with options', options);
+
+    const page = Math.max(1, Number(options.page) || 1);
+    const limit = Math.max(1, Number(options.limit) || 10);
+    const skip = (page - 1) * limit;
+
+    const query: Record<string, unknown> = {};
+
+    const isTrash = options.trash === 'true' || options.trash === true || options.status === 'deleted';
+    if (isTrash) {
+      query.isDeleted = true;
+    } else {
+      query.isDeleted = { $ne: true };
+    }
+
+    if (options.status && options.status !== 'all' && options.status !== 'deleted') {
+      query.status = options.status;
+    }
+
+    if (options.search) {
+      query.$or = [
+        { name: { $regex: options.search, $options: 'i' } },
+        { email: { $regex: options.search, $options: 'i' } },
+        { phone: { $regex: options.search, $options: 'i' } },
+        { company: { $regex: options.search, $options: 'i' } },
+        { message: { $regex: options.search, $options: 'i' } },
+        { serviceInterested: { $regex: options.search, $options: 'i' } },
+        { status: { $regex: options.search, $options: 'i' } },
+      ];
+    }
+
+    let sortObj: Record<string, 1 | -1> = { createdAt: -1 };
+    if (options.sortBy) {
+      const order = options.sortOrder === 'asc' ? 1 : -1;
+      if (['name', 'email', 'status', 'createdAt', 'updatedAt'].includes(options.sortBy)) {
+        sortObj = { [options.sortBy]: order };
+      }
+    }
+
+    const total = await Contact.countDocuments(query);
+    const data = await Contact.find(query).sort(sortObj).skip(skip).limit(limit);
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data,
+      pagination: { total, page, limit, totalPages },
+    };
   }
 
-  /**
-   * Updates contact status.
-   */
-  async updateContactStatus(id: string, status: string): Promise<IContact> {
-    logger.info('[ContactService] Updating contact status', { id, status });
+  async updateContactStatus(id: string, status: ContactStatus, updatedBy?: string): Promise<IContact> {
+    logger.info('[ContactService] Updating contact status', { id, status, updatedBy });
     const contact = await Contact.findByIdAndUpdate(
       id,
-      { status },
-      { new: true, runValidators: true }
+      { status, updatedBy: updatedBy || 'System' },
+      { returnDocument: 'after', runValidators: true }
     );
     if (!contact) {
       throw ApiError.notFound('Contact submission not found');
@@ -80,15 +115,60 @@ export class ContactService {
     return contact;
   }
 
-  /**
-   * Deletes a contact submission permanently.
-   */
-  async deleteContact(id: string): Promise<void> {
-    logger.info('[ContactService] Deleting contact submission', { id });
+  async deleteContact(id: string, deletedBy?: string): Promise<void> {
+    logger.info('[ContactService] Soft deleting contact submission', { id, deletedBy });
+    const result = await Contact.findByIdAndUpdate(
+      id,
+      { isDeleted: true, deletedAt: new Date(), deletedBy: deletedBy || 'System' },
+      { returnDocument: 'after' }
+    );
+    if (!result) {
+      throw ApiError.notFound('Contact submission not found');
+    }
+  }
+
+  async restoreContact(id: string): Promise<void> {
+    logger.info('[ContactService] Restoring contact submission', { id });
+    const result = await Contact.findByIdAndUpdate(
+      id,
+      { isDeleted: false, deletedAt: null, deletedBy: '' },
+      { returnDocument: 'after' }
+    );
+    if (!result) {
+      throw ApiError.notFound('Contact submission not found');
+    }
+  }
+
+  async permanentlyDeleteContact(id: string): Promise<void> {
+    logger.info('[ContactService] Permanently deleting contact submission', { id });
     const result = await Contact.findByIdAndDelete(id);
     if (!result) {
       throw ApiError.notFound('Contact submission not found');
     }
+  }
+
+  async bulkDeleteContacts(ids: string[], deletedBy?: string): Promise<void> {
+    logger.info('[ContactService] Bulk soft deleting contacts', { ids, deletedBy });
+    await Contact.updateMany(
+      { _id: { $in: ids } },
+      { isDeleted: true, deletedAt: new Date(), deletedBy: deletedBy || 'System' }
+    );
+  }
+
+  async bulkRestoreContacts(ids: string[]): Promise<void> {
+    logger.info('[ContactService] Bulk restoring contacts', { ids });
+    await Contact.updateMany(
+      { _id: { $in: ids } },
+      { isDeleted: false, deletedAt: null, deletedBy: '' }
+    );
+  }
+
+  async bulkUpdateStatus(ids: string[], status: ContactStatus, updatedBy?: string): Promise<void> {
+    logger.info('[ContactService] Bulk status update', { ids, status, updatedBy });
+    await Contact.updateMany(
+      { _id: { $in: ids } },
+      { status, updatedBy: updatedBy || 'System' }
+    );
   }
 }
 

@@ -4,16 +4,11 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { validateJobApplicationInput } from '@/validators/jobApplication.validator';
+import { validateJobApplicationInput, validateApplicationStatusUpdate } from '@/validators/jobApplication.validator';
 import { jobApplicationService } from '@/services/jobApplication.service';
 import { ApiResponse } from '@/utils/ApiResponse';
 import { HTTP_STATUS } from '@/constants';
-import { ApiError } from '@/utils/ApiError';
 
-/**
- * POST /api/careers/apply
- * Submits a new job application.
- */
 export async function submitApplication(
   req: Request,
   res: Response,
@@ -22,7 +17,6 @@ export async function submitApplication(
   try {
     const validatedData = validateJobApplicationInput(req.body);
     const application = await jobApplicationService.submitApplication(validatedData);
-
     ApiResponse.success(
       res,
       application,
@@ -34,11 +28,37 @@ export async function submitApplication(
   }
 }
 
-/**
- * GET /api/careers/applications/:id
- * Retrieves details of a specific job application.
- */
-export async function getApplicationById(
+export async function adminGetApplications(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { page, limit, search, status, jobId, trash, sortBy, sortOrder } = req.query;
+    const result = await jobApplicationService.getAllApplications({
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
+      search: search ? String(search) : undefined,
+      status: status ? String(status) : undefined,
+      jobId: jobId ? String(jobId) : undefined,
+      trash: trash ? String(trash) : undefined,
+      sortBy: sortBy ? String(sortBy) : undefined,
+      sortOrder: sortOrder ? (String(sortOrder) as 'asc' | 'desc') : undefined,
+    });
+
+    const paginationMeta = ApiResponse.buildPagination(
+      result.pagination.total,
+      result.pagination.page,
+      result.pagination.limit
+    );
+
+    ApiResponse.paginated(res, result.data, paginationMeta, 'All job applications retrieved successfully');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminGetApplicationById(
   req: Request,
   res: Response,
   next: NextFunction
@@ -46,113 +66,141 @@ export async function getApplicationById(
   try {
     const { id } = req.params;
     const application = await jobApplicationService.getApplicationById(id);
-
-    ApiResponse.success(
-      res,
-      application,
-      'Job application details retrieved successfully',
-      HTTP_STATUS.OK
-    );
+    ApiResponse.success(res, application, 'Job application details retrieved successfully', HTTP_STATUS.OK);
   } catch (err) {
     next(err);
   }
 }
 
-/**
- * GET /api/careers/jobs/:jobId/applications
- * Lists all applications for a specific job listing.
- */
-export async function getApplicationsByJob(
+export async function adminGetApplicationsByJob(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
     const { jobId } = req.params;
-    const applications = await jobApplicationService.getApplicationsByJob(jobId);
+    const { page, limit, search, status, trash, sortBy, sortOrder } = req.query;
+    const result = await jobApplicationService.getApplicationsByJob(jobId, {
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
+      search: search ? String(search) : undefined,
+      status: status ? String(status) : undefined,
+      trash: trash ? String(trash) : undefined,
+      sortBy: sortBy ? String(sortBy) : undefined,
+      sortOrder: sortOrder ? (String(sortOrder) as 'asc' | 'desc') : undefined,
+    });
 
-    ApiResponse.success(
-      res,
-      applications,
-      'Job applications retrieved successfully',
-      HTTP_STATUS.OK
+    const paginationMeta = ApiResponse.buildPagination(
+      result.pagination.total,
+      result.pagination.page,
+      result.pagination.limit
     );
+
+    ApiResponse.paginated(res, result.data, paginationMeta, 'Job applications retrieved successfully');
   } catch (err) {
     next(err);
   }
 }
 
-/**
- * PATCH /api/careers/applications/:id/status
- * Updates status of a job application.
- */
-export async function updateApplicationStatus(
+export async function adminUpdateApplicationStatus(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
     const { id } = req.params;
-    const { status } = req.body;
-
-    if (!status) {
-      throw ApiError.badRequest('Status is required');
-    }
-
-    const application = await jobApplicationService.updateApplicationStatus(id, status);
-
-    ApiResponse.success(
-      res,
-      application,
-      'Job application status updated successfully',
-      HTTP_STATUS.OK
-    );
+    const { status } = validateApplicationStatusUpdate(req.body);
+    const updaterEmail = (req as any).user?.email || 'Admin';
+    const application = await jobApplicationService.updateApplicationStatus(id, status, updaterEmail);
+    ApiResponse.success(res, application, 'Job application status updated successfully', HTTP_STATUS.OK);
   } catch (err) {
     next(err);
   }
 }
 
-/**
- * DELETE /api/careers/applications/:id
- * Deletes a job application permanently.
- */
-export async function deleteApplication(
+export async function adminDeleteApplication(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
     const { id } = req.params;
-    await jobApplicationService.deleteApplication(id);
-
-    ApiResponse.success(
-      res,
-      null,
-      'Job application deleted successfully',
-      HTTP_STATUS.OK
-    );
+    const deleterEmail = (req as any).user?.email || 'Admin';
+    await jobApplicationService.deleteApplication(id, deleterEmail);
+    ApiResponse.success(res, null, 'Job application moved to trash');
   } catch (err) {
     next(err);
   }
 }
 
-/**
- * GET /api/careers/apply
- * Lists all job applications.
- */
-export async function getAllApplications(
-  _req: Request,
+export async function adminRestoreApplication(
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    const applications = await jobApplicationService.getAllApplications();
-    ApiResponse.success(
-      res,
-      applications,
-      'All job applications retrieved successfully',
-      HTTP_STATUS.OK
-    );
+    const { id } = req.params;
+    await jobApplicationService.restoreApplication(id);
+    ApiResponse.success(res, null, 'Job application restored successfully');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminPermanentlyDeleteApplication(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { id } = req.params;
+    await jobApplicationService.permanentlyDeleteApplication(id);
+    ApiResponse.success(res, null, 'Job application permanently deleted');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminBulkDeleteApplications(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids } = req.body;
+    const deleterEmail = (req as any).user?.email || 'Admin';
+    await jobApplicationService.bulkDeleteApplications(ids, deleterEmail);
+    ApiResponse.success(res, null, 'Applications bulk moved to trash');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminBulkRestoreApplications(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids } = req.body;
+    await jobApplicationService.bulkRestoreApplications(ids);
+    ApiResponse.success(res, null, 'Applications bulk restored');
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function adminBulkStatusApplications(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids, status } = req.body;
+    const validated = validateApplicationStatusUpdate({ status });
+    const updaterEmail = (req as any).user?.email || 'Admin';
+    await jobApplicationService.bulkUpdateStatus(ids, validated.status, updaterEmail);
+    ApiResponse.success(res, null, 'Applications bulk status updated');
   } catch (err) {
     next(err);
   }

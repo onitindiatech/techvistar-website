@@ -1,12 +1,6 @@
 /**
  * @file src/controllers/faq.controller.ts
- * @description Thin controller mapping HTTP endpoints to FAQService operations.
- *
- * Controllers do NOT contain business logic — they only:
- *  1. Extract data from the request
- *  2. Call the service
- *  3. Return the standardised ApiResponse
- *  4. Pass errors to the global error handler via next()
+ * @description Controller for the FAQ CMS module.
  */
 
 import { Request, Response, NextFunction } from 'express';
@@ -14,8 +8,6 @@ import { validateFAQInput } from '@/validators/faq.validator';
 import { faqService } from '@/services/faq.service';
 import { ApiResponse } from '@/utils/ApiResponse';
 import { HTTP_STATUS } from '@/constants';
-
-// ─── Public endpoints ──────────────────────────────────────────────────────────
 
 /**
  * GET /api/faqs
@@ -52,11 +44,9 @@ export async function getPublicFAQById(
   }
 }
 
-// ─── Admin endpoints (JWT-gated in Phase 3) ────────────────────────────────────
-
 /**
  * POST /api/faqs/admin
- * Creates a new FAQ entry. Reserved for future Admin Panel integration.
+ * Creates a new FAQ entry.
  */
 export async function adminCreateFAQ(
   req:  Request,
@@ -65,7 +55,12 @@ export async function adminCreateFAQ(
 ): Promise<void> {
   try {
     const validatedData = validateFAQInput(req.body);
-    const faq = await faqService.createFAQ(validatedData);
+    const creatorEmail = (req as any).user?.email || 'Admin';
+    const faq = await faqService.createFAQ({
+      ...validatedData,
+      createdBy: creatorEmail,
+      updatedBy: creatorEmail,
+    });
     ApiResponse.success(res, faq, 'FAQ created successfully', HTTP_STATUS.CREATED);
   } catch (err) {
     next(err);
@@ -74,7 +69,7 @@ export async function adminCreateFAQ(
 
 /**
  * PUT /api/faqs/admin/:id
- * Updates an existing FAQ. Reserved for future Admin Panel integration.
+ * Updates an existing FAQ.
  */
 export async function adminUpdateFAQ(
   req:  Request,
@@ -84,7 +79,11 @@ export async function adminUpdateFAQ(
   try {
     const { id } = req.params;
     const validatedData = validateFAQInput(req.body, true);
-    const faq = await faqService.updateFAQ(id, validatedData);
+    const updaterEmail = (req as any).user?.email || 'Admin';
+    const faq = await faqService.updateFAQ(id, {
+      ...validatedData,
+      updatedBy: updaterEmail,
+    });
     ApiResponse.success(res, faq, 'FAQ updated successfully');
   } catch (err) {
     next(err);
@@ -93,7 +92,7 @@ export async function adminUpdateFAQ(
 
 /**
  * DELETE /api/faqs/admin/:id
- * Permanently deletes a FAQ. Reserved for future Admin Panel integration.
+ * Soft deletes a FAQ.
  */
 export async function adminDeleteFAQ(
   req:  Request,
@@ -102,8 +101,101 @@ export async function adminDeleteFAQ(
 ): Promise<void> {
   try {
     const { id } = req.params;
-    await faqService.deleteFAQ(id);
-    ApiResponse.noContent(res);
+    const deleterEmail = (req as any).user?.email || 'Admin';
+    await faqService.deleteFAQ(id, deleterEmail);
+    ApiResponse.success(res, null, 'FAQ soft deleted successfully');
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * POST /api/faqs/admin/:id/restore
+ * Restores a soft-deleted FAQ.
+ */
+export async function adminRestoreFAQ(
+  req:  Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { id } = req.params;
+    await faqService.restoreFAQ(id);
+    ApiResponse.success(res, null, 'FAQ restored successfully');
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * DELETE /api/faqs/admin/:id/permanent
+ * Permanently deletes a FAQ.
+ */
+export async function adminPermanentlyDeleteFAQ(
+  req:  Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { id } = req.params;
+    await faqService.permanentlyDeleteFAQ(id);
+    ApiResponse.success(res, null, 'FAQ permanently deleted');
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * POST /api/faqs/admin/bulk-delete
+ * Bulk soft-deletes FAQs.
+ */
+export async function adminBulkDeleteFAQs(
+  req:  Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids } = req.body;
+    const deleterEmail = (req as any).user?.email || 'Admin';
+    await faqService.bulkDeleteFAQs(ids, deleterEmail);
+    ApiResponse.success(res, null, 'FAQs bulk soft-deleted');
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * POST /api/faqs/admin/bulk-restore
+ * Bulk restores FAQs.
+ */
+export async function adminBulkRestoreFAQs(
+  req:  Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids } = req.body;
+    await faqService.bulkRestoreFAQs(ids);
+    ApiResponse.success(res, null, 'FAQs bulk restored');
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * POST /api/faqs/admin/bulk-status
+ * Bulk status update.
+ */
+export async function adminBulkStatusFAQs(
+  req:  Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { ids, status } = req.body;
+    const updaterEmail = (req as any).user?.email || 'Admin';
+    await faqService.bulkUpdateStatus(ids, status, updaterEmail);
+    ApiResponse.success(res, null, 'FAQs bulk status updated');
   } catch (err) {
     next(err);
   }
@@ -111,7 +203,7 @@ export async function adminDeleteFAQ(
 
 /**
  * PATCH /api/faqs/admin/:id/hide
- * Hides a FAQ by setting status to 'inactive'. Non-destructive alternative to delete.
+ * Legacy alias — sets status to inactive.
  */
 export async function adminHideFAQ(
   req:  Request,
@@ -120,7 +212,8 @@ export async function adminHideFAQ(
 ): Promise<void> {
   try {
     const { id } = req.params;
-    const faq = await faqService.hideFAQ(id);
+    const updaterEmail = (req as any).user?.email || 'Admin';
+    const faq = await faqService.hideFAQ(id, updaterEmail);
     ApiResponse.success(res, faq, 'FAQ hidden successfully');
   } catch (err) {
     next(err);
@@ -129,7 +222,7 @@ export async function adminHideFAQ(
 
 /**
  * PATCH /api/faqs/admin/:id/order
- * Updates the displayOrder for a FAQ item. Used for drag-and-drop reordering.
+ * Updates the displayOrder for a FAQ item.
  */
 export async function adminUpdateFAQOrder(
   req:  Request,
@@ -146,7 +239,8 @@ export async function adminUpdateFAQOrder(
       });
       return;
     }
-    const faq = await faqService.updateDisplayOrder(id, displayOrder);
+    const updaterEmail = (req as any).user?.email || 'Admin';
+    const faq = await faqService.updateDisplayOrder(id, displayOrder, updaterEmail);
     ApiResponse.success(res, faq, 'FAQ display order updated successfully');
   } catch (err) {
     next(err);
@@ -155,18 +249,38 @@ export async function adminUpdateFAQOrder(
 
 /**
  * GET /api/faqs/admin
- * Returns all FAQs (active + drafts) for administrative management.
+ * Returns FAQs with advanced query filters for administrative management.
  */
 export async function adminGetFAQs(
-  _req: Request,
+  req:  Request,
   res:  Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    const faqs = await faqService.getAllFAQs();
-    ApiResponse.success(
+    const { page, limit, search, status, category, pageContext, trash, featured, sortBy, sortOrder } = req.query;
+    const result = await faqService.getAllFAQs({
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
+      search: search ? String(search) : undefined,
+      status: status ? String(status) : undefined,
+      category: category ? String(category) : undefined,
+      pageContext: pageContext ? String(pageContext) : undefined,
+      trash: trash ? String(trash) : undefined,
+      featured: featured ? String(featured) : undefined,
+      sortBy: sortBy ? String(sortBy) : undefined,
+      sortOrder: sortOrder ? (String(sortOrder) as 'asc' | 'desc') : undefined,
+    });
+
+    const paginationMeta = ApiResponse.buildPagination(
+      result.pagination.total,
+      result.pagination.page,
+      result.pagination.limit
+    );
+
+    ApiResponse.paginated(
       res,
-      faqs,
+      result.data,
+      paginationMeta,
       'All FAQs fetched successfully'
     );
   } catch (err) {

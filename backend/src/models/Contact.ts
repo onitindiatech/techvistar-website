@@ -1,16 +1,13 @@
 /**
  * @file src/models/Contact.ts
  * @description Mongoose schema and model for Contact form submissions.
- *
- * ARCHITECTURE DECISION:
- *   This model represents the contact inquiries collection in MongoDB.
- *   We enforce structured validations (email format, enum constraints)
- *   and enable timestamps for auditing.
  */
 
 import mongoose, { Schema } from 'mongoose';
 import { BaseDocument } from '@/types/common';
 import { VALIDATION } from '@/constants';
+
+export type ContactStatus = 'new' | 'in-progress' | 'resolved' | 'archived';
 
 export interface IContact extends BaseDocument {
   name: string;
@@ -20,7 +17,11 @@ export interface IContact extends BaseDocument {
   serviceInterested: typeof VALIDATION.VALID_SERVICES[number];
   budget?: string;
   message: string;
-  status: 'new' | 'in-progress' | 'resolved' | 'archived';
+  status: ContactStatus;
+  isDeleted?: boolean;
+  deletedAt?: Date | null;
+  deletedBy?: string;
+  updatedBy?: string;
 }
 
 const contactSchema = new Schema<IContact>(
@@ -78,15 +79,30 @@ const contactSchema = new Schema<IContact>(
       enum: ['new', 'in-progress', 'resolved', 'archived'],
       default: 'new',
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    deletedBy: {
+      type: String,
+      default: '',
+    },
+    updatedBy: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,
   }
 );
 
-// Indexes for administrative querying/filtering later
 contactSchema.index({ status: 1 });
 contactSchema.index({ createdAt: -1 });
+contactSchema.index({ isDeleted: 1, status: 1 });
 
 export const Contact = mongoose.model<IContact>('Contact', contactSchema);
-

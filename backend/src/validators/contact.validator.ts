@@ -124,3 +124,29 @@ export function validateContactInput(input: ContactInput): {
   };
 }
 
+const CONTACT_STATUSES = ['new', 'in-progress', 'resolved', 'archived'] as const;
+
+export function validateContactStatusUpdate(input: { status?: unknown }): {
+  status: typeof CONTACT_STATUSES[number];
+} {
+  const errors: Array<{ field: string; message: string }> = [];
+
+  if (input.status === undefined || input.status === null || String(input.status).trim() === '') {
+    errors.push({ field: 'status', message: 'Status is required' });
+  } else {
+    const statusStr = String(input.status).trim();
+    if (!CONTACT_STATUSES.includes(statusStr as typeof CONTACT_STATUSES[number])) {
+      errors.push({
+        field: 'status',
+        message: `Status must be one of: ${CONTACT_STATUSES.join(', ')}`,
+      });
+    }
+  }
+
+  if (errors.length > 0) {
+    throw ApiError.validationError('Validation failed', errors);
+  }
+
+  return { status: String(input.status).trim() as typeof CONTACT_STATUSES[number] };
+}
+

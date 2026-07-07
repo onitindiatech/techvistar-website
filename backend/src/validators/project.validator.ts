@@ -139,7 +139,7 @@ export function validateProjectInput(input: ProjectInput, isUpdate = false): any
   }
 
   // Display Order
-  let parsedDisplayOrder = 0;
+  let parsedDisplayOrder: number | undefined;
   if (input.displayOrder !== undefined && input.displayOrder !== null) {
     const num = Number(input.displayOrder);
     if (isNaN(num)) {
@@ -153,22 +153,57 @@ export function validateProjectInput(input: ProjectInput, isUpdate = false): any
     throw ApiError.validationError('Validation failed', errors);
   }
 
-  const result: any = {
+  if (isUpdate) {
+    const updatePayload: Record<string, unknown> = {};
+    if (input.title !== undefined) updatePayload.title = String(input.title).trim();
+    if (input.slug !== undefined) updatePayload.slug = String(input.slug).trim().toLowerCase();
+    if (input.description !== undefined) updatePayload.description = String(input.description).trim();
+    if (input.thumbnail !== undefined) updatePayload.thumbnail = String(input.thumbnail).trim();
+    if (input.category !== undefined) updatePayload.category = String(input.category).trim();
+    if (input.liveUrl !== undefined) updatePayload.liveUrl = String(input.liveUrl).trim();
+    if (input.githubUrl !== undefined) updatePayload.githubUrl = String(input.githubUrl).trim();
+    if (input.featured !== undefined) {
+      updatePayload.featured = input.featured === true || input.featured === 'true';
+    }
+    if (input.date !== undefined) updatePayload.date = String(input.date).trim();
+    if (input.client !== undefined) updatePayload.client = String(input.client).trim();
+    if (input.role !== undefined) updatePayload.role = String(input.role).trim();
+    if (input.longDescription !== undefined) updatePayload.longDescription = String(input.longDescription).trim();
+    if (input.industry !== undefined) updatePayload.industry = String(input.industry).trim();
+    if (input.updatedDate !== undefined) updatePayload.updatedDate = String(input.updatedDate).trim();
+    if (input.displayOrder !== undefined && input.displayOrder !== null) {
+      updatePayload.displayOrder = parsedDisplayOrder;
+    }
+    if (input.seoTitle !== undefined) updatePayload.seoTitle = String(input.seoTitle).trim();
+    if (input.seoDescription !== undefined) updatePayload.seoDescription = String(input.seoDescription).trim();
+    if (input.technologies !== undefined) updatePayload.technologies = parsedTechnologies ?? [];
+    if (input.keyFeatures !== undefined) updatePayload.keyFeatures = parsedKeyFeatures ?? [];
+    if (input.challenges !== undefined) updatePayload.challenges = parsedChallenges ?? [];
+    if (input.gallery !== undefined) updatePayload.gallery = parsedGallery ?? [];
+    if (input.tags !== undefined) updatePayload.tags = parsedTags ?? [];
+    if (input.serviceSlugs !== undefined) updatePayload.serviceSlugs = parsedServiceSlugs ?? [];
+    if (input.status !== undefined && input.status !== null) {
+      updatePayload.status = String(input.status).trim();
+    }
+    return updatePayload;
+  }
+
+  const result: Record<string, unknown> = {
     title: input.title ? String(input.title).trim() : undefined,
     slug: input.slug !== undefined ? String(input.slug).trim().toLowerCase() : undefined,
     description: input.description ? String(input.description).trim() : undefined,
     thumbnail: input.thumbnail ? String(input.thumbnail).trim() : undefined,
     category: input.category ? String(input.category).trim() : undefined,
-    liveUrl: input.liveUrl ? String(input.liveUrl).trim() : undefined,
-    githubUrl: input.githubUrl ? String(input.githubUrl).trim() : undefined,
-    featured: input.featured !== undefined ? Boolean(input.featured) : undefined,
+    liveUrl: input.liveUrl ? String(input.liveUrl).trim() : '#',
+    githubUrl: input.githubUrl ? String(input.githubUrl).trim() : '#',
+    featured: input.featured !== undefined ? (input.featured === true || input.featured === 'true') : false,
     date: input.date ? String(input.date).trim() : undefined,
     client: input.client ? String(input.client).trim() : undefined,
     role: input.role ? String(input.role).trim() : undefined,
     longDescription: input.longDescription ? String(input.longDescription).trim() : undefined,
     industry: input.industry ? String(input.industry).trim() : undefined,
     updatedDate: input.updatedDate ? String(input.updatedDate).trim() : undefined,
-    displayOrder: parsedDisplayOrder,
+    displayOrder: parsedDisplayOrder ?? 0,
     seoTitle: input.seoTitle !== undefined ? String(input.seoTitle).trim() : undefined,
     seoDescription: input.seoDescription !== undefined ? String(input.seoDescription).trim() : undefined,
   };

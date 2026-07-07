@@ -51,7 +51,7 @@ export class IndustryService {
       }
     }
 
-    const industry = await Industry.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+    const industry = await Industry.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true });
     if (!industry) {
       throw ApiError.notFound('Industry listing not found');
     }
@@ -68,7 +68,7 @@ export class IndustryService {
     const result = await Industry.findByIdAndUpdate(
       id,
       { isDeleted: true, deletedAt: new Date(), deletedBy: deletedBy || 'System' },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!result) {
       throw ApiError.notFound('Industry listing not found');
@@ -84,7 +84,7 @@ export class IndustryService {
     const result = await Industry.findByIdAndUpdate(
       id,
       { isDeleted: false, deletedAt: null, deletedBy: '' },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!result) {
       throw ApiError.notFound('Industry listing not found');

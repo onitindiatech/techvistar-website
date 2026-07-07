@@ -5,24 +5,37 @@
 
 import { Router } from 'express';
 import {
-  createJob,
   listJobs,
   getJobBySlug,
-  updateJob,
-  updateJobStatus,
-  deleteJob,
+  adminGetJobs,
+  adminCreateJob,
+  adminUpdateJob,
+  adminDeleteJob,
+  adminRestoreJob,
+  adminPermanentlyDeleteJob,
+  adminBulkDeleteJobs,
+  adminBulkRestoreJobs,
+  adminBulkStatusJobs,
 } from '@/controllers/job.controller';
+import { authMiddleware } from '@/middleware/auth.middleware';
+import { adminGetApplicationsByJob } from '@/controllers/jobApplication.controller';
 
 const router = Router();
 
-// Public routes
+// ─── Administrative CRUD Endpoints ───────────────────────────────────────────
+router.get('/admin', authMiddleware, adminGetJobs);
+router.get('/admin/:jobId/applications', authMiddleware, adminGetApplicationsByJob);
+router.post('/admin', authMiddleware, adminCreateJob);
+router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteJobs);
+router.post('/admin/bulk-restore', authMiddleware, adminBulkRestoreJobs);
+router.post('/admin/bulk-status', authMiddleware, adminBulkStatusJobs);
+router.post('/admin/:id/restore', authMiddleware, adminRestoreJob);
+router.delete('/admin/:id/permanent', authMiddleware, adminPermanentlyDeleteJob);
+router.put('/admin/:id', authMiddleware, adminUpdateJob);
+router.delete('/admin/:id', authMiddleware, adminDeleteJob);
+
+// ─── Public Endpoints ────────────────────────────────────────────────────────
 router.get('/', listJobs);
 router.get('/:slug', getJobBySlug);
-
-// Administrative CRUD routes (will receive auth middleware in Phase 6)
-router.post('/', createJob);
-router.put('/:id', updateJob);
-router.patch('/:id/status', updateJobStatus);
-router.delete('/:id', deleteJob);
 
 export default router;

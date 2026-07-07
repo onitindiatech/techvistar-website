@@ -22,6 +22,7 @@ interface SolutionInput {
   faqs?: unknown;
   status?: unknown;
   displayOrder?: unknown;
+  featured?: unknown;
 }
 
 export function validateSolutionInput(input: SolutionInput, isUpdate = false): any {
@@ -174,16 +175,15 @@ export function validateSolutionInput(input: SolutionInput, isUpdate = false): a
     }
   }
 
-  // Tech Stack & arrays helper
-  const parseStringArray = (field: string, val: unknown) => {
-    if (val === undefined) return [];
-    if (!Array.isArray(val)) {
-      errors.push({ field, message: `${field} must be an array of strings` });
-      return [];
+  // Tech Stack
+  let parsedTechStack: string[] | undefined;
+  if (input.techStack !== undefined) {
+    if (!Array.isArray(input.techStack)) {
+      errors.push({ field: 'techStack', message: 'techStack must be an array of strings' });
+    } else {
+      parsedTechStack = input.techStack.map((v) => String(v).trim()).filter(Boolean);
     }
-    return val.map(v => String(v).trim()).filter(Boolean);
-  };
-  const parsedTechStack = parseStringArray('techStack', input.techStack);
+  }
 
   // Metrics
   let parsedMetrics: any[] = [];
@@ -246,22 +246,51 @@ export function validateSolutionInput(input: SolutionInput, isUpdate = false): a
     throw ApiError.validationError('Validation failed', errors);
   }
 
+  if (isUpdate) {
+    const updatePayload: Record<string, unknown> = {};
+    if (input.title !== undefined) updatePayload.title = String(input.title).trim();
+    if (input.slug !== undefined) updatePayload.slug = String(input.slug).trim().toLowerCase();
+    if (input.subtitle !== undefined) updatePayload.subtitle = String(input.subtitle).trim();
+    if (input.icon !== undefined) updatePayload.icon = String(input.icon).trim();
+    if (input.category !== undefined) updatePayload.category = String(input.category).trim();
+    if (parsedChallenges !== undefined) updatePayload.challenges = parsedChallenges;
+    if (parsedOurSolution !== undefined) updatePayload.ourSolution = parsedOurSolution;
+    if (input.features !== undefined) updatePayload.features = parsedFeatures;
+    if (input.howItWorks !== undefined) updatePayload.howItWorks = parsedHowItWorks;
+    if (parsedBenefits !== undefined) updatePayload.benefits = parsedBenefits;
+    if (input.industries !== undefined) updatePayload.industries = parsedIndustries;
+    if (parsedTechStack !== undefined) updatePayload.techStack = parsedTechStack;
+    if (input.metrics !== undefined) updatePayload.metrics = parsedMetrics;
+    if (input.faqs !== undefined) updatePayload.faqs = parsedFAQs;
+    if (input.status !== undefined && input.status !== null) {
+      updatePayload.status = String(input.status).trim() as 'draft' | 'active';
+    }
+    if (input.displayOrder !== undefined && input.displayOrder !== null) {
+      updatePayload.displayOrder = parsedDisplayOrder;
+    }
+    if (input.featured !== undefined) {
+      updatePayload.featured = input.featured === true || input.featured === 'true';
+    }
+    return updatePayload;
+  }
+
   return {
-    title: input.title ? String(input.title).trim() : '',
+    title: String(input.title).trim(),
     ...(input.slug !== undefined && { slug: String(input.slug).trim().toLowerCase() }),
-    subtitle: input.subtitle ? String(input.subtitle).trim() : '',
-    icon: input.icon ? String(input.icon).trim() : '',
-    category: input.category ? String(input.category).trim() : '',
-    ...(parsedChallenges && { challenges: parsedChallenges }),
-    ...(parsedOurSolution && { ourSolution: parsedOurSolution }),
+    subtitle: String(input.subtitle).trim(),
+    icon: String(input.icon).trim(),
+    category: String(input.category).trim(),
+    challenges: parsedChallenges!,
+    ourSolution: parsedOurSolution!,
     features: parsedFeatures,
     howItWorks: parsedHowItWorks,
-    ...(parsedBenefits && { benefits: parsedBenefits }),
+    benefits: parsedBenefits!,
     industries: parsedIndustries,
-    techStack: parsedTechStack,
+    techStack: parsedTechStack ?? [],
     metrics: parsedMetrics,
     faqs: parsedFAQs,
     status: (input.status ? String(input.status).trim() : 'active') as 'draft' | 'active',
     displayOrder: parsedDisplayOrder,
+    featured: input.featured === true || input.featured === 'true',
   };
 }

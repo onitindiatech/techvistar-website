@@ -18,30 +18,15 @@ interface JobInput {
   requirements?: unknown;
   responsibilities?: unknown;
   benefits?: unknown;
+  displayOrder?: unknown;
   status?: unknown;
   featured?: unknown;
   applicationDeadline?: unknown;
 }
 
-export function validateJobInput(input: JobInput, isUpdate = false): {
-  title: string;
-  slug?: string;
-  department: typeof VALIDATION.JOB_DEPARTMENTS[number];
-  location: string;
-  employmentType: typeof VALIDATION.JOB_EMPLOYMENT_TYPES[number];
-  experience: string;
-  salary: string;
-  description: string;
-  requirements: string[];
-  responsibilities: string[];
-  benefits: string[];
-  status: typeof VALIDATION.JOB_STATUSES[number];
-  featured: boolean;
-  applicationDeadline?: Date;
-} {
+export function validateJobInput(input: JobInput, isUpdate = false): Record<string, unknown> {
   const errors: Array<{ field: string; message: string }> = [];
 
-  // Helper validation routines
   if (!isUpdate || input.title !== undefined) {
     if (input.title === undefined || input.title === null || String(input.title).trim() === '') {
       errors.push({ field: 'title', message: 'Job title is required' });
@@ -101,30 +86,30 @@ export function validateJobInput(input: JobInput, isUpdate = false): {
     }
   }
 
-  let parsedRequirements: string[] = [];
+  let parsedRequirements: string[] | undefined;
   if (input.requirements !== undefined) {
     if (!Array.isArray(input.requirements)) {
       errors.push({ field: 'requirements', message: 'Requirements must be an array of strings' });
     } else {
-      parsedRequirements = input.requirements.map(r => String(r).trim()).filter(Boolean);
+      parsedRequirements = input.requirements.map((r) => String(r).trim()).filter(Boolean);
     }
   }
 
-  let parsedResponsibilities: string[] = [];
+  let parsedResponsibilities: string[] | undefined;
   if (input.responsibilities !== undefined) {
     if (!Array.isArray(input.responsibilities)) {
       errors.push({ field: 'responsibilities', message: 'Responsibilities must be an array of strings' });
     } else {
-      parsedResponsibilities = input.responsibilities.map(r => String(r).trim()).filter(Boolean);
+      parsedResponsibilities = input.responsibilities.map((r) => String(r).trim()).filter(Boolean);
     }
   }
 
-  let parsedBenefits: string[] = [];
+  let parsedBenefits: string[] | undefined;
   if (input.benefits !== undefined) {
     if (!Array.isArray(input.benefits)) {
       errors.push({ field: 'benefits', message: 'Benefits must be an array of strings' });
     } else {
-      parsedBenefits = input.benefits.map(b => String(b).trim()).filter(Boolean);
+      parsedBenefits = input.benefits.map((b) => String(b).trim()).filter(Boolean);
     }
   }
 
@@ -135,6 +120,16 @@ export function validateJobInput(input: JobInput, isUpdate = false): {
         field: 'status',
         message: `Status must be one of: ${VALIDATION.JOB_STATUSES.join(', ')}`,
       });
+    }
+  }
+
+  let parsedDisplayOrder: number | undefined;
+  if (input.displayOrder !== undefined && input.displayOrder !== null) {
+    const num = Number(input.displayOrder);
+    if (isNaN(num)) {
+      errors.push({ field: 'displayOrder', message: 'Display order must be a valid number' });
+    } else {
+      parsedDisplayOrder = num;
     }
   }
 
@@ -152,19 +147,44 @@ export function validateJobInput(input: JobInput, isUpdate = false): {
     throw ApiError.validationError('Validation failed', errors);
   }
 
+  if (isUpdate) {
+    const updatePayload: Record<string, unknown> = {};
+    if (input.title !== undefined) updatePayload.title = String(input.title).trim();
+    if (input.slug !== undefined) updatePayload.slug = String(input.slug).trim().toLowerCase();
+    if (input.department !== undefined) updatePayload.department = String(input.department).trim();
+    if (input.location !== undefined) updatePayload.location = String(input.location).trim();
+    if (input.employmentType !== undefined) updatePayload.employmentType = String(input.employmentType).trim();
+    if (input.experience !== undefined) updatePayload.experience = String(input.experience).trim();
+    if (input.salary !== undefined) updatePayload.salary = String(input.salary).trim();
+    if (input.description !== undefined) updatePayload.description = String(input.description).trim();
+    if (parsedRequirements !== undefined) updatePayload.requirements = parsedRequirements;
+    if (parsedResponsibilities !== undefined) updatePayload.responsibilities = parsedResponsibilities;
+    if (parsedBenefits !== undefined) updatePayload.benefits = parsedBenefits;
+    if (input.status !== undefined && input.status !== null) {
+      updatePayload.status = String(input.status).trim();
+    }
+    if (parsedDisplayOrder !== undefined) updatePayload.displayOrder = parsedDisplayOrder;
+    if (input.featured !== undefined) {
+      updatePayload.featured = input.featured === true || input.featured === 'true';
+    }
+    if (parsedDeadline !== undefined) updatePayload.applicationDeadline = parsedDeadline;
+    return updatePayload;
+  }
+
   return {
-    title: input.title ? String(input.title).trim() : '',
+    title: String(input.title).trim(),
     ...(input.slug !== undefined && { slug: String(input.slug).trim().toLowerCase() }),
-    department: input.department ? String(input.department).trim() as any : 'Engineering',
-    location: input.location ? String(input.location).trim() : '',
-    employmentType: input.employmentType ? String(input.employmentType).trim() as any : 'Full-time',
-    experience: input.experience ? String(input.experience).trim() : '',
+    department: String(input.department).trim(),
+    location: String(input.location).trim(),
+    employmentType: String(input.employmentType).trim(),
+    experience: String(input.experience).trim(),
     salary: input.salary ? String(input.salary).trim() : 'Competitive',
-    description: input.description ? String(input.description).trim() : '',
-    requirements: parsedRequirements,
-    responsibilities: parsedResponsibilities,
-    benefits: parsedBenefits,
-    status: input.status ? String(input.status).trim() as any : 'draft',
+    description: String(input.description).trim(),
+    requirements: parsedRequirements ?? [],
+    responsibilities: parsedResponsibilities ?? [],
+    benefits: parsedBenefits ?? [],
+    status: input.status ? String(input.status).trim() : 'draft',
+    displayOrder: parsedDisplayOrder ?? 0,
     featured: input.featured === true || input.featured === 'true',
     ...(parsedDeadline && { applicationDeadline: parsedDeadline }),
   };

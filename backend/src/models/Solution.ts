@@ -68,6 +68,14 @@ export interface ISolution extends BaseDocument {
   faqs: ISolutionFAQ[];
   status: 'draft' | 'active';
   displayOrder: number;
+  featured: boolean;
+
+  // Audit and Soft Delete
+  isDeleted?: boolean;
+  deletedAt?: Date | null;
+  deletedBy?: string;
+  createdBy?: string;
+  updatedBy?: string;
 }
 
 const solutionSchema = new Schema<ISolution>(
@@ -158,6 +166,33 @@ const solutionSchema = new Schema<ISolution>(
     displayOrder: {
       type: Number,
       default: 0,
+    },
+    featured: {
+      type: Boolean,
+      default: false,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    deletedBy: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    createdBy: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    updatedBy: {
+      type: String,
+      default: '',
+      trim: true,
     },
   },
   {

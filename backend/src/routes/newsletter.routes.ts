@@ -7,33 +7,46 @@ import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import {
   subscribeNewsletter,
-  listSubscribers,
   unsubscribeNewsletter,
-  deleteSubscriber,
+  adminGetSubscribers,
+  adminUpdateSubscriberStatus,
+  adminDeleteSubscriber,
+  adminRestoreSubscriber,
+  adminPermanentlyDeleteSubscriber,
+  adminBulkDeleteSubscribers,
+  adminBulkRestoreSubscribers,
+  adminBulkStatusSubscribers,
 } from '@/controllers/newsletter.controller';
+import { authMiddleware } from '@/middleware/auth.middleware';
 import { NEWSLETTER_RATE_LIMIT } from '@/constants';
 
 const router = Router();
 
 const newsletterRateLimiter = rateLimit({
-  windowMs:        NEWSLETTER_RATE_LIMIT.WINDOW_MS,
-  max:             NEWSLETTER_RATE_LIMIT.MAX_REQUESTS,
+  windowMs: NEWSLETTER_RATE_LIMIT.WINDOW_MS,
+  max: NEWSLETTER_RATE_LIMIT.MAX_REQUESTS,
   standardHeaders: true,
-  legacyHeaders:   false,
+  legacyHeaders: false,
   message: {
-    success:    false,
+    success: false,
     statusCode: 429,
-    code:       'TOO_MANY_REQUESTS',
-    message:    'Too many subscription attempts from this IP. Please try again after 15 minutes.',
+    code: 'TOO_MANY_REQUESTS',
+    message: 'Too many subscription attempts from this IP. Please try again after 15 minutes.',
   },
 });
 
-// POST /api/newsletter - Public subscription endpoint (rate limited)
-router.post('/', newsletterRateLimiter, subscribeNewsletter);
+// ─── Administrative Endpoints ──────────────────────────────────────────────────
+router.get('/admin', authMiddleware, adminGetSubscribers);
+router.patch('/admin/:id/status', authMiddleware, adminUpdateSubscriberStatus);
+router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteSubscribers);
+router.post('/admin/bulk-restore', authMiddleware, adminBulkRestoreSubscribers);
+router.post('/admin/bulk-status', authMiddleware, adminBulkStatusSubscribers);
+router.post('/admin/:id/restore', authMiddleware, adminRestoreSubscriber);
+router.delete('/admin/:id/permanent', authMiddleware, adminPermanentlyDeleteSubscriber);
+router.delete('/admin/:id', authMiddleware, adminDeleteSubscriber);
 
-// Administrative CRUD Endpoints (Disabled until Phase 7 JWT Auth and Admin Panel integration)
-router.get('/', listSubscribers);
+// ─── Public Endpoints ────────────────────────────────────────────────────────
+router.post('/', newsletterRateLimiter, subscribeNewsletter);
 router.patch('/unsubscribe', unsubscribeNewsletter);
-router.delete('/:id', deleteSubscriber);
 
 export default router;

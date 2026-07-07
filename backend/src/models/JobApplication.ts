@@ -20,6 +20,10 @@ export interface IJobApplication extends BaseDocument {
   coverLetter: string;
   whyJoinTechVistar?: string;
   status: typeof VALIDATION.JOB_APPLICATION_STATUSES[number];
+  isDeleted?: boolean;
+  deletedAt?: Date | null;
+  deletedBy?: string;
+  updatedBy?: string;
 }
 
 const jobApplicationSchema = new Schema<IJobApplication>(
@@ -92,16 +96,32 @@ const jobApplicationSchema = new Schema<IJobApplication>(
       },
       default: 'Pending',
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    deletedBy: {
+      type: String,
+      default: '',
+    },
+    updatedBy: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,
   }
 );
 
-// Prevent candidate from applying twice for the same job listing
 jobApplicationSchema.index({ email: 1, jobId: 1 }, { unique: true });
 jobApplicationSchema.index({ jobId: 1 });
 jobApplicationSchema.index({ status: 1 });
 jobApplicationSchema.index({ createdAt: -1 });
+jobApplicationSchema.index({ isDeleted: 1, status: 1 });
 
 export const JobApplication = mongoose.model<IJobApplication>('JobApplication', jobApplicationSchema);

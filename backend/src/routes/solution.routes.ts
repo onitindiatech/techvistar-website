@@ -10,23 +10,30 @@ import {
   adminCreateSolution,
   adminUpdateSolution,
   adminDeleteSolution,
-  adminGetSolutions
+  adminGetSolutions,
+  adminRestoreSolution,
+  adminPermanentlyDeleteSolution,
+  adminBulkDelete,
+  adminBulkRestore,
+  adminBulkStatus,
 } from '@/controllers/solution.controller';
+import { authMiddleware } from '@/middleware/auth.middleware';
 
 const router = Router();
 
 // ─── Administrative CRUD Endpoints ───────────────────────────────────────────
-// (Note: To be protected by JWT auth middleware when Phase 2 authentication is implemented)
-router.get('/admin', adminGetSolutions);
-router.post('/admin', adminCreateSolution);
-router.put('/admin/:id', adminUpdateSolution);
-router.delete('/admin/:id', adminDeleteSolution);
+router.get('/admin', authMiddleware, adminGetSolutions);
+router.post('/admin', authMiddleware, adminCreateSolution);
+router.post('/admin/bulk-delete', authMiddleware, adminBulkDelete);
+router.post('/admin/bulk-restore', authMiddleware, adminBulkRestore);
+router.post('/admin/bulk-status', authMiddleware, adminBulkStatus);
+router.post('/admin/:id/restore', authMiddleware, adminRestoreSolution);
+router.delete('/admin/:id/permanent', authMiddleware, adminPermanentlyDeleteSolution);
+router.put('/admin/:id', authMiddleware, adminUpdateSolution);
+router.delete('/admin/:id', authMiddleware, adminDeleteSolution);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-// GET /api/solutions - Returns all active solutions sorted by displayOrder
 router.get('/', getPublicSolutions);
-
-// GET /api/solutions/:slug - Returns details of a specific active solution by slug
 router.get('/:slug', getPublicSolutionBySlug);
 
 export default router;

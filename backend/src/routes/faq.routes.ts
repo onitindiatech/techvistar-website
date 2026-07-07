@@ -1,17 +1,6 @@
 /**
  * @file src/routes/faq.routes.ts
- * @description Route mapping for the FAQ CMS module.
- *
- * Public:
- *   GET /api/faqs           → returns all active FAQs sorted by displayOrder
- *   GET /api/faqs/:faqId    → returns a single FAQ by faqId
- *
- * Admin (JWT-gated in Phase 3):
- *   POST   /api/faqs/admin          → create FAQ
- *   PUT    /api/faqs/admin/:id      → update FAQ
- *   DELETE /api/faqs/admin/:id      → delete FAQ
- *   PATCH  /api/faqs/admin/:id/hide → hide FAQ (soft delete)
- *   PATCH  /api/faqs/admin/:id/order → update display order
+ * @description Route definition for the FAQ CMS module.
  */
 
 import { Router } from 'express';
@@ -21,26 +10,34 @@ import {
   adminCreateFAQ,
   adminUpdateFAQ,
   adminDeleteFAQ,
+  adminGetFAQs,
+  adminRestoreFAQ,
+  adminPermanentlyDeleteFAQ,
+  adminBulkDeleteFAQs,
+  adminBulkRestoreFAQs,
+  adminBulkStatusFAQs,
   adminHideFAQ,
   adminUpdateFAQOrder,
-  adminGetFAQs,
 } from '@/controllers/faq.controller';
+import { authMiddleware } from '@/middleware/auth.middleware';
 
 const router = Router();
 
-// ─── Admin routes (to be JWT gated under authentication phase) ─────────────────
-router.get('/admin',             adminGetFAQs);
-router.post('/admin',            adminCreateFAQ);
-router.put('/admin/:id',         adminUpdateFAQ);
-router.delete('/admin/:id',      adminDeleteFAQ);
-router.patch('/admin/:id/hide',  adminHideFAQ);
-router.patch('/admin/:id/order', adminUpdateFAQOrder);
+// ─── Administrative CRUD Endpoints ───────────────────────────────────────────
+router.get('/admin', authMiddleware, adminGetFAQs);
+router.post('/admin', authMiddleware, adminCreateFAQ);
+router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteFAQs);
+router.post('/admin/bulk-restore', authMiddleware, adminBulkRestoreFAQs);
+router.post('/admin/bulk-status', authMiddleware, adminBulkStatusFAQs);
+router.post('/admin/:id/restore', authMiddleware, adminRestoreFAQ);
+router.delete('/admin/:id/permanent', authMiddleware, adminPermanentlyDeleteFAQ);
+router.patch('/admin/:id/hide', authMiddleware, adminHideFAQ);
+router.patch('/admin/:id/order', authMiddleware, adminUpdateFAQOrder);
+router.put('/admin/:id', authMiddleware, adminUpdateFAQ);
+router.delete('/admin/:id', authMiddleware, adminDeleteFAQ);
 
-// ─── Public routes ─────────────────────────────────────────────────────────────
-// GET /api/faqs — Returns all active FAQs
+// ─── Public Endpoints ────────────────────────────────────────────────────────
 router.get('/', getPublicFAQs);
-
-// GET /api/faqs/:faqId — Returns a single FAQ by faqId
 router.get('/:faqId', getPublicFAQById);
 
 export default router;

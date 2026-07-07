@@ -7,6 +7,7 @@ export interface SolutionDetail {
   slug: string;
   title: string;
   subtitle: string;
+  desc?: string;
   icon: React.ComponentType<any>;
   category: string;
   challenges: {
@@ -64,6 +65,7 @@ export function decorateSolution(apiSolution: any): SolutionDetail {
     slug: apiSolution.slug,
     title: apiSolution.title,
     subtitle: apiSolution.subtitle,
+    desc: apiSolution.subtitle || apiSolution.desc || '',
     icon: ICON_MAP[apiSolution.icon] || Brain,
     category: apiSolution.category,
     challenges: apiSolution.challenges || { title: '', points: [], impact: '' },

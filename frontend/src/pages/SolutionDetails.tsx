@@ -66,7 +66,7 @@ export const SolutionDetails = () => {
 
   const { data: apiSolutions } = useQuery({
     queryKey: ['activeSolutions'],
-    queryFn: getActiveSolutions,
+    queryFn: () => getActiveSolutions(),
     enabled: !!solution,
   });
 

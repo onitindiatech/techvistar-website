@@ -10,19 +10,30 @@ import {
   adminCreateProject,
   adminUpdateProject,
   adminDeleteProject,
+  adminGetProjects,
+  adminRestoreProject,
+  adminPermanentlyDeleteProject,
+  adminBulkDeleteProjects,
+  adminBulkRestoreProjects,
+  adminBulkStatusProjects,
 } from '@/controllers/project.controller';
+import { authMiddleware } from '@/middleware/auth.middleware';
 
 const router = Router();
 
-// GET /api/portfolio - Returns all active projects
+// ─── Administrative CRUD Endpoints ───────────────────────────────────────────
+router.get('/admin', authMiddleware, adminGetProjects);
+router.post('/admin', authMiddleware, adminCreateProject);
+router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteProjects);
+router.post('/admin/bulk-restore', authMiddleware, adminBulkRestoreProjects);
+router.post('/admin/bulk-status', authMiddleware, adminBulkStatusProjects);
+router.post('/admin/:id/restore', authMiddleware, adminRestoreProject);
+router.delete('/admin/:id/permanent', authMiddleware, adminPermanentlyDeleteProject);
+router.put('/admin/:id', authMiddleware, adminUpdateProject);
+router.delete('/admin/:id', authMiddleware, adminDeleteProject);
+
+// ─── Public Endpoints ────────────────────────────────────────────────────────
 router.get('/', getPublicProjects);
-
-// GET /api/portfolio/:slug - Returns single project details by slug
 router.get('/:slug', getPublicProjectBySlug);
-
-// Admin operations (to be JWT gated under authentication phase)
-router.post('/admin', adminCreateProject);
-router.put('/admin/:id', adminUpdateProject);
-router.delete('/admin/:id', adminDeleteProject);
 
 export default router;

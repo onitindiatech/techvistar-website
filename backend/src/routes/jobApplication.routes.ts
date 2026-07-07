@@ -4,23 +4,34 @@
  */
 
 import { Router } from 'express';
-import { 
-  submitApplication, 
-  getAllApplications, 
-  getApplicationById, 
-  updateApplicationStatus, 
-  deleteApplication 
+import {
+  submitApplication,
+  adminGetApplications,
+  adminGetApplicationById,
+  adminUpdateApplicationStatus,
+  adminDeleteApplication,
+  adminRestoreApplication,
+  adminPermanentlyDeleteApplication,
+  adminBulkDeleteApplications,
+  adminBulkRestoreApplications,
+  adminBulkStatusApplications,
 } from '@/controllers/jobApplication.controller';
+import { authMiddleware } from '@/middleware/auth.middleware';
 
 const router = Router();
 
-// Public route to apply for a job
-router.post('/', submitApplication);
+// ─── Administrative Endpoints ──────────────────────────────────────────────────
+router.get('/admin', authMiddleware, adminGetApplications);
+router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteApplications);
+router.post('/admin/bulk-restore', authMiddleware, adminBulkRestoreApplications);
+router.post('/admin/bulk-status', authMiddleware, adminBulkStatusApplications);
+router.post('/admin/:id/restore', authMiddleware, adminRestoreApplication);
+router.delete('/admin/:id/permanent', authMiddleware, adminPermanentlyDeleteApplication);
+router.patch('/admin/:id/status', authMiddleware, adminUpdateApplicationStatus);
+router.delete('/admin/:id', authMiddleware, adminDeleteApplication);
+router.get('/admin/:id', authMiddleware, adminGetApplicationById);
 
-// Admin routes (JWT auth gated in Phase 6, but available to frontend now)
-router.get('/', getAllApplications);
-router.get('/:id', getApplicationById);
-router.patch('/:id/status', updateApplicationStatus);
-router.delete('/:id', deleteApplication);
+// ─── Public Endpoints ────────────────────────────────────────────────────────
+router.post('/', submitApplication);
 
 export default router;

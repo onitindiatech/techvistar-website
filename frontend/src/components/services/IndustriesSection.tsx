@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { Service } from '@/data/services';
-import { INDUSTRIES } from '@/data/industries';
+import { getActiveIndustries } from '@/services/industry.service';
+import { decorateIndustry } from '@/data/industry.adapter';
 import { ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import '../ui/GlassIcons.css';
@@ -15,26 +17,39 @@ const gradientMapping: Record<string, string> = {
   red: 'linear-gradient(hsl(3, 90%, 50%), hsl(348, 90%, 50%))',
   indigo: 'linear-gradient(hsl(253, 90%, 50%), hsl(238, 90%, 50%))',
   orange: 'linear-gradient(hsl(43, 90%, 50%), hsl(28, 90%, 50%))',
-  green: 'linear-gradient(hsl(123, 90%, 40%), hsl(108, 90%, 40%))'
+  green: 'linear-gradient(hsl(123, 90%, 40%), hsl(108, 90%, 40%))',
 };
 
 export const IndustriesSection = ({ service }: SectionProps) => {
   const prefersReducedMotion = useReducedMotion();
 
-  // Find industries dynamically from INDUSTRIES registry where the service is linked
-  const matchedIndustries = INDUSTRIES.filter(
-    (ind) => ind.services.includes(service.slug)
-  );
+  const { data: apiIndustries } = useQuery({
+    queryKey: ['activeIndustries'],
+    queryFn: () => getActiveIndustries(),
+  });
 
-  // If no dynamic match, we can check by comparing names from service.industries array
-  const finalIndustries = matchedIndustries.length > 0
-    ? matchedIndustries
-    : INDUSTRIES.filter((ind) => 
-        service.industries?.some(sInd => 
-          sInd.toLowerCase().includes(ind.title.toLowerCase()) || 
-          ind.title.toLowerCase().includes(sInd.toLowerCase())
-        )
-      );
+  const industries = (apiIndustries || []).map(decorateIndustry);
+
+  const slugList =
+    service.relatedIndustrySlugs && service.relatedIndustrySlugs.length > 0
+      ? service.relatedIndustrySlugs
+      : [];
+
+  let matchedIndustries = slugList.length
+    ? slugList
+        .map((slug) => industries.find((ind) => ind.slug === slug))
+        .filter(Boolean)
+    : industries.filter((ind) => ind.services?.includes(service.slug));
+
+  if (matchedIndustries.length === 0 && service.industries?.length) {
+    matchedIndustries = industries.filter((ind) =>
+      service.industries?.some(
+        (label) =>
+          label.toLowerCase().includes(ind.title.toLowerCase()) ||
+          ind.title.toLowerCase().includes(label.toLowerCase())
+      )
+    );
+  }
 
   const getGlassColor = (colorClass: string) => {
     const cls = colorClass.toLowerCase();
@@ -54,15 +69,9 @@ export const IndustriesSection = ({ service }: SectionProps) => {
     return { background: color };
   };
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08
-      }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
   };
 
   const itemVariants = {
@@ -70,18 +79,12 @@ export const IndustriesSection = ({ service }: SectionProps) => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-        damping: 15
-      }
-    }
+      transition: { type: 'spring', stiffness: 100, damping: 15 },
+    },
   };
 
   return (
     <section id="industries" className="relative overflow-hidden bg-white border border-slate-200/80 rounded-3xl p-6 md:p-10 scroll-mt-24 shadow-sm">
-      
-      {/* Light mesh backdrop */}
       <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.02]" aria-hidden="true">
         <svg width="100%" height="100%">
           <pattern id="industries-mesh" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -91,7 +94,6 @@ export const IndustriesSection = ({ service }: SectionProps) => {
         </svg>
       </div>
 
-      {/* Header */}
       <div className="relative z-10 flex items-center gap-2 mb-4">
         <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-emerald-600" />
@@ -103,14 +105,15 @@ export const IndustriesSection = ({ service }: SectionProps) => {
         Adapting our delivery frameworks to the specific requirements of target sectors:
       </p>
 
-      {finalIndustries.length > 0 ? (
-        <motion.div 
+      {matchedIndustries.length > 0 ? (
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 relative z-10"
         >
-          {finalIndustries.map((ind) => {
+          {matchedIndustries.map((ind) => {
+            if (!ind) return null;
             const IndustryIcon = ind.icon || ShieldCheck;
             const glassColor = getGlassColor(ind.industriesColor || '');
 
@@ -121,11 +124,10 @@ export const IndustriesSection = ({ service }: SectionProps) => {
                 whileHover={prefersReducedMotion ? {} : { y: -4 }}
                 className="group h-full"
               >
-                <Link 
+                <Link
                   to={`/industries/${ind.slug}`}
                   className="flex items-center gap-4 p-4 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/20 hover:shadow-[0_12px_25px_-8px_rgba(16,185,129,0.1)] transition-all duration-300 h-full"
                 >
-                  {/* Integrated GlassIcon style wrapper */}
                   <div className="icon-btn pointer-events-none scale-[0.6] origin-top-left -mb-6 -mr-6 shrink-0">
                     <span className="icon-btn__back" style={getBackgroundStyle(glassColor)}></span>
                     <span className="icon-btn__front">
@@ -140,7 +142,7 @@ export const IndustriesSection = ({ service }: SectionProps) => {
                       {ind.title}
                     </span>
                     <span className="text-[10px] text-slate-400 font-semibold flex items-center gap-0.5 mt-0.5 group-hover:text-emerald-600 transition-colors">
-                      Explore solutions 
+                      Explore solutions
                       <span className="group-hover:translate-x-1 transition-transform duration-300">&rarr;</span>
                     </span>
                   </div>

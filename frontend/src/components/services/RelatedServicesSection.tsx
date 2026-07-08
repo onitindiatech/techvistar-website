@@ -26,9 +26,21 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
 
   const activeServices = (apiServices || []).map(decorateService);
 
-  // Exclude current service and limit to 3 active ones
-  const relatedServices = activeServices.filter((s) => s.id !== service.id && s.status === 'active')
-    .slice(0, 3);
+  const slugOrder = service.relatedServiceSlugs?.filter(Boolean) ?? [];
+  let relatedServices =
+    slugOrder.length > 0
+      ? slugOrder
+          .map((s) => activeServices.find((item) => item.slug === s && item.id !== service.id))
+          .filter((item): item is Service => Boolean(item))
+      : activeServices.filter((s) => s.id !== service.id && s.status === 'active').slice(0, 3);
+
+  if (relatedServices.length === 0) {
+    relatedServices = activeServices
+      .filter((s) => s.id !== service.id && s.status === 'active')
+      .slice(0, 3);
+  } else {
+    relatedServices = relatedServices.slice(0, 3);
+  }
 
   if (relatedServices.length === 0) return null;
 

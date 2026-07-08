@@ -38,6 +38,43 @@ export interface IDetailedOffering {
   iconName: string;
 }
 
+export interface IServiceFaq {
+  question: string;
+  answer: string;
+}
+
+export interface IServiceCtaBlock {
+  badge: string;
+  headline: string;
+  body: string;
+  primaryButtonLabel: string;
+  secondaryButtonLabel: string;
+  secondaryButtonHref: string;
+}
+
+export interface IServiceSidebarBlock {
+  summaryTitle: string;
+  responseTimeTitle: string;
+  responseTime: string;
+  businessHoursTitle: string;
+  businessHours: string;
+  secureTitle: string;
+  secureDescription: string;
+  buttonLabel: string;
+  directInquiriesTitle: string;
+  directInquiriesBody: string;
+  contactEmail: string;
+}
+
+export interface IServiceConsultationBlock {
+  title: string;
+  description: string;
+  submitLabel: string;
+  privacyText: string;
+  successTitle: string;
+  successMessage: string;
+}
+
 export interface IService extends BaseDocument {
   title: string;
   slug: string;
@@ -70,6 +107,14 @@ export interface IService extends BaseDocument {
   detailedOfferings: IDetailedOffering[];
   dashboardImage?: string;
   dashboardImagePublicId?: string;
+  faqs: IServiceFaq[];
+  relatedServiceSlugs: string[];
+  relatedIndustrySlugs: string[];
+  heroBadge?: string;
+  heroTagline?: string;
+  ctaBlock?: IServiceCtaBlock;
+  sidebar?: IServiceSidebarBlock;
+  consultationForm?: IServiceConsultationBlock;
   isDeleted?: boolean;
   deletedAt?: Date | null;
   deletedBy?: string;
@@ -232,6 +277,63 @@ const serviceSchema = new Schema<IService>(
       type: String,
       trim: true,
       default: '',
+    },
+    faqs: [
+      {
+        question: { type: String, required: true, trim: true },
+        answer: { type: String, required: true, trim: true },
+      },
+    ],
+    relatedServiceSlugs: {
+      type: [String],
+      default: [],
+    },
+    relatedIndustrySlugs: {
+      type: [String],
+      default: [],
+    },
+    heroBadge: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    heroTagline: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    ctaBlock: {
+      badge: { type: String, trim: true, default: "Let's collaborate" },
+      headline: { type: String, trim: true, default: 'Ready to build your next digital product?' },
+      body: { type: String, trim: true, default: '' },
+      primaryButtonLabel: { type: String, trim: true, default: 'Book Free Consultation' },
+      secondaryButtonLabel: { type: String, trim: true, default: 'Talk to an Expert' },
+      secondaryButtonHref: {
+        type: String,
+        trim: true,
+        default: 'mailto:architect@techvistar.com?subject=Consultation%20Escalation',
+      },
+    },
+    sidebar: {
+      summaryTitle: { type: String, trim: true, default: '' },
+      responseTimeTitle: { type: String, trim: true, default: '' },
+      responseTime: { type: String, trim: true, default: '' },
+      businessHoursTitle: { type: String, trim: true, default: '' },
+      businessHours: { type: String, trim: true, default: '' },
+      secureTitle: { type: String, trim: true, default: '' },
+      secureDescription: { type: String, trim: true, default: '' },
+      buttonLabel: { type: String, trim: true, default: '' },
+      directInquiriesTitle: { type: String, trim: true, default: '' },
+      directInquiriesBody: { type: String, trim: true, default: '' },
+      contactEmail: { type: String, trim: true, default: '' },
+    },
+    consultationForm: {
+      title: { type: String, trim: true, default: '' },
+      description: { type: String, trim: true, default: '' },
+      submitLabel: { type: String, trim: true, default: '' },
+      privacyText: { type: String, trim: true, default: '' },
+      successTitle: { type: String, trim: true, default: '' },
+      successMessage: { type: String, trim: true, default: '' },
     },
     // Soft Delete & Audit Fields
     isDeleted: {

@@ -1,8 +1,8 @@
 import { Service } from '@/data/services';
 import { Brain, Lightbulb } from 'lucide-react';
 import '../ui/GlassIcons.css';
-import { OverviewIllustration } from './OverviewIllustration';
 import { RichTextContent } from '@/components/common/RichTextContent';
+import { OverviewIllustration } from './OverviewIllustration';
 
 interface SectionProps {
   service: Service;
@@ -66,14 +66,20 @@ export const OverviewSection = ({ service }: SectionProps) => {
           </div>
         </div>
 
-        {/* Right Dashboard Image Column - Render dynamic monochrome emerald green 3D glass illustration */}
+        {/* Right Dashboard Image Column */}
         <div className="md:col-span-5 flex justify-center items-center">
           <div className="relative group/image w-full">
-            {/* Soft background glow */}
             <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-500/10 to-sky-500/10 opacity-75 blur-xl group-hover/image:opacity-100 transition duration-300 pointer-events-none" />
-            
             <div className="relative z-10 w-full transition-transform duration-300 group-hover/image:scale-[1.03]">
-              <OverviewIllustration slug={service.slug} />
+              {service.dashboardImage ? (
+                <img
+                  src={service.dashboardImage}
+                  alt={`${service.title} overview`}
+                  className="w-full max-w-[320px] mx-auto rounded-2xl border border-slate-200/80 shadow-sm object-contain"
+                />
+              ) : (
+                <OverviewIllustration slug={service.slug} />
+              )}
             </div>
           </div>
         </div>

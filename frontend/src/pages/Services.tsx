@@ -1,21 +1,46 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
-import { Service, decorateService, getServiceCardImage } from '@/data/services';
+import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
+import { Service, decorateService, getServiceCardImage, IMAGE_MAP } from '@/data/services';
+import { usePageSeo } from '@/hooks/usePageSeo';
+import { mergeServicesCmsConfig } from '@/types/servicesCms';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, ArrowRight, AlertCircle } from 'lucide-react';
-import { FAQSection } from '@/components/faq';
 import servicesBg from '../assets/services-bg.png';
 import { PageHeader } from '@/components/ui/PageHeader';
 
+function resolveLandingBackground(imageKeyOrUrl: string): string {
+  const trimmed = imageKeyOrUrl.trim();
+  if (!trimmed) return servicesBg;
+  if (trimmed.startsWith('http') || trimmed.startsWith('/') || trimmed.startsWith('data:')) {
+    return trimmed;
+  }
+  return IMAGE_MAP[trimmed] || servicesBg;
+}
+
 const Services = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  const { data: cmsConfigApi } = useQuery({
+    queryKey: ['servicesCmsConfig'],
+    queryFn: getServicesCmsConfig,
+    staleTime: 60_000,
+  });
+
+  const cmsConfig = mergeServicesCmsConfig(cmsConfigApi);
+  const landing = cmsConfig.landing;
+
+  usePageSeo({
+    title: landing.seoTitle,
+    description: landing.seoDescription,
+    fallbackTitle: 'Our Services | TechVistar',
+  });
 
   const { data: apiServices, isLoading, isError, error } = useQuery({
     queryKey: ['activeServices'],
@@ -24,18 +49,12 @@ const Services = () => {
     refetchOnMount: 'always',
   });
 
-  // Filter out active services
   const activeServices = (apiServices || []).map((item: any) => decorateService(item));
-
-  // Get unique categories dynamically
   const categories = ['All', ...Array.from(new Set(activeServices.map((s) => s.category)))];
-
-  // Filter services by category
-  const filteredServices = selectedCategory === 'All'
-    ? activeServices
-    : activeServices.filter((s) => s.category === selectedCategory);
-
-  // Sort by order
+  const filteredServices =
+    selectedCategory === 'All'
+      ? activeServices
+      : activeServices.filter((s) => s.category === selectedCategory);
   const sortedServices = [...filteredServices].sort((a, b) => a.order - b.order);
 
   return (
@@ -46,15 +65,13 @@ const Services = () => {
       <main id="main-content" className="min-h-screen bg-slate-50">
         <Navbar />
 
-        {/* Services Hero */}
-        <PageHeader 
-          title="Our Services"
-          subtitle="What We Do"
-          description="We offer structured, productized growth services spanning full-stack delivery, revenue operations, automation, and applied artificial intelligence."
-          backgroundImage={servicesBg}
+        <PageHeader
+          title={landing.title}
+          subtitle={landing.subtitle}
+          description={landing.description}
+          backgroundImage={resolveLandingBackground(landing.backgroundImage)}
         />
 
-                {/* Category Filters */}
         <section className="py-8 bg-slate-50 border-b border-slate-200">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="flex flex-wrap gap-2">
@@ -77,26 +94,15 @@ const Services = () => {
           </div>
         </section>
 
-        {/* Services Grid */}
         <section className="py-12">
           <div className="container mx-auto px-4 max-w-6xl">
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, idx) => (
-                  <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between animate-pulse h-[350px]">
-                    <div>
-                      <div className="w-full h-[140px] bg-slate-200 rounded-lg mb-4"></div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-16 h-5 bg-slate-200 rounded"></div>
-                        <div className="w-8 h-8 bg-slate-200 rounded"></div>
-                      </div>
-                      <div className="h-6 bg-slate-200 rounded w-3/4 mb-2"></div>
-                      <div className="h-4 bg-slate-200 rounded w-full"></div>
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                      <div className="w-16 h-4 bg-slate-200 rounded"></div>
-                    </div>
-                  </div>
+                  <div
+                    key={idx}
+                    className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between animate-pulse h-[350px]"
+                  />
                 ))}
               </div>
             ) : isError ? (
@@ -106,9 +112,9 @@ const Services = () => {
                 </div>
                 <h3 className="text-lg font-bold text-red-900 mb-1">Failed to load services</h3>
                 <p className="text-red-700 text-sm leading-relaxed mb-6">
-                  {error instanceof Error ? error.message : "An unexpected server error occurred while retrieving active services."}
+                  {error instanceof Error ? error.message : 'An unexpected server error occurred.'}
                 </p>
-                <Button onClick={() => window.location.reload()} variant="outline" className="border-red-200 text-red-700 hover:bg-red-50">
+                <Button onClick={() => window.location.reload()} variant="outline">
                   Reload Page
                 </Button>
               </div>
@@ -121,7 +127,6 @@ const Services = () => {
                       key={service.id}
                       className="group h-full flex flex-col overflow-hidden border-slate-200 bg-white shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-primary/25 transition-all duration-[450ms] ease-in-out"
                     >
-                      {/* Service Thumbnail (falls back to coverImage) */}
                       <div className="overflow-hidden bg-white" style={{ borderRadius: '20px 20px 0 0' }}>
                         <img
                           src={getServiceCardImage(service)}
@@ -138,7 +143,7 @@ const Services = () => {
                           >
                             {service.category}
                           </Badge>
-                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-100 text-primary group-hover:scale-105 transition-transform">
+                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-100 text-primary">
                             <IconComponent className="h-5 w-5" />
                           </div>
                         </div>
@@ -152,7 +157,7 @@ const Services = () => {
                       <CardContent className="flex flex-col flex-grow pt-0 justify-between">
                         <div className="mt-4 mb-6">
                           <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-slate-400 mb-2.5">
-                            Key Offerings
+                            {landing.offeringsLabel}
                           </p>
                           <ul className="space-y-2">
                             {service.offerings.slice(0, 3).map((item, index) => (
@@ -167,7 +172,7 @@ const Services = () => {
                           to={`/services/${service.slug}`}
                           className="mt-auto inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
                         >
-                          Learn more
+                          {landing.learnMoreLabel}
                           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                         </Link>
                       </CardContent>
@@ -178,14 +183,11 @@ const Services = () => {
             ) : (
               <div className="text-center py-16 bg-white border border-slate-200 rounded-xl max-w-md mx-auto px-6">
                 <h3 className="text-lg font-bold text-slate-800 mb-2">No services found.</h3>
-                <p className="text-slate-500 text-sm">
-                  Try changing your category filter.
-                </p>
+                <p className="text-slate-500 text-sm">Try changing your category filter.</p>
               </div>
             )}
           </div>
         </section>
-
 
         <Footer />
       </main>

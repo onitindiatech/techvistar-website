@@ -2,12 +2,14 @@ import { useParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getServiceBySlug } from '@/services/services.service';
+import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
 import { decorateService } from '@/data/services';
+import { usePageSeo } from '@/hooks/usePageSeo';
+import { mergeServicesCmsConfig } from '@/types/servicesCms';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-// Subcomponents
 import { ServiceHero } from '@/components/services/ServiceHero';
 import { ServiceSectionNavigation } from '@/components/services/ServiceSectionNavigation';
 import { OverviewSection } from '@/components/services/OverviewSection';
@@ -16,8 +18,7 @@ import { ProcessSection } from '@/components/services/ProcessSection';
 import { TechnologySection } from '@/components/services/TechnologySection';
 import { IndustriesSection } from '@/components/services/IndustriesSection';
 import { CaseStudiesSection } from '@/components/services/CaseStudiesSection';
-
-
+import { FAQSection } from '@/components/services/FAQSection';
 import { ServiceSidebar } from '@/components/services/ServiceSidebar';
 import { CTASection } from '@/components/services/CTASection';
 import { RelatedServicesSection } from '@/components/services/RelatedServicesSection';
@@ -33,18 +34,24 @@ const ServiceDetails = () => {
     refetchOnMount: 'always',
   });
 
-  // Find current service
+  const { data: cmsConfigApi } = useQuery({
+    queryKey: ['servicesCmsConfig'],
+    queryFn: getServicesCmsConfig,
+    staleTime: 60_000,
+  });
+
+  const cmsConfig = mergeServicesCmsConfig(cmsConfigApi);
   const service = apiService ? decorateService(apiService) : undefined;
 
-  // Set document title and scroll to top
+  usePageSeo({
+    title: service?.seoTitle || (service ? `${service.title} | TechVistar Services` : undefined),
+    description: service?.seoDescription || service?.shortDescription,
+    fallbackTitle: 'Service Not Found | TechVistar',
+  });
+
   useEffect(() => {
-    if (service) {
-      document.title = `${service.title} | TechVistar Services`;
-    } else {
-      document.title = 'Service Not Found | TechVistar';
-    }
     window.scrollTo(0, 0);
-  }, [service]);
+  }, [service?.slug]);
 
   if (isLoading) {
     return (
@@ -83,22 +90,17 @@ const ServiceDetails = () => {
     );
   }
 
+  const showFaq = (service.faqs?.length ?? 0) > 0;
+
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-slate-50 pt-0">
-        
-        {/* Hero Section */}
         <ServiceHero service={service} />
+        <ServiceSectionNavigation showFaq={showFaq} />
 
-                {/* Sticky Sub-Navbar */}
-        <ServiceSectionNavigation />
-
-        {/* Dynamic Detail Modules Content Area */}
         <section className="container mx-auto px-4 max-w-6xl mt-8 pb-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* Left/Main Column for Detail Blocks */}
             <div className="lg:col-span-2 space-y-8">
               <OverviewSection service={service} />
               <SolutionsSection service={service} />
@@ -106,26 +108,21 @@ const ServiceDetails = () => {
               <TechnologySection service={service} />
               <IndustriesSection service={service} />
               <CaseStudiesSection service={service} />
-
+              {showFaq && <FAQSection service={service} />}
             </div>
 
-            {/* Right Column Sidebar */}
             <div className="space-y-6">
-              <ServiceSidebar />
+              <ServiceSidebar service={service} cmsConfig={cmsConfig} />
             </div>
-
           </div>
 
-          {/* Bottom Conversion Section */}
           <div className="mt-16">
-            <CTASection service={service} />
+            <CTASection service={service} cmsConfig={cmsConfig} />
           </div>
 
-          {/* Related Services Section */}
           <div className="mt-16">
             <RelatedServicesSection service={service} />
           </div>
-
         </section>
 
         <Footer />

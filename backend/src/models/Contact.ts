@@ -14,7 +14,7 @@ export interface IContact extends BaseDocument {
   email: string;
   phone: string;
   company?: string;
-  serviceInterested: typeof VALIDATION.VALID_SERVICES[number];
+  serviceInterested: string;
   budget?: string;
   message: string;
   status: ContactStatus;
@@ -56,10 +56,8 @@ const contactSchema = new Schema<IContact>(
     serviceInterested: {
       type: String,
       required: [true, 'Service of interest is required'],
-      enum: {
-        values: VALIDATION.VALID_SERVICES,
-        message: '{VALUE} is not a supported service type',
-      },
+      trim: true,
+      maxlength: [120, 'Service of interest cannot exceed 120 characters'],
     },
     budget: {
       type: String,

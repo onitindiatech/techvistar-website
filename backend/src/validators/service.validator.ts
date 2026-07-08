@@ -34,6 +34,14 @@ interface ServiceInput {
   stats?: unknown;
   detailedOfferings?: unknown;
   dashboardImage?: unknown;
+  faqs?: unknown;
+  relatedServiceSlugs?: unknown;
+  relatedIndustrySlugs?: unknown;
+  heroBadge?: unknown;
+  heroTagline?: unknown;
+  ctaBlock?: unknown;
+  sidebar?: unknown;
+  consultationForm?: unknown;
 }
 
 export function validateServiceInput(input: ServiceInput, isUpdate = false): any {
@@ -200,12 +208,94 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
           title: String(d.title || '').trim(),
           description: String(d.description || '').trim(),
           badges: Array.isArray(d.badges) ? d.badges.map((b: any) => String(b).trim()).filter(Boolean) : [],
-          color: String(d.color || '').trim(),
-          iconName: String(d.iconName || '').trim()
+          color: String(d.color || 'green').trim(),
+          iconName: String(d.iconName || 'sparkles').trim(),
         };
       }).filter(Boolean);
     }
   }
+
+  // FAQs
+  let parsedFaqs: any[] = [];
+  if (input.faqs !== undefined) {
+    if (!Array.isArray(input.faqs)) {
+      errors.push({ field: 'faqs', message: 'FAQs must be an array' });
+    } else {
+      parsedFaqs = input.faqs.map((f: any, idx: number) => {
+        if (!f || typeof f !== 'object') {
+          errors.push({ field: `faqs[${idx}]`, message: 'FAQ must be an object' });
+          return null;
+        }
+        return {
+          question: String(f.question || '').trim(),
+          answer: String(f.answer || '').trim(),
+        };
+      }).filter(Boolean);
+    }
+  }
+
+  const parsedRelatedServiceSlugs = parseStringArray('relatedServiceSlugs', input.relatedServiceSlugs);
+  const parsedRelatedIndustrySlugs = parseStringArray('relatedIndustrySlugs', input.relatedIndustrySlugs);
+
+  const parseCtaBlock = (val: unknown) => {
+    if (val === undefined || val === null) return undefined;
+    if (typeof val !== 'object') {
+      errors.push({ field: 'ctaBlock', message: 'CTA block must be an object' });
+      return undefined;
+    }
+    const c = val as Record<string, unknown>;
+    return {
+      badge: String(c.badge ?? '').trim(),
+      headline: String(c.headline ?? '').trim(),
+      body: String(c.body ?? '').trim(),
+      primaryButtonLabel: String(c.primaryButtonLabel ?? '').trim(),
+      secondaryButtonLabel: String(c.secondaryButtonLabel ?? '').trim(),
+      secondaryButtonHref: String(c.secondaryButtonHref ?? '').trim(),
+    };
+  };
+
+  const parseSidebarBlock = (val: unknown) => {
+    if (val === undefined || val === null) return undefined;
+    if (typeof val !== 'object') {
+      errors.push({ field: 'sidebar', message: 'Sidebar must be an object' });
+      return undefined;
+    }
+    const s = val as Record<string, unknown>;
+    return {
+      summaryTitle: String(s.summaryTitle ?? '').trim(),
+      responseTimeTitle: String(s.responseTimeTitle ?? '').trim(),
+      responseTime: String(s.responseTime ?? '').trim(),
+      businessHoursTitle: String(s.businessHoursTitle ?? '').trim(),
+      businessHours: String(s.businessHours ?? '').trim(),
+      secureTitle: String(s.secureTitle ?? '').trim(),
+      secureDescription: String(s.secureDescription ?? '').trim(),
+      buttonLabel: String(s.buttonLabel ?? '').trim(),
+      directInquiriesTitle: String(s.directInquiriesTitle ?? '').trim(),
+      directInquiriesBody: String(s.directInquiriesBody ?? '').trim(),
+      contactEmail: String(s.contactEmail ?? '').trim(),
+    };
+  };
+
+  const parseConsultationBlock = (val: unknown) => {
+    if (val === undefined || val === null) return undefined;
+    if (typeof val !== 'object') {
+      errors.push({ field: 'consultationForm', message: 'Consultation form config must be an object' });
+      return undefined;
+    }
+    const f = val as Record<string, unknown>;
+    return {
+      title: String(f.title ?? '').trim(),
+      description: String(f.description ?? '').trim(),
+      submitLabel: String(f.submitLabel ?? '').trim(),
+      privacyText: String(f.privacyText ?? '').trim(),
+      successTitle: String(f.successTitle ?? '').trim(),
+      successMessage: String(f.successMessage ?? '').trim(),
+    };
+  };
+
+  const parsedCtaBlock = parseCtaBlock(input.ctaBlock);
+  const parsedSidebar = parseSidebarBlock(input.sidebar);
+  const parsedConsultationForm = parseConsultationBlock(input.consultationForm);
 
   // Display Order
   let parsedDisplayOrder = 0;
@@ -257,6 +347,14 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
     ...(input.whyChooseUs !== undefined && { whyChooseUs: parsedWhyChooseUs }),
     ...(input.stats !== undefined && { stats: parsedStats }),
     ...(input.detailedOfferings !== undefined && { detailedOfferings: parsedDetailedOfferings }),
+    ...(input.faqs !== undefined && { faqs: parsedFaqs }),
+    ...(input.relatedServiceSlugs !== undefined && { relatedServiceSlugs: parsedRelatedServiceSlugs }),
+    ...(input.relatedIndustrySlugs !== undefined && { relatedIndustrySlugs: parsedRelatedIndustrySlugs }),
+    ...(input.heroBadge !== undefined && { heroBadge: String(input.heroBadge).trim() }),
+    ...(input.heroTagline !== undefined && { heroTagline: String(input.heroTagline).trim() }),
+    ...(parsedCtaBlock !== undefined && { ctaBlock: parsedCtaBlock }),
+    ...(parsedSidebar !== undefined && { sidebar: parsedSidebar }),
+    ...(parsedConsultationForm !== undefined && { consultationForm: parsedConsultationForm }),
     dashboardImage: input.dashboardImage ? String(input.dashboardImage).trim() : '',
   };
 }

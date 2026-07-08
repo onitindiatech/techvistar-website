@@ -12,7 +12,7 @@ export interface CreateContactDTO {
   email: string;
   phone: string;
   company?: string;
-  serviceInterested: 'web-development' | 'mobile-development' | 'ui-ux' | 'consulting' | 'other';
+  serviceInterested: string;
   budget?: string;
   message: string;
 }

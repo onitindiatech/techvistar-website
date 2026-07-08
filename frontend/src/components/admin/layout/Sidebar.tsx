@@ -21,6 +21,7 @@ import { motion } from "framer-motion";
 const navItems = [
   { label: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Services", path: "/admin/services", icon: Wrench },
+  { label: "Services Settings", path: "/admin/services-settings", icon: Settings },
   { label: "Industries", path: "/admin/industries", icon: Building },
   { label: "Solutions", path: "/admin/solutions", icon: Shapes },
   { label: "Portfolio", path: "/admin/portfolio", icon: Package },

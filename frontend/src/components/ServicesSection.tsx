@@ -6,7 +6,9 @@ import { SiteSection } from '@/components/SiteSection';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
-import { decorateService, SECTION_SERVICES, getServiceCardImage } from '@/data/services';
+import { decorateService, getServiceCardImage } from '@/data/services';
+import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
+import { mergeServicesCmsConfig } from '@/types/servicesCms';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -39,6 +41,14 @@ const ctaVariants = {
 export const ServicesSection = () => {
   const { ref, isInView } = useAnimatedSection();
 
+  const { data: cmsConfigApi } = useQuery({
+    queryKey: ['servicesCmsConfig'],
+    queryFn: getServicesCmsConfig,
+    staleTime: 60_000,
+  });
+
+  const sectionCopy = mergeServicesCmsConfig(cmsConfigApi).homeSection;
+
   const { data: apiServices } = useQuery({
     queryKey: ['activeServices'],
     queryFn: getActiveServices,
@@ -63,10 +73,10 @@ export const ServicesSection = () => {
 
       <div className="container-custom relative z-10">
         <SectionHeader
-          tag={SECTION_SERVICES.tag}
-          title={SECTION_SERVICES.title}
-          highlight={SECTION_SERVICES.highlight}
-          description={SECTION_SERVICES.description}
+          tag={sectionCopy.tag}
+          title={sectionCopy.title}
+          highlight={sectionCopy.highlight}
+          description={sectionCopy.description}
           isInView={isInView}
           headingId="services-heading"
         />
@@ -121,11 +131,11 @@ export const ServicesSection = () => {
                 </div>
                 
                 <h3 className="font-display text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors leading-tight">
-                  View All Services
+                  {sectionCopy.viewAllTitle}
                 </h3>
                 
                 <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors mt-1">
-                  Explore All
+                  {sectionCopy.viewAllLinkText}
                   <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.5} />
                 </span>
               </SpotlightCard>

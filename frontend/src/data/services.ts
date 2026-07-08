@@ -23,6 +23,12 @@ import {
 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { preferCmsImage } from '@/lib/mediaFallbacks';
+import type {
+  ServiceCtaBlock,
+  ServiceSidebarBlock,
+  ServiceConsultationBlock,
+  ServiceFaq,
+} from '@/types/servicesCms';
 
 import serviceWebDev from '../assets/service_webdevlopment.png';
 import serviceMobileApp from '../assets/mobile_phone_devloper.png';
@@ -85,17 +91,26 @@ export interface Service {
   process: { step: number; title: string; description: string }[];
   caseStudies: { title: string; description: string; link?: string }[];
   technologies: string[];
-  faqs: { question: string; answer: string }[];
+  faqs: ServiceFaq[];
   benefits: string[];
   cta: string;
+  ctaBlock?: ServiceCtaBlock;
+  sidebar?: Partial<ServiceSidebarBlock>;
+  consultationForm?: Partial<ServiceConsultationBlock>;
   featured: boolean;
   order: number;
   status: 'active' | 'draft';
   industries?: string[];
+  relatedIndustrySlugs?: string[];
+  relatedServiceSlugs?: string[];
+  heroBadge?: string;
+  heroTagline?: string;
   whyChooseUs?: { title: string; description: string }[];
   stats?: readonly ServiceStat[];
   detailedOfferings?: DetailedOffering[];
   dashboardImage?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export const ICON_MAP: Record<string, LucideIcon> = {
@@ -326,14 +341,23 @@ export function decorateService(apiService: any): Service {
     faqs: apiService.faqs || [],
     benefits: apiService.benefits || [],
     cta: apiService.cta || '',
+    ctaBlock: apiService.ctaBlock || undefined,
+    sidebar: apiService.sidebar || undefined,
+    consultationForm: apiService.consultationForm || undefined,
     featured: apiService.featured || false,
     order: apiService.displayOrder || 0,
     status: apiService.status || 'active',
     industries: apiService.industries || [],
+    relatedIndustrySlugs: apiService.relatedIndustrySlugs || [],
+    relatedServiceSlugs: apiService.relatedServiceSlugs || [],
+    heroBadge: apiService.heroBadge || '',
+    heroTagline: apiService.heroTagline || '',
     whyChooseUs: apiService.whyChooseUs || [],
     stats: apiService.stats || [],
     detailedOfferings: apiService.detailedOfferings || [],
     dashboardImage,
+    seoTitle: apiService.seoTitle || '',
+    seoDescription: apiService.seoDescription || '',
   };
 }
 

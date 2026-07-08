@@ -17,9 +17,19 @@ import {
   adminBulkRestore,
   adminBulkStatus
 } from '@/controllers/service.controller';
+import {
+  getPublicServicesCmsConfig,
+  adminGetServicesCmsConfig,
+  adminUpdateServicesCmsConfig,
+} from '@/controllers/servicesCmsConfig.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
 
 const router = Router();
+
+// ─── CMS page config (must be before /:slug) ─────────────────────────────────
+router.get('/config', getPublicServicesCmsConfig);
+router.get('/admin/config', authMiddleware, adminGetServicesCmsConfig);
+router.put('/admin/config', authMiddleware, adminUpdateServicesCmsConfig);
 
 // ─── Administrative CRUD Endpoints ───────────────────────────────────────────
 router.get('/admin', authMiddleware, adminGetServices);

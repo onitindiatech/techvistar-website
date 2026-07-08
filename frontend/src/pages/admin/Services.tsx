@@ -12,7 +12,7 @@ import * as LucideIcons from "lucide-react";
 import { 
   Trash2, Edit, Loader2, X, Plus, AlertCircle, Trash, ArrowLeft, ArrowRight,
   ChevronDown, ChevronUp, Image as ImageIcon, Sparkles, BookOpen, BarChart3, Globe, Settings, Tag, ShieldCheck, Check,
-  ArrowUpRight, Search, RotateCcw, AlertTriangle, Info, Calendar, User
+  ArrowUpRight, Search, RotateCcw, AlertTriangle, Info, Calendar, User, MessageSquare, Link2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,8 +22,16 @@ import { IMAGE_MAP } from "@/data/services";
 import { CmsImageField } from "@/components/admin/common/CmsImageField";
 import { RichTextEditor } from "@/components/admin/common/RichTextEditor";
 import { normalizeRichContent, stripHtmlToText } from "@/lib/sanitizeHtml";
+import {
+  ServiceExtendedCmsFields,
+  EMPTY_EXTENDED_CMS,
+  extendedCmsFromItem,
+  extendedCmsToPayload,
+  type ServiceExtendedCmsState,
+} from "@/components/admin/services/ServiceExtendedCmsFields";
+import { getAllIndustries } from "@/services/industry.service";
 
-type TabName = "general" | "content" | "media" | "features" | "stats" | "process" | "seo" | "preview";
+type TabName = "general" | "content" | "media" | "features" | "offerings" | "faqs" | "relations" | "stats" | "process" | "cta" | "sidebar" | "seo" | "preview";
 
 // Supported CMS Icons mapping
 const SUPPORTED_ICONS = [
@@ -128,6 +136,7 @@ const Services = () => {
   // Complex sub-docs states
   const [processSteps, setProcessSteps] = useState<{ step: number; title: string; description: string }[]>([]);
   const [statsList, setStatsList] = useState<{ value: string; label: string; iconType: string; colorTheme: string }[]>([]);
+  const [extendedCms, setExtendedCms] = useState<ServiceExtendedCmsState>(EMPTY_EXTENDED_CMS);
 
   // Icon Picker searchable dropdown state
   const [iconSearchTerm, setIconSearchTerm] = useState("");
@@ -188,6 +197,16 @@ const Services = () => {
     queryFn: () => getAllServices({ page: 1, limit: 1000 })
   });
   const allServices = allServicesRes?.services || [];
+
+  const { data: allIndustriesRes } = useQuery({
+    queryKey: ["admin", "industries", "all-slugs"],
+    queryFn: () => getAllIndustries({ page: 1, limit: 500 }),
+  });
+  const allIndustryOptions = (allIndustriesRes?.industries || []).map((ind: any) => ({
+    slug: ind.slug,
+    title: ind.title,
+  }));
+  const allServiceOptions = allServices.map((s: any) => ({ slug: s.slug, title: s.title }));
 
   const refreshServicesQueries = () => {
     queryClient.invalidateQueries({ queryKey: ["admin", "services"] });
@@ -397,7 +416,7 @@ const Services = () => {
     return JSON.stringify({
       title, slug, shortDescription, fullDescription, icon, category, overview, status, displayOrder,
       coverImage, thumbnail, seoTitle, seoDescription, cta, featured, dashboardImage,
-      features, technologies, benefits, industries, offerings, processSteps, statsList
+      features, technologies, benefits, industries, offerings, processSteps, statsList, extendedCms
     });
   };
 
@@ -432,6 +451,7 @@ const Services = () => {
     setOfferings([]);
     setProcessSteps([]);
     setStatsList([]);
+    setExtendedCms(EMPTY_EXTENDED_CMS);
     setValidationErrors({});
     setAuditInfo({});
     setActiveTab("general");
@@ -442,7 +462,7 @@ const Services = () => {
         title: "", slug: "", shortDescription: "", fullDescription: "", icon: "Wrench", category: "Development",
         overview: "", status: "draft", displayOrder: "0", coverImage: "", thumbnail: "", seoTitle: "", seoDescription: "",
         cta: "", featured: false, dashboardImage: "", features: [], technologies: [], benefits: [], industries: [], offerings: [],
-        processSteps: [], statsList: []
+        processSteps: [], statsList: [], extendedCms: EMPTY_EXTENDED_CMS
       }));
     }, 50);
 
@@ -475,6 +495,7 @@ const Services = () => {
     setOfferings(item.offerings || []);
     setProcessSteps(item.process || []);
     setStatsList(item.stats || []);
+    setExtendedCms(extendedCmsFromItem(item));
     setValidationErrors({});
     
     // Set audit info
@@ -498,7 +519,7 @@ const Services = () => {
         seoDescription: item.seoDescription || "", cta: item.cta || "", featured: item.featured || false,
         dashboardImage: item.dashboardImage || "", features: item.features || [], technologies: item.technologies || [],
         benefits: item.benefits || [], industries: item.industries || [], offerings: item.offerings || [],
-        processSteps: item.process || [], statsList: item.stats || []
+        processSteps: item.process || [], statsList: item.stats || [], extendedCms: extendedCmsFromItem(item)
       }));
     }, 50);
 
@@ -618,7 +639,8 @@ const Services = () => {
       featured,
       dashboardImage,
       process: processSteps,
-      stats: statsList
+      stats: statsList,
+      ...extendedCmsToPayload(extendedCms, cta),
     };
 
     if (editingId) {
@@ -1212,8 +1234,13 @@ const Services = () => {
                 { name: "content", label: "Content", icon: BookOpen },
                 { name: "media", label: "Media", icon: ImageIcon },
                 { name: "features", label: "Features", icon: Tag },
+                { name: "offerings", label: "Offerings", icon: Sparkles },
+                { name: "faqs", label: "FAQs", icon: MessageSquare },
+                { name: "relations", label: "Relations", icon: Link2 },
                 { name: "stats", label: "Stats", icon: BarChart3 },
                 { name: "process", label: "Process", icon: Sparkles },
+                { name: "cta", label: "CTA", icon: ArrowUpRight },
+                { name: "sidebar", label: "Sidebar", icon: Info },
                 { name: "seo", label: "SEO Settings", icon: Globe },
                 { name: "preview", label: "Preview", icon: ShieldCheck }
               ] as { name: TabName, label: string, icon: any }[]).map((tab) => {
@@ -1621,6 +1648,17 @@ const Services = () => {
                       </div>
                     )}
                   </div>
+                )}
+
+                {/* Tab: Extended CMS (offerings, faqs, relations, cta, sidebar) */}
+                {["offerings", "faqs", "relations", "cta", "sidebar"].includes(activeTab) && (
+                  <ServiceExtendedCmsFields
+                    activeTab={activeTab}
+                    state={extendedCms}
+                    onChange={(patch) => setExtendedCms((prev) => ({ ...prev, ...patch }))}
+                    allServiceOptions={allServiceOptions}
+                    allIndustryOptions={allIndustryOptions}
+                  />
                 )}
 
                 {/* Tab 6: Process Accordion Editor */}

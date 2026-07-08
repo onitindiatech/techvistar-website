@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
@@ -9,27 +9,43 @@ interface NavItem {
 const baseNavItems: NavItem[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'offerings', label: 'Offerings' },
+  { id: 'benefits', label: 'Benefits' },
   { id: 'process', label: 'Process' },
   { id: 'technology', label: 'Technology' },
-  { id: 'case-studies', label: 'Case Studies' },
   { id: 'faq', label: 'FAQ' },
+  { id: 'related', label: 'Related' },
   { id: 'contact', label: 'Contact' },
 ];
 
 interface ServiceSectionNavigationProps {
   showFaq?: boolean;
+  showBenefits?: boolean;
+  showRelated?: boolean;
 }
 
-export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavigationProps) => {
-  const navItems = showFaq ? baseNavItems : baseNavItems.filter((item) => item.id !== 'faq');
+export const ServiceSectionNavigation = ({
+  showFaq = false,
+  showBenefits = false,
+  showRelated = true,
+}: ServiceSectionNavigationProps) => {
+  const navItems = useMemo(
+    () =>
+      baseNavItems.filter((item) => {
+        if (item.id === 'faq' && !showFaq) return false;
+        if (item.id === 'benefits' && !showBenefits) return false;
+        if (item.id === 'related' && !showRelated) return false;
+        return true;
+      }),
+    [showFaq, showBenefits, showRelated]
+  );
+
   const [activeId, setActiveId] = useState<string>('overview');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Configure intersection observer to watch for sections entering/leaving view
     const observerOptions = {
-      root: null, // viewport
-      rootMargin: '-140px 0px -60% 0px', // trigger active states when scrolled past the combined navbar height
+      root: null,
+      rootMargin: '-140px 0px -60% 0px',
       threshold: 0,
     };
 
@@ -43,20 +59,14 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
 
     const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
-    // Observe each target section element
     navItems.forEach((item) => {
       const element = document.getElementById(item.id);
-      if (element) {
-        observer.observe(element);
-      }
+      if (element) observer.observe(element);
     });
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [showFaq]);
+    return () => observer.disconnect();
+  }, [navItems]);
 
-  // Smooth scroll center active tab on mobile horizontally
   useEffect(() => {
     if (scrollContainerRef.current) {
       const activeButton = scrollContainerRef.current.querySelector('[data-active="true"]');
@@ -64,17 +74,12 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
         const container = scrollContainerRef.current;
         const buttonRect = activeButton.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
-        
-        const scrollLeft = 
-          activeButton.getBoundingClientRect().left - 
-          containerRect.left - 
-          containerRect.width / 2 + 
+        const scrollLeft =
+          activeButton.getBoundingClientRect().left -
+          containerRect.left -
+          containerRect.width / 2 +
           buttonRect.width / 2;
-
-        container.scrollTo({
-          left: container.scrollLeft + scrollLeft,
-          behavior: 'smooth',
-        });
+        container.scrollTo({ left: container.scrollLeft + scrollLeft, behavior: 'smooth' });
       }
     }
   }, [activeId]);
@@ -83,36 +88,31 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-      // Calculate offset for smooth scroll to keep target visible below main and sub navbar
       const offset = 140;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      const offsetPosition = elementRect - bodyRect - offset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
   };
 
   return (
-    <nav className="sticky top-12 sm:top-14 md:top-[4.25rem] z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm w-full transition-all duration-300">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div 
+    <nav className="sticky top-12 z-40 w-full border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur transition-all duration-300 sm:top-14 md:top-[4.25rem]">
+      <div className="container mx-auto max-w-6xl px-4">
+        <div
           ref={scrollContainerRef}
-          className="flex overflow-x-auto scrollbar-none items-center py-3 gap-6 md:gap-8 whitespace-nowrap scroll-smooth"
+          className="scrollbar-none flex items-center gap-5 overflow-x-auto whitespace-nowrap py-3.5 scroll-smooth md:gap-8"
         >
           {navItems.map((item) => (
             <button
               key={item.id}
+              type="button"
               onClick={handleNavClick(item.id)}
               data-active={activeId === item.id}
               className={cn(
-                'text-xs font-semibold uppercase tracking-wider pb-1 transition-all border-b-2 focus:outline-none',
+                'border-b-2 pb-1 text-[11px] font-bold uppercase tracking-wider transition-all focus:outline-none',
                 activeId === item.id
-                  ? 'border-primary text-primary font-bold animate-pulse-subtle'
+                  ? 'border-emerald-600 text-emerald-600'
                   : 'border-transparent text-slate-500 hover:text-slate-900'
               )}
             >
@@ -124,4 +124,5 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
     </nav>
   );
 };
+
 export default ServiceSectionNavigation;

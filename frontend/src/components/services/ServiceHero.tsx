@@ -1,27 +1,27 @@
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 import {
   ArrowLeft,
-  Check,
   ArrowRight,
+  Check,
   Sparkles,
-  Send,
   Rocket,
   Clock,
   DollarSign,
   TrendingUp,
   Shield,
-  Star
+  Star,
 } from 'lucide-react';
 import { Service, getServiceHeroImage } from '@/data/services';
 import { RichTextContent } from '@/components/common/RichTextContent';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 interface ServiceHeroProps {
   service: Service;
 }
 
 export const ServiceHero = ({ service }: ServiceHeroProps) => {
-
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -29,13 +29,8 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
       const offset = 140;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      const offsetPosition = elementRect - bodyRect - offset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
   };
 
@@ -61,123 +56,145 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
   const getThemeClasses = (colorTheme: string) => {
     switch (colorTheme) {
       case 'green':
-        return {
-          iconBg: 'bg-emerald-100 text-emerald-600',
-        };
+        return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25';
       case 'purple':
-        return {
-          iconBg: 'bg-purple-100 text-purple-600',
-        };
+        return 'bg-purple-500/15 text-purple-400 border-purple-500/25';
       case 'gold':
-        return {
-          iconBg: 'bg-amber-100 text-amber-600',
-        };
+        return 'bg-amber-500/15 text-amber-400 border-amber-500/25';
       case 'blue':
-        return {
-          iconBg: 'bg-blue-100 text-blue-600',
-        };
+        return 'bg-blue-500/15 text-blue-400 border-blue-500/25';
       default:
-        return {
-          iconBg: 'bg-slate-100 text-slate-600',
-        };
+        return 'bg-slate-500/15 text-slate-300 border-slate-500/25';
     }
   };
 
+  const heroImage = getServiceHeroImage(service);
+
   return (
-    <section className="bg-[#f8fafc] border-b border-slate-200 pt-24 pb-10 md:pt-28 md:pb-14 mb-8">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <Link to="/services" className="inline-flex items-center text-sm text-slate-500 hover:text-emerald-600 mb-6 transition-colors font-medium">
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to all services
+    <section className="relative overflow-hidden bg-slate-950 pt-24 pb-16 md:pt-28 md:pb-20">
+      {heroImage && (
+        <motion.div
+          className="pointer-events-none absolute inset-0 bg-contain bg-right bg-no-repeat opacity-20"
+          style={{ backgroundImage: `url(${heroImage})` }}
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      )}
+
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/60" />
+      <motion.div
+        className="pointer-events-none absolute -right-20 top-1/3 h-80 w-80 rounded-full bg-emerald-500/15 blur-[100px]"
+        animate={{ opacity: [0.35, 0.6, 0.35] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      <div className="container relative z-10 mx-auto max-w-6xl px-4">
+        <Link
+          to="/services"
+          className="mb-8 inline-flex items-center text-sm font-semibold text-slate-400 transition-colors hover:text-emerald-400"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to all services
         </Link>
 
-        {/* Main Grid: Centered Content */}
-        <div className="flex flex-col gap-12 w-full relative z-10">
-          
-          {/* Main Content Area */}
-          <div className="w-full space-y-6">
-            
-            {/* Top Half: Text Details & Robot Illustration side by side */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              
-              {/* Text Area */}
-              <div className="md:col-span-7 space-y-5">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/50 text-xs font-semibold uppercase tracking-wider">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-                  {service.heroBadge?.trim() || `${service.title} Solutions`}
-                </div>
-                
-                <h1 className="text-3xl md:text-5xl font-extrabold font-display text-slate-900 leading-tight">
-                  {service.title}
-                </h1>
-                
-                <p className="text-base md:text-lg font-bold text-emerald-600 leading-snug">
-                  {service.heroTagline?.trim() ||
-                    `Accelerate your digital footprint with custom ${service.title.toLowerCase()} configurations.`}
-                </p>
-                
-                <RichTextContent
-                  content={service.longDescription}
-                  className="text-slate-600 text-sm leading-relaxed"
-                />
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+          <div className="space-y-6 lg:col-span-7">
+            <Badge className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-emerald-400">
+              <Sparkles className="mr-1.5 inline h-3 w-3" />
+              {service.heroBadge?.trim() || `${service.category} Solutions`}
+            </Badge>
 
-                {/* Key Highlights */}
-                <div className="space-y-3 pt-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-400 font-semibold">
-                    Key Highlights
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
-                    {service.benefits.map((highlight, idx) => (
-                      <div key={idx} className="flex gap-2.5 items-start text-xs text-slate-700 font-medium">
-                        <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-0.5 shrink-0 border border-emerald-100">
-                          <Check className="h-3 w-3 text-emerald-600" />
-                        </div>
-                        <span>{highlight}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+            <h1 className="font-display text-3xl font-black leading-[1.08] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+              {service.title}
+            </h1>
 
-              {/* Cover Image / Illustration Area */}
-              <div className="md:col-span-5 flex items-center justify-center py-4 md:py-0">
-                <img
-                  src={getServiceHeroImage(service)}
-                  alt={service.title}
-                  className="w-full max-w-[280px] md:max-w-full h-auto object-contain"
-                />
-              </div>
+            <p className="text-base font-bold leading-snug text-emerald-400 md:text-lg">
+              {service.heroTagline?.trim() ||
+                `Enterprise-grade ${service.title.toLowerCase()} built for scale, security, and measurable outcomes.`}
+            </p>
+
+            <RichTextContent
+              content={service.shortDescription}
+              className="max-w-xl text-sm font-medium leading-relaxed text-slate-300 md:text-base"
+            />
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button
+                onClick={scrollToSection('offerings')}
+                className="h-11 rounded-xl bg-emerald-600 px-5 font-bold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500"
+              >
+                View Offerings
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button
+                onClick={scrollToSection('contact')}
+                variant="outline"
+                className="h-11 rounded-xl border-white/15 bg-white/5 font-bold text-white hover:bg-white/10"
+              >
+                Book Consultation
+              </Button>
             </div>
+          </div>
 
-            {/* Bottom Half: Stats, Buttons, and Partner Logos */}
-            <div className="space-y-6 pt-6 border-t border-slate-200/60">
-              
-              {/* Stats Cards */}
-              {service.stats && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {service.stats.map((stat, idx) => {
-                    const IconComponent = getStatIcon(stat.iconType);
-                    const theme = getThemeClasses(stat.colorTheme);
-                    return (
-                      <div key={idx} className="flex items-center gap-2.5 p-3 bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                        <div className={`h-8 w-8 rounded-full ${theme.iconBg} flex items-center justify-center shrink-0`}>
-                          <IconComponent className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-slate-900 leading-none mb-0.5">{stat.value}</p>
-                          <p className="text-[10px] text-slate-500 leading-tight font-semibold">{stat.label}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-
-
+          <div className="flex items-center justify-center lg:col-span-5">
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-3xl bg-emerald-500/10 blur-2xl" />
+              <img
+                src={heroImage}
+                alt={service.title}
+                className="relative z-10 w-full max-w-sm object-contain drop-shadow-2xl md:max-w-md"
+              />
             </div>
           </div>
         </div>
+
+        {service.stats && service.stats.length > 0 && (
+          <div className="mt-12 grid grid-cols-2 gap-3 border-t border-white/10 pt-10 sm:grid-cols-4">
+            {service.stats.map((stat, idx) => {
+              const IconComponent = getStatIcon(stat.iconType);
+              const theme = getThemeClasses(stat.colorTheme);
+              return (
+                <div
+                  key={idx}
+                  className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm transition-colors hover:bg-white/[0.08]"
+                >
+                  <div
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border ${theme}`}
+                  >
+                    <IconComponent className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold leading-none text-white">{stat.value}</p>
+                    <p className="mt-1 text-[10px] font-semibold leading-tight text-slate-400">
+                      {stat.label}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {service.benefits.length > 0 && (
+          <div className="mt-8 hidden border-t border-white/10 pt-8 md:block">
+            <p className="mb-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
+              Key Highlights
+            </p>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {service.benefits.slice(0, 4).map((highlight, idx) => (
+                <div key={idx} className="flex items-start gap-2.5 text-xs font-medium text-slate-300">
+                  <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10">
+                    <Check className="h-2.5 w-2.5 text-emerald-400" />
+                  </div>
+                  <span>{highlight}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
 };
+
+export default ServiceHero;

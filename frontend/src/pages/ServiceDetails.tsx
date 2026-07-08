@@ -16,10 +16,9 @@ import { ServiceHero } from '@/components/services/ServiceHero';
 import { ServiceSectionNavigation } from '@/components/services/ServiceSectionNavigation';
 import { OverviewSection } from '@/components/services/OverviewSection';
 import { SolutionsSection } from '@/components/services/SolutionsSection';
+import { BenefitsSection } from '@/components/services/BenefitsSection';
 import { ProcessSection } from '@/components/services/ProcessSection';
 import { TechnologySection } from '@/components/services/TechnologySection';
-import { IndustriesSection } from '@/components/services/IndustriesSection';
-import { CaseStudiesSection } from '@/components/services/CaseStudiesSection';
 import { FAQSection } from '@/components/services/FAQSection';
 import { ServiceSidebar } from '@/components/services/ServiceSidebar';
 import { CTASection } from '@/components/services/CTASection';
@@ -66,8 +65,8 @@ const ServiceDetails = () => {
       <>
         {seoBlock}
         <Navbar />
-        <main className="min-h-screen flex items-center justify-center bg-slate-50 pt-20">
-          <div className="text-slate-500 font-display">Loading service details...</div>
+        <main className="flex min-h-screen items-center justify-center bg-slate-50 pt-20">
+          <div className="font-display text-slate-500">Loading service details...</div>
         </main>
         <Footer />
       </>
@@ -79,13 +78,13 @@ const ServiceDetails = () => {
       <>
         {seoBlock}
         <Navbar />
-        <main className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4 pt-20">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm text-center">
-            <h1 className="text-2xl md:text-3xl font-bold font-display text-slate-900 tracking-tight mb-3">
+        <main className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 pt-20">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm md:p-10">
+            <h1 className="mb-3 font-display text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
               Service Not Found
             </h1>
-            <p className="text-slate-600 text-sm leading-relaxed mb-8">
-              We couldn't find the service you were looking for. It may have been moved or renamed.
+            <p className="mb-8 text-sm leading-relaxed text-slate-600">
+              We couldn&apos;t find the service you were looking for. It may have been moved or renamed.
             </p>
             <Button asChild className="w-full bg-primary text-white hover:bg-primary/95">
               <Link to="/services">
@@ -101,6 +100,8 @@ const ServiceDetails = () => {
   }
 
   const showFaq = (service.faqs?.length ?? 0) > 0;
+  const showBenefits =
+    (service.benefits?.length ?? 0) > 0 || (service.whyChooseUs?.length ?? 0) > 0;
 
   return (
     <>
@@ -108,17 +109,16 @@ const ServiceDetails = () => {
       <Navbar />
       <main className="min-h-screen bg-slate-50 pt-0">
         <ServiceHero service={service} />
-        <ServiceSectionNavigation showFaq={showFaq} />
+        <ServiceSectionNavigation showFaq={showFaq} showBenefits={showBenefits} />
 
-        <section className="container mx-auto px-4 max-w-6xl mt-8 pb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
+        <section className="container mx-auto max-w-6xl px-4 pb-16 pt-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div className="space-y-8 lg:col-span-2">
               <OverviewSection service={service} />
               <SolutionsSection service={service} />
+              <BenefitsSection service={service} />
               <ProcessSection service={service} />
               <TechnologySection service={service} />
-              <IndustriesSection service={service} />
-              <CaseStudiesSection service={service} />
               {showFaq && <FAQSection service={service} />}
             </div>
 
@@ -128,11 +128,11 @@ const ServiceDetails = () => {
           </div>
 
           <div className="mt-16">
-            <CTASection service={service} cmsConfig={cmsConfig} />
+            <RelatedServicesSection service={service} />
           </div>
 
           <div className="mt-16">
-            <RelatedServicesSection service={service} />
+            <CTASection service={service} cmsConfig={cmsConfig} />
           </div>
         </section>
 

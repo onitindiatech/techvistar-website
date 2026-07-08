@@ -99,7 +99,7 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
         <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-emerald-600" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 font-display">Other Services</h2>
+        <h2 className="font-display text-2xl font-bold text-slate-900">Related Services</h2>
       </div>
 
       {/* Grid of related cards */}

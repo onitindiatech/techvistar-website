@@ -1,42 +1,23 @@
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, LayoutGrid, Sparkles, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
-import { decorateService, getServiceCardImage } from '@/data/services';
+import { decorateService, Service } from '@/data/services';
 import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
 import { mergeServicesCmsConfig } from '@/types/servicesCms';
-import { SpotlightCard } from '@/components/animations/SpotlightCard';
+import { ServiceCard } from '@/components/services/ServiceCard';
+
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
-const listContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease },
-  },
-};
-
-const ctaVariants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease, delay: 0.2 },
-  },
-};
+function isFeaturedService(service: Service): boolean {
+  return service.featured === true || (service.featured as unknown) === 'true';
+}
 
 export const ServicesSection = () => {
   const { ref, isInView } = useAnimatedSection();
@@ -56,20 +37,42 @@ export const ServicesSection = () => {
     refetchOnMount: 'always',
   });
 
-  const activeServices = [...(apiServices || []).map(decorateService)].sort((a, b) => a.order - b.order);
+  const activeServices = useMemo(
+    () => [...(apiServices || []).map(decorateService)].sort((a, b) => a.order - b.order),
+    [apiServices]
+  );
 
-  // Filter active services by featured flag
-  const featuredServices = activeServices.filter((s: any) => s.featured === true || s.featured === 'true');
+  const featuredServices = useMemo(
+    () => activeServices.filter(isFeaturedService).slice(0, 2),
+    [activeServices]
+  );
 
-  // Show up to 6 featured services, falling back to first 6 active services if none exist
-  const services = featuredServices.length > 0 
-    ? featuredServices.slice(0, 6) 
-    : activeServices.slice(0, 6);
+  const remainingServices = useMemo(
+    () => activeServices.filter((s) => !isFeaturedService(s)),
+    [activeServices]
+  );
+
+  const showFeaturedSection = featuredServices.length > 0;
+  const gridServices = showFeaturedSection ? remainingServices : activeServices;
 
   return (
-    <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative pt-8 pb-4 md:pt-12 md:pb-6">
-      {/* Background decoration */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -z-10 w-[500px] h-[500px] rounded-full bg-emerald-500/[0.02] blur-[120px] pointer-events-none" />
+    <SiteSection
+      ref={ref}
+      id="services"
+      variant="muted"
+      aria-labelledby="services-heading"
+      className="relative overflow-hidden py-20 md:py-28"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            'linear-gradient(to right, rgba(16,185,129,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.04) 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+        }}
+        aria-hidden
+      />
+      <div className="pointer-events-none absolute top-1/4 left-1/2 -z-10 h-[480px] w-[480px] -translate-x-1/2 rounded-full bg-emerald-500/[0.04] blur-[100px]" />
 
       <div className="container-custom relative z-10">
         <SectionHeader
@@ -79,71 +82,96 @@ export const ServicesSection = () => {
           description={sectionCopy.description}
           isInView={isInView}
           headingId="services-heading"
+          className="mb-14 md:mb-20"
         />
 
-        {/* Compact Grid Layout */}
-        <motion.div
-          variants={listContainer}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="mx-auto max-w-7xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-5 mt-8"
-        >
-          {services.map((service) => {
-            return (
-              <motion.div key={service.title} variants={itemVariants}>
-                <Link to={`/services/${service.slug}`} className="block h-full">
-                  <SpotlightCard
-                    className="group relative flex flex-col items-center justify-between p-4 md:p-5 rounded-2xl border border-slate-200/80 bg-white/95 shadow-sm hover:shadow-[0_15px_30px_rgba(15,23,42,0.05)] hover:border-emerald-500/20 transition-all duration-300 hover:-translate-y-1 text-center h-full gap-3"
-                    spotlightColor="rgba(34, 197, 94, 0.03)"
-                    borderColor="rgba(34, 197, 94, 0.18)"
-                  >
-                    <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-slate-50 ring-1 ring-slate-100 transition-all duration-500 group-hover:scale-105 group-hover:ring-emerald-500/20">
-                      <img
-                        src={getServiceCardImage(service)}
-                        alt={service.title}
-                        className="h-full w-full object-contain p-2 sm:p-2.5 transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                    
-                    <h3 className="font-display text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors leading-tight">
-                      {service.title}
-                    </h3>
-                    
-                    <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors mt-1">
-                      Explore
-                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.5} />
-                    </span>
-                  </SpotlightCard>
-                </Link>
-              </motion.div>
-            );
-          })}
-          {/* View All Services Card */}
-          <motion.div variants={itemVariants}>
-            <Link to="/services" className="block h-full">
-              <SpotlightCard
-                className="group relative flex flex-col items-center justify-between p-4 md:p-5 rounded-2xl border border-slate-200/80 bg-slate-50/60 shadow-sm hover:shadow-[0_15px_30px_rgba(15,23,42,0.05)] hover:border-emerald-500/20 transition-all duration-300 hover:-translate-y-1 text-center h-full gap-3"
-                spotlightColor="rgba(34, 197, 94, 0.03)"
-                borderColor="rgba(34, 197, 94, 0.18)"
-              >
-                <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl overflow-hidden border border-emerald-100 shadow-sm bg-emerald-50 ring-1 ring-emerald-100 transition-all duration-500 group-hover:scale-105 group-hover:ring-emerald-500/20">
-                  <ArrowRight className="h-6 w-6 text-emerald-600 transition-transform duration-500 group-hover:translate-x-1" />
-                </div>
-                
-                <h3 className="font-display text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors leading-tight">
-                  {sectionCopy.viewAllTitle}
-                </h3>
-                
-                <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors mt-1">
-                  {sectionCopy.viewAllLinkText}
-                  <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.5} />
-                </span>
-              </SpotlightCard>
-            </Link>
+        {showFeaturedSection && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.55, ease, delay: 0.1 }}
+            className="mx-auto mb-14 max-w-6xl md:mb-16"
+          >
+            <div className="mb-5 flex items-center gap-2 text-emerald-600">
+              <Star className="h-3.5 w-3.5 fill-emerald-500 text-emerald-500" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Featured Services</span>
+            </div>
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              {featuredServices.map((service, index) => (
+                <ServiceCard
+                  key={service.id}
+                  service={service}
+                  variant="homepage-featured"
+                  featured
+                  index={index}
+                />
+              ))}
+            </div>
           </motion.div>
+        )}
+
+        {gridServices.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.55, ease, delay: 0.18 }}
+            className="mx-auto max-w-6xl"
+          >
+            {showFeaturedSection && (
+              <div className="mb-5 flex items-center gap-2 text-slate-500">
+                <LayoutGrid className="h-3.5 w-3.5" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em]">All Services</span>
+              </div>
+            )}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {gridServices.map((service, index) => (
+                <ServiceCard
+                  key={service.id}
+                  service={service}
+                  variant="homepage-compact"
+                  index={index}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, ease, delay: 0.25 }}
+          className="mx-auto mt-14 max-w-6xl md:mt-16"
+        >
+          <div className="flex flex-col items-start justify-between gap-6 rounded-[24px] border border-slate-200/80 bg-gradient-to-r from-slate-50 via-white to-emerald-50/40 p-6 shadow-[0_8px_32px_-12px_rgba(15,23,42,0.06)] md:flex-row md:items-center md:p-8">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600">
+                <Sparkles className="h-4 w-4" />
+              </div>
+              <div>
+                <h3 className="font-display text-lg font-bold text-slate-900 md:text-xl">
+                  Need a custom solution?
+                </h3>
+                <p className="mt-1 max-w-md text-sm font-medium leading-relaxed text-slate-500">
+                  We build scalable software tailored to your business.
+                </p>
+              </div>
+            </div>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-12 shrink-0 rounded-full border-emerald-500/40 bg-white px-7 font-bold text-emerald-700 shadow-sm transition-all hover:border-emerald-500 hover:bg-emerald-50/50"
+            >
+              <Link to="/services" className="group inline-flex items-center gap-2">
+                {sectionCopy.viewAllTitle}
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
         </motion.div>
       </div>
     </SiteSection>
   );
 };
+
 export default ServicesSection;

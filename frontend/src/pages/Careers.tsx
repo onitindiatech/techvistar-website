@@ -303,8 +303,8 @@ const Careers = () => {
         </section>
 
         {/* 3. Why Join TechVistar (Exactly matching reference card design) */}
-        <section className="py-24 bg-slate-50 border-b border-slate-100">
-          <div className="container mx-auto px-6 max-w-7xl space-y-16">
+        <section className="py-12 md:py-16 bg-slate-50 border-b border-slate-100">
+          <div className="container mx-auto px-6 max-w-7xl space-y-10 md:space-y-12">
             <div className="text-center max-w-2xl mx-auto space-y-2">
               <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Why Join TechVistar?</h2>
               <p className="text-slate-500 text-xs sm:text-sm font-semibold">We empower people to do their best work and grow together.</p>

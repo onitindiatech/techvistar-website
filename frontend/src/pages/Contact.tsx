@@ -373,82 +373,145 @@ export const Contact = () => {
             <h3 className="text-lg font-bold font-display text-slate-900">Our Offices</h3>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 gap-6">
             {/* Noida office */}
             <motion.div 
-              whileHover={{ y: -3 }}
-              className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-md text-slate-900 flex flex-col justify-between"
+              whileHover={{ y: -8, scale: 1.01 }}
+              className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
             >
-              <div className="h-44 w-full bg-emerald-50 border-b border-slate-100 relative flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-100 to-transparent z-10 opacity-30" />
-                <svg className="w-full h-full text-emerald-600/10 p-4" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 90H90M20 90V20H45V90M55 90V40H80V90" stroke="currentColor" strokeWidth="2" />
-                </svg>
-                <div className="absolute bottom-3 left-4 z-20">
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">HQ Location</span>
+              {/* Top Graphic Section */}
+              <div className="h-32 w-full bg-slate-50 relative flex items-center justify-center overflow-hidden border-b border-slate-100">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-emerald-400/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-slate-900">
+                  <svg width="100%" height="100%">
+                    <pattern id="grid-pattern-1" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="1" />
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid-pattern-1)" />
+                  </svg>
+                </div>
+                
+                <div className="relative z-10 w-16 h-16 bg-white border border-slate-200/80 rounded-2xl flex items-center justify-center shadow-sm group-hover:border-emerald-300 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-500">
+                  <Building2 className="w-7 h-7 text-slate-400 group-hover:text-emerald-500 transition-colors duration-500" />
                 </div>
               </div>
-              <div className="p-5 space-y-3">
-                <div className="font-extrabold text-slate-900 text-base">India - Noida (HQ)</div>
-                <p className="text-xs text-slate-500 font-bold leading-relaxed">
-                  A-75, Sector 4, Noida, UP 201301, India
-                </p>
-                <a href="https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:text-emerald-700 transition-colors">
-                  <span>View on map</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+
+              {/* Content Section */}
+              <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-emerald-600 transition-colors duration-300">
+                    India - Noida
+                  </div>
+                  <span className="shrink-0 text-[9px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-widest border border-emerald-200/60">
+                    HQ
+                  </span>
+                </div>
+                <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
+                  <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-emerald-400 transition-colors duration-300" />
+                  <p className="text-sm font-semibold leading-relaxed">
+                    A-75, Sector 4, Noida, UP 201301, India
+                  </p>
+                </div>
+                <div className="pt-2">
+                  <a href="https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 transition-colors group/link">
+                    View on map
+                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />
+                  </a>
+                </div>
               </div>
             </motion.div>
 
             {/* Dubai office */}
             <motion.div 
-              whileHover={{ y: -3 }}
-              className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-md text-slate-900 flex flex-col justify-between"
+              whileHover={{ y: -8, scale: 1.01 }}
+              className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
             >
-              <div className="h-44 w-full bg-emerald-50 border-b border-slate-100 relative flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-100 to-transparent z-10 opacity-30" />
-                <svg className="w-full h-full text-emerald-600/10 p-4" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M50 10L35 90H65L50 10Z" stroke="currentColor" strokeWidth="2" />
-                </svg>
-                <div className="absolute bottom-3 left-4 z-20">
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Regional Office</span>
+              {/* Top Graphic Section */}
+              <div className="h-32 w-full bg-slate-50 relative flex items-center justify-center overflow-hidden border-b border-slate-100">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-emerald-400/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-slate-900">
+                  <svg width="100%" height="100%">
+                    <pattern id="grid-pattern-2" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="1" />
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid-pattern-2)" />
+                  </svg>
+                </div>
+                
+                <div className="relative z-10 w-16 h-16 bg-white border border-slate-200/80 rounded-2xl flex items-center justify-center shadow-sm group-hover:border-emerald-300 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-500">
+                  <Building2 className="w-7 h-7 text-slate-400 group-hover:text-emerald-500 transition-colors duration-500" />
                 </div>
               </div>
-              <div className="p-5 space-y-3">
-                <div className="font-extrabold text-slate-900 text-base">UAE - Dubai</div>
-                <p className="text-xs text-slate-500 font-bold leading-relaxed">
-                  Business Bay, Dubai, UAE
-                </p>
-                <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:text-emerald-700 transition-colors">
-                  <span>View on map</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+
+              {/* Content Section */}
+              <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-emerald-600 transition-colors duration-300">
+                    UAE - Dubai
+                  </div>
+                  <span className="shrink-0 text-[9px] font-black text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full uppercase tracking-widest border border-slate-200">
+                    Regional
+                  </span>
+                </div>
+                <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
+                  <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-emerald-400 transition-colors duration-300" />
+                  <p className="text-sm font-semibold leading-relaxed">
+                    Business Bay, Dubai, UAE
+                  </p>
+                </div>
+                <div className="pt-2">
+                  <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 transition-colors group/link">
+                    View on map
+                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />
+                  </a>
+                </div>
               </div>
             </motion.div>
 
             {/* USA office */}
             <motion.div 
-              whileHover={{ y: -3 }}
-              className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-md text-slate-900 flex flex-col justify-between"
+              whileHover={{ y: -8, scale: 1.01 }}
+              className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
             >
-              <div className="h-44 w-full bg-emerald-50 border-b border-slate-100 relative flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-100 to-transparent z-10 opacity-30" />
-                <svg className="w-full h-full text-emerald-600/10 p-4" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="35" y="15" width="30" height="75" stroke="currentColor" strokeWidth="2" />
-                </svg>
-                <div className="absolute bottom-3 left-4 z-20">
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Regional Office</span>
+              {/* Top Graphic Section */}
+              <div className="h-32 w-full bg-slate-50 relative flex items-center justify-center overflow-hidden border-b border-slate-100">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-emerald-400/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-slate-900">
+                  <svg width="100%" height="100%">
+                    <pattern id="grid-pattern-3" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="1" />
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid-pattern-3)" />
+                  </svg>
+                </div>
+                
+                <div className="relative z-10 w-16 h-16 bg-white border border-slate-200/80 rounded-2xl flex items-center justify-center shadow-sm group-hover:border-emerald-300 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-500">
+                  <Building2 className="w-7 h-7 text-slate-400 group-hover:text-emerald-500 transition-colors duration-500" />
                 </div>
               </div>
-              <div className="p-5 space-y-3">
-                <div className="font-extrabold text-slate-900 text-base">USA - New York</div>
-                <p className="text-xs text-slate-500 font-bold leading-relaxed">
-                  Manhattan, New York, NY 10001, USA
-                </p>
-                <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:text-emerald-700 transition-colors">
-                  <span>View on map</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+
+              {/* Content Section */}
+              <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-emerald-600 transition-colors duration-300">
+                    USA - New York
+                  </div>
+                  <span className="shrink-0 text-[9px] font-black text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full uppercase tracking-widest border border-slate-200">
+                    Regional
+                  </span>
+                </div>
+                <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
+                  <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-emerald-400 transition-colors duration-300" />
+                  <p className="text-sm font-semibold leading-relaxed">
+                    Manhattan, New York, NY 10001, USA
+                  </p>
+                </div>
+                <div className="pt-2">
+                  <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 transition-colors group/link">
+                    View on map
+                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />
+                  </a>
+                </div>
               </div>
             </motion.div>
           </div>

@@ -167,6 +167,36 @@ const About = () => {
             </div>
           </section>
 
+          {/* Industries We Serve */}
+          <section className={`${sectionPad} border-b border-slate-100`} aria-labelledby="industries-heading">
+            <h2 id="industries-heading" className="font-display text-lg font-bold tracking-tight text-slate-900 sm:text-xl">
+              Industries We Serve
+            </h2>
+            <p className="mt-2 text-sm leading-snug text-slate-600">Deploying tailored digital capabilities optimized for industry regulations.</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+              {[
+                { name: 'Healthcare', desc: 'HIPAA-compliant telemedicine platforms and operational databases.' },
+                { name: 'Finance', desc: 'High-security transaction systems and digital banking analytics.' },
+                { name: 'Education', desc: 'Custom LMS architectures and student tracking dashboards.' },
+                { name: 'Logistics', desc: 'Route optimization solvers, capacity scheduling, and GPS trackers.' },
+                { name: 'Real Estate', desc: 'Multi-tenant property portals and CRM pipelines.' },
+                { name: 'Manufacturing', desc: 'IoT sensor telemetry platforms and predictive maintenance schedulers.' },
+                { name: 'Retail', desc: 'Scalable headless eCommerce backends and custom checkouts.' },
+                { name: 'Government', desc: 'Secure civic portal databases and administrative dashboards.' }
+              ].map((ind) => (
+                <motion.div
+                  key={ind.name}
+                  whileHover={{ y: -4, scale: 1.03, boxShadow: '0 10px 25px -5px rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.3)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="bg-emerald-50/30 border border-emerald-100/40 rounded-xl p-4 shadow-sm cursor-pointer group/ind"
+                >
+                  <div className="font-bold text-slate-900 text-sm group-hover/ind:text-emerald-600 transition-colors">{ind.name}</div>
+                  <p className="text-[11px] text-slate-500 leading-relaxed mt-1">{ind.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
           {/* Mission & vision */}
           <section className={`${sectionPad} border-b border-slate-100`} aria-labelledby="mission-heading">
             <h2 id="mission-heading" className="font-display text-lg font-bold tracking-tight text-slate-900 sm:text-xl">
@@ -274,6 +304,7 @@ const About = () => {
           </section>
         </div>
       </div>
+
 
       <Footer />
     </main>

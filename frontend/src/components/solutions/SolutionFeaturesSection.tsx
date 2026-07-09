@@ -42,37 +42,40 @@ export const SolutionFeaturesSection = ({ solution }: SectionProps) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+      <div className="flex flex-col gap-4 relative z-10">
         {solution.features.map((feature, idx) => {
           const FeatureIcon = feature.icon;
           const bgGradient = gradientMapping[idx % gradientMapping.length];
           
           return (
-            <div key={idx} className="group flex flex-col justify-between p-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(16,185,129,0.12)] transition-all duration-300 h-full">
-              <div>
-                {/* Header: Glass Icon Wrapper and Label */}
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <div className="icon-btn pointer-events-none scale-50 origin-top-left -mb-6 -mr-4">
-                    <span className="icon-btn__back" style={{ background: bgGradient }}></span>
-                    <span className="icon-btn__front">
-                      <span className="icon-btn__icon">
-                        <FeatureIcon className="w-6 h-6 text-white" />
-                      </span>
+            <div key={idx} className="group flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(16,185,129,0.12)] transition-all duration-300">
+              
+              {/* Icon Container with fixed width/height for the scaled element */}
+              <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 relative">
+                <div className="icon-btn pointer-events-none scale-[0.4] sm:scale-50 origin-top-left absolute top-0 left-0">
+                  <span className="icon-btn__back" style={{ background: bgGradient }}></span>
+                  <span className="icon-btn__front">
+                    <span className="icon-btn__icon">
+                      <FeatureIcon className="w-6 h-6 text-white" />
                     </span>
-                  </div>
-                  <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    Explore
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                   </span>
                 </div>
-
-                <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-emerald-700 transition-colors font-display">
+              </div>
+              
+              <div className="flex-1">
+                <h3 className="text-base font-bold text-slate-900 mb-1 group-hover:text-emerald-700 transition-colors font-display">
                   {feature.title}
                 </h3>
-                
-                <p className="text-sm text-slate-500 leading-relaxed mb-2">
+                <p className="text-sm text-slate-500 leading-relaxed">
                   {feature.description}
                 </p>
+              </div>
+              
+              <div className="hidden sm:block shrink-0 pl-4">
+                <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
+                  Explore
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
               </div>
             </div>
           );

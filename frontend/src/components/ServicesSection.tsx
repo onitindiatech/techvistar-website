@@ -58,13 +58,8 @@ export const ServicesSection = () => {
 
   const activeServices = [...(apiServices || []).map(decorateService)].sort((a, b) => a.order - b.order);
 
-  // Filter active services by featured flag
-  const featuredServices = activeServices.filter((s: any) => s.featured === true || s.featured === 'true');
-
-  // Show up to 6 featured services, falling back to first 6 active services if none exist
-  const services = featuredServices.length > 0 
-    ? featuredServices.slice(0, 6) 
-    : activeServices.slice(0, 6);
+  // Show first 11 active services regardless of featured flag
+  const services = activeServices.slice(0, 11);
 
   return (
     <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative pt-8 pb-4 md:pt-12 md:pb-6">
@@ -86,7 +81,7 @@ export const ServicesSection = () => {
           variants={listContainer}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="mx-auto max-w-7xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-5 mt-8"
+          className="mx-auto max-w-7xl grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 gap-4 md:gap-5 mt-8"
         >
           {services.map((service) => {
             return (

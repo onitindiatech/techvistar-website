@@ -730,7 +730,10 @@ const Portfolio = () => {
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div 
+          className="grid w-full gap-6"
+          style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))' }}
+        >
           {[...Array(6)].map((_, idx) => (
             <div key={idx} className="bg-white rounded-2xl border border-slate-200/60 p-6 animate-pulse h-[200px]">
               <div className="h-6 bg-slate-200 rounded w-3/4 mb-3" />
@@ -746,7 +749,10 @@ const Portfolio = () => {
         </div>
       ) : projects.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div 
+            className="grid w-full gap-6"
+            style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))' }}
+          >
             {projects.map((item: any) => (
               <div key={item._id} className="bg-white rounded-2xl border border-slate-200/60 p-6 flex flex-col justify-between hover:shadow-lg transition-all group relative">
                 <input

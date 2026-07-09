@@ -339,7 +339,7 @@ export const TechnologySection = ({ service }: SectionProps) => {
   };
 
   return (
-    <section id="technology" className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 scroll-mt-24 shadow-sm w-full overflow-hidden">
+    <section id="technology" className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 scroll-mt-24 shadow-sm w-full overflow-hidden h-fit">
       <h2 className="text-xl font-bold text-slate-900 mb-4 font-display">Technology Stack</h2>
       <p className="text-xs text-slate-500 mb-4">
         Our core execution stacks and tools mapped to this service dynamic:

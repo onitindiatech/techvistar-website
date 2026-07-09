@@ -1,16 +1,26 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveProjects } from '@/services/portfolio.service';
 import { decorateProject } from '@/data/projects';
 import { useProjectFilters } from '@/hooks/useProjectFilters';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { TechStackSection } from '@/components/TechStackSection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import AutoScroll from 'embla-carousel-auto-scroll';
+import { HoverCard } from '@/components/animations/HoverCard';
+import { useMemo } from 'react';
 import { 
-  Search, ArrowRight, Star, Briefcase, Building2, Smile, Award
+  Search, ArrowRight, ArrowUpRight, ExternalLink, Github, Star, Briefcase, Building2, Smile, Award
 } from 'lucide-react';
 import workBg from '../assets/work-bg.png';
 import TextType from '@/components/ui/TextType';
@@ -149,7 +159,23 @@ export const Work = () => {
     { label: 'Years Experience', val: '5+', icon: <Award className="w-5 h-5 text-emerald-600" /> }
   ];
 
-
+  const reduceMotion = useReducedMotion();
+  const autoScrollPlugins = useMemo(
+    () =>
+      reduceMotion
+        ? []
+        : [
+            AutoScroll({
+              speed: 0.5,
+              startDelay: 400,
+              playOnInit: true,
+              stopOnInteraction: false,
+              stopOnMouseEnter: false,
+              stopOnFocusIn: false,
+            }),
+          ],
+    [reduceMotion]
+  );
 
   return (
     <>
@@ -221,7 +247,7 @@ export const Work = () => {
           </div>
         </section>
 
-        {/* SECTION 2 — RECENT WORK / FEATURED PROJECTS */}
+        {/* SECTION 2 — RECENT WORK / FEATURED PROJECTS CAROUSEL */}
         <section className="container-custom max-w-7xl mx-auto px-6 pt-16 md:pt-20 pb-20">
           <div className="text-center space-y-2 mb-12">
             <span className="text-xs font-extrabold text-emerald-600 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
@@ -231,116 +257,116 @@ export const Work = () => {
             <p className="text-sm text-slate-500 font-semibold">Innovative solutions that drive real business impact</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                whileHover={{ y: -6 }}
-                className="bg-white border border-slate-200/60 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.15)] transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between group text-slate-900"
-              >
-                <div className="space-y-4">
-                  {/* Category Badge & Cover image */}
-                  <div className="h-44 overflow-hidden bg-slate-50 border-b border-slate-100 flex items-center justify-center relative">
-                    <img 
-                      src={project.thumbnail} 
-                      alt={project.title} 
-                      className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-103"
-                    />
-                    <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-bold uppercase tracking-wider z-10 shadow-md">
-                      {project.category}
-                    </span>
-                  </div>
+          <div className="relative">
+            <Carousel
+              opts={{ align: 'start', loop: true }}
+              plugins={autoScrollPlugins}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-4" role="list">
+                {projectsData.map((project, index) => (
+                  <CarouselItem
+                    key={project.id}
+                    className="pl-4 basis-full md:basis-[48%] lg:basis-[31%]"
+                    role="listitem"
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: index * 0.05 }}
+                      className="h-full transform-gpu"
+                    >
+                      <HoverCard
+                        depth={6}
+                        scale={1.01}
+                        className="h-full flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white/90 backdrop-blur-sm shadow-[0_6px_20px_rgba(15,23,42,0.02)] transition-all duration-300 transform-gpu"
+                      >
+                        {/* Image Container */}
+                        <Link to={`/work/${project.slug}`} className="relative block shrink-0 overflow-hidden bg-slate-100 border-b border-slate-200/60 w-full h-48">
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-slate-900/10 to-transparent opacity-60 z-10 pointer-events-none" />
+                          <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center pointer-events-none">
+                            <span className="px-3.5 py-1.5 rounded-full bg-white/95 text-slate-900 text-[0.6875rem] font-bold shadow-md backdrop-blur-sm flex items-center gap-1.5">
+                              View Case Study <ArrowUpRight className="w-3.5 h-3.5" />
+                            </span>
+                          </div>
+                          {project.category && (
+                            <Badge
+                              variant="secondary"
+                              className="absolute top-3 left-3 z-20 text-[0.625rem] font-bold uppercase tracking-wider bg-white/90 text-slate-800 border-slate-200/40 backdrop-blur-md border shadow-sm"
+                            >
+                              {project.category}
+                            </Badge>
+                          )}
+                          <img
+                            src={project.thumbnail}
+                            alt={project.title}
+                            className="h-full w-full object-contain p-4 bg-white transition-transform duration-500 group-hover:scale-102"
+                            loading="lazy"
+                          />
+                        </Link>
 
-                  <div className="p-5 space-y-2.5">
-                    <div className="text-sm font-bold text-slate-900 group-hover:text-emerald-600 transition-colors font-display line-clamp-1 leading-snug">
-                      {project.title}
-                    </div>
-                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
-                      {project.description}
-                    </p>
-                  </div>
-                </div>
+                        {/* Text content */}
+                        <div className="flex flex-col flex-grow p-6">
+                          <div className="space-y-2 pb-2 flex flex-col flex-grow">
+                            <h3 className="font-bold font-display text-slate-950 leading-snug hover:text-primary transition-colors text-lg line-clamp-2 min-h-[50px]">
+                              <Link to={`/work/${project.slug}`}>{project.title}</Link>
+                            </h3>
+                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
+                              {project.description}
+                            </p>
+                          </div>
 
-                <div className="px-5 pb-5 pt-3 border-t border-slate-100/60 flex items-center justify-between">
-                  <Link to={`/work/${project.slug}`} className="text-xs font-bold text-emerald-600 flex items-center gap-1 hover:text-emerald-700 transition-colors">
-                    View Case Study
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 duration-300" />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
+                          <div className="flex flex-col mt-4">
+                            <div className="flex flex-wrap gap-1.5 mb-5">
+                              {project.technologies.slice(0, 3).map((tech) => (
+                                <span key={tech} className="px-2.5 py-0.5 rounded-md bg-slate-50 text-slate-700 text-[0.6875rem] font-medium border border-slate-200/60">
+                                  {tech}
+                                </span>
+                              ))}
+                              {project.technologies.length > 3 && (
+                                <span className="px-2 py-0.5 rounded-md bg-slate-50 text-slate-500 text-[0.6875rem] font-medium border border-slate-200/60">
+                                  +{project.technologies.length - 3}
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="flex gap-3 mt-auto">
+                              <a
+                                href={project.liveUrl !== '#' ? project.liveUrl : undefined}
+                                target="_blank" rel="noopener noreferrer"
+                                className={`group/btn flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border text-[0.6875rem] font-bold uppercase transition-all duration-200 ${
+                                  project.liveUrl === '#' ? 'border-slate-200 text-slate-400 cursor-not-allowed opacity-60' : 'border-slate-200 text-slate-700 hover:border-primary/30 hover:bg-primary/5 hover:text-primary'
+                                }`}
+                                onClick={(e) => project.liveUrl === '#' && e.preventDefault()}
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" /> Demo
+                              </a>
+                              <a
+                                href={project.githubUrl !== '#' ? project.githubUrl : undefined}
+                                target="_blank" rel="noopener noreferrer"
+                                className={`group/btn flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border text-[0.6875rem] font-bold uppercase transition-all duration-200 ${
+                                  project.githubUrl === '#' ? 'border-slate-200 text-slate-400 cursor-not-allowed opacity-60' : 'border-slate-200 text-slate-700 hover:border-primary/30 hover:bg-primary/5 hover:text-primary'
+                                }`}
+                                onClick={(e) => project.githubUrl === '#' && e.preventDefault()}
+                              >
+                                <Github className="w-3.5 h-3.5" /> Code
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </HoverCard>
+                    </motion.div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="hidden md:block">
+                <CarouselPrevious className="-left-4 border-slate-200/80 bg-white/80 backdrop-blur-md text-slate-700 hover:bg-primary/5 hover:text-primary hover:border-primary/30 shadow-sm" />
+                <CarouselNext className="-right-4 border-slate-200/80 bg-white/80 backdrop-blur-md text-slate-700 hover:bg-primary/5 hover:text-primary hover:border-primary/30 shadow-sm" />
+              </div>
+            </Carousel>
           </div>
         </section>
 
-        {/* SECTION 4 — PROJECT GRID */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-12">
-          {normalProjects.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {normalProjects.map((project) => (
-                <motion.div
-                  key={project.id}
-                  whileHover={{ y: -6 }}
-                  className="bg-white border border-slate-200/60 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.15)] transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between group text-slate-900"
-                >
-                  <div className="space-y-4">
-                    {/* Cover image container */}
-                    <div className="h-48 overflow-hidden bg-white relative border-b border-slate-100 flex items-center justify-center">
-                      <img 
-                        src={project.thumbnail} 
-                        alt={project.title} 
-                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-102"
-                      />
-                      <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-bold uppercase tracking-wider z-10 shadow-md">
-                        {project.industry}
-                      </span>
-                    </div>
-
-                    <div className="p-5 space-y-3">
-                      <div className="text-base font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {project.title}
-                      </div>
-                      <p className="text-xs text-slate-600 font-semibold leading-relaxed line-clamp-3">
-                        {project.description}
-                      </p>
-
-                      {/* Tech Stack Pills */}
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {project.technologies.slice(0, 3).map(tech => (
-                          <span key={tech} className="px-2 py-0.5 rounded bg-slate-50 text-[9px] text-slate-500 font-semibold border border-slate-100">
-                            {tech}
-                          </span>
-                        ))}
-                        {project.technologies.length > 3 && (
-                          <span className="text-[9px] text-slate-400 font-semibold self-center ml-1">
-                            +{project.technologies.length - 3} more
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-5 border-t border-slate-100 flex gap-3">
-                    <Link to={`/work/${project.slug}`} className="flex-1">
-                      <Button className="w-full h-9 bg-[#0F172A] hover:bg-slate-800 text-white font-bold rounded-lg text-xs transition-all shadow-md">
-                        View Project
-                      </Button>
-                    </Link>
-                    <Link to={`/work/${project.slug}`}>
-                      <Button variant="outline" className="h-9 border-slate-200 hover:bg-slate-50 font-bold rounded-lg text-xs text-slate-600 px-3.5">
-                        Case Study
-                      </Button>
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16 bg-white border border-slate-200/60 rounded-2xl max-w-md mx-auto px-6 shadow-sm">
-              <h3 className="text-base font-bold text-slate-700 mb-1">No case studies match.</h3>
-              <p className="text-slate-400 text-xs font-semibold">Try modifying your text search query or filter tags.</p>
-            </div>
-          )}
-        </section>
 
         {/* SECTION 5 — CLIENT SUCCESS */}
         <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
@@ -464,44 +490,6 @@ export const Work = () => {
           </motion.div>
         </section>
 
-        {/* SECTION 7 — TECHNOLOGY STACK (UNTOUCHED) */}
-        <TechStackSection />
-
-        {/* SECTION 8 — INDUSTRIES */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
-          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Industries We Serve</h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-semibold">Deploying tailored digital capabilities optimized for industry regulations.</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { name: 'Healthcare', desc: 'HIPAA-compliant telemedicine platforms and operational databases.' },
-              { name: 'Finance', desc: 'High-security transaction systems and digital banking analytics.' },
-              { name: 'Education', desc: 'Custom LMS architectures and student tracking dashboards.' },
-              { name: 'Logistics', desc: 'Route optimization solvers, capacity scheduling, and GPS trackers.' },
-              { name: 'Real Estate', desc: 'Multi-tenant property portals and CRM pipelines.' },
-              { name: 'Manufacturing', desc: 'IoT sensor telemetry platforms and predictive maintenance schedulers.' },
-              { name: 'Retail', desc: 'Scalable headless eCommerce backends and custom checkouts.' },
-              { name: 'Government', desc: 'Secure civic portal databases and administrative dashboards.' }
-            ].map((ind) => (
-              <motion.div
-                key={ind.name}
-                whileHover={{ 
-                  y: -5, 
-                  scale: 1.04,
-                  boxShadow: '0 10px 25px -5px rgba(16,185,129,0.15)',
-                  borderColor: 'rgba(16,185,129,0.3)'
-                }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="bg-emerald-50/30 border border-emerald-100/40 rounded-2xl p-6 space-y-4 shadow-sm cursor-pointer group/ind"
-              >
-                <div className="font-extrabold text-slate-900 text-sm group-hover/ind:text-emerald-600 transition-colors">{ind.name}</div>
-                <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">{ind.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
 
 
 

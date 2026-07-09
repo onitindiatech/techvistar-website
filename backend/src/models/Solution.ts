@@ -5,6 +5,7 @@
 
 import mongoose, { Schema } from 'mongoose';
 import { BaseDocument } from '@/types/common';
+import { ISeoFields, seoMongooseFields } from '@/utils/seoFields';
 
 export interface ISolutionChallenge {
   title: string;
@@ -51,7 +52,7 @@ export interface ISolutionFAQ {
   a: string;
 }
 
-export interface ISolution extends BaseDocument {
+export interface ISolution extends BaseDocument, ISeoFields {
   title: string;
   slug: string;
   subtitle: string;
@@ -171,6 +172,7 @@ const solutionSchema = new Schema<ISolution>(
       type: Boolean,
       default: false,
     },
+    ...seoMongooseFields,
     isDeleted: {
       type: Boolean,
       default: false,

@@ -11,6 +11,8 @@ import {
   collectJobMediaPublicIds,
   obsoleteJobMediaPublicIds,
   deleteCloudinaryPublicIds,
+  JOB_MEDIA_FIELDS,
+  syncScalarMediaFields,
 } from '@/utils/mediaAsset';
 
 type JobStatus = typeof VALIDATION.JOB_STATUSES[number];
@@ -39,7 +41,8 @@ export class JobService {
       }
     }
 
-    const job = new Job({ ...data, slug });
+    const { payload } = syncScalarMediaFields(null, data as Record<string, unknown>, JOB_MEDIA_FIELDS);
+    const job = new Job({ ...payload, slug });
     await job.save();
 
     logger.info('[JobService] Job created successfully', { id: job._id, slug: job.slug });
@@ -64,10 +67,18 @@ export class JobService {
       throw ApiError.notFound('Job listing not found');
     }
 
-    const job = await Job.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true });
+    const { payload, obsoletePublicIds } = syncScalarMediaFields(
+      previous as unknown as Record<string, unknown>,
+      data as Record<string, unknown>,
+      JOB_MEDIA_FIELDS
+    );
+
+    const job = await Job.findByIdAndUpdate(id, payload, { returnDocument: 'after', runValidators: true });
     if (!job) {
       throw ApiError.notFound('Job listing not found');
     }
+
+    await deleteCloudinaryPublicIds(obsoletePublicIds);
 
     if (typeof data.description === 'string') {
       await deleteCloudinaryPublicIds(

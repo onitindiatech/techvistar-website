@@ -8,7 +8,10 @@ import aiTranslatorImg from '../assets/ai_translator.png';
 import aiTranslatorBatchesImg from '../assets/ai_translator_batches.png';
 import financeImg from '../assets/finance_reporting_analytics.png';
 
-export interface Project {
+import { SeoMetadata } from '@/types/seo';
+import { seoFromApi } from '@/lib/seoResolve';
+
+export interface Project extends SeoMetadata {
   id: number;
   title: string;
   slug: string;
@@ -69,6 +72,7 @@ export function decorateProject(apiProject: any): Project {
     serviceSlugs: apiProject.serviceSlugs || [],
     industry: apiProject.industry || '',
     updatedDate: apiProject.updatedDate || '',
+    ...seoFromApi(apiProject),
   };
 }
 

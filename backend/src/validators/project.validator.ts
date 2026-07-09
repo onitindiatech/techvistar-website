@@ -4,6 +4,7 @@
  */
 
 import { ApiError } from '@/utils/ApiError';
+import { pickSeoForCreate, pickSeoForUpdate } from '@/utils/seoFields';
 
 interface ProjectInput {
   title?: unknown;
@@ -174,8 +175,7 @@ export function validateProjectInput(input: ProjectInput, isUpdate = false): any
     if (input.displayOrder !== undefined && input.displayOrder !== null) {
       updatePayload.displayOrder = parsedDisplayOrder;
     }
-    if (input.seoTitle !== undefined) updatePayload.seoTitle = String(input.seoTitle).trim();
-    if (input.seoDescription !== undefined) updatePayload.seoDescription = String(input.seoDescription).trim();
+    Object.assign(updatePayload, pickSeoForUpdate(input));
     if (input.technologies !== undefined) updatePayload.technologies = parsedTechnologies ?? [];
     if (input.keyFeatures !== undefined) updatePayload.keyFeatures = parsedKeyFeatures ?? [];
     if (input.challenges !== undefined) updatePayload.challenges = parsedChallenges ?? [];
@@ -204,8 +204,7 @@ export function validateProjectInput(input: ProjectInput, isUpdate = false): any
     industry: input.industry ? String(input.industry).trim() : undefined,
     updatedDate: input.updatedDate ? String(input.updatedDate).trim() : undefined,
     displayOrder: parsedDisplayOrder ?? 0,
-    seoTitle: input.seoTitle !== undefined ? String(input.seoTitle).trim() : undefined,
-    seoDescription: input.seoDescription !== undefined ? String(input.seoDescription).trim() : undefined,
+    ...pickSeoForCreate(input),
   };
 
   if (parsedTechnologies) result.technologies = parsedTechnologies;

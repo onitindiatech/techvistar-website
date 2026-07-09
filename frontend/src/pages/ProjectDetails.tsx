@@ -11,6 +11,8 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ExternalLink, Github, Calendar, Briefcase, User, Building2 } from 'lucide-react';
 import { RichTextContent } from '@/components/common/RichTextContent';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 const ProjectDetails = () => {
   const { slug } = useParams<{ slug: string }>();
 
@@ -39,19 +41,26 @@ const ProjectDetails = () => {
   ) : [];
 
 
-  // Set document title if project exists
   useEffect(() => {
-    if (project) {
-      document.title = `${project.title} | TechVistar Portfolio`;
-    } else {
-      document.title = 'Project Not Found | TechVistar';
-    }
     window.scrollTo(0, 0);
-  }, [project]);
+  }, [project?.slug]);
+
+  const seoBlock = (
+    <PageSeo
+      seo={project}
+      defaults={{
+        title: project ? `${project.title} | TechVistar Portfolio` : 'Project Not Found | TechVistar',
+        description: project?.description || '',
+        image: project?.thumbnail,
+        url: project ? buildCanonical(`/work/${project.slug}`) : buildCanonical('/work'),
+      }}
+    />
+  );
 
   if (isDetailLoading) {
     return (
       <>
+        {seoBlock}
         <Navbar />
         <main className="min-h-screen flex items-center justify-center bg-slate-50 pt-20">
           <div className="text-slate-500 font-display">Loading project details...</div>
@@ -64,6 +73,7 @@ const ProjectDetails = () => {
   if (!project) {
     return (
       <>
+        {seoBlock}
         <Navbar />
         <main className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4 pt-20">
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm text-center">
@@ -103,6 +113,7 @@ const ProjectDetails = () => {
 
   return (
     <>
+      {seoBlock}
       <Navbar />
       <main className="min-h-screen bg-slate-50 pt-24 pb-16">
         

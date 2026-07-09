@@ -19,7 +19,10 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { CmsImageField } from "@/components/admin/common/CmsImageField";
 import { RichTextEditor } from "@/components/admin/common/RichTextEditor";
-import { normalizeRichContent } from "@/lib/sanitizeHtml";
+import { normalizeRichContent, stripHtmlToText } from "@/lib/sanitizeHtml";
+import { SeoManager } from "@/components/admin/common/SeoManager";
+import { seoFromItem, seoToPayload } from "@/lib/seoAdmin";
+import { EMPTY_SEO, SeoMetadata } from "@/types/seo";
 
 const DEPARTMENTS = ["Engineering", "Design", "Marketing", "Sales", "Product", "Operations", "Other"] as const;
 const EMPLOYMENT_TYPES = ["Full-time", "Part-time", "Contract", "Internship"] as const;
@@ -82,8 +85,7 @@ const Jobs = () => {
   const [teamImage, setTeamImage] = useState("");
 
   // SEO Tab
-  const [seoTitle, setSeoTitle] = useState("");
-  const [seoDescription, setSeoDescription] = useState("");
+  const [seo, setSeo] = useState<SeoMetadata>(EMPTY_SEO);
 
   // Validation
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -275,7 +277,7 @@ const Jobs = () => {
     return JSON.stringify({
       title, slug, department, location, employmentType, experience, salary, status, displayOrder,
       shortDescription, fullDescription, responsibilitiesText, requirementsText, benefitsText,
-      bannerImage, officeImage, teamImage, seoTitle, seoDescription, skillsList
+      bannerImage, officeImage, teamImage, seo, skillsList
     });
   };
 
@@ -303,8 +305,7 @@ const Jobs = () => {
     setBannerImage("");
     setOfficeImage("");
     setTeamImage("");
-    setSeoTitle("");
-    setSeoDescription("");
+    setSeo(EMPTY_SEO);
     setStatus("draft");
     setDisplayOrder("0");
     
@@ -351,8 +352,7 @@ const Jobs = () => {
     setBenefitsText((item.benefits || []).join("\n"));
     setSkillsList(item.requirements || []);
     
-    setSeoTitle(item.seoTitle || "");
-    setSeoDescription(item.seoDescription || "");
+    setSeo(seoFromItem(item));
     setStatus(item.status || "draft");
     setDisplayOrder(String(item.displayOrder ?? 0));
     
@@ -429,8 +429,7 @@ const Jobs = () => {
       status,
       featured: false,
       bannerImage: bannerImage.trim(), // Keep sync
-      seoTitle,
-      seoDescription
+      ...seoToPayload(seo),
     };
 
     if (editingId) {
@@ -1042,21 +1041,15 @@ const Jobs = () => {
                 {/* Tab 4: SEO */}
                 {activeTab === "seo" && (
                   <div className="space-y-6">
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Meta Title</label>
-                      <Input value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} placeholder="Defaults to Job Title if left blank" className="h-10 rounded-lg border-slate-200" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Meta Description</label>
-                      <textarea
-                        className="w-full min-h-[100px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white leading-relaxed"
-                        value={seoDescription}
-                        onChange={(e) => setSeoDescription(e.target.value)}
-                        placeholder="Brief summary shown on Google search matches..."
-                      />
-                    </div>
-
+                    <SeoManager
+                      value={seo}
+                      onChange={setSeo}
+                      slug={slug}
+                      pathPrefix="/careers/"
+                      defaultTitle={title ? `${title} | TechVistar Careers` : ''}
+                      defaultDescription={stripHtmlToText(description).slice(0, 160)}
+                      defaultImage={bannerImage}
+                    />
                     <div className="space-y-2 border-t border-slate-100 pt-4">
                       <div className="flex items-center justify-between">
                         <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Slug path *</label>

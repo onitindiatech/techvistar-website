@@ -4,6 +4,7 @@
  */
 
 import { ApiError } from '@/utils/ApiError';
+import { pickSeoForCreate } from '@/utils/seoFields';
 
 interface ServiceInput {
   title?: unknown;
@@ -332,8 +333,7 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
     benefits: parsedBenefits,
     displayOrder: parsedDisplayOrder,
     status: (input.status ? String(input.status).trim() : 'draft') as 'draft' | 'active',
-    seoTitle: input.seoTitle ? String(input.seoTitle).trim() : '',
-    seoDescription: input.seoDescription ? String(input.seoDescription).trim() : '',
+    ...pickSeoForCreate(input),
 
     category: input.category ? String(input.category).trim() : '',
     thumbnail: input.thumbnail ? String(input.thumbnail).trim() : '',

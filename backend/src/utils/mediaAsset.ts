@@ -213,18 +213,30 @@ export async function deleteCloudinaryPublicIds(
   await cloudinaryService.deleteImages(publicIds);
 }
 
+const SEO_SCALAR_MEDIA_FIELDS: ScalarMediaField[] = [
+  { urlKey: 'ogImage', publicIdKey: 'ogImagePublicId' },
+  { urlKey: 'twitterImage', publicIdKey: 'twitterImagePublicId' },
+];
+
 export const SERVICE_MEDIA_FIELDS: ScalarMediaField[] = [
   { urlKey: 'coverImage', publicIdKey: 'coverImagePublicId' },
   { urlKey: 'thumbnail', publicIdKey: 'thumbnailPublicId' },
   { urlKey: 'dashboardImage', publicIdKey: 'dashboardImagePublicId' },
+  ...SEO_SCALAR_MEDIA_FIELDS,
 ];
 
 export const INDUSTRY_MEDIA_FIELDS: ScalarMediaField[] = [
   { urlKey: 'coverImage', publicIdKey: 'coverImagePublicId' },
   { urlKey: 'thumbnail', publicIdKey: 'thumbnailPublicId' },
   { urlKey: 'dashboardImage', publicIdKey: 'dashboardImagePublicId' },
+  ...SEO_SCALAR_MEDIA_FIELDS,
 ];
 
 export const PROJECT_MEDIA_FIELDS: ScalarMediaField[] = [
   { urlKey: 'thumbnail', publicIdKey: 'thumbnailPublicId' },
+  ...SEO_SCALAR_MEDIA_FIELDS,
 ];
+
+export const SOLUTION_MEDIA_FIELDS: ScalarMediaField[] = [...SEO_SCALAR_MEDIA_FIELDS];
+
+export const JOB_MEDIA_FIELDS: ScalarMediaField[] = [...SEO_SCALAR_MEDIA_FIELDS];

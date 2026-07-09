@@ -6,8 +6,9 @@
 import mongoose, { Schema } from 'mongoose';
 import { BaseDocument } from '@/types/common';
 import { VALIDATION } from '@/constants';
+import { ISeoFields, seoMongooseFields } from '@/utils/seoFields';
 
-export interface IJob extends BaseDocument {
+export interface IJob extends BaseDocument, ISeoFields {
   title: string;
   slug: string;
   department: typeof VALIDATION.JOB_DEPARTMENTS[number];
@@ -111,6 +112,7 @@ const jobSchema = new Schema<IJob>(
     applicationDeadline: {
       type: Date,
     },
+    ...seoMongooseFields,
     isDeleted: {
       type: Boolean,
       default: false,

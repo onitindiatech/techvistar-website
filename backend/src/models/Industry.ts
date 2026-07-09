@@ -5,6 +5,7 @@
 
 import mongoose, { Schema } from 'mongoose';
 import { BaseDocument } from '@/types/common';
+import { ISeoFields, seoMongooseFields } from '@/utils/seoFields';
 
 export interface IIndustryStep {
   step: number;
@@ -44,7 +45,7 @@ export interface IDetailedOffering {
   iconName: string;
 }
 
-export interface IIndustry extends BaseDocument {
+export interface IIndustry extends BaseDocument, ISeoFields {
   title: string;
   slug: string;
   shortDescription: string;
@@ -57,8 +58,6 @@ export interface IIndustry extends BaseDocument {
   benefits: string[];
   displayOrder: number;
   status: 'draft' | 'active';
-  seoTitle?: string;
-  seoDescription?: string;
 
   // Rich CMS fields
   category: string;
@@ -147,16 +146,7 @@ const industrySchema = new Schema<IIndustry>(
       enum: ['draft', 'active'],
       default: 'draft',
     },
-    seoTitle: {
-      type: String,
-      trim: true,
-      default: '',
-    },
-    seoDescription: {
-      type: String,
-      trim: true,
-      default: '',
-    },
+    ...seoMongooseFields,
 
     // Rich CMS Fields
     category: {

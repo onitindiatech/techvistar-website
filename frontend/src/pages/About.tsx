@@ -14,9 +14,14 @@ import {
   TrendingUp,
   Zap,
 } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { seoFromItem } from '@/lib/seoAdmin';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 import { ABOUT_COPY, ABOUT_PAGE } from '@/data';
 import aboutBg from '../assets/about-bg.png';
 import logoImg from '@/assets/logo.webp';
@@ -92,11 +97,28 @@ const boxStyles = [
 const sectionPad = 'px-5 py-6 sm:px-6 sm:py-7 md:px-8';
 
 const About = () => {
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
+  });
+
+  const aboutSeo = seoFromItem(pagesConfig?.about as Record<string, unknown> | undefined);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
+    <>
+      <PageSeo
+        seo={aboutSeo}
+        defaults={{
+          title: 'About TechVistar | Technology-first growth partner',
+          description: ABOUT_COPY.summary,
+          url: buildCanonical('/about'),
+        }}
+      />
     <main className="min-h-screen bg-muted">
       <Navbar />
 
@@ -308,6 +330,7 @@ const About = () => {
 
       <Footer />
     </main>
+    </>
   );
 };
 

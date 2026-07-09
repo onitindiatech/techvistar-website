@@ -5,6 +5,7 @@
 
 import mongoose, { Schema } from 'mongoose';
 import { BaseDocument } from '@/types/common';
+import { ISeoFields, seoMongooseFields } from '@/utils/seoFields';
 
 export interface IServiceSidebarBlock {
   summaryTitle: string;
@@ -29,14 +30,12 @@ export interface IServiceConsultationBlock {
   successMessage: string;
 }
 
-export interface IServicesLandingConfig {
+export interface IServicesLandingConfig extends ISeoFields {
   title: string;
   subtitle: string;
   description: string;
   backgroundImage: string;
   backgroundImagePublicId?: string;
-  seoTitle: string;
-  seoDescription: string;
   offeringsLabel: string;
   learnMoreLabel: string;
 }
@@ -112,6 +111,7 @@ const servicesCmsConfigSchema = new Schema<IServicesCmsConfig>(
       },
       backgroundImage: { type: String, trim: true, default: '' },
       backgroundImagePublicId: { type: String, trim: true, default: '' },
+      ...seoMongooseFields,
       seoTitle: { type: String, trim: true, default: 'Our Services | TechVistar' },
       seoDescription: {
         type: String,
@@ -119,6 +119,7 @@ const servicesCmsConfigSchema = new Schema<IServicesCmsConfig>(
         default:
           'Explore TechVistar productized services across web development, AI, cloud, automation, and digital growth.',
       },
+      canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/services' },
       offeringsLabel: { type: String, trim: true, default: 'Key Offerings' },
       learnMoreLabel: { type: String, trim: true, default: 'Learn more' },
     },

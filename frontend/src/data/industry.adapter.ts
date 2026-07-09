@@ -10,6 +10,7 @@ import * as LucideIcons from 'lucide-react';
 import { IMAGE_MAP } from "./services";
 import { INDUSTRIES } from "./industries";
 import { preferCmsImage } from "@/lib/mediaFallbacks";
+import { seoFromApi } from "@/lib/seoResolve";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Heart,
@@ -225,6 +226,7 @@ export function decorateIndustry(apiIndustry: any): any {
       subtitle: apiIndustry.overview || '',
       buttonText: 'Get in Touch',
       buttonLink: '/contact'
-    }
+    },
+    ...seoFromApi(apiIndustry),
   };
 }

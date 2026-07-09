@@ -44,6 +44,8 @@ import { useQuery } from '@tanstack/react-query';
 import { getIndustryBySlug } from '@/services/industry.service';
 import { decorateIndustry, getIndustryHeroImage } from '@/data/industry.adapter';
 import { RichTextContent } from '@/components/common/RichTextContent';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 
 const DEFAULT_OVERVIEW_QUOTE =
   'Adapting our VISTAR delivery frameworks to the precise requirements of target industries, securing data contracts, and scaling customer interfaces.';
@@ -65,16 +67,22 @@ export const IndustryDetails = () => {
     ? decorateIndustry(apiIndustry)
     : staticIndustry;
 
-  // Set page title & reset scroll (must run before any conditional return — Rules of Hooks)
+  // Reset scroll (must run before any conditional return — Rules of Hooks)
   useEffect(() => {
-    if (isPending && !staticIndustry) return;
-    if (industry) {
-      document.title = `${industry.title} Industry Solutions | TechVistar`;
-    } else {
-      document.title = 'Industry Not Found | TechVistar';
-    }
     window.scrollTo(0, 0);
-  }, [industry, isPending, staticIndustry]);
+  }, [industry?.slug]);
+
+  const seoBlock = (
+    <PageSeo
+      seo={industry}
+      defaults={{
+        title: industry ? `${industry.title} Industry Solutions | TechVistar` : 'Industry Not Found | TechVistar',
+        description: industry?.shortDescription || industry?.description || '',
+        image: industry ? getIndustryHeroImage(industry) : undefined,
+        url: industry ? buildCanonical(`/industries/${industry.slug}`) : buildCanonical('/industries'),
+      }}
+    />
+  );
 
   // CMS-only slugs have no static fallback — wait for API before showing not-found
   if (isPending && !staticIndustry) {
@@ -84,6 +92,7 @@ export const IndustryDetails = () => {
   if (!industry) {
     return (
       <>
+        {seoBlock}
         <Navbar />
         <main className="min-h-screen flex flex-col items-center justify-center bg-[#fafbfa] px-4 pt-20">
           <div className="w-full max-w-md rounded-2xl border border-slate-200/65 bg-white p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center">
@@ -119,6 +128,7 @@ export const IndustryDetails = () => {
 
   return (
     <>
+      {seoBlock}
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>

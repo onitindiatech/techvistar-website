@@ -3,6 +3,7 @@
  */
 
 import { ApiError } from '@/utils/ApiError';
+import { pickSeoForCreate } from '@/utils/seoFields';
 
 function trimStr(val: unknown, fallback = ''): string {
   if (val === undefined || val === null) return fallback;
@@ -41,8 +42,7 @@ export function validateServicesCmsConfigInput(input: Record<string, unknown>): 
       description: trimStr(landing.description),
       backgroundImage: trimStr(landing.backgroundImage),
       backgroundImagePublicId: trimStr(landing.backgroundImagePublicId),
-      seoTitle: trimStr(landing.seoTitle),
-      seoDescription: trimStr(landing.seoDescription),
+      ...pickSeoForCreate(landing),
       offeringsLabel: trimStr(landing.offeringsLabel, 'Key Offerings'),
       learnMoreLabel: trimStr(landing.learnMoreLabel, 'Learn more'),
     },

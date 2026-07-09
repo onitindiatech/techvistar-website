@@ -25,6 +25,7 @@ import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminServices from "./pages/admin/Services";
 import AdminServicesSettings from "./pages/admin/ServicesSettings";
+import AdminPageSeoSettings from "./pages/admin/PageSeoSettings";
 import AdminIndustries from "./pages/admin/Industries";
 import AdminSolutions from "./pages/admin/Solutions";
 import AdminPortfolio from "./pages/admin/Portfolio";
@@ -142,6 +143,7 @@ const App = () => (
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="services" element={<AdminServices />} />
               <Route path="services-settings" element={<AdminServicesSettings />} />
+              <Route path="page-seo" element={<AdminPageSeoSettings />} />
               <Route path="industries" element={<AdminIndustries />} />
               <Route path="solutions" element={<AdminSolutions />} />
               <Route path="portfolio" element={<AdminPortfolio />} />

@@ -6,6 +6,11 @@
 import { Solution, ISolution } from '@/models/Solution';
 import { ApiError } from '@/utils/ApiError';
 import { logger } from '@/utils/logger';
+import {
+  SOLUTION_MEDIA_FIELDS,
+  syncScalarMediaFields,
+  deleteCloudinaryPublicIds,
+} from '@/utils/mediaAsset';
 
 export class SolutionService {
   /**
@@ -31,7 +36,8 @@ export class SolutionService {
       }
     }
 
-    const solution = new Solution({ ...data, slug });
+    const { payload } = syncScalarMediaFields(null, data as Record<string, unknown>, SOLUTION_MEDIA_FIELDS);
+    const solution = new Solution({ ...payload, slug });
     await solution.save();
 
     logger.info('[SolutionService] Solution created successfully', { id: solution._id, slug: solution.slug });
@@ -51,10 +57,23 @@ export class SolutionService {
       }
     }
 
-    const solution = await Solution.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true });
+    const previous = await Solution.findById(id).lean();
+    if (!previous) {
+      throw ApiError.notFound('Solution not found');
+    }
+
+    const { payload, obsoletePublicIds } = syncScalarMediaFields(
+      previous as unknown as Record<string, unknown>,
+      data as Record<string, unknown>,
+      SOLUTION_MEDIA_FIELDS
+    );
+
+    const solution = await Solution.findByIdAndUpdate(id, payload, { returnDocument: 'after', runValidators: true });
     if (!solution) {
       throw ApiError.notFound('Solution not found');
     }
+
+    await deleteCloudinaryPublicIds(obsoletePublicIds);
 
     logger.info('[SolutionService] Solution updated successfully', { id: solution._id });
     return solution;

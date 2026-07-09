@@ -5,6 +5,7 @@
 
 import mongoose, { Schema } from 'mongoose';
 import { BaseDocument } from '@/types/common';
+import { ISeoFields, seoMongooseFields } from '@/utils/seoFields';
 
 export interface IServiceStep {
   step: number;
@@ -75,7 +76,7 @@ export interface IServiceConsultationBlock {
   successMessage: string;
 }
 
-export interface IService extends BaseDocument {
+export interface IService extends BaseDocument, ISeoFields {
   title: string;
   slug: string;
   shortDescription: string;
@@ -88,8 +89,6 @@ export interface IService extends BaseDocument {
   benefits: string[];
   displayOrder: number; // maps to order
   status: 'draft' | 'active';
-  seoTitle?: string;
-  seoDescription?: string;
 
   // Rich CMS fields
   category: string;
@@ -182,16 +181,7 @@ const serviceSchema = new Schema<IService>(
       enum: ['draft', 'active'],
       default: 'draft',
     },
-    seoTitle: {
-      type: String,
-      trim: true,
-      default: '',
-    },
-    seoDescription: {
-      type: String,
-      trim: true,
-      default: '',
-    },
+    ...seoMongooseFields,
 
     // Rich CMS Fields
     category: {

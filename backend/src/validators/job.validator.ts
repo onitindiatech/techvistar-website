@@ -5,8 +5,9 @@
 
 import { ApiError } from '@/utils/ApiError';
 import { VALIDATION } from '@/constants';
+import { pickSeoForCreate, pickSeoForUpdate, SeoInput } from '@/utils/seoFields';
 
-interface JobInput {
+interface JobInput extends SeoInput {
   title?: unknown;
   slug?: unknown;
   department?: unknown;
@@ -168,6 +169,7 @@ export function validateJobInput(input: JobInput, isUpdate = false): Record<stri
       updatePayload.featured = input.featured === true || input.featured === 'true';
     }
     if (parsedDeadline !== undefined) updatePayload.applicationDeadline = parsedDeadline;
+    Object.assign(updatePayload, pickSeoForUpdate(input));
     return updatePayload;
   }
 
@@ -187,5 +189,6 @@ export function validateJobInput(input: JobInput, isUpdate = false): Record<stri
     displayOrder: parsedDisplayOrder ?? 0,
     featured: input.featured === true || input.featured === 'true',
     ...(parsedDeadline && { applicationDeadline: parsedDeadline }),
+    ...pickSeoForCreate(input),
   };
 }

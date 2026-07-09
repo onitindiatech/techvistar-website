@@ -21,6 +21,9 @@ import { IMAGE_MAP } from "@/data/services";
 import { CmsImageField } from "@/components/admin/common/CmsImageField";
 import { RichTextEditor } from "@/components/admin/common/RichTextEditor";
 import { normalizeRichContent, stripHtmlToText } from "@/lib/sanitizeHtml";
+import { SeoManager } from "@/components/admin/common/SeoManager";
+import { seoFromItem, seoToPayload } from "@/lib/seoAdmin";
+import { EMPTY_SEO, SeoMetadata } from "@/types/seo";
 
 type TabName = "general" | "content" | "media" | "features" | "stats" | "process" | "seo" | "preview";
 
@@ -92,8 +95,7 @@ const Industries = () => {
   // Rich CMS fields
   const [coverImage, setCoverImage] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const [seoTitle, setSeoTitle] = useState("");
-  const [seoDescription, setSeoDescription] = useState("");
+  const [seo, setSeo] = useState<SeoMetadata>(EMPTY_SEO);
   const [cta, setCta] = useState("");
   const [featured, setFeatured] = useState(false);
   const [dashboardImage, setDashboardImage] = useState("");
@@ -329,7 +331,7 @@ const Industries = () => {
   const getCurrentStateString = () => {
     return JSON.stringify({
       title, slug, shortDescription, fullDescription, icon, category, overview, overviewQuote, status, displayOrder,
-      coverImage, thumbnail, seoTitle, seoDescription, cta, featured, dashboardImage,
+      coverImage, thumbnail, seo, cta, featured, dashboardImage,
       features, technologies, benefits, industries, offerings, processSteps, statsList
     });
   };
@@ -354,8 +356,7 @@ const Industries = () => {
     setDisplayOrder("0");
     setCoverImage("");
     setThumbnail("");
-    setSeoTitle("");
-    setSeoDescription("");
+    setSeo(EMPTY_SEO);
     setCta("");
     setFeatured(false);
     setDashboardImage("");
@@ -374,7 +375,7 @@ const Industries = () => {
     setTimeout(() => {
       setOriginalDataStr(JSON.stringify({
         title: "", slug: "", shortDescription: "", fullDescription: "", icon: "Rocket", category: "Industrial",
-        overview: "", overviewQuote: "", status: "draft", displayOrder: "0", coverImage: "", thumbnail: "", seoTitle: "", seoDescription: "",
+        overview: "", overviewQuote: "", status: "draft", displayOrder: "0", coverImage: "", thumbnail: "", seo: EMPTY_SEO,
         cta: "", featured: false, dashboardImage: "", features: [], technologies: [], benefits: [], industries: [], offerings: [],
         processSteps: [], statsList: []
       }));
@@ -398,8 +399,7 @@ const Industries = () => {
     setDisplayOrder(String(item.displayOrder || 0));
     setCoverImage(item.coverImage || "");
     setThumbnail(item.thumbnail || "");
-    setSeoTitle(item.seoTitle || "");
-    setSeoDescription(item.seoDescription || "");
+    setSeo(seoFromItem(item));
     setCta(item.ctaLabel || item.cta || "");
     setFeatured(item.featured || false);
     setDashboardImage(item.dashboardImage || "");
@@ -429,8 +429,7 @@ const Industries = () => {
         title: item.title || "", slug: item.slug || "", shortDescription: item.shortDescription || "",
         fullDescription: item.fullDescription || "", icon: item.icon || "Rocket", category: item.category || "Industrial",
         overview: item.overview || "", overviewQuote: item.overviewQuote || "", status: item.status || "draft", displayOrder: String(item.displayOrder || 0),
-        coverImage: item.coverImage || "", thumbnail: item.thumbnail || "", seoTitle: item.seoTitle || "",
-        seoDescription: item.seoDescription || "", cta: item.ctaLabel || item.cta || "", featured: item.featured || false,
+        coverImage: item.coverImage || "", thumbnail: item.thumbnail || "", seo: seoFromItem(item), cta: item.ctaLabel || item.cta || "", featured: item.featured || false,
         dashboardImage: item.dashboardImage || "", features: item.features || [], technologies: item.technologies || [],
         benefits: item.benefits || [], industries: item.industries || [], offerings: item.offerings || [],
         processSteps: item.process || [], statsList: item.stats || []
@@ -556,8 +555,7 @@ const Industries = () => {
       offerings,
       coverImage,
       thumbnail,
-      seoTitle,
-      seoDescription,
+      ...seoToPayload(seo),
       ctaLabel: cta,
       featured,
       dashboardImage,
@@ -653,17 +651,6 @@ const Industries = () => {
     if (IMAGE_MAP[imgName]) return IMAGE_MAP[imgName];
     if (imgName.startsWith("http") || imgName.startsWith("/")) return imgName;
     return null;
-  };
-
-  const calculateSeoScore = () => {
-    let score = 0;
-    if (seoTitle.length >= 40 && seoTitle.length <= 60) score += 40;
-    else if (seoTitle.length > 0) score += 20;
-
-    if (seoDescription.length >= 120 && seoDescription.length <= 160) score += 60;
-    else if (seoDescription.length > 0) score += 30;
-
-    return score;
   };
 
   // Multi-select actions
@@ -1602,39 +1589,16 @@ const Industries = () => {
 
                 {/* Tab 7: SEO */}
                 {activeTab === "seo" && (
-                  <div className="bg-white rounded-2xl border border-slate-200/60 p-6 space-y-6 shadow-sm">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">SEO Meta Title</label>
-                        <span className={`text-[10px] font-extrabold uppercase tracking-wider ${
-                          seoTitle.length >= 40 && seoTitle.length <= 60 ? "text-green-600" : "text-slate-400"
-                        }`}>{seoTitle.length} / 60 chars</span>
-                      </div>
-                      <Input value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} placeholder="Custom browser page title tag" className="h-10 rounded-lg border-slate-200" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">SEO Meta Description</label>
-                        <span className={`text-[10px] font-extrabold uppercase tracking-wider ${
-                          seoDescription.length >= 120 && seoDescription.length <= 160 ? "text-green-600" : "text-slate-400"
-                        }`}>{seoDescription.length} / 160 chars</span>
-                      </div>
-                      <textarea className="w-full min-h-[120px] p-3 rounded-lg border border-slate-200 text-xs text-slate-800 bg-white focus:outline-none" value={seoDescription} onChange={(e) => setSeoDescription(e.target.value)} placeholder="Meta snippet description indexed in Google..." />
-                    </div>
-
-                    <div className="p-4 bg-slate-50 border border-slate-200/50 rounded-xl flex items-center justify-between mt-6">
-                      <div className="space-y-1">
-                        <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">SEO Score Assessment</h4>
-                        <p className="text-[10px] text-slate-400 leading-relaxed">
-                          Evaluates compliance against ideal browser limits.
-                        </p>
-                      </div>
-                      <div className="flex flex-col items-center justify-center w-14 h-14 rounded-full bg-white border border-emerald-500/20 text-center shrink-0">
-                        <span className="text-xs font-black text-emerald-600">{calculateSeoScore()}%</span>
-                        <span className="text-[8px] font-extrabold uppercase text-slate-450 tracking-wider">Score</span>
-                      </div>
-                    </div>
+                  <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm">
+                    <SeoManager
+                      value={seo}
+                      onChange={setSeo}
+                      slug={slug}
+                      pathPrefix="/industries/"
+                      defaultTitle={title ? `${title} | TechVistar Industries` : ''}
+                      defaultDescription={shortDescription}
+                      defaultImage={coverImage || thumbnail}
+                    />
                   </div>
                 )}
 

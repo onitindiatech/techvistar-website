@@ -3,6 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveJobs, Job } from '@/services/job.service';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { seoFromItem } from '@/lib/seoAdmin';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -94,6 +98,14 @@ const Careers = () => {
     });
   }, [activeJobs, searchTerm, selectedDept, selectedLoc, selectedEmpType]);
 
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
+  });
+
+  const careersSeo = seoFromItem(pagesConfig?.careers as Record<string, unknown> | undefined);
+
   const handleScrollToPositions = () => {
     const el = document.getElementById('open-positions');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -101,6 +113,14 @@ const Careers = () => {
 
   return (
     <>
+      <PageSeo
+        seo={careersSeo}
+        defaults={{
+          title: 'Careers at TechVistar | Join our engineering team',
+          description: 'Explore open roles at TechVistar and join a collaborative engineering team.',
+          url: buildCanonical('/careers'),
+        }}
+      />
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>

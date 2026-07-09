@@ -1,3 +1,5 @@
+import { SeoMetadata } from '@/types/seo';
+
 export interface ServiceFaq {
   question: string;
   answer: string;
@@ -35,13 +37,11 @@ export interface ServiceConsultationBlock {
   successMessage: string;
 }
 
-export interface ServicesLandingConfig {
+export interface ServicesLandingConfig extends SeoMetadata {
   title: string;
   subtitle: string;
   description: string;
   backgroundImage: string;
-  seoTitle: string;
-  seoDescription: string;
   offeringsLabel: string;
   learnMoreLabel: string;
 }
@@ -72,6 +72,7 @@ export const DEFAULT_SERVICES_CMS_CONFIG: ServicesCmsConfig = {
     seoTitle: 'Our Services | TechVistar',
     seoDescription:
       'Explore TechVistar productized services across web development, AI, cloud, automation, and digital growth.',
+    canonicalUrl: 'https://techvistar.com/services',
     offeringsLabel: 'Key Offerings',
     learnMoreLabel: 'Learn more',
   },

@@ -12,6 +12,9 @@ import { IMAGE_MAP } from "@/data/projects";
 import { CmsImageField, resolveCmsMediaSrc } from "@/components/admin/common/CmsImageField";
 import { RichTextEditor } from "@/components/admin/common/RichTextEditor";
 import { normalizeRichContent } from "@/lib/sanitizeHtml";
+import { SeoManager } from "@/components/admin/common/SeoManager";
+import { seoFromItem, seoToPayload } from "@/lib/seoAdmin";
+import { EMPTY_SEO, SeoMetadata } from "@/types/seo";
 import { ImageUpload } from "@/components/admin/common/ImageUpload";
 import {
   Package, Trash2, Edit, Loader2, X, Plus, AlertCircle, ArrowLeft, ArrowRight,
@@ -94,8 +97,7 @@ const Portfolio = () => {
   const [galleryText, setGalleryText] = useState("");
 
   // SEO Fields
-  const [seoTitle, setSeoTitle] = useState("");
-  const [seoDescription, setSeoDescription] = useState("");
+  const [seo, setSeo] = useState<SeoMetadata>(EMPTY_SEO);
 
   // Validation
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -371,7 +373,7 @@ const Portfolio = () => {
   const getCurrentStateString = () => {
     return JSON.stringify({
       title, slug, description, longDescription, thumbnail, category, client, role, industry, status, displayOrder, featured,
-      liveUrl, githubUrl, technologiesText, tagsText, serviceSlugsText, challengesText, keyFeaturesText, galleryText, seoTitle, seoDescription
+      liveUrl, githubUrl, technologiesText, tagsText, serviceSlugsText, challengesText, keyFeaturesText, galleryText, seo
     });
   };
 
@@ -403,8 +405,7 @@ const Portfolio = () => {
     setChallengesText("High cloud costs\nInconsistent server scaling");
     setKeyFeaturesText("Auto-scaling node clusters\nLive analytics telemetry");
     setGalleryText("");
-    setSeoTitle("");
-    setSeoDescription("");
+    setSeo(EMPTY_SEO);
     
     setValidationErrors({});
     setActiveTab("general");
@@ -440,8 +441,7 @@ const Portfolio = () => {
     setChallengesText((item.challenges || []).join("\n"));
     setKeyFeaturesText((item.keyFeatures || []).join("\n"));
     setGalleryText((item.gallery || []).join("\n"));
-    setSeoTitle(item.seoTitle || "");
-    setSeoDescription(item.seoDescription || "");
+    setSeo(seoFromItem(item));
 
     setValidationErrors({});
     setActiveTab("general");
@@ -502,8 +502,7 @@ const Portfolio = () => {
       challenges: challengesText.split("\n").map(c => c.trim()).filter(Boolean),
       keyFeatures: keyFeaturesText.split("\n").map(k => k.trim()).filter(Boolean),
       gallery: galleryText.split("\n").map(g => g.trim()).filter(Boolean),
-      seoTitle,
-      seoDescription
+      ...seoToPayload(seo),
     };
 
     if (editingId) {
@@ -1264,21 +1263,16 @@ const Portfolio = () => {
 
                 {/* Tab 6: SEO */}
                 {activeTab === "seo" && (
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Meta Title TagOverride</label>
-                      <Input value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} placeholder="Defaults to Project Title if left blank" className="h-10 rounded-lg border-slate-200" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Meta Description</label>
-                      <textarea
-                        className="w-full min-h-[100px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white leading-relaxed"
-                        value={seoDescription}
-                        onChange={(e) => setSeoDescription(e.target.value)}
-                        placeholder="Brief summary description optimized for search engine snippets..."
-                      />
-                    </div>
+                  <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm">
+                    <SeoManager
+                      value={seo}
+                      onChange={setSeo}
+                      slug={slug}
+                      pathPrefix="/work/"
+                      defaultTitle={title ? `${title} | TechVistar Portfolio` : ''}
+                      defaultDescription={description}
+                      defaultImage={thumbnail}
+                    />
                   </div>
                 )}
 

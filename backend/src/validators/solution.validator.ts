@@ -4,8 +4,9 @@
  */
 
 import { ApiError } from '@/utils/ApiError';
+import { pickSeoForCreate, pickSeoForUpdate, SeoInput } from '@/utils/seoFields';
 
-interface SolutionInput {
+interface SolutionInput extends SeoInput {
   title?: unknown;
   slug?: unknown;
   subtitle?: unknown;
@@ -271,6 +272,7 @@ export function validateSolutionInput(input: SolutionInput, isUpdate = false): a
     if (input.featured !== undefined) {
       updatePayload.featured = input.featured === true || input.featured === 'true';
     }
+    Object.assign(updatePayload, pickSeoForUpdate(input));
     return updatePayload;
   }
 
@@ -292,5 +294,6 @@ export function validateSolutionInput(input: SolutionInput, isUpdate = false): a
     status: (input.status ? String(input.status).trim() : 'active') as 'draft' | 'active',
     displayOrder: parsedDisplayOrder,
     featured: input.featured === true || input.featured === 'true',
+    ...pickSeoForCreate(input),
   };
 }

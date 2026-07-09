@@ -5,8 +5,9 @@
 
 import mongoose, { Schema } from 'mongoose';
 import { BaseDocument } from '@/types/common';
+import { ISeoFields, seoMongooseFields } from '@/utils/seoFields';
 
-export interface IProject extends BaseDocument {
+export interface IProject extends BaseDocument, ISeoFields {
   title: string;
   slug: string;
   description: string;
@@ -31,8 +32,7 @@ export interface IProject extends BaseDocument {
   industry: string;
   updatedDate: string;
   displayOrder: number;
-  seoTitle?: string;
-  seoDescription?: string;
+
   isDeleted?: boolean;
   deletedAt?: Date | null;
   deletedBy?: string;
@@ -155,14 +155,7 @@ const projectSchema = new Schema<IProject>(
       type: Number,
       default: 0,
     },
-    seoTitle: {
-      type: String,
-      trim: true,
-    },
-    seoDescription: {
-      type: String,
-      trim: true,
-    },
+    ...seoMongooseFields,
     isDeleted: {
       type: Boolean,
       default: false,

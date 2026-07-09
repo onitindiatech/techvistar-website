@@ -12,6 +12,9 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { RichTextContent } from '@/components/common/RichTextContent';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical, seoFromApi } from '@/lib/seoResolve';
+import { stripHtmlToText } from '@/lib/sanitizeHtml';
 
 export const JobDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -23,9 +26,24 @@ export const JobDetails = () => {
     retry: 1,
   });
 
+  const jobSeo = job ? seoFromApi(job as unknown as Record<string, unknown>) : undefined;
+
+  const seoBlock = (
+    <PageSeo
+      seo={jobSeo}
+      defaults={{
+        title: job ? `${job.title} | TechVistar Careers` : 'Job Opening Not Found | TechVistar',
+        description: job ? stripHtmlToText(job.description).slice(0, 160) : '',
+        url: job ? buildCanonical(`/careers/${job.slug}`) : buildCanonical('/careers'),
+      }}
+    />
+  );
+
   if (error) {
     return (
-      <main className="min-h-screen bg-slate-50 flex flex-col">
+      <>
+        {seoBlock}
+        <main className="min-h-screen bg-slate-50 flex flex-col">
         <Navbar />
         <div className="flex-grow container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Job Opening Not Found</h2>
@@ -38,6 +56,7 @@ export const JobDetails = () => {
         </div>
         <Footer />
       </main>
+      </>
     );
   }
 
@@ -66,6 +85,8 @@ export const JobDetails = () => {
   const resolvedTeam = teamImg || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800";
 
   return (
+    <>
+      {seoBlock}
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <Navbar />
 
@@ -334,6 +355,7 @@ export const JobDetails = () => {
 
       <Footer />
     </main>
+    </>
   );
 };
 

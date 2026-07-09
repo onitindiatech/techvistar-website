@@ -1,4 +1,6 @@
-export interface Job {
+import { SeoMetadata } from '@/types/seo';
+
+export interface Job extends SeoMetadata {
   _id: string;
   title: string;
   slug: string;

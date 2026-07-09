@@ -33,7 +33,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, chil
       transition={{ duration: 0.6 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative overflow-hidden bg-zinc-950 pt-28 pb-16 md:pt-32 md:pb-20 border-b border-zinc-900 text-white"
+      className="relative overflow-hidden bg-zinc-950 pt-20 pb-10 md:pt-24 md:pb-12 border-b border-zinc-900 text-white"
     >
       {/* Animated Mesh Waves + Mouse Parallax */}
       {backgroundImage && (

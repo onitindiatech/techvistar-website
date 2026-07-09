@@ -370,37 +370,46 @@ export const Contact = () => {
 
         {/* HEADQUARTERS MAP & DIRECTIONS BANNER */}
         <section className="container-custom max-w-7xl mx-auto px-6 mb-20 relative z-10">
-          <div className="w-full rounded-2xl overflow-hidden border border-slate-200/80 bg-white p-4 sm:p-6 shadow-xl grid md:grid-cols-12 gap-6 items-center">
+          <div className="group w-full rounded-[2rem] overflow-hidden border border-slate-200/60 bg-white shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-15px_rgba(16,185,129,0.2)] transition-all duration-700 flex flex-col md:flex-row relative">
             
             {/* Grayscale OSM Map representation */}
-            <div className="md:col-span-8 h-80 rounded-xl overflow-hidden relative border border-slate-200/60">
+            <div className="w-full md:w-[55%] h-80 md:h-auto min-h-[400px] relative overflow-hidden bg-slate-100">
+              <div className="absolute inset-0 bg-emerald-600/5 mix-blend-multiply pointer-events-none z-10" />
               <iframe 
                 src="https://www.openstreetmap.org/export/embed.html?bbox=77.365%2C28.623%2C77.378%2C28.632&layer=mapnik&marker=28.628%2C77.372" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0, filter: "grayscale(0.1) contrast(1.1) opacity(0.9)" }} 
+                className="w-full h-full absolute inset-0 border-0"
+                style={{ filter: "grayscale(0.3) contrast(1.1)" }} 
                 title="OSM Headquarters Noida location"
               />
             </div>
 
             {/* Headquarters details */}
-            <div className="md:col-span-4 space-y-4 px-2 text-slate-900">
-              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Our Headquarters</span>
-              <h3 className="text-2xl font-extrabold font-display text-slate-900">TechVistar</h3>
-              <p className="text-xs text-slate-600 font-bold leading-relaxed">
-                A-75, Sector 4, Noida, Uttar Pradesh 201301, India
-              </p>
+            <div className="w-full md:w-[45%] p-8 sm:p-12 md:p-14 flex flex-col justify-center relative bg-white overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
-              <div className="pt-2">
-                <a 
-                  href="https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors"
-                >
-                  <span>Get Directions</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+              <div className="relative z-10 space-y-6">
+                <div>
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-3 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow-sm">
+                    <MapPin className="w-3.5 h-3.5" />
+                    Global Headquarters
+                  </span>
+                  <h3 className="text-3xl md:text-4xl font-extrabold font-display text-slate-900 mb-3">TechVistar</h3>
+                  <p className="text-sm md:text-base text-slate-500 font-semibold leading-relaxed">
+                    A-75, Sector 4, Noida, <br />Uttar Pradesh 201301, India
+                  </p>
+                </div>
+                
+                <div className="pt-6 border-t border-slate-100">
+                  <a 
+                    href="https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 h-12 px-7 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-[0_8px_20px_-6px_rgba(16,185,129,0.3)] hover:shadow-[0_12px_25px_-4px_rgba(16,185,129,0.4)] group/btn"
+                  >
+                    <span>Get Directions</span>
+                    <ArrowUpRight className="w-4 h-4 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

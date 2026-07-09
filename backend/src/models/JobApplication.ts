@@ -17,6 +17,9 @@ export interface IJobApplication extends BaseDocument {
   linkedin?: string;
   portfolio?: string;
   resumeUrl: string;
+  resumePublicId?: string;
+  resumeMimeType?: string;
+  originalFileName?: string;
   coverLetter: string;
   whyJoinTechVistar?: string;
   status: typeof VALIDATION.JOB_APPLICATION_STATUSES[number];
@@ -76,6 +79,21 @@ const jobApplicationSchema = new Schema<IJobApplication>(
       type: String,
       required: [true, 'Resume URL is required'],
       trim: true,
+    },
+    resumePublicId: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    resumeMimeType: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    originalFileName: {
+      type: String,
+      trim: true,
+      default: '',
     },
     coverLetter: {
       type: String,

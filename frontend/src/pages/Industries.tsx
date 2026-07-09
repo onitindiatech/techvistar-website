@@ -16,7 +16,12 @@ import { Magnetic, GlowHover } from '@/components/animations/MicroInteractions';
 import workBg from '../assets/work-bg.png';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveIndustries } from '@/services/industry.service';
+import { getPublicPagesConfig } from '@/services/pages.service';
 import { decorateIndustry, getIndustryCardImage } from '@/data/industry.adapter';
+import { mergePagesCmsConfig, DEFAULT_INDUSTRIES_LANDING_CMS } from '@/types/pagesCms';
+import { seoFromItem } from '@/lib/seoAdmin';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 
 const resolveSpotlightColors = (id: string) => {
   const colorMap: Record<string, { spotlight: string; border: string }> = {
@@ -35,6 +40,15 @@ const resolveSpotlightColors = (id: string) => {
 };
 
 export const Industries = () => {
+  const { data: pagesConfigApi } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
+  });
+
+  const landing = mergePagesCmsConfig(pagesConfigApi).industriesLanding;
+  const heroBg = landing.hero.backgroundImage?.trim() || workBg;
+
   const { data: apiIndustries, isPending, isSuccess } = useQuery({
     queryKey: ['activeIndustries'],
     queryFn: () => getActiveIndustries(),
@@ -62,6 +76,14 @@ export const Industries = () => {
 
   return (
     <>
+      <PageSeo
+        seo={seoFromItem(landing as unknown as Record<string, unknown>)}
+        defaults={{
+          title: landing.seoTitle || DEFAULT_INDUSTRIES_LANDING_CMS.seoTitle || 'Industries | TechVistar',
+          description: landing.seoDescription || DEFAULT_INDUSTRIES_LANDING_CMS.seoDescription || '',
+          url: buildCanonical('/industries'),
+        }}
+      />
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
@@ -70,10 +92,21 @@ export const Industries = () => {
 
         {/* Premium Redesigned Industries Hero with Aurora Background */}
         <PageHeader 
-          title={<>Redefining Digitization <br /><span className="bg-gradient-to-r from-emerald-400 via-teal-350 to-cyan-400 bg-clip-text text-transparent drop-shadow-sm">In Global Industries</span></>}
-          subtitle="INDUSTRIES WE SERVE"
-          description="We combine industry-specific domain expertise with scalable software engineering to deliver secure, regulatory-compliant, and high-performance digital ecosystems."
-          backgroundImage={workBg}
+          title={
+            landing.hero.subtitle ? (
+              <>
+                {landing.hero.title} <br />
+                <span className="bg-gradient-to-r from-emerald-400 via-teal-350 to-cyan-400 bg-clip-text text-transparent drop-shadow-sm">
+                  {landing.hero.subtitle}
+                </span>
+              </>
+            ) : (
+              landing.hero.title
+            )
+          }
+          subtitle={landing.hero.eyebrow || 'INDUSTRIES WE SERVE'}
+          description={landing.hero.description}
+          backgroundImage={heroBg}
         />
 
         {/* Breadcrumb Navigation */}
@@ -287,11 +320,11 @@ export const Industries = () => {
               </div>
 
               <h2 className="text-2xl md:text-4xl font-black font-display tracking-tight leading-tight max-w-2xl mx-auto text-white">
-                Looking for a custom enterprise platform?
+                {landing.cta.title}
               </h2>
               
               <p className="text-emerald-50/90 text-xs md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
-                We collaborate closely with technical and product stakeholders to scope, design, and deploy secure, high-performance systems tailored to your vertical's specific requirements.
+                {landing.cta.description}
               </p>
               
               <div className="flex flex-wrap gap-4 justify-center pt-2">
@@ -300,7 +333,7 @@ export const Industries = () => {
                     className="bg-white text-emerald-700 hover:bg-slate-50 font-bold border-none shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] px-7 py-3 rounded-xl inline-flex items-center gap-2 transition-all h-11 text-xs md:text-sm"
                     asChild
                   >
-                    <Link to="/contact">Get in Touch</Link>
+                    <Link to={landing.cta.buttonLink || '/contact'}>{landing.cta.buttonText}</Link>
                   </Button>
                 </motion.div>
                 

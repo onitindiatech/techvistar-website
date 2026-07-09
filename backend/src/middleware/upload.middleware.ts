@@ -11,7 +11,7 @@
 import path from 'path';
 import multer, { MulterError } from 'multer';
 import { Request, Response, NextFunction } from 'express';
-import { UPLOAD } from '@/constants';
+import { UPLOAD, VIDEO_UPLOAD, RESUME_UPLOAD } from '@/constants';
 import { ApiError } from '@/utils/ApiError';
 
 const storage = multer.memoryStorage();
@@ -62,6 +62,118 @@ export function uploadImageMiddleware(
         return next(
           ApiError.badRequest(
             `Unexpected file field. Use "${UPLOAD.FIELD_NAME}" as the form field name.`
+          )
+        );
+      }
+      return next(ApiError.badRequest(err.message));
+    }
+
+    if (err) {
+      return next(err);
+    }
+
+    next();
+  });
+}
+
+const videoUpload = multer({
+  storage,
+  limits: {
+    fileSize: VIDEO_UPLOAD.MAX_FILE_SIZE_BYTES,
+    files:    1,
+  },
+  fileFilter: (_req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase();
+    const mimeAllowed = (VIDEO_UPLOAD.ALLOWED_MIME_TYPES as readonly string[]).includes(file.mimetype);
+    const extAllowed  = (VIDEO_UPLOAD.ALLOWED_EXTENSIONS as readonly string[]).includes(extension);
+
+    if (!mimeAllowed || !extAllowed) {
+      return cb(
+        ApiError.validationError(
+          'Invalid file type. Only MP4 and WebM videos are allowed.',
+          [{ field: VIDEO_UPLOAD.FIELD_NAME, mimeType: file.mimetype, extension }]
+        )
+      );
+    }
+
+    cb(null, true);
+  },
+});
+
+const resumeUpload = multer({
+  storage,
+  limits: {
+    fileSize: RESUME_UPLOAD.MAX_FILE_SIZE_BYTES,
+    files:    1,
+  },
+  fileFilter: (_req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase();
+    const mimeAllowed = (RESUME_UPLOAD.ALLOWED_MIME_TYPES as readonly string[]).includes(file.mimetype);
+    const extAllowed  = (RESUME_UPLOAD.ALLOWED_EXTENSIONS as readonly string[]).includes(extension);
+
+    if (!mimeAllowed || !extAllowed) {
+      return cb(
+        ApiError.validationError(
+          'Invalid file type. Only PDF, DOC, DOCX, PNG, JPG, and JPEG resumes are allowed.',
+          [{ field: RESUME_UPLOAD.FIELD_NAME, mimeType: file.mimetype, extension }]
+        )
+      );
+    }
+
+    cb(null, true);
+  },
+});
+
+export function uploadResumeMiddleware(
+  req:  Request,
+  res:  Response,
+  next: NextFunction
+): void {
+  resumeUpload.single(RESUME_UPLOAD.FIELD_NAME)(req, res, (err: unknown) => {
+    if (err instanceof MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return next(
+          ApiError.badRequest(
+            `File too large. Maximum allowed size is ${RESUME_UPLOAD.MAX_FILE_SIZE_BYTES / (1024 * 1024)}MB.`
+          )
+        );
+      }
+      if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+        return next(
+          ApiError.badRequest(
+            `Unexpected file field. Use "${RESUME_UPLOAD.FIELD_NAME}" as the form field name.`
+          )
+        );
+      }
+      return next(ApiError.badRequest(err.message));
+    }
+
+    if (err) {
+      return next(err);
+    }
+
+    next();
+  });
+}
+
+export function uploadVideoMiddleware(
+  req:  Request,
+  res:  Response,
+  next: NextFunction
+): void {
+  videoUpload.single(VIDEO_UPLOAD.FIELD_NAME)(req, res, (err: unknown) => {
+    if (err instanceof MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return next(
+          ApiError.badRequest(
+            `File too large. Maximum allowed size is ${VIDEO_UPLOAD.MAX_FILE_SIZE_BYTES / (1024 * 1024)}MB.`
+          )
+        );
+      }
+      if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+        return next(
+          ApiError.badRequest(
+            `Unexpected file field. Use "${VIDEO_UPLOAD.FIELD_NAME}" as the form field name.`
           )
         );
       }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveJobs, Job } from '@/services/job.service';
 import { getPublicPagesConfig } from '@/services/pages.service';
+import { mergePagesCmsConfig, DEFAULT_CAREERS_LANDING_CMS } from '@/types/pagesCms';
 import { seoFromItem } from '@/lib/seoAdmin';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
@@ -18,13 +19,13 @@ import {
 
 const HERO_BG = "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop";
 
-const BENEFITS_LIST = [
-  { title: "Great Team", desc: "Work with talented and supportive people who care.", image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop" },
-  { title: "Learning & Growth", desc: "Continuous learning with courses, mentorship and more.", image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=400&auto=format&fit=crop" },
-  { title: "Flexible Work", desc: "Hybrid work environment and flexible hours.", image: "https://images.unsplash.com/photo-1527689368864-3a821dbccc34?q=80&w=400&auto=format&fit=crop" },
-  { title: "Health Benefits", desc: "Comprehensive health insurance for you and your family.", image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=400&auto=format&fit=crop" },
-  { title: "Career Growth", desc: "Clear career paths and internal our culture opportunities.", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop" },
-  { title: "Recognition", desc: "Celebrate wins and get recognized for your impact.", image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=400&auto=format&fit=crop" },
+const BENEFIT_IMAGES = [
+  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1527689368864-3a821dbccc34?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=400&auto=format&fit=crop",
 ];
 
 const LIFE_GALLERY = [
@@ -36,13 +37,13 @@ const LIFE_GALLERY = [
   { url: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=800&auto=format&fit=crop", title: "Workspace Celebrations" }
 ];
 
-const PROCESS_TIMELINE = [
-  { phase: "1. Application", desc: "Submit your application online.", icon: Briefcase, color: "from-teal-400 to-teal-600", textCol: "text-teal-600", bgCol: "bg-teal-50" },
-  { phase: "2. Resume Review", desc: "Our team reviews your application carefully.", icon: Users, color: "from-emerald-400 to-emerald-600", textCol: "text-emerald-600", bgCol: "bg-emerald-50" },
-  { phase: "3. Technical Round", desc: "Online assessment or technical interview.", icon: Code, color: "from-orange-400 to-orange-600", textCol: "text-orange-600", bgCol: "bg-orange-50" },
-  { phase: "4. Interview Round", desc: "Meet the team and discuss your experience.", icon: MessageSquare, color: "from-pink-400 to-pink-650", textCol: "text-pink-600", bgCol: "bg-pink-50" },
-  { phase: "5. HR Discussion", desc: "A conversation about you, our culture and role.", icon: UserCheck, color: "from-purple-400 to-purple-600", textCol: "text-purple-650", bgCol: "bg-purple-50" },
-  { phase: "6. Offer", desc: "Welcome to the team! Let's build the future.", icon: Mail, color: "from-blue-400 to-blue-600", textCol: "text-blue-600", bgCol: "bg-blue-50" }
+const PROCESS_STYLES = [
+  { icon: Briefcase, color: "from-teal-400 to-teal-600", textCol: "text-teal-600", bgCol: "bg-teal-50" },
+  { icon: Users, color: "from-emerald-400 to-emerald-600", textCol: "text-emerald-600", bgCol: "bg-emerald-50" },
+  { icon: Code, color: "from-orange-400 to-orange-600", textCol: "text-orange-600", bgCol: "bg-orange-50" },
+  { icon: MessageSquare, color: "from-pink-400 to-pink-650", textCol: "text-pink-600", bgCol: "bg-pink-50" },
+  { icon: UserCheck, color: "from-purple-400 to-purple-600", textCol: "text-purple-650", bgCol: "bg-purple-50" },
+  { icon: Mail, color: "from-blue-400 to-blue-600", textCol: "text-blue-600", bgCol: "bg-blue-50" },
 ];
 
 const FAQS_LIST = [
@@ -104,7 +105,24 @@ const Careers = () => {
     staleTime: 60_000,
   });
 
-  const careersSeo = seoFromItem(pagesConfig?.careers as Record<string, unknown> | undefined);
+  const careers = mergePagesCmsConfig(pagesConfig).careers;
+  const careersSeo = seoFromItem(careers as unknown as Record<string, unknown>);
+  const heroBg = careers.hero.backgroundImage?.trim() || HERO_BG;
+
+  const benefitsList = careers.benefits.map((benefit, idx) => ({
+    title: benefit.title,
+    desc: benefit.description,
+    image: BENEFIT_IMAGES[idx] || BENEFIT_IMAGES[0],
+  }));
+
+  const processTimeline = careers.hiringProcess.map((step, idx) => {
+    const style = PROCESS_STYLES[idx] || PROCESS_STYLES[0];
+    return {
+      phase: `${step.step}. ${step.title}`,
+      desc: step.description,
+      ...style,
+    };
+  });
 
   const handleScrollToPositions = () => {
     const el = document.getElementById('open-positions');
@@ -116,8 +134,8 @@ const Careers = () => {
       <PageSeo
         seo={careersSeo}
         defaults={{
-          title: 'Careers at TechVistar | Join our engineering team',
-          description: 'Explore open roles at TechVistar and join a collaborative engineering team.',
+          title: careers.seoTitle || DEFAULT_CAREERS_LANDING_CMS.seoTitle || 'Careers at TechVistar | Join our engineering team',
+          description: careers.seoDescription || DEFAULT_CAREERS_LANDING_CMS.seoDescription || '',
           url: buildCanonical('/careers'),
         }}
       />
@@ -131,7 +149,7 @@ const Careers = () => {
         <section className="relative min-h-[80vh] flex items-center justify-center bg-slate-950 overflow-hidden pt-20">
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-30 scale-102 transition-transform duration-[10000ms] pointer-events-none"
-            style={{ backgroundImage: `url(${HERO_BG})` }}
+            style={{ backgroundImage: `url(${heroBg})` }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950 pointer-events-none" />
 
@@ -143,14 +161,22 @@ const Careers = () => {
               className="space-y-4"
             >
               <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 font-black uppercase tracking-[0.2em] text-[10px] px-3.5 py-1 rounded-full">
-                Careers at TechVistar
+                {careers.hero.eyebrow || 'Careers at TechVistar'}
               </Badge>
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05]">
-                Build technology that <br />
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-350 to-cyan-400 bg-clip-text text-transparent">solves real business problems</span>
+                {careers.hero.subtitle ? (
+                  <>
+                    {careers.hero.title} <br />
+                    <span className="bg-gradient-to-r from-emerald-400 via-teal-350 to-cyan-400 bg-clip-text text-transparent">
+                      {careers.hero.subtitle}
+                    </span>
+                  </>
+                ) : (
+                  careers.hero.title
+                )}
               </h1>
               <p className="text-slate-200 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-bold leading-relaxed">
-                Join our premium global squad of systems architects, designer engineers, and full stack builders to construct state-of-the-art enterprise digital hubs.
+                {careers.hero.description}
               </p>
             </motion.div>
 
@@ -337,7 +363,7 @@ const Careers = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-              {BENEFITS_LIST.map((benefit, idx) => {
+              {benefitsList.map((benefit, idx) => {
                 return (
                   <motion.div 
                     key={idx} 
@@ -375,12 +401,11 @@ const Careers = () => {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative max-w-5xl mx-auto">
-              {PROCESS_TIMELINE.map((step, idx) => {
+              {processTimeline.map((step, idx) => {
                 const Icon = step.icon;
                 return (
                   <div key={idx} className="flex flex-col items-center text-center space-y-3 relative z-10 flex-1 group">
-                    {/* Animated connecting line to the right of steps (excluding last step) */}
-                    {idx < PROCESS_TIMELINE.length - 1 && (
+                    {idx < processTimeline.length - 1 && (
                       <div className="hidden md:block absolute left-[50%] right-[-50%] top-6 h-[2px] bg-slate-100 border-dashed border-t-2 pointer-events-none group-hover:border-emerald-250 transition-colors" />
                     )}
 
@@ -406,8 +431,8 @@ const Careers = () => {
         <section id="life-at-techvistar" className="py-24 bg-slate-50">
           <div className="container mx-auto px-6 max-w-7xl space-y-12">
             <div className="text-center max-w-2xl mx-auto space-y-2">
-              <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Life at TechVistar</h2>
-              <p className="text-slate-500 text-xs sm:text-sm font-semibold">Real photography of workspaces, collaboration synch, and cultural events.</p>
+              <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">{careers.culture.title}</h2>
+              <p className="text-slate-500 text-xs sm:text-sm font-semibold">{careers.culture.description}</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -472,13 +497,13 @@ const Careers = () => {
         {/* 7. Bottom CTA Block */}
         <section className="py-16 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white border-t border-slate-900">
           <div className="container mx-auto px-6 max-w-4xl text-center space-y-6">
-            <h2 className="text-2xl sm:text-3xl font-black font-display tracking-tight">Didn't find the right opening?</h2>
+            <h2 className="text-2xl sm:text-3xl font-black font-display tracking-tight">{careers.cta.title}</h2>
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto font-medium">
-              We are constantly seeking outstanding designers, systems developers, and backend builders. Submit your portfolio details for general open considerations.
+              {careers.cta.description}
             </p>
             <div className="pt-2">
               <Button asChild className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-11 px-6 rounded-full shadow-lg shadow-emerald-500/10">
-                <Link to="/contact">Submit Open Application</Link>
+                <Link to={careers.cta.buttonLink || '/contact'}>{careers.cta.buttonText}</Link>
               </Button>
             </div>
           </div>

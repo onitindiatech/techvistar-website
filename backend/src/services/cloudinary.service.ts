@@ -6,16 +6,28 @@
 import { Readable } from 'stream';
 import type { UploadApiResponse } from 'cloudinary';
 import { cloudinary } from '@/config/cloudinary';
-import { UPLOAD } from '@/constants';
+import { UPLOAD, VIDEO_UPLOAD, RESUME_UPLOAD } from '@/constants';
 import { ApiError } from '@/utils/ApiError';
 import { logger } from '@/utils/logger';
-import { UploadedImageResult } from '@/types/upload';
+import {
+  buildResumePublicId,
+  resolveResumeFormat,
+  resolveResumeResourceType,
+  sanitizeResumeFilename,
+} from '@/utils/resumeAsset';
+import { UploadedImageResult, UploadedResumeResult, UploadedVideoResult } from '@/types/upload';
 
 /** Minimal file shape accepted by uploadImage (Multer memory storage). */
 export type UploadableImageFile = {
   buffer: Buffer;
   mimetype: string;
   size?: number;
+};
+
+export type UploadableVideoFile = UploadableImageFile;
+
+export type UploadableResumeFile = UploadableImageFile & {
+  originalname: string;
 };
 
 class CloudinaryService {
@@ -28,7 +40,7 @@ class CloudinaryService {
     }
 
     try {
-      const result = await this.uploadBuffer(file.buffer, file.mimetype);
+      const result = await this.uploadBuffer(file.buffer, file.mimetype, 'image', UPLOAD.CLOUDINARY_FOLDER);
 
       logger.info('[CloudinaryService] Image uploaded', {
         publicId: result.public_id,
@@ -55,6 +67,99 @@ class CloudinaryService {
       }
 
       throw ApiError.internal('Failed to upload image to Cloudinary.');
+    }
+  }
+
+  async uploadResume(file: UploadableResumeFile): Promise<UploadedResumeResult> {
+    if (!file?.buffer?.length) {
+      throw ApiError.badRequest('No resume file provided.');
+    }
+
+    const originalFileName = sanitizeResumeFilename(file.originalname || 'resume.pdf');
+    const resourceType = resolveResumeResourceType(file.mimetype);
+    const format = resolveResumeFormat(file.mimetype, originalFileName);
+    const publicId = buildResumePublicId(originalFileName);
+
+    try {
+      const uploadOptions: { publicId?: string; format?: string } = { publicId };
+      // Let Cloudinary detect PDF format; forcing format on upload can break delivery metadata.
+      if (resourceType === 'raw') {
+        uploadOptions.format = format;
+      }
+
+      const result = await this.uploadBuffer(
+        file.buffer,
+        file.mimetype,
+        resourceType,
+        RESUME_UPLOAD.CLOUDINARY_FOLDER,
+        uploadOptions,
+      );
+
+      logger.info('[CloudinaryService] Resume uploaded', {
+        publicId: result.public_id,
+        format: result.format,
+        bytes: result.bytes,
+        resourceType,
+        originalFileName,
+      });
+
+      return {
+        url: result.secure_url,
+        publicId: result.public_id,
+        format: result.format ?? format ?? 'unknown',
+        bytes: result.bytes,
+        mimeType: file.mimetype,
+        originalFileName,
+        resourceType,
+      };
+    } catch (err) {
+      logger.error('[CloudinaryService] Resume upload failed', {
+        message: err instanceof Error ? err.message : String(err),
+        mimeType: file.mimetype,
+        size: file.size,
+      });
+
+      if (err instanceof ApiError) {
+        throw err;
+      }
+
+      throw ApiError.internal('Failed to upload resume to Cloudinary.');
+    }
+  }
+
+  async uploadVideo(file: UploadableVideoFile): Promise<UploadedVideoResult> {
+    if (!file?.buffer?.length) {
+      throw ApiError.badRequest('No video file provided.');
+    }
+
+    try {
+      const result = await this.uploadBuffer(file.buffer, file.mimetype, 'video', VIDEO_UPLOAD.CLOUDINARY_FOLDER);
+
+      logger.info('[CloudinaryService] Video uploaded', {
+        publicId: result.public_id,
+        format: result.format,
+        bytes: result.bytes,
+      });
+
+      return {
+        url: result.secure_url,
+        publicId: result.public_id,
+        format: result.format ?? 'unknown',
+        duration: result.duration,
+        bytes: result.bytes,
+      };
+    } catch (err) {
+      logger.error('[CloudinaryService] Video upload failed', {
+        message: err instanceof Error ? err.message : String(err),
+        mimeType: file.mimetype,
+        size: file.size,
+      });
+
+      if (err instanceof ApiError) {
+        throw err;
+      }
+
+      throw ApiError.internal('Failed to upload video to Cloudinary.');
     }
   }
 
@@ -112,13 +217,23 @@ class CloudinaryService {
     }
   }
 
-  private uploadBuffer(buffer: Buffer, mimeType: string): Promise<UploadApiResponse> {
+  private uploadBuffer(
+    buffer: Buffer,
+    mimeType: string,
+    resourceType: 'image' | 'video' | 'raw' = 'image',
+    folder: string = UPLOAD.CLOUDINARY_FOLDER,
+    options?: { publicId?: string; format?: string }
+  ): Promise<UploadApiResponse> {
     return new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
-          folder: UPLOAD.CLOUDINARY_FOLDER,
-          resource_type: 'image',
-          format: mimeType === 'image/svg+xml' ? 'svg' : undefined,
+          folder,
+          resource_type: resourceType,
+          public_id: options?.publicId,
+          format:
+            options?.format ??
+            (resourceType === 'image' && mimeType === 'image/svg+xml' ? 'svg' : undefined),
+          invalidate: true,
         },
         (error, result) => {
           if (error) {

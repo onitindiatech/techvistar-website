@@ -26,6 +26,13 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminServices from "./pages/admin/Services";
 import AdminServicesSettings from "./pages/admin/ServicesSettings";
 import AdminPageSeoSettings from "./pages/admin/PageSeoSettings";
+import AdminHomeSettings from "./pages/admin/HomeSettings";
+import AdminAboutSettings from "./pages/admin/AboutSettings";
+import AdminContactSettings from "./pages/admin/ContactSettings";
+import AdminSolutionsLandingSettings from "./pages/admin/SolutionsLandingSettings";
+import AdminIndustriesLandingSettings from "./pages/admin/IndustriesLandingSettings";
+import AdminCareersLandingSettings from "./pages/admin/CareersLandingSettings";
+import AdminWebsiteSettings from "./pages/admin/WebsiteSettings";
 import AdminIndustries from "./pages/admin/Industries";
 import AdminSolutions from "./pages/admin/Solutions";
 import AdminPortfolio from "./pages/admin/Portfolio";
@@ -35,6 +42,8 @@ import AdminApplications from "./pages/admin/Applications";
 import AdminContacts from "./pages/admin/Contacts";
 import AdminNewsletter from "./pages/admin/Newsletter";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
+import { HomeCmsProvider } from "@/contexts/HomeCmsContext";
+import { WebsiteBrandingEffect } from "@/components/WebsiteBrandingEffect";
 
 const queryClient = new QueryClient();
 
@@ -116,6 +125,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <HomeCmsProvider>
+      <WebsiteBrandingEffect />
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <PageTransitionLoader />
         <ScrollToHashElement />
@@ -143,6 +154,13 @@ const App = () => (
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="services" element={<AdminServices />} />
               <Route path="services-settings" element={<AdminServicesSettings />} />
+              <Route path="home-settings" element={<AdminHomeSettings />} />
+              <Route path="about-settings" element={<AdminAboutSettings />} />
+              <Route path="contact-settings" element={<AdminContactSettings />} />
+              <Route path="solutions-landing" element={<AdminSolutionsLandingSettings />} />
+              <Route path="industries-landing" element={<AdminIndustriesLandingSettings />} />
+              <Route path="careers-landing" element={<AdminCareersLandingSettings />} />
+              <Route path="website-settings" element={<AdminWebsiteSettings />} />
               <Route path="page-seo" element={<AdminPageSeoSettings />} />
               <Route path="industries" element={<AdminIndustries />} />
               <Route path="solutions" element={<AdminSolutions />} />
@@ -159,6 +177,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </HomeCmsProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

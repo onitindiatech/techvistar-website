@@ -23,6 +23,7 @@ import { seoFromItem } from '@/lib/seoAdmin';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import { ABOUT_COPY, ABOUT_PAGE } from '@/data';
+import { mergePagesCmsConfig, DEFAULT_ABOUT_CMS } from '@/types/pagesCms';
 import aboutBg from '../assets/about-bg.png';
 import logoImg from '@/assets/logo.webp';
 import { PageHeader } from '@/components/ui/PageHeader';
@@ -35,25 +36,6 @@ const fadeUp = {
   viewport: { once: true, margin: '-40px' },
   transition: { duration: 0.42, ease },
 };
-
-const pillars = [
-  {
-    icon: Target,
-    label: ABOUT_COPY.mission.title,
-    text: ABOUT_COPY.mission.text,
-    bg: 'bg-emerald-50/30 hover:bg-emerald-50/60',
-    border: 'border-emerald-100/80 hover:border-emerald-200',
-    iconBg: 'bg-emerald-100/60 text-emerald-700',
-  },
-  {
-    icon: Eye,
-    label: ABOUT_COPY.vision.title,
-    text: ABOUT_COPY.vision.text,
-    bg: 'bg-blue-50/30 hover:bg-blue-50/60',
-    border: 'border-blue-100/80 hover:border-blue-200',
-    iconBg: 'bg-blue-100/60 text-blue-700',
-  },
-] as const;
 
 const boxStyles = [
   {
@@ -103,7 +85,29 @@ const About = () => {
     staleTime: 60_000,
   });
 
-  const aboutSeo = seoFromItem(pagesConfig?.about as Record<string, unknown> | undefined);
+  const about = mergePagesCmsConfig(pagesConfig).about;
+  const aboutSeo = seoFromItem(about as unknown as Record<string, unknown>);
+  const heroBg = about.hero.backgroundImage?.trim() || aboutBg;
+  const storyParagraphs = about.story.body.split('\n\n').filter(Boolean);
+
+  const pillars = [
+    {
+      icon: Target,
+      label: about.mission.title,
+      text: about.mission.text,
+      bg: 'bg-emerald-50/30 hover:bg-emerald-50/60',
+      border: 'border-emerald-100/80 hover:border-emerald-200',
+      iconBg: 'bg-emerald-100/60 text-emerald-700',
+    },
+    {
+      icon: Eye,
+      label: about.vision.title,
+      text: about.vision.text,
+      bg: 'bg-blue-50/30 hover:bg-blue-50/60',
+      border: 'border-blue-100/80 hover:border-blue-200',
+      iconBg: 'bg-blue-100/60 text-blue-700',
+    },
+  ] as const;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -114,8 +118,8 @@ const About = () => {
       <PageSeo
         seo={aboutSeo}
         defaults={{
-          title: 'About TechVistar | Technology-first growth partner',
-          description: ABOUT_COPY.summary,
+          title: about.seoTitle || DEFAULT_ABOUT_CMS.seoTitle || 'About TechVistar | Technology-first growth partner',
+          description: about.seoDescription || DEFAULT_ABOUT_CMS.seoDescription || ABOUT_COPY.summary,
           url: buildCanonical('/about'),
         }}
       />
@@ -124,10 +128,21 @@ const About = () => {
 
       {/* Page Hero with Custom Background & Animations */}
       <PageHeader
-        title={<>About <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">TechVistar</span></>}
-        subtitle={ABOUT_PAGE.hero.eyebrow}
-        description={ABOUT_PAGE.hero.lead}
-        backgroundImage={aboutBg}
+        title={
+          about.hero.title.includes('TechVistar') ? (
+            <>
+              About{' '}
+              <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                TechVistar
+              </span>
+            </>
+          ) : (
+            about.hero.title
+          )
+        }
+        subtitle={about.hero.eyebrow || ABOUT_PAGE.hero.eyebrow}
+        description={about.hero.description}
+        backgroundImage={heroBg}
       />
 
             {/* Single structured document — tight vertical rhythm */}
@@ -137,10 +152,10 @@ const About = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
               <div className="md:col-span-2">
                 <h2 id="overview-heading" className="font-display text-lg font-bold tracking-tight text-slate-900 sm:text-xl">
-                  {ABOUT_PAGE.overview.title}
+                  {about.story.title}
                 </h2>
                 <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-700 sm:text-[0.9375rem]">
-                  {ABOUT_PAGE.overview.paragraphs.map((p, idx) => (
+                  {storyParagraphs.map((p, idx) => (
                     <p key={idx}>{p}</p>
                   ))}
                 </div>
@@ -306,7 +321,7 @@ const About = () => {
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-100/80 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-teal-800 ring-1 ring-teal-800/10">
                     {ABOUT_PAGE.commitmentHeading}
                   </span>
-                  <p className="mt-2 text-sm font-semibold text-slate-800 leading-relaxed">{ABOUT_COPY.closing}</p>
+                  <p className="mt-2 text-sm font-semibold text-slate-800 leading-relaxed">{about.teamSection.description}</p>
                 </div>
               </motion.div>
             </div>
@@ -314,11 +329,11 @@ const About = () => {
             {/* CTA Banner */}
             <div className="mt-5 flex flex-col gap-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-5 text-white sm:flex-row sm:items-center sm:justify-between sm:px-6 shadow-md hover:shadow-lg transition-shadow duration-300">
               <p className="text-xs font-bold leading-snug sm:max-w-[70%] sm:text-sm tracking-wide">
-                {ABOUT_PAGE.ctaText}
+                {about.cta.text}
               </p>
               <Button variant="secondary" size="default" className="shrink-0 border-0 bg-white text-emerald-700 hover:bg-slate-50 hover:text-emerald-800 font-bold text-xs px-5 py-2.5 shadow-sm transition-all" asChild>
-                <Link to="/#contact" className="inline-flex items-center gap-2 uppercase tracking-wider">
-                  {ABOUT_PAGE.ctaButtonText}
+                <Link to={about.cta.buttonLink || '/#contact'} className="inline-flex items-center gap-2 uppercase tracking-wider">
+                  {about.cta.buttonText}
                   <ArrowRight className="h-4 w-4 stroke-[2.5]" aria-hidden />
                 </Link>
               </Button>

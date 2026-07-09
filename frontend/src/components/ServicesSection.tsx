@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
@@ -10,6 +10,8 @@ import { decorateService, getServiceCardImage } from '@/data/services';
 import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
 import { mergeServicesCmsConfig } from '@/types/servicesCms';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
+import { useHomeCms } from '@/contexts/HomeCmsContext';
+
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 const listContainer = {
@@ -29,17 +31,9 @@ const itemVariants = {
   },
 };
 
-const ctaVariants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease, delay: 0.2 },
-  },
-};
-
 export const ServicesSection = () => {
   const { ref, isInView } = useAnimatedSection();
+  const { featuredServices: homeFeatured } = useHomeCms();
 
   const { data: cmsConfigApi } = useQuery({
     queryKey: ['servicesCmsConfig'],
@@ -48,6 +42,8 @@ export const ServicesSection = () => {
   });
 
   const sectionCopy = mergeServicesCmsConfig(cmsConfigApi).homeSection;
+  const viewAllHref = homeFeatured.ctaLink?.trim() || '/services';
+  const viewAllLabel = homeFeatured.ctaText?.trim() || sectionCopy.viewAllTitle || 'View All Services';
 
   const { data: apiServices } = useQuery({
     queryKey: ['activeServices'],
@@ -61,6 +57,8 @@ export const ServicesSection = () => {
   // Show first 11 active services regardless of featured flag
   const services = activeServices.slice(0, 11);
 
+  if (homeFeatured.visible === false) return null;
+
   return (
     <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative pt-8 pb-4 md:pt-12 md:pb-6">
       {/* Background decoration */}
@@ -69,9 +67,9 @@ export const ServicesSection = () => {
       <div className="container-custom relative z-10">
         <SectionHeader
           tag={sectionCopy.tag}
-          title={sectionCopy.title}
+          title={homeFeatured.heading?.trim() || sectionCopy.title}
           highlight={sectionCopy.highlight}
-          description={sectionCopy.description}
+          description={homeFeatured.subtitle?.trim() || sectionCopy.description}
           isInView={isInView}
           headingId="services-heading"
         />
@@ -115,7 +113,7 @@ export const ServicesSection = () => {
           })}
           {/* View All Services Card */}
           <motion.div variants={itemVariants}>
-            <Link to="/services" className="block h-full">
+            <Link to={viewAllHref} className="block h-full">
               <SpotlightCard
                 className="group relative flex flex-col items-center justify-between p-4 md:p-5 rounded-2xl border border-slate-200/80 bg-slate-50/60 shadow-sm hover:shadow-[0_15px_30px_rgba(15,23,42,0.05)] hover:border-emerald-500/20 transition-all duration-300 hover:-translate-y-1 text-center h-full gap-3"
                 spotlightColor="rgba(34, 197, 94, 0.03)"
@@ -126,7 +124,7 @@ export const ServicesSection = () => {
                 </div>
                 
                 <h3 className="font-display text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors leading-tight">
-                  {sectionCopy.viewAllTitle}
+                  {viewAllLabel}
                 </h3>
                 
                 <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors mt-1">

@@ -10,10 +10,10 @@ import {
 } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { HERO_COPY } from '@/data';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
-import { Video } from '@/components/ui/video';
+import { HeroBackgroundMedia } from '@/components/HeroBackgroundMedia';
+import { useHomeCms } from '@/contexts/HomeCmsContext';
 
 const spring = { type: 'spring' as const, stiffness: 420, damping: 36, mass: 0.8 };
 
@@ -174,7 +174,9 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
   };
 
   const reduceMotion = prefersReducedMotion === true;
-  const heroHeadlineLabel = `${HERO_COPY.headlineLine1} ${HERO_COPY.headlineAccent} ${HERO_COPY.headlineLine2}`;
+  const cms = useHomeCms();
+  const hero = cms.hero;
+  const heroHeadlineLabel = `${hero.headlineLine1} ${hero.headlineAccent} ${hero.headlineLine2}`;
 
   return (
     <section
@@ -185,12 +187,8 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
       aria-label="Introduction"
       className="relative isolate min-h-[100svh] lg:h-[100svh] lg:min-h-0 overflow-hidden bg-zinc-950 selection:bg-primary/30 [perspective:1400px]"
     >
-      {/* Background Video */}
-      <Video 
-        youtubeUrl="https://youtu.be/CfjNMLgax2s?si=Pri2z-IYXELhd6CS" 
-        overlayClassName="bg-black/40"
-        iframeClassName="w-[177.78svh]"
-      />
+      {/* Background media */}
+      <HeroBackgroundMedia hero={hero} />
 
       {/* Single large circle — slow path across the entire hero (above blob layer, behind stars) */}
       <div
@@ -260,17 +258,25 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
               style={{ transformStyle: 'preserve-3d' }}
               className="flex flex-col items-start"
             >
+              {hero.badge?.trim() ? (
+                <motion.span
+                  variants={fadeUp}
+                  className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300"
+                >
+                  {hero.badge.trim()}
+                </motion.span>
+              ) : null}
               <motion.h1
                 variants={rise3d}
                 style={{ transformStyle: 'preserve-3d' }}
                 className="font-display text-[clamp(2rem,6.5vw,4rem)] font-extrabold leading-[1.1] tracking-[-0.03em] text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] [transform-style:preserve-3d]"
               >
-                <span className="block">We Build Intelligent</span>
-                <span className="block mt-1 sm:mt-2">Digital Solutions</span>
+                <span className="block">{hero.headlineLine1}</span>
+                <span className="block mt-1 sm:mt-2">{hero.headlineLine2}</span>
                 <span className="block mt-1 sm:mt-2">
                   That Drive{' '}
                   <span className="text-primary font-black drop-shadow-[0_0_25px_rgba(34,197,94,0.3)]">
-                    Real Impact
+                    {hero.headlineAccent}
                   </span>
                 </span>
               </motion.h1>
@@ -280,7 +286,7 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                 style={{ transform: 'translateZ(8px)' }}
                 className="mt-4 sm:mt-6 max-w-xl text-zinc-200 text-base sm:text-lg font-medium leading-relaxed text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]"
               >
-                AI-Powered. Future-Ready. Business-Focused.
+                {hero.tagline}
               </motion.p>
 
               <motion.div
@@ -303,8 +309,8 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                     className="h-12 min-w-[11.5rem] w-full sm:w-auto rounded-lg border-0 bg-primary px-8 text-base font-semibold text-primary-foreground shadow-[0_12px_40px_-12px_rgba(34,197,94,0.45)] transition-shadow hover:bg-primary/92 hover:shadow-[0_16px_48px_-10px_rgba(34,197,94,0.4)]"
                     asChild
                   >
-                    <Link to="/#services" className="inline-flex items-center justify-center">
-                      <span>Explore Services</span>
+                    <Link to={hero.ctaPrimaryLink} className="inline-flex items-center justify-center">
+                      <span>{hero.ctaPrimary}</span>
                     </Link>
                   </Button>
                 </motion.div>
@@ -322,8 +328,8 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                     className="h-12 min-w-[11.5rem] w-full sm:w-auto rounded-lg border-white/15 bg-zinc-950/60 px-8 text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-colors hover:border-white/25 hover:bg-white/5"
                     asChild
                   >
-                    <Link to="/#contact" className="inline-flex items-center justify-center">
-                      <span>Talk to an Expert</span>
+                    <Link to={hero.ctaSecondaryLink} className="inline-flex items-center justify-center">
+                      <span>{hero.ctaSecondary}</span>
                     </Link>
                   </Button>
                 </motion.div>
@@ -344,7 +350,15 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
               Trusted by industry leaders
             </p>
             <div className="flex flex-wrap items-center justify-start gap-x-4 gap-y-3 sm:gap-x-10 opacity-60 grayscale select-none">
-              {/* Logo 1: ACME */}
+              {hero.trustLogos.length > 0 ? (
+                hero.trustLogos
+                  .slice()
+                  .sort((a, b) => a.sortOrder - b.sortOrder)
+                  .map((logo) => (
+                    <img key={logo.url + logo.alt} src={logo.url} alt={logo.alt} className="h-5 w-auto object-contain" loading="lazy" />
+                  ))
+              ) : (
+                <>
               <svg className="h-4 sm:h-5 w-auto text-white/80 hover:text-white hover:opacity-100 transition-all duration-300" viewBox="0 0 100 24" fill="currentColor">
                 <path d="M12 4L4 18h16L12 4zm0 3.5l5.5 9.5H6.5L12 7.5z" fillRule="evenodd" />
                 <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">ACME</text>
@@ -366,10 +380,13 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                 <polygon points="12,3 20,8 20,16 12,21 4,16 4,8" stroke="currentColor" strokeWidth="2" fill="none" />
                 <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">UMBRELLA</text>
               </svg>
+                </>
+              )}
             </div>
           </motion.div>
 
           {/* Smooth Scroll Indicator */}
+          {hero.showScrollIndicator ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -394,6 +411,7 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
               />
             </div>
           </motion.div>
+          ) : null}
         </div>
       </motion.div>
     </section>

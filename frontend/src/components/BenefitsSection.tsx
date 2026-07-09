@@ -2,9 +2,10 @@ import { motion } from 'framer-motion';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { BENEFITS, SECTION_BENEFITS } from '@/data';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
 import { cn } from '@/lib/utils';
+import { useHomeCms } from '@/contexts/HomeCmsContext';
+import { DEFAULT_HOME_CMS } from '@/types/homeCms';
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -26,25 +27,32 @@ const cardVariants = {
 };
 
 const BENEFIT_IMAGES = [
-  'https://images.unsplash.com/photo-1518770660439-4636190af475?w=150&auto=format&fit=crop&q=80', // Motherboard Chip
-  'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=150&auto=format&fit=crop&q=80', // Cybersecurity grid
-  'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=150&auto=format&fit=crop&q=80', // Business financial chart
-  'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=150&auto=format&fit=crop&q=80', // Quality review / QA testing
-  'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=150&auto=format&fit=crop&q=80', // Transparent contract agreement
-  'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=150&auto=format&fit=crop&q=80', // Developer coding layout
+  'https://images.unsplash.com/photo-1518770660439-4636190af475?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=150&auto=format&fit=crop&q=80',
 ];
 
 export const BenefitsSection = () => {
   const { ref, isInView } = useAnimatedSection();
+  const { benefits } = useHomeCms();
+  const section = benefits.visible === false ? null : benefits;
+  const cards = (section?.cards?.length ? section.cards : DEFAULT_HOME_CMS.benefits.cards)
+    .slice()
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  if (!section) return null;
 
   return (
     <SiteSection ref={ref} id="benefits" variant="muted" aria-labelledby="benefits-heading" className="!pt-12 !pb-12 md:!pt-16 md:!pb-16 lg:!pb-20">
       <div className="container-custom relative z-10">
         <SectionHeader
-          tag={SECTION_BENEFITS.tag}
-          title={SECTION_BENEFITS.title}
-          highlight={SECTION_BENEFITS.highlight}
-          description={SECTION_BENEFITS.description}
+          tag={section.badge}
+          title={section.heading}
+          highlight={section.highlight}
+          description={section.description}
           isInView={isInView}
           headingId="benefits-heading"
         />
@@ -55,13 +63,13 @@ export const BenefitsSection = () => {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {BENEFITS.map((item, index) => (
+          {cards.map((item, index) => (
             <motion.div
-              key={item.title}
+              key={`${item.title}-${index}`}
               variants={cardVariants}
               className={cn(
-                "h-full",
-                index % 3 === 1 ? "lg:translate-y-4" : index % 3 === 2 ? "lg:translate-y-8" : ""
+                'h-full',
+                index % 3 === 1 ? 'lg:translate-y-4' : index % 3 === 2 ? 'lg:translate-y-8' : ''
               )}
             >
               <SpotlightCard
@@ -79,9 +87,10 @@ export const BenefitsSection = () => {
                         aria-hidden
                       >
                         <img
-                          src={BENEFIT_IMAGES[index]}
+                          src={item.image || BENEFIT_IMAGES[index % BENEFIT_IMAGES.length]}
                           alt={item.title}
                           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          loading="lazy"
                         />
                       </div>
                       <h3 className="font-display text-[1.0625rem] font-bold leading-snug tracking-tight text-slate-900 group-hover:text-primary transition-colors">
@@ -105,4 +114,5 @@ export const BenefitsSection = () => {
     </SiteSection>
   );
 };
+
 export default BenefitsSection;

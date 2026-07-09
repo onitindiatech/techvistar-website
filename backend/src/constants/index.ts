@@ -112,6 +112,32 @@ export const UPLOAD = {
   ALLOWED_EXTENSIONS: ['.jpg', '.jpeg', '.png', '.webp', '.svg'] as const,
 } as const;
 
+export const VIDEO_UPLOAD = {
+  MAX_FILE_SIZE_BYTES: 50 * 1024 * 1024, // 50 MB
+  FIELD_NAME:          'video',
+  CLOUDINARY_FOLDER:   'techvistar/uploads/videos',
+  ALLOWED_MIME_TYPES: [
+    'video/mp4',
+    'video/webm',
+  ] as const,
+  ALLOWED_EXTENSIONS: ['.mp4', '.webm'] as const,
+} as const;
+
+export const RESUME_UPLOAD = {
+  MAX_FILE_SIZE_BYTES: 5 * 1024 * 1024, // 5 MB
+  FIELD_NAME:          'resume',
+  CLOUDINARY_FOLDER:   'techvistar/resumes',
+  ALLOWED_MIME_TYPES: [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'image/png',
+    'image/jpeg',
+    'image/jpg',
+  ] as const,
+  ALLOWED_EXTENSIONS: ['.pdf', '.doc', '.docx', '.png', '.jpg', '.jpeg'] as const,
+} as const;
+
 // ─── Validation Constraints ───────────────────────────────────────────────────
 export const VALIDATION = {
   EMAIL_REGEX: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
@@ -147,6 +173,7 @@ export const API_VERSION = 'v1' as const;
 export const DEV_ORIGINS = [
   'http://localhost:8080',   // Vite dev server (frontend)
   'http://localhost:8081',   // Vite dev server — fallback port when 8080 is occupied
+  'http://localhost:8082',   // Vite dev server — fallback port when 8080/8081 are occupied
   'http://localhost:3000',   // Future admin panel
   'http://localhost:5173',   // Alternative Vite port
 ] as const;

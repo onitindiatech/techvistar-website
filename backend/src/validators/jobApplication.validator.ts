@@ -17,12 +17,24 @@ interface JobApplicationInput {
   linkedin?: unknown;
   portfolio?: unknown;
   resumeUrl?: unknown;
+  resumePublicId?: unknown;
+  resumeMimeType?: unknown;
+  originalFileName?: unknown;
   coverLetter?: unknown;
   whyJoinTechVistar?: unknown;
   status?: unknown;
 }
 
 const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/i;
+const PLACEHOLDER_RESUME_PATTERN = /placeholder\.pdf|\/resumes\/placeholder/i;
+
+function isValidResumeUrl(value: string): boolean {
+  const trimmed = value.trim();
+  if (!trimmed || PLACEHOLDER_RESUME_PATTERN.test(trimmed)) {
+    return false;
+  }
+  return /^https?:\/\//i.test(trimmed);
+}
 
 export function validateJobApplicationInput(input: JobApplicationInput, isUpdate = false): {
   jobId: mongoose.Types.ObjectId;
@@ -34,6 +46,9 @@ export function validateJobApplicationInput(input: JobApplicationInput, isUpdate
   linkedin?: string;
   portfolio?: string;
   resumeUrl: string;
+  resumePublicId?: string;
+  resumeMimeType?: string;
+  originalFileName?: string;
   coverLetter: string;
   whyJoinTechVistar?: string;
   status?: typeof VALIDATION.JOB_APPLICATION_STATUSES[number];
@@ -127,7 +142,16 @@ export function validateJobApplicationInput(input: JobApplicationInput, isUpdate
     }
   }
 
-  // 9. Cover Letter Check
+  // 9. Resume URL Check
+  if (!isUpdate || input.resumeUrl !== undefined) {
+    if (input.resumeUrl === undefined || input.resumeUrl === null || String(input.resumeUrl).trim() === '') {
+      errors.push({ field: 'resumeUrl', message: 'Resume URL is required' });
+    } else if (!isValidResumeUrl(String(input.resumeUrl))) {
+      errors.push({ field: 'resumeUrl', message: 'A valid uploaded resume URL is required' });
+    }
+  }
+
+  // 10. Cover Letter Check
   if (!isUpdate || input.coverLetter !== undefined) {
     if (input.coverLetter === undefined || input.coverLetter === null || String(input.coverLetter).trim() === '') {
       errors.push({ field: 'coverLetter', message: 'Cover letter is required' });
@@ -139,7 +163,7 @@ export function validateJobApplicationInput(input: JobApplicationInput, isUpdate
     }
   }
 
-  // 10. Status Check (Optional/Update only)
+  // 11. Status Check (Optional/Update only)
   if (input.status !== undefined && input.status !== null) {
     const statusStr = String(input.status).trim();
     const validStatuses = VALIDATION.JOB_APPLICATION_STATUSES as readonly string[];
@@ -164,7 +188,10 @@ export function validateJobApplicationInput(input: JobApplicationInput, isUpdate
     yearsOfExperience: Number(input.yearsOfExperience),
     linkedin: input.linkedin ? String(input.linkedin).trim() : '',
     portfolio: input.portfolio ? String(input.portfolio).trim() : '',
-    resumeUrl: input.resumeUrl ? String(input.resumeUrl).trim() : 'http://localhost:5000/resumes/placeholder.pdf',
+    resumeUrl: String(input.resumeUrl).trim(),
+    resumePublicId: input.resumePublicId ? String(input.resumePublicId).trim() : '',
+    resumeMimeType: input.resumeMimeType ? String(input.resumeMimeType).trim() : '',
+    originalFileName: input.originalFileName ? String(input.originalFileName).trim() : '',
     coverLetter: String(input.coverLetter).trim(),
     whyJoinTechVistar: input.whyJoinTechVistar ? String(input.whyJoinTechVistar).trim() : '',
     status: input.status ? (String(input.status).trim() as any) : undefined,

@@ -50,6 +50,10 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no Origin (Postman, server-to-server, mobile apps)
     if (!origin) return callback(null, true);
+    // In development, allow any local Vite port (8080, 8081, 8082, 5173, …)
+    if (env.isDev && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+      return callback(null, true);
+    }
     if (allowedOrigins.includes(origin as typeof allowedOrigins[number])) {
       return callback(null, true);
     }

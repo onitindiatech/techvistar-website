@@ -1,59 +1,176 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface VideoProps {
-  /** The full YouTube URL to extract the video ID from and play as background. */
   youtubeUrl: string;
-  /** Optional class name to customize the dark overlay. Default is 'bg-black/50'. */
+  /** Seconds to start playback (and loop restart). Default 0. */
+  startTime?: number;
   overlayClassName?: string;
-  /** Optional class name to customize the iframe (e.g. for custom heights). */
   iframeClassName?: string;
+}
+
+type YtPlayer = {
+  mute: () => void;
+  playVideo: () => void;
+  seekTo: (seconds: number, allowSeekAhead: boolean) => void;
+  destroy: () => void;
+};
+
+type YtPlayerState = {
+  ENDED: number;
+};
+
+type YtNamespace = {
+  Player: new (
+    element: HTMLElement,
+    options: {
+      videoId: string;
+      playerVars: Record<string, number | string>;
+      events?: {
+        onReady?: (event: { target: YtPlayer }) => void;
+        onStateChange?: (event: { data: number; target: YtPlayer }) => void;
+      };
+    }
+  ) => YtPlayer;
+  PlayerState: YtPlayerState;
+};
+
+declare global {
+  interface Window {
+    YT?: YtNamespace;
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
+let youtubeApiPromise: Promise<void> | null = null;
+
+function loadYouTubeIframeApi(): Promise<void> {
+  if (window.YT?.Player) return Promise.resolve();
+
+  if (!youtubeApiPromise) {
+    youtubeApiPromise = new Promise((resolve) => {
+      const previousReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        previousReady?.();
+        resolve();
+      };
+
+      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+        const script = document.createElement('script');
+        script.src = 'https://www.youtube.com/iframe_api';
+        script.async = true;
+        document.head.appendChild(script);
+      }
+    });
+  }
+
+  return youtubeApiPromise;
 }
 
 /**
  * Extracts the 11-character YouTube video ID from various YouTube URL formats.
- * Supports standard URLs, short (youtu.be) URLs, embeds, and mobile/shorts URLs.
  */
-const getYouTubeId = (url: string): string | null => {
+export const getYouTubeId = (url: string): string | null => {
   if (!url) return null;
-  
+
   try {
     const parsedUrl = new URL(url);
     if (parsedUrl.hostname === 'youtu.be') {
-      return parsedUrl.pathname.slice(1);
+      return parsedUrl.pathname.slice(1).split('/')[0] || null;
     }
     if (parsedUrl.hostname.includes('youtube.com')) {
       if (parsedUrl.pathname.startsWith('/shorts/')) {
-        return parsedUrl.pathname.split('/')[2];
+        return parsedUrl.pathname.split('/')[2] || null;
       }
       if (parsedUrl.pathname.startsWith('/embed/')) {
-        return parsedUrl.pathname.split('/')[2];
+        return parsedUrl.pathname.split('/')[2] || null;
       }
       return parsedUrl.searchParams.get('v');
     }
   } catch {
-    // Fallback to regex if URL parsing fails
+    // fallback below
   }
 
-  // Regex fallback matching standard patterns
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
 };
 
+function clampStartTime(seconds?: number): number {
+  const value = Number.isFinite(seconds) ? Math.round(seconds as number) : 3;
+  return Math.max(0, Math.min(600, value));
+}
+
 /**
- * Video Component
- * Renders a full-screen background YouTube video with customized overlay and configurations.
+ * Decorative full-screen YouTube background (no controls, loops from configured start).
  */
 export const Video: React.FC<VideoProps> = ({
   youtubeUrl,
+  startTime = 3,
   overlayClassName = 'bg-black/50',
   iframeClassName,
 }) => {
   const videoId = getYouTubeId(youtubeUrl);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<YtPlayer | null>(null);
+  const configuredStart = clampStartTime(startTime);
+
+  useEffect(() => {
+    if (!videoId || !playerContainerRef.current) return;
+
+    let cancelled = false;
+
+    const mountPlayer = async () => {
+      await loadYouTubeIframeApi();
+      if (cancelled || !playerContainerRef.current || !window.YT?.Player) return;
+
+      playerRef.current?.destroy();
+      playerRef.current = new window.YT.Player(playerContainerRef.current, {
+        videoId,
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          loop: 1,
+          playlist: videoId,
+          start: configuredStart,
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+          disablekb: 1,
+          fs: 0,
+          iv_load_policy: 3,
+          enablejsapi: 1,
+        },
+        events: {
+          onReady: (event) => {
+            event.target.mute();
+            if (configuredStart > 0) {
+              event.target.seekTo(configuredStart, true);
+            }
+            event.target.playVideo();
+          },
+          onStateChange: (event) => {
+            if (event.data === window.YT?.PlayerState.ENDED) {
+              event.target.seekTo(configuredStart, true);
+              event.target.playVideo();
+            }
+          },
+        },
+      });
+    };
+
+    void mountPlayer();
+
+    return () => {
+      cancelled = true;
+      playerRef.current?.destroy();
+      playerRef.current = null;
+    };
+  }, [videoId, configuredStart]);
 
   if (!videoId) {
     return (
-      <div 
+      <div
         className="absolute inset-0 bg-zinc-950 flex items-center justify-center text-zinc-500 text-sm"
         aria-label="Video error"
       >
@@ -62,34 +179,15 @@ export const Video: React.FC<VideoProps> = ({
     );
   }
 
-  // Embed parameters for background playback:
-  // - autoplay=1: Start playing immediately
-  // - mute=1: Mute video (necessary for autoplay to work in modern browsers)
-  // - loop=1 & playlist=videoId: Loop the video indefinitely (YouTube requires playlist parameter for loop to work)
-  // - playsinline=1: Prevent native full-screen playback on iOS
-  // - controls=0: Hide YouTube player controls
-  // - modestbranding=1: Minimize YouTube branding in the player
-  // - rel=0: Show related videos only from the same channel
-  // - enablejsapi=1: Allow JavaScript control API
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&playsinline=1&controls=0&modestbranding=1&rel=0&enablejsapi=1`;
-
   return (
-    <div 
+    <div
       className="absolute inset-0 -z-20 w-full h-full overflow-hidden pointer-events-none select-none"
       aria-hidden="true"
     >
-      {/* 
-        The iframe is sized using viewport units (177.77vh width / 56.25vw height) 
-        to ensure it always maintains a 16:9 ratio and covers the container 
-        without displaying black letterboxes.
-      */}
-      <iframe
-        src={embedUrl}
+      <div
+        ref={playerContainerRef}
         className={`absolute top-1/2 left-1/2 w-[177.78vh] min-w-full h-[56.25vw] min-h-full -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none border-0 ${iframeClassName ?? ''}`}
-        allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-        tabIndex={-1}
       />
-      {/* Dark tint overlay */}
       <div className={`absolute inset-0 pointer-events-none ${overlayClassName}`} />
     </div>
   );

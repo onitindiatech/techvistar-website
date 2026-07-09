@@ -43,8 +43,8 @@ export class JobApplicationService {
       throw ApiError.conflict('You have already applied for this position.');
     }
 
-    if (!data.resumeUrl) {
-      data.resumeUrl = 'http://localhost:5000/resumes/placeholder.pdf';
+    if (!data.resumeUrl?.trim() || /placeholder\.pdf|\/resumes\/placeholder/i.test(data.resumeUrl)) {
+      throw ApiError.badRequest('A valid resume upload is required to submit an application.');
     }
 
     const application = new JobApplication(data);

@@ -8,13 +8,17 @@ import {
   ArrowRight, Sparkle, Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SOLUTIONS_DATA, SolutionDetail } from '@/data/solutions';
+import { useQuery } from '@tanstack/react-query';
+import { getActiveSolutions } from '@/services/solutions.service';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { decorateSolution, SOLUTIONS_DATA, SolutionDetail } from '@/data/solutions';
+import { mergePagesCmsConfig, DEFAULT_SOLUTIONS_LANDING_CMS } from '@/types/pagesCms';
+import { seoFromItem } from '@/lib/seoAdmin';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 import workBg from '../assets/work-bg.png';
 import { LogoCloud } from '@/components/LogoCloud';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { useQuery } from '@tanstack/react-query';
-import { getActiveSolutions } from '@/services/solutions.service';
-import { decorateSolution } from '@/data/solutions';
 
 interface SolutionCategory {
   id: string;
@@ -29,6 +33,15 @@ export const Solutions = () => {
     queryKey: ['activeSolutions'],
     queryFn: () => getActiveSolutions(),
   });
+
+  const { data: pagesConfigApi } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
+  });
+
+  const landing = mergePagesCmsConfig(pagesConfigApi).solutionsLanding;
+  const heroBg = landing.hero.backgroundImage?.trim() || workBg;
 
   const solutionsData = apiSolutions && apiSolutions.length > 0
     ? apiSolutions.map(decorateSolution)
@@ -132,15 +145,23 @@ export const Solutions = () => {
 
   return (
     <>
+      <PageSeo
+        defaults={{
+          title: landing.seoTitle || DEFAULT_SOLUTIONS_LANDING_CMS.seoTitle || 'Solutions | TechVistar',
+          description: landing.seoDescription || DEFAULT_SOLUTIONS_LANDING_CMS.seoDescription || '',
+          url: buildCanonical('/solutions'),
+        }}
+        seo={seoFromItem(landing as unknown as Record<string, unknown>)}
+      />
       <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 animate-fade-in pb-16">
         <Navbar />
 
         {/* HERO SECTION */}
         <PageHeader 
-          title="Enterprise Solutions"
-          subtitle="Our Capabilities"
-          description="Deploying robust business automation, production-grade intelligence models, and highly secure cloud environments built to scale operations."
-          backgroundImage={workBg}
+          title={landing.hero.title}
+          subtitle={landing.hero.eyebrow || 'Our Capabilities'}
+          description={landing.hero.description}
+          backgroundImage={heroBg}
         />
 
         {/* LOADING SKELETON LAYER */}
@@ -367,14 +388,14 @@ export const Solutions = () => {
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-600/5 rounded-full blur-2xl pointer-events-none" />
             
             <div className="max-w-2xl mx-auto relative z-10 space-y-6">
-              <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Ready to Deploy a Solution?</h3>
+              <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">{landing.cta.title}</h3>
               <p className="text-slate-600 font-semibold text-sm sm:text-base leading-relaxed">
-                Connect with our engineering leads to outline timelines, compliance metrics, and technical requirements.
+                {landing.cta.description}
               </p>
               <div className="pt-2 flex flex-wrap justify-center gap-4">
-                <Link to="/contact">
+                <Link to={landing.cta.buttonLink || '/contact'}>
                   <Button className="h-12 px-8 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-sm rounded-xl transition-all shadow-md">
-                    Book Consultation
+                    {landing.cta.buttonText}
                   </Button>
                 </Link>
                 <Link to="/contact">

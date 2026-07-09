@@ -15,6 +15,46 @@ const CONFIG_KEY = 'global';
 
 const PAGE_SEO_MEDIA_FIELDS = SOLUTION_MEDIA_FIELDS;
 
+const MEDIA_SECTION_PATHS: Array<{ section: string; urlKey: string; publicIdKey: string }> = [
+  { section: 'home', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
+  { section: 'home', urlKey: 'hero.backgroundVideoUrl', publicIdKey: 'hero.backgroundVideoPublicId' },
+  { section: 'home', urlKey: 'portfolio.backgroundImage', publicIdKey: 'portfolio.backgroundImagePublicId' },
+  { section: 'home', urlKey: 'contactCta.backgroundImage', publicIdKey: 'contactCta.backgroundImagePublicId' },
+  { section: 'home', urlKey: 'footer.logo', publicIdKey: 'footer.logoPublicId' },
+  { section: 'about', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
+  { section: 'contact', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
+  { section: 'solutionsLanding', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
+  { section: 'industriesLanding', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
+  { section: 'careers', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
+  { section: 'websiteSettings', urlKey: 'logo', publicIdKey: 'logoPublicId' },
+  { section: 'websiteSettings', urlKey: 'favicon', publicIdKey: 'faviconPublicId' },
+  { section: 'websiteSettings', urlKey: 'defaultOgImage', publicIdKey: 'defaultOgImagePublicId' },
+  { section: 'websiteSettings', urlKey: 'footer.logo', publicIdKey: 'footer.logoPublicId' },
+  { section: 'websiteSettings', urlKey: 'footer.backgroundImage', publicIdKey: 'footer.backgroundImagePublicId' },
+  { section: 'websiteSettings', urlKey: 'seoDefaults.defaultOgImage', publicIdKey: 'seoDefaults.defaultOgImagePublicId' },
+  { section: 'websiteSettings', urlKey: 'maintenance.backgroundImage', publicIdKey: 'maintenance.backgroundImagePublicId' },
+];
+
+function getNested(obj: Record<string, unknown>, path: string): unknown {
+  return path.split('.').reduce<unknown>((acc, key) => {
+    if (!acc || typeof acc !== 'object') return undefined;
+    return (acc as Record<string, unknown>)[key];
+  }, obj);
+}
+
+function setNested(obj: Record<string, unknown>, path: string, value: unknown): void {
+  const keys = path.split('.');
+  let current = obj;
+  for (let i = 0; i < keys.length - 1; i++) {
+    const key = keys[i];
+    if (!current[key] || typeof current[key] !== 'object') {
+      current[key] = {};
+    }
+    current = current[key] as Record<string, unknown>;
+  }
+  current[keys[keys.length - 1]] = value;
+}
+
 function flattenPageSeo(doc: Record<string, unknown> | null | undefined, section: 'about' | 'careers') {
   if (!doc) return {};
   const block = (doc[section] as Record<string, unknown>) || {};
@@ -42,6 +82,29 @@ function applyFlattenedPageSeo(
   return { ...payload, [section]: block };
 }
 
+function deepMergeSection(
+  previous: Record<string, unknown> | undefined,
+  incoming: Record<string, unknown>
+): Record<string, unknown> {
+  const base = { ...(previous || {}) };
+  for (const [key, value] of Object.entries(incoming)) {
+    if (value === undefined) continue;
+    if (
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      base[key] &&
+      typeof base[key] === 'object' &&
+      !Array.isArray(base[key])
+    ) {
+      base[key] = deepMergeSection(base[key] as Record<string, unknown>, value as Record<string, unknown>);
+    } else {
+      base[key] = value;
+    }
+  }
+  return base;
+}
+
 export class PagesCmsConfigService {
   async ensureConfig(): Promise<IPagesCmsConfig> {
     let config = await PagesCmsConfig.findOne({ configKey: CONFIG_KEY });
@@ -58,20 +121,30 @@ export class PagesCmsConfigService {
 
   async updateConfig(data: Record<string, unknown>, updatedBy?: string): Promise<IPagesCmsConfig> {
     const previous = await PagesCmsConfig.findOne({ configKey: CONFIG_KEY }).lean();
+    const prevRecord = (previous as unknown as Record<string, unknown>) || {};
+
     let merged: Record<string, unknown> = {
-      ...(previous ? (previous as unknown as Record<string, unknown>) : {}),
-      ...data,
+      ...prevRecord,
       configKey: CONFIG_KEY,
       updatedBy: updatedBy || 'Admin',
     };
+
+    for (const [section, incoming] of Object.entries(data)) {
+      if (section === 'configKey' || section === 'updatedBy') continue;
+      if (!incoming || typeof incoming !== 'object') continue;
+      merged[section] = deepMergeSection(
+        prevRecord[section] as Record<string, unknown> | undefined,
+        incoming as Record<string, unknown>
+      );
+    }
 
     const obsoleteIds: string[] = [];
 
     for (const section of ['about', 'careers'] as const) {
       if (!data[section]) continue;
 
-      const prevFlat = flattenPageSeo(previous as unknown as Record<string, unknown>, section);
-      const incoming = data[section] as Record<string, unknown>;
+      const prevFlat = flattenPageSeo(prevRecord, section);
+      const incoming = (merged[section] as Record<string, unknown>) || {};
       const nextFlat = {
         [`${section}.ogImage`]: incoming.ogImage ?? prevFlat[`${section}.ogImage`] ?? '',
         [`${section}.ogImagePublicId`]:
@@ -96,6 +169,34 @@ export class PagesCmsConfigService {
       obsoleteIds.push(...obsoletePublicIds);
     }
 
+    for (const { section, urlKey, publicIdKey } of MEDIA_SECTION_PATHS) {
+      if (!data[section]) continue;
+
+      const prevSection = (prevRecord[section] as Record<string, unknown>) || {};
+      const nextSection = (merged[section] as Record<string, unknown>) || {};
+      const flatKey = `${section}.${urlKey}`;
+      const flatIdKey = `${section}.${publicIdKey}`;
+
+      const prevFlat = {
+        [flatKey]: getNested(prevSection, urlKey) ?? '',
+        [flatIdKey]: getNested(prevSection, publicIdKey) ?? '',
+      };
+      const nextFlat = {
+        [flatKey]: getNested(nextSection, urlKey) ?? prevFlat[flatKey],
+        [flatIdKey]: getNested(nextSection, publicIdKey) ?? prevFlat[flatIdKey],
+      };
+
+      const { payload: syncedFlat, obsoletePublicIds } = syncScalarMediaFields(prevFlat, nextFlat, [
+        { urlKey: flatKey, publicIdKey: flatIdKey },
+      ]);
+
+      const updatedSection = { ...nextSection };
+      setNested(updatedSection, urlKey, syncedFlat[flatKey]);
+      setNested(updatedSection, publicIdKey, syncedFlat[flatIdKey]);
+      merged[section] = updatedSection;
+      obsoleteIds.push(...obsoletePublicIds);
+    }
+
     const config = await PagesCmsConfig.findOneAndUpdate(
       { configKey: CONFIG_KEY },
       merged,
@@ -117,12 +218,17 @@ export class PagesCmsConfigService {
       ...flattenPageSeo(doc as unknown as Record<string, unknown>, 'about'),
       ...flattenPageSeo(doc as unknown as Record<string, unknown>, 'careers'),
     };
-    return collectDocumentPublicIds(flat, [
+    const fields = [
       { urlKey: 'about.ogImage', publicIdKey: 'about.ogImagePublicId' },
       { urlKey: 'about.twitterImage', publicIdKey: 'about.twitterImagePublicId' },
       { urlKey: 'careers.ogImage', publicIdKey: 'careers.ogImagePublicId' },
       { urlKey: 'careers.twitterImage', publicIdKey: 'careers.twitterImagePublicId' },
-    ]);
+      ...MEDIA_SECTION_PATHS.map(({ section, urlKey, publicIdKey }) => ({
+        urlKey: `${section}.${urlKey}`,
+        publicIdKey: `${section}.${publicIdKey}`,
+      })),
+    ];
+    return collectDocumentPublicIds(flat, fields);
   }
 }
 

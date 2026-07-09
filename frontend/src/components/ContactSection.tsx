@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Send, Clock, ShieldCheck, Award, 
-  Globe, Smartphone, Palette, Brain, Laptop, Cloud 
+  Send, Clock, ShieldCheck, Award
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +12,9 @@ import { SiteSection } from '@/components/SiteSection';
 import { CONTACT_FORM } from '@/data';
 import { cn } from '@/lib/utils';
 import { submitContactForm } from '@/services/contact.service';
+import { useHomeCms } from '@/contexts/HomeCmsContext';
+import { getCmsIcon } from '@/lib/cmsIcons';
+import { DEFAULT_HOME_CMS } from '@/types/homeCms';
 
 interface FormData {
   category: string;
@@ -32,27 +34,23 @@ const initialFormData: FormData = {
   message: '',
 };
 
-const CATEGORIES = [
-  { id: 'web', label: 'Web Dev', icon: Globe },
-  { id: 'mobile', label: 'Mobile Apps', icon: Smartphone },
-  { id: 'design', label: 'UI/UX Design', icon: Palette },
-  { id: 'ai', label: 'AI Solutions', icon: Brain },
-  { id: 'software', label: 'Software', icon: Laptop },
-  { id: 'devops', label: 'Cloud/DevOps', icon: Cloud },
-];
-
-const BUDGETS = [
-  { id: 'under_10k', label: '< $10k' },
-  { id: '10k_25k', label: '$10k - $25k' },
-  { id: '25k_50k', label: '$25k - $50k' },
-  { id: 'over_50k', label: '$50k+' },
-];
-
 export const ContactSection = () => {
   const { ref, isInView } = useAnimatedSection();
+  const { contactCta } = useHomeCms();
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (!contactCta.visible) return null;
+
+  const categories = (contactCta.categories.length > 0 ? contactCta.categories : DEFAULT_HOME_CMS.contactCta.categories)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  const budgets = (contactCta.budgetOptions.length > 0 ? contactCta.budgetOptions : DEFAULT_HOME_CMS.contactCta.budgetOptions)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  const steps = (contactCta.steps.length > 0 ? contactCta.steps : DEFAULT_HOME_CMS.contactCta.steps)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +97,7 @@ export const ContactSection = () => {
 
       toast({
         title: CONTACT_FORM.toasts.success.title,
-        description: CONTACT_FORM.toasts.success.description,
+        description: contactCta.successMessage || CONTACT_FORM.toasts.success.description,
       });
       setFormData(initialFormData);
     } catch (err: any) {
@@ -138,13 +136,19 @@ export const ContactSection = () => {
           className="text-center max-w-2xl mx-auto mb-8"
         >
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-100 px-3.5 py-1.5 rounded-full">
-            START A PROJECT
+            {contactCta.badge}
           </span>
           <h2 id="contact-heading" className="text-4xl md:text-5xl font-extrabold font-display text-slate-900 mt-5 tracking-tight">
-            Tell Us About Your Project
+            {contactCta.heading}
+            {contactCta.highlight ? (
+              <>
+                {' '}
+                <span className="text-emerald-600">{contactCta.highlight}</span>
+              </>
+            ) : null}
           </h2>
           <p className="text-slate-500 font-semibold text-sm sm:text-base mt-4 leading-relaxed">
-            Share your idea and our team will get back to you with a tailored plan within 24 hours.
+            {contactCta.description}
           </p>
         </motion.div>
 
@@ -167,35 +171,19 @@ export const ContactSection = () => {
               </div>
 
               <div className="space-y-8">
-                <div className="flex gap-4 items-start">
-                  <span className="text-2xl font-black font-display text-emerald-600/35 mt-0.5">01</span>
+                {steps.map((step, index) => (
+                <div key={step.title} className="flex gap-4 items-start">
+                  <span className="text-2xl font-black font-display text-emerald-600/35 mt-0.5">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
                   <div>
-                    <div className="font-bold text-slate-900 text-base">Share Requirements</div>
+                    <div className="font-bold text-slate-900 text-base">{step.title}</div>
                     <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-semibold mt-1">
-                      Tell us your goals, timeline, and budget — we'll review everything.
+                      {step.description}
                     </p>
                   </div>
                 </div>
-
-                <div className="flex gap-4 items-start">
-                  <span className="text-2xl font-black font-display text-emerald-600/35 mt-0.5">02</span>
-                  <div>
-                    <div className="font-bold text-slate-900 text-base">Expert Assessment</div>
-                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-semibold mt-1">
-                      Our team will evaluate your project and identify the best approach.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 items-start">
-                  <span className="text-2xl font-black font-display text-emerald-600/35 mt-0.5">03</span>
-                  <div>
-                    <div className="font-bold text-slate-900 text-base">Get Your Solution</div>
-                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-semibold mt-1">
-                      We'll reach out with a tailored proposal and next steps.
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
@@ -225,8 +213,8 @@ export const ContactSection = () => {
                   Project Category
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {CATEGORIES.map((cat) => {
-                    const Icon = cat.icon;
+                  {categories.map((cat) => {
+                    const Icon = getCmsIcon(cat.icon);
                     const isSelected = formData.category === cat.id;
                     return (
                       <button
@@ -298,7 +286,7 @@ export const ContactSection = () => {
                   Estimated Budget
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {BUDGETS.map((bud) => {
+                  {budgets.map((bud) => {
                     const isSelected = formData.budget === bud.id;
                     return (
                       <button
@@ -326,7 +314,7 @@ export const ContactSection = () => {
                   disabled={isSubmitting}
                   className="h-11 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] flex items-center gap-2 cursor-pointer"
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? 'Sending...' : contactCta.ctaText}
                   <Send className="w-4 h-4" />
                 </Button>
               </div>

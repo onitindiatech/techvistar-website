@@ -11,3 +11,21 @@ export interface UploadedImageResult {
   height:   number;
   format:   string;
 }
+
+export interface UploadedVideoResult {
+  url:      string;
+  publicId: string;
+  format:   string;
+  duration?: number;
+  bytes?:   number;
+}
+
+export interface UploadedResumeResult {
+  url:      string;
+  publicId: string;
+  format:   string;
+  bytes?:   number;
+  mimeType: string;
+  originalFileName: string;
+  resourceType: 'image' | 'raw';
+}

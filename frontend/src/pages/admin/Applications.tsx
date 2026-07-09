@@ -7,10 +7,12 @@ import {
   permanentlyDeleteApplication, bulkDeleteApplications, bulkRestoreApplications, bulkUpdateApplicationStatus,
   type ApplicationStatus,
 } from "@/services/job.service";
+import { isResolvableResumeUrl, getResumePreviewUrl, getResumeDownloadUrl, canPreviewResumeInline, downloadResumeWithAuth } from "@/lib/resumeUrl";
+import { getAccessToken } from "@/services/auth.service";
 import { useToast } from "@/hooks/use-toast";
 import {
   Trash2, ExternalLink, Loader2, ArrowUpRight, FileUp, Search, RotateCcw,
-  AlertTriangle, ArrowLeft, ArrowRight, RotateCw,
+  AlertTriangle, ArrowLeft, ArrowRight, RotateCw, Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -209,10 +211,55 @@ const Applications = () => {
                     <td className="px-4 py-4 text-xs font-semibold text-emerald-700">{getJobTitle(app)}</td>
                     <td className="px-4 py-4 text-xs text-slate-600">{app.currentLocation || "—"}<br /><span className="text-slate-400">{app.phone}</span></td>
                     <td className="px-4 py-4">
-                      {app.resumeUrl && (
-                        <a href={app.resumeUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline">
-                          <FileUp className="w-3 h-3" /> Resume <ExternalLink className="w-2.5 h-2.5" />
-                        </a>
+                      {isResolvableResumeUrl(app.resumeUrl) ? (
+                        <div className="flex flex-col items-start gap-1">
+                          {(() => {
+                            const asset = {
+                              resumeUrl: app.resumeUrl,
+                              resumePublicId: app.resumePublicId,
+                              resumeMimeType: app.resumeMimeType,
+                              originalFileName: app.originalFileName,
+                            };
+                            const previewUrl = getResumePreviewUrl(asset);
+                            const downloadUrl = getResumeDownloadUrl(asset);
+
+                            return (
+                              <>
+                                {previewUrl && canPreviewResumeInline(asset) ? (
+                                  <a
+                                    href={previewUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline"
+                                  >
+                                    <FileUp className="w-3 h-3" /> View Resume <ExternalLink className="w-2.5 h-2.5" />
+                                  </a>
+                                ) : null}
+                                {downloadUrl ? (
+                                  <button
+                                    type="button"
+                                    onClick={async () => {
+                                      try {
+                                        await downloadResumeWithAuth(asset, getAccessToken);
+                                      } catch (error: any) {
+                                        toast({
+                                          title: "Download failed",
+                                          description: error?.message || "Could not download resume.",
+                                          variant: "destructive",
+                                        });
+                                      }
+                                    }}
+                                    className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-600 hover:underline"
+                                  >
+                                    <Download className="w-3 h-3" /> Download
+                                  </button>
+                                ) : null}
+                              </>
+                            );
+                          })()}
+                        </div>
+                      ) : (
+                        <span className="text-[11px] font-semibold text-slate-400">Resume not available</span>
                       )}
                       {app.portfolio && (
                         <a href={app.portfolio} target="_blank" rel="noreferrer" className="block text-[11px] font-bold text-blue-600 hover:underline mt-1">

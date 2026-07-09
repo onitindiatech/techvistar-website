@@ -377,7 +377,10 @@ export interface JobApplicationInput {
   yearsOfExperience: number;
   linkedin?: string;
   portfolio?: string;
-  resumeUrl?: string;
+  resumeUrl: string;
+  resumePublicId?: string;
+  resumeMimeType?: string;
+  originalFileName?: string;
   coverLetter: string;
   whyJoinTechVistar?: string;
 }

@@ -4,7 +4,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { pagesCmsConfigService } from '@/services/pagesCmsConfig.service';
-import { validatePagesCmsConfigInput } from '@/validators/pagesCmsConfig.validator';
+import { validatePagesCmsConfigPartialInput } from '@/validators/pagesCmsConfig.validator';
 import { ApiResponse } from '@/utils/ApiResponse';
 
 export async function getPublicPagesCmsConfig(
@@ -14,7 +14,7 @@ export async function getPublicPagesCmsConfig(
 ): Promise<void> {
   try {
     const config = await pagesCmsConfigService.getPublicConfig();
-    ApiResponse.success(res, config, 'Page SEO config retrieved successfully');
+    ApiResponse.success(res, config, 'Page CMS config retrieved successfully');
   } catch (err) {
     next(err);
   }
@@ -27,7 +27,7 @@ export async function adminGetPagesCmsConfig(
 ): Promise<void> {
   try {
     const config = await pagesCmsConfigService.getPublicConfig();
-    ApiResponse.success(res, config, 'Page SEO config retrieved successfully');
+    ApiResponse.success(res, config, 'Page CMS config retrieved successfully');
   } catch (err) {
     next(err);
   }
@@ -39,10 +39,10 @@ export async function adminUpdatePagesCmsConfig(
   next: NextFunction
 ): Promise<void> {
   try {
-    const validated = validatePagesCmsConfigInput(req.body as Record<string, unknown>);
+    const validated = validatePagesCmsConfigPartialInput(req.body as Record<string, unknown>);
     const updatedBy = (req as { user?: { email?: string } }).user?.email || 'Admin';
     const config = await pagesCmsConfigService.updateConfig(validated, updatedBy);
-    ApiResponse.success(res, config, 'Page SEO settings updated successfully');
+    ApiResponse.success(res, config, 'Page CMS settings updated successfully');
   } catch (err) {
     next(err);
   }

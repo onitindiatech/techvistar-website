@@ -8,10 +8,23 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SITE } from '@/data';
+import { useQuery } from '@tanstack/react-query';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { mergePagesCmsConfig } from '@/types/pagesCms';
 import logo from '../assets/logo.webp';
 
 export const Navbar = () => {
   const location = useLocation();
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
+  });
+  const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
+  const navLogo = websiteSettings.logo?.trim() || logo;
+  const companyName = websiteSettings.companyName?.trim() || SITE.name;
+  const ctaText = websiteSettings.navbar.ctaButtonText || 'Contact Us';
+  const ctaLink = websiteSettings.navbar.ctaButtonLink || '/contact';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
@@ -169,12 +182,12 @@ export const Navbar = () => {
         {/* Logo Branding */}
         <Link to="/" className="flex items-center gap-3 group shrink-0">
           <img
-            src={logo}
+            src={navLogo}
             alt={SITE.name}
             className="h-10 w-10 rounded-full object-cover ring-2 ring-emerald-500/10 group-hover:ring-emerald-500/30 transition-all duration-300"
           />
           <span className="text-xl font-extrabold font-display tracking-tight text-slate-900 group-hover:text-emerald-600 transition-colors">
-            {SITE.name}
+            {companyName}
           </span>
         </Link>
 
@@ -345,13 +358,13 @@ export const Navbar = () => {
 
         {/* Right: Premium Outline Contact CTA (Direct Link to Contact Page) */}
         <div className="hidden lg:flex items-center gap-4 shrink-0">
-          <Link to="/contact">
+          <Link to={ctaLink}>
             <motion.button
               whileHover={{ scale: 1.04, boxShadow: '0 10px 25px -5px rgba(16,185,129,0.3)' }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center gap-3.5 pl-6 pr-2 py-2 bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full transition-all font-bold text-sm tracking-wide shadow-md shadow-emerald-500/10 group"
             >
-              <span>Contact Us</span>
+              <span>{ctaText}</span>
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white group-hover:bg-white group-hover:text-emerald-700 transition-colors">
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </span>
@@ -771,9 +784,9 @@ export const Navbar = () => {
               </div>
 
               <div className="pt-4">
-                <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to={ctaLink} onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="flex items-center justify-between w-full pl-6 pr-2 py-2 bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full font-bold text-sm tracking-wide shadow-md">
-                    <span>Contact Us</span>
+                    <span>{ctaText}</span>
                     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white">
                       <ArrowRight className="w-4 h-4" />
                     </span>

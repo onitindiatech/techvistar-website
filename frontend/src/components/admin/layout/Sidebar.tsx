@@ -8,30 +8,80 @@ import {
   MessageSquareText,
   Package,
   Shapes,
-  Sparkles,
   Wrench,
   X,
-  LogOut,
   Settings,
   Building,
   Globe,
+  Home,
+  Info,
+  Phone,
+  SlidersHorizontal,
 } from "lucide-react";
 import logo from "../../../assets/logo.webp";
 import { motion } from "framer-motion";
 
-const navItems = [
-  { label: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
-  { label: "Services", path: "/admin/services", icon: Wrench },
-  { label: "Services Settings", path: "/admin/services-settings", icon: Settings },
-  { label: "Page SEO", path: "/admin/page-seo", icon: Globe },
-  { label: "Industries", path: "/admin/industries", icon: Building },
-  { label: "Solutions", path: "/admin/solutions", icon: Shapes },
-  { label: "Portfolio", path: "/admin/portfolio", icon: Package },
-  { label: "FAQs", path: "/admin/faqs", icon: MessageSquareText },
-  { label: "Jobs", path: "/admin/jobs", icon: BriefcaseBusiness },
-  { label: "Applications", path: "/admin/applications", icon: FileText },
-  { label: "Contacts", path: "/admin/contacts", icon: Contact },
-  { label: "Newsletter", path: "/admin/newsletter", icon: Mail },
+type NavItem = { label: string; path: string; icon: typeof LayoutDashboard };
+
+const navGroups: { title: string; items: NavItem[] }[] = [
+  {
+    title: "Overview",
+    items: [{ label: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard }],
+  },
+  {
+    title: "Website",
+    items: [
+      { label: "Home", path: "/admin/home-settings", icon: Home },
+      { label: "About", path: "/admin/about-settings", icon: Info },
+      { label: "Contact", path: "/admin/contact-settings", icon: Phone },
+      { label: "Website Settings", path: "/admin/website-settings", icon: SlidersHorizontal },
+    ],
+  },
+  {
+    title: "Services",
+    items: [
+      { label: "Services", path: "/admin/services", icon: Wrench },
+      { label: "Services Landing", path: "/admin/services-settings", icon: Settings },
+    ],
+  },
+  {
+    title: "Solutions",
+    items: [
+      { label: "Solutions", path: "/admin/solutions", icon: Shapes },
+      { label: "Solutions Landing", path: "/admin/solutions-landing", icon: Settings },
+    ],
+  },
+  {
+    title: "Industries",
+    items: [
+      { label: "Industries", path: "/admin/industries", icon: Building },
+      { label: "Industries Landing", path: "/admin/industries-landing", icon: Settings },
+    ],
+  },
+  {
+    title: "Portfolio",
+    items: [{ label: "Portfolio", path: "/admin/portfolio", icon: Package }],
+  },
+  {
+    title: "Careers",
+    items: [
+      { label: "Jobs", path: "/admin/jobs", icon: BriefcaseBusiness },
+      { label: "Applications", path: "/admin/applications", icon: FileText },
+      { label: "Careers Landing", path: "/admin/careers-landing", icon: Settings },
+    ],
+  },
+  {
+    title: "Content",
+    items: [
+      { label: "FAQs", path: "/admin/faqs", icon: MessageSquareText },
+      { label: "Newsletter", path: "/admin/newsletter", icon: Mail },
+      { label: "Page SEO", path: "/admin/page-seo", icon: Globe },
+    ],
+  },
+  {
+    title: "Inbox",
+    items: [{ label: "Contacts", path: "/admin/contacts", icon: Contact }],
+  },
 ];
 
 export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
@@ -39,7 +89,6 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
 
   return (
     <div className="flex h-full flex-col bg-transparent relative">
-      {/* Header */}
       <div className="px-6 py-8 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3.5">
           <div className="relative group cursor-pointer">
@@ -58,45 +107,50 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
         )}
       </div>
 
-      {/* Navigation */}
       <div className="flex-1 overflow-y-auto custom-scrollbar px-4 pb-24">
-        <div className="mb-2 px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">Main Menu</div>
-        <nav className="space-y-1">
-          {navItems.map(({ label, path, icon: Icon }) => {
-            const isActive = location.pathname === path || (path !== "/admin/dashboard" && location.pathname.startsWith(path));
+        {navGroups.map((group) => (
+          <div key={group.title} className="mb-5">
+            <div className="mb-2 px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">{group.title}</div>
+            <nav className="space-y-1">
+              {group.items.map(({ label, path, icon: Icon }) => {
+                const isActive =
+                  location.pathname === path ||
+                  (path !== "/admin/dashboard" && location.pathname.startsWith(path));
 
-            return (
-              <NavLink
-                key={path}
-                to={path}
-                onClick={onClose}
-                className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-200 ${
-                  isActive
-                    ? "text-emerald-700"
-                    : "text-slate-500 hover:text-slate-900"
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="sidebar-active-bg"
-                    className="absolute inset-0 bg-emerald-50/80 rounded-xl border border-emerald-100/50 shadow-sm"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
-                
-                <div className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-300 ${
-                  isActive ? 'bg-white text-emerald-600 shadow-sm' : 'bg-transparent text-slate-400 group-hover:text-slate-700 group-hover:scale-110'
-                }`}>
-                  <Icon className="h-[18px] w-[18px]" strokeWidth={isActive ? 2.5 : 2} />
-                </div>
-                <span className="relative z-10">{label}</span>
-              </NavLink>
-            );
-          })}
-        </nav>
+                return (
+                  <NavLink
+                    key={path}
+                    to={path}
+                    onClick={onClose}
+                    className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-200 ${
+                      isActive ? "text-emerald-700" : "text-slate-500 hover:text-slate-900"
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="sidebar-active-bg"
+                        className="absolute inset-0 bg-emerald-50/80 rounded-xl border border-emerald-100/50 shadow-sm"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                    <div
+                      className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-300 ${
+                        isActive
+                          ? "bg-white text-emerald-600 shadow-sm"
+                          : "bg-transparent text-slate-400 group-hover:text-slate-700 group-hover:scale-110"
+                      }`}
+                    >
+                      <Icon className="h-[18px] w-[18px]" strokeWidth={isActive ? 2.5 : 2} />
+                    </div>
+                    <span className="relative z-10">{label}</span>
+                  </NavLink>
+                );
+              })}
+            </nav>
+          </div>
+        ))}
       </div>
 
-      {/* Fixed Bottom Profile */}
       <div className="absolute bottom-0 left-0 w-full p-4 bg-white/80 backdrop-blur-md border-t border-slate-200/50 shrink-0">
         <div className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group">
           <div className="flex items-center gap-3">

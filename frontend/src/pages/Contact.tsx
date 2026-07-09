@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import { 
   Mail, Phone, MapPin, Clock, ShieldCheck, Sparkles, 
   Linkedin, ArrowRight, Send, HelpCircle, ArrowUpRight, 
@@ -16,9 +17,37 @@ import { submitContactForm } from '@/services/contact.service';
 import { LogoCloud } from '@/components/LogoCloud';
 import { FAQSection } from '@/components/faq';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { mergePagesCmsConfig, DEFAULT_CONTACT_CMS } from '@/types/pagesCms';
+import { seoFromItem } from '@/lib/seoAdmin';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 import contactBg from '../assets/about-bg.png';
 
+const renderContactHeroTitle = (title: string) => {
+  const highlight = 'Great';
+  if (!title.includes(highlight)) return title;
+  const [before, after] = title.split(highlight);
+  return (
+    <>
+      {before}
+      <span className="text-emerald-500">{highlight}</span>
+      {after}
+    </>
+  );
+};
+
 export const Contact = () => {
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
+  });
+
+  const contact = mergePagesCmsConfig(pagesConfig).contact;
+  const contactSeo = seoFromItem(contact as unknown as Record<string, unknown>);
+  const heroBg = contact.hero.backgroundImage?.trim() || contactBg;
+  const phoneHref = `tel:${contact.contactInfo.phone.replace(/\s/g, '')}`;
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -93,16 +122,24 @@ export const Contact = () => {
 
   return (
     <>
+      <PageSeo
+        seo={contactSeo}
+        defaults={{
+          title: contact.seoTitle || DEFAULT_CONTACT_CMS.seoTitle || 'Contact TechVistar | Start your project',
+          description: contact.seoDescription || DEFAULT_CONTACT_CMS.seoDescription || '',
+          url: buildCanonical('/contact'),
+        }}
+      />
       <Navbar />
       
       <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 pb-20 relative overflow-hidden animate-fade-in">
         
         {/* HERO HEADER SECTION - Matching Portfolio, Solutions and About */}
         <PageHeader 
-          title={<>Let's Build Something <span className="text-emerald-500">Great</span> Together</>}
-          subtitle="Let's Connect"
-          description="Have a project in mind or want to explore how we can help your business grow? We'd love to hear from you."
-          backgroundImage={contactBg}
+          title={renderContactHeroTitle(contact.hero.title)}
+          subtitle={contact.hero.eyebrow || "Let's Connect"}
+          description={contact.hero.description}
+          backgroundImage={heroBg}
         />
 
         {/* HERO GRID SECTION - FORM AND INFO CARDS */}
@@ -155,7 +192,7 @@ export const Contact = () => {
               <div className="space-y-4">
                 {/* Call card */}
                 <motion.a 
-                  href="tel:+919573157982"
+                  href={phoneHref}
                   whileHover={{ y: -2, scale: 1.01 }}
                   className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
@@ -164,14 +201,14 @@ export const Contact = () => {
                   </div>
                   <div>
                     <div className="font-extrabold font-display text-slate-900 text-sm">Call Us</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">+91 9573157982</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">Mon - Sat, 9:00 AM - 7:00 PM IST</span>
+                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.contactInfo.phone}</p>
+                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.office.hours}</span>
                   </div>
                 </motion.a>
 
                 {/* Email card */}
                 <motion.a 
-                  href="mailto:hello@techvistar.com"
+                  href={`mailto:${contact.contactInfo.email}`}
                   whileHover={{ y: -2, scale: 1.01 }}
                   className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
@@ -180,8 +217,8 @@ export const Contact = () => {
                   </div>
                   <div>
                     <div className="font-extrabold font-display text-slate-900 text-sm">Email Us</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">hello@techvistar.com</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">We reply within 24 hours</span>
+                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.contactInfo.email}</p>
+                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.contactInfo.supportText}</span>
                   </div>
                 </motion.a>
 
@@ -194,9 +231,9 @@ export const Contact = () => {
                     <MapPin className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-extrabold font-display text-slate-900 text-sm">Visit Us</div>
+                    <div className="font-extrabold font-display text-slate-900 text-sm">{contact.office.heading}</div>
                     <p className="text-xs text-slate-600 font-bold mt-0.5">TechVistar HQ</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">Noida, Uttar Pradesh, India</span>
+                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.office.address}</span>
                   </div>
                 </motion.div>
 
@@ -210,8 +247,10 @@ export const Contact = () => {
                   </div>
                   <div>
                     <div className="font-extrabold font-display text-slate-900 text-sm">Working Hours</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">Monday - Saturday</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">09:00 AM - 07:00 PM IST</span>
+                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.office.hours.split(',')[0] || contact.office.hours}</p>
+                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">
+                      {contact.office.hours.includes(',') ? contact.office.hours.split(',').slice(1).join(',').trim() : ''}
+                    </span>
                   </div>
                 </motion.div>
               </div>
@@ -223,8 +262,8 @@ export const Contact = () => {
                 <div className="flex items-center gap-3 pb-4 mb-6 border-b border-slate-100">
                   <Mail className="w-5.5 h-5.5 text-emerald-600" />
                   <div>
-                    <h3 className="font-display text-lg font-bold text-slate-900">Send us a message</h3>
-                    <p className="text-[11px] text-slate-500 font-bold mt-0.5">Fill out the form and our team will get back to you shortly.</p>
+                    <h3 className="font-display text-lg font-bold text-slate-900">{contact.cta.title}</h3>
+                    <p className="text-[11px] text-slate-500 font-bold mt-0.5">{contact.cta.description}</p>
                   </div>
                 </div>
 
@@ -319,7 +358,7 @@ export const Contact = () => {
                     disabled={isSubmitting}
                     className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 mt-2 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]"
                   >
-                    <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                    <span>{isSubmitting ? 'Sending...' : contact.cta.buttonText}</span>
                     <Send className="w-4 h-4" />
                   </Button>
                 </form>

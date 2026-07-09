@@ -60,14 +60,26 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
               </h1>
             </motion.div>
             
+            {/* Subtitle */}
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="text-base md:text-lg font-bold text-emerald-600 leading-snug mb-4 max-w-xl"
+            >
+              {solution.subtitle}
+            </motion.p>
+            
             {/* Description */}
             <motion.p 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-base md:text-lg text-slate-600 leading-relaxed mb-8 max-w-xl"
+              className="text-sm md:text-base text-slate-600 leading-relaxed mb-8 max-w-xl"
             >
-              {solution.subtitle}
+              {solution.desc && solution.desc !== solution.subtitle 
+                ? solution.desc 
+                : `Empower your organization with scalable, secure, and intuitive ${solution.title.toLowerCase()} systems. We build customized architectures that seamlessly integrate with your existing workflows, bridging the gap between legacy processes and modern innovation to drive measurable growth.`}
             </motion.p>
             
             {/* 4 Feature Bullets */}
@@ -179,65 +191,64 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="bg-white rounded-[32px] p-6 md:p-8 shadow-sm border border-slate-100/60"
+          className="bg-white rounded-[24px] p-4 md:p-6 shadow-sm border border-slate-100/60"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
             {/* Stat 1 */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-6 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
-              <div className="flex gap-5 items-start">
-                <div className="h-12 w-12 rounded-[14px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
-                  <TrendingUp className="h-[22px] w-[22px]" strokeWidth={2.5} />
+            <div className="bg-white border border-slate-100 rounded-2xl p-4 md:p-5 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
+              <div className="flex gap-4 items-start">
+                <div className="h-10 w-10 rounded-[12px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
+                  <TrendingUp className="h-[18px] w-[18px]" strokeWidth={2.5} />
                 </div>
                 <div className="pt-0.5">
-                  <h3 className="text-[28px] font-black text-slate-900 leading-none mb-2">40%</h3>
-                  <p className="text-[14px] font-bold text-slate-800 mb-2">Efficiency Gain</p>
-                  <p className="text-[13px] text-slate-500 leading-relaxed font-medium">Improve operational efficiency across your organization</p>
+                  <h3 className="text-[24px] font-black text-slate-900 leading-none mb-1.5">40%</h3>
+                  <p className="text-[13px] font-bold text-slate-800 mb-1.5">Efficiency Gain</p>
+                  <p className="text-[12px] text-slate-500 leading-relaxed font-medium">Improve operational efficiency across your organization</p>
                 </div>
               </div>
             </div>
             
             {/* Stat 2 */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-6 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
-              <div className="flex gap-5 items-start">
-                <div className="h-12 w-12 rounded-[14px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
-                  <Shield className="h-[22px] w-[22px]" strokeWidth={2.5} />
+            <div className="bg-white border border-slate-100 rounded-2xl p-4 md:p-5 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
+              <div className="flex gap-4 items-start">
+                <div className="h-10 w-10 rounded-[12px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
+                  <Shield className="h-[18px] w-[18px]" strokeWidth={2.5} />
                 </div>
                 <div className="pt-0.5">
-                  <h3 className="text-[28px] font-black text-slate-900 leading-none mb-2">99.9%</h3>
-                  <p className="text-[14px] font-bold text-slate-800 mb-2">System Uptime</p>
-                  <p className="text-[13px] text-slate-500 leading-relaxed font-medium">Enterprise-grade reliability and performance</p>
+                  <h3 className="text-[24px] font-black text-slate-900 leading-none mb-1.5">99.9%</h3>
+                  <p className="text-[13px] font-bold text-slate-800 mb-1.5">System Uptime</p>
+                  <p className="text-[12px] text-slate-500 leading-relaxed font-medium">Enterprise-grade reliability and performance</p>
                 </div>
               </div>
             </div>
 
             {/* Stat 3 */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-6 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
-              <div className="flex gap-5 items-start">
-                <div className="h-12 w-12 rounded-[14px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
-                  <Users className="h-[22px] w-[22px]" strokeWidth={2.5} />
+            <div className="bg-white border border-slate-100 rounded-2xl p-4 md:p-5 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
+              <div className="flex gap-4 items-start">
+                <div className="h-10 w-10 rounded-[12px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
+                  <Users className="h-[18px] w-[18px]" strokeWidth={2.5} />
                 </div>
                 <div className="pt-0.5">
-                  <h3 className="text-[28px] font-black text-slate-900 leading-none mb-2">500+</h3>
-                  <p className="text-[14px] font-bold text-slate-800 mb-2">Projects Delivered</p>
-                  <p className="text-[13px] text-slate-500 leading-relaxed font-medium">Successfully delivered enterprise solutions worldwide</p>
+                  <h3 className="text-[24px] font-black text-slate-900 leading-none mb-1.5">500+</h3>
+                  <p className="text-[13px] font-bold text-slate-800 mb-1.5">Projects Delivered</p>
+                  <p className="text-[12px] text-slate-500 leading-relaxed font-medium">Successfully delivered enterprise solutions worldwide</p>
                 </div>
               </div>
             </div>
 
             {/* Stat 4 */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-6 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
-              <div className="flex gap-5 items-start">
-                <div className="h-12 w-12 rounded-[14px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
-                  <HeadphonesIcon className="h-[22px] w-[22px]" strokeWidth={2.5} />
+            <div className="bg-white border border-slate-100 rounded-2xl p-4 md:p-5 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
+              <div className="flex gap-4 items-start">
+                <div className="h-10 w-10 rounded-[12px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
+                  <HeadphonesIcon className="h-[18px] w-[18px]" strokeWidth={2.5} />
                 </div>
                 <div className="pt-0.5">
-                  <h3 className="text-[28px] font-black text-slate-900 leading-none mb-2">24/7</h3>
-                  <p className="text-[14px] font-bold text-slate-800 mb-2">Expert Support</p>
-                  <p className="text-[13px] text-slate-500 leading-relaxed font-medium">Round-the-clock support from our expert team</p>
+                  <h3 className="text-[24px] font-black text-slate-900 leading-none mb-1.5">24/7</h3>
+                  <p className="text-[13px] font-bold text-slate-800 mb-1.5">Expert Support</p>
+                  <p className="text-[12px] text-slate-500 leading-relaxed font-medium">Round-the-clock support from our expert team</p>
                 </div>
               </div>
             </div>
-
           </div>
         </motion.div>
 

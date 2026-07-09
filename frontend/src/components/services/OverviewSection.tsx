@@ -75,6 +75,7 @@ export const OverviewSection = ({ service }: SectionProps) => {
                 src={service.dashboardImage || service.coverImage} 
                 alt={`${service.title} overview`} 
                 className="w-full h-auto max-h-[300px] object-contain rounded-2xl drop-shadow-xl" 
+                style={{ animation: 'float3d 4s ease-in-out infinite' }}
               />
             </div>
           </div>

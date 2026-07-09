@@ -1154,8 +1154,8 @@
       "longDescription": "We engineer complex machine learning architectures. By designing custom data pipelines, compiling training datasets, fine-tuning state-of-the-art open-source LLMs, and setting up secure GPU inference servers, we construct advanced cognitive models tailored to domain-specific knowledge bases.",
       "category": "Advanced Technology",
       "icon": "Brain",
-      "coverImage": "/src/assets/service_ai.png",
-      "thumbnail": "/src/assets/service_ai.png",
+      "coverImage": "/src/assets/ai_robot_banner.png",
+      "thumbnail": "/src/assets/ai_robot_banner.png",
       "overview": "Develop specialized cognitive architectures capable of parsing complex tabular and text resources.",
       "offerings": [
         "LLM Fine-Tuning",

@@ -1,6 +1,6 @@
 import {
   Building2, Brain, Sparkles, Cloud, Target,
-  Layers, Code2, Cpu, Repeat, Settings, FolderGit2, Shield, Clock
+  Layers, Code2, Cpu, Repeat, Settings, FolderGit2, Shield, Clock, CodeXml
 } from 'lucide-react';
 
 export interface SolutionDetail {
@@ -57,7 +57,8 @@ export const ICON_MAP: Record<string, React.ComponentType<any>> = {
   Settings,
   FolderGit2,
   Shield,
-  Clock
+  Clock,
+  CodeXml
 };
 
 export function decorateSolution(apiSolution: any): SolutionDetail {

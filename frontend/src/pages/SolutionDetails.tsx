@@ -16,7 +16,6 @@ import { SolutionFeaturesSection } from '@/components/solutions/SolutionFeatures
 import { SolutionProcessSection } from '@/components/solutions/SolutionProcessSection';
 import { SolutionBenefitsSection } from '@/components/solutions/SolutionBenefitsSection';
 import { SolutionTechStackSection } from '@/components/solutions/SolutionTechStackSection';
-import { SolutionRelatedSection } from '@/components/solutions/SolutionRelatedSection';
 
 export const SolutionDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -79,14 +78,13 @@ export const SolutionDetails = () => {
         <SolutionSectionNavigation />
 
         {/* Dynamic Detail Modules Content Area */}
-        <section className="w-full max-w-7xl mx-auto px-6 lg:px-12 xl:px-20 mt-12 pb-24">
-          <div className="flex flex-col space-y-16">
+        <section className="w-full max-w-7xl mx-auto px-6 lg:px-12 xl:px-20 mt-12 pb-8">
+          <div className="flex flex-col space-y-12">
             <SolutionOverviewSection solution={solution} />
             <SolutionFeaturesSection solution={solution} />
             <SolutionProcessSection solution={solution} />
             <SolutionBenefitsSection solution={solution} />
             <SolutionTechStackSection solution={solution} />
-            <SolutionRelatedSection currentSlug={solution.slug} />
           </div>
         </section>
 

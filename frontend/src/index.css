@@ -159,6 +159,26 @@
   }
 }
 
+/* 3D floating animation for service overview images */
+@keyframes float3d {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  }
+  25% {
+    transform: translateY(-8px) rotate(0.5deg);
+    filter: drop-shadow(0 18px 25px rgba(0, 0, 0, 0.12));
+  }
+  50% {
+    transform: translateY(-12px) rotate(0deg);
+    filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.1));
+  }
+  75% {
+    transform: translateY(-6px) rotate(-0.5deg);
+    filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.13));
+  }
+}
+
 @layer components {
   .card-glass {
     @apply bg-card/95 backdrop-blur-sm border border-border shadow-sm;

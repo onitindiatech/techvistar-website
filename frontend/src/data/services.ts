@@ -33,7 +33,7 @@ import type {
 import serviceWebDev from '../assets/service_webdevlopment.png';
 import serviceMobileApp from '../assets/mobile_phone_devloper.png';
 import serviceUiUx from '../assets/ui_ux_designer.png';
-import serviceAiAutomation from '../assets/Ai_and_atomation.png';
+import serviceAiAutomation from '../assets/Ai_robort.png';
 import serviceCloudDevops from '../assets/Claud_Devops.png';
 import serviceBranding from '../assets/branding.png';
 import serviceDigitalMarketing from '../assets/digital_marketing.png';
@@ -53,13 +53,32 @@ import serviceDocsResearch from '../assets/service_docs_research.png';
 import sustainability_dashboard from '../assets/sustainability_dashboard.png';
 import mobility_routing_dashboard from '../assets/mobility_routing_dashboard.png';
 import sentiment_nlp_dashboard from '../assets/sentiment_nlp_dashboard.png';
-import ai_overview_illustration from '../assets/ai_overview_illustration.png';
+import ai_overview_illustration from '../assets/overview_ai_automation.png';
 import ai_translator from '../assets/ai_translator.png';
 import crop_health_analysis from '../assets/crop_health_analysis.png';
 import resume_review_assistant from '../assets/resume_review_assistant.png';
 import ai_translator_batches from '../assets/ai_translator_batches.png';
 import clinical_risk_scoring from '../assets/clinical_risk_scoring.png';
+import ai_robot_banner from '../assets/Ai_robort.png';
 
+// 3D dashboard images for each service overview section
+import img3d_web_development from '../assets/3d_web_development.png';
+import img3d_mobile_app from '../assets/3d_mobile_app.png';
+import img3d_ui_ux_design from '../assets/3d_ui_ux_design.png';
+import img3d_ai_automation from '../assets/3d_ai_automation.png';
+import img3d_cloud from '../assets/3d_cloud.png';
+import img3d_devops from '../assets/3d_devops.png';
+import img3d_ai from '../assets/3d_ai.png';
+import img3d_automation from '../assets/3d_automation.png';
+import img3d_branding from '../assets/3d_branding.png';
+import img3d_creative_design from '../assets/3d_creative_design.png';
+import img3d_product_design from '../assets/3d_product_design.png';
+import img3d_custom_software from '../assets/3d_custom_software.png';
+import img3d_saas_platforms from '../assets/3d_saas_platforms.png';
+import img3d_enterprise_ai from '../assets/3d_enterprise_ai.png';
+import img3d_product_engineering from '../assets/3d_product_engineering.png';
+import img3d_revenue_web from '../assets/3d_revenue_web.png';
+import img3d_documentation from '../assets/3d_documentation.png';
 
 export interface ServiceStat {
   value: string;
@@ -166,6 +185,7 @@ export const IMAGE_MAP: Record<string, string> = {
   resume_review_assistant,
   ai_translator_batches,
   clinical_risk_scoring,
+  ai_robot_banner,
   // Filename aliases (legacy CMS / seed keys)
   service_webdevlopment: serviceWebDev,
   mobile_phone_devloper: serviceMobileApp,
@@ -187,6 +207,24 @@ export const IMAGE_MAP: Record<string, string> = {
   service_revenue_web: serviceRevenueWeb,
   service_docs_research: serviceDocsResearch,
   service_enterprise_ai: serviceEnterpriseAi,
+  // 3D dashboard images
+  '3d_web_development': img3d_web_development,
+  '3d_mobile_app': img3d_mobile_app,
+  '3d_ui_ux_design': img3d_ui_ux_design,
+  '3d_ai_automation': img3d_ai_automation,
+  '3d_cloud': img3d_cloud,
+  '3d_devops': img3d_devops,
+  '3d_ai': img3d_ai,
+  '3d_automation': img3d_automation,
+  '3d_branding': img3d_branding,
+  '3d_creative_design': img3d_creative_design,
+  '3d_product_design': img3d_product_design,
+  '3d_custom_software': img3d_custom_software,
+  '3d_saas_platforms': img3d_saas_platforms,
+  '3d_enterprise_ai': img3d_enterprise_ai,
+  '3d_product_engineering': img3d_product_engineering,
+  '3d_revenue_web': img3d_revenue_web,
+  '3d_documentation': img3d_documentation,
 };
 
 const DEFAULT_SERVICE_COVER = serviceWebDev;
@@ -199,7 +237,7 @@ const SERVICE_SLUG_COVER_ASSETS: Record<string, string> = {
   'ai-automation': serviceAiAutomation,
   'cloud': serviceCloud,
   'devops': serviceDevops,
-  'ai': serviceAi,
+  'ai': ai_robot_banner,
   'automation': serviceAutomation,
   'branding': serviceBranding,
   'creative-design': serviceCreativeDesign,
@@ -899,8 +937,8 @@ export const SERVICES: readonly Service[] = [
     longDescription: 'We engineer complex machine learning architectures. By designing custom data pipelines, compiling training datasets, fine-tuning state-of-the-art open-source LLMs, and setting up secure GPU inference servers, we construct advanced cognitive models tailored to domain-specific knowledge bases.',
     category: 'Advanced Technology',
     icon: Brain,
-    coverImage: serviceAiAutomation,
-    thumbnail: serviceAiAutomation,
+    coverImage: ai_robot_banner,
+    thumbnail: ai_robot_banner,
     overview: 'Develop specialized cognitive architectures capable of parsing complex tabular and text resources.',
     offerings: [
       'LLM Fine-Tuning',

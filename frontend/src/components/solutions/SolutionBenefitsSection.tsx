@@ -50,36 +50,36 @@ export const SolutionBenefitsSection = ({ solution }: SectionProps) => {
   ];
 
   return (
-    <section id="benefits" className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 scroll-mt-24 shadow-sm relative overflow-hidden w-full text-white">
+    <section id="benefits" className="bg-white border border-slate-200/80 rounded-3xl p-5 md:p-6 scroll-mt-24 shadow-sm relative overflow-hidden w-full">
       {/* Decorative Background */}
-      <div className="absolute left-0 top-0 w-full h-full bg-gradient-to-br from-emerald-900/20 to-transparent pointer-events-none" />
-      <div className="absolute right-0 bottom-0 w-96 h-96 bg-blue-900/10 rounded-full blur-3xl pointer-events-none -mr-20 -mb-20" />
+      <div className="absolute left-0 top-0 w-full h-full bg-gradient-to-br from-emerald-50/80 to-transparent pointer-events-none" />
+      <div className="absolute right-0 bottom-0 w-96 h-96 bg-blue-50/60 rounded-full blur-3xl pointer-events-none -mr-20 -mb-20" />
 
-      <div className="flex items-center gap-4 mb-10 relative z-10">
-        <div className="h-12 w-12 rounded-xl bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700 shadow-sm">
-          <Target className="h-6 w-6 text-emerald-400" />
+      <div className="flex items-center gap-4 mb-5 relative z-10">
+        <div className="h-12 w-12 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100 shadow-sm">
+          <Target className="h-6 w-6 text-emerald-600" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-white font-display">Business Benefits</h2>
-          <p className="text-sm text-slate-400 font-medium mt-1">Measurable impact and value</p>
+          <h2 className="text-2xl font-bold text-slate-900 font-display">Business Benefits</h2>
+          <p className="text-sm text-slate-500 font-medium mt-1">Measurable impact and value</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+      <div className="flex flex-col gap-4 relative z-10">
         {benefitsList.map((benefit, idx) => {
           const Icon = benefit.icon;
           return (
-            <div key={idx} className={`bg-slate-800/50 backdrop-blur-sm border border-slate-700/80 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl group relative overflow-hidden h-full flex flex-col hover:-translate-y-1`}>
+            <div key={idx} className={`bg-white border border-slate-100 shadow-sm rounded-2xl p-4 md:p-5 transition-all duration-300 hover:shadow-md hover:border-slate-200 group relative overflow-hidden flex items-center gap-5 hover:-translate-y-1`}>
               {/* Premium Gradient Overlay on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${benefit.hoverFrom} ${benefit.hoverTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              <div className={`absolute inset-0 bg-gradient-to-r ${benefit.hoverFrom} ${benefit.hoverTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               
-              <div className="relative z-10 flex flex-col h-full">
-                <div className={`h-12 w-12 rounded-xl ${benefit.bg} ${benefit.color} border ${benefit.border} flex items-center justify-center shrink-0 mb-6 group-hover:scale-110 transition-transform duration-300`}>
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 w-full">
+                <div className={`h-12 w-12 rounded-xl ${benefit.bg} ${benefit.color} border ${benefit.border} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                   <Icon className="h-6 w-6" />
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                <div className="flex-1 flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                  <h3 className="text-lg font-bold text-slate-900 md:w-1/4 shrink-0">{benefit.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     {benefit.desc}
                   </p>
                 </div>

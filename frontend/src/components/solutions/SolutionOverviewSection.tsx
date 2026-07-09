@@ -9,7 +9,7 @@ export const SolutionOverviewSection = ({ solution }: SectionProps) => {
   const IconComponent = solution.icon || Brain;
 
   return (
-    <section id="overview" className="bg-white border border-slate-200/80 rounded-3xl p-6 md:p-10 scroll-mt-24 shadow-sm relative overflow-hidden w-full">
+    <section id="overview" className="bg-white border border-slate-200/80 rounded-3xl p-5 md:p-6 scroll-mt-24 shadow-sm relative overflow-hidden w-full">
       
       {/* Light mesh grid backdrop */}
       <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.02]" aria-hidden="true">
@@ -36,7 +36,7 @@ export const SolutionOverviewSection = ({ solution }: SectionProps) => {
                 </span>
               </span>
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 font-display">Overview</h2>
+            <h2 className="text-2xl font-bold text-slate-900 font-display">Solution Theory</h2>
           </div>
 
           <div className="w-12 h-1 bg-emerald-500 rounded-full" />

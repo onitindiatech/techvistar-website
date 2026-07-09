@@ -7,9 +7,9 @@ interface SectionProps {
 
 export const SolutionFeaturesSection = ({ solution }: SectionProps) => {
   return (
-    <section id="features" className="bg-slate-50/50 border border-slate-200/50 rounded-3xl p-6 md:p-10 scroll-mt-24 w-full">
+    <section id="features" className="bg-slate-50/50 border border-slate-200/50 rounded-3xl p-5 md:p-6 scroll-mt-24 w-full">
       
-      <div className="flex items-center gap-4 mb-10">
+      <div className="flex items-center gap-4 mb-5">
         <div className="h-12 w-12 rounded-xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm">
           <Layers className="h-6 w-6 text-emerald-600" />
         </div>

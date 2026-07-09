@@ -186,7 +186,7 @@ export const SolutionTechStackSection = ({ solution }: SectionProps) => {
   };
 
   return (
-    <section id="tech-stack" className="bg-white border border-slate-200/80 rounded-3xl p-6 md:p-10 scroll-mt-24 shadow-sm w-full">
+    <section id="tech-stack" className="bg-white border border-slate-200/80 rounded-3xl p-5 md:p-6 scroll-mt-24 shadow-sm w-full">
       <div className="space-y-6">
         <h2 className="text-2xl font-bold text-slate-900 font-display">Technology Stack</h2>
         <p className="text-slate-500 text-sm leading-relaxed max-w-sm">

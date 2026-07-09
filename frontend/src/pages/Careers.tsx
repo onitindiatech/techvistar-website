@@ -148,8 +148,8 @@ const Careers = () => {
         </PageHeader>
 
         {/* 2. Open Positions (Completely matching reference style) */}
-        <section id="open-positions" className="py-24 bg-white border-b border-slate-100">
-          <div className="container mx-auto px-6 max-w-7xl space-y-10">
+        <section id="open-positions" className="py-12 md:py-16 bg-white border-b border-slate-100">
+          <div className="container mx-auto px-6 max-w-7xl space-y-8 md:space-y-10">
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-emerald-600">
                 <Briefcase className="h-4.5 w-4.5" />

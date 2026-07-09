@@ -12,13 +12,12 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import HERO_BG from '../assets/careers-bg-new.png';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { 
   Briefcase, MapPin, Clock, Search, Users,
   ArrowRight, ChevronRight, RotateCcw, HelpCircle, Mail, MessageSquare, Code, UserCheck
 } from 'lucide-react';
-
-const HERO_BG = "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop";
 
 const BENEFIT_IMAGES = [
   "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop",

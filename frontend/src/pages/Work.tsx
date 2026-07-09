@@ -6,7 +6,7 @@ import { decorateProject } from '@/data/projects';
 import { useProjectFilters } from '@/hooks/useProjectFilters';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { TechStackSection } from '@/components/TechStackSection';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { 
@@ -472,44 +472,7 @@ export const Work = () => {
           </motion.div>
         </section>
 
-        {/* SECTION 7 — TECHNOLOGY STACK (UNTOUCHED) */}
-        <TechStackSection />
 
-        {/* SECTION 8 — INDUSTRIES */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/80">
-          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">Industries We Serve</h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-semibold">Deploying tailored digital capabilities optimized for industry regulations.</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { name: 'Healthcare', desc: 'HIPAA-compliant telemedicine platforms and operational databases.' },
-              { name: 'Finance', desc: 'High-security transaction systems and digital banking analytics.' },
-              { name: 'Education', desc: 'Custom LMS architectures and student tracking dashboards.' },
-              { name: 'Logistics', desc: 'Route optimization solvers, capacity scheduling, and GPS trackers.' },
-              { name: 'Real Estate', desc: 'Multi-tenant property portals and CRM pipelines.' },
-              { name: 'Manufacturing', desc: 'IoT sensor telemetry platforms and predictive maintenance schedulers.' },
-              { name: 'Retail', desc: 'Scalable headless eCommerce backends and custom checkouts.' },
-              { name: 'Government', desc: 'Secure civic portal databases and administrative dashboards.' }
-            ].map((ind) => (
-              <motion.div
-                key={ind.name}
-                whileHover={{ 
-                  y: -5, 
-                  scale: 1.04,
-                  boxShadow: '0 10px 25px -5px rgba(16,185,129,0.15)',
-                  borderColor: 'rgba(16,185,129,0.3)'
-                }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="bg-emerald-50/30 border border-emerald-100/40 rounded-2xl p-6 space-y-4 shadow-sm cursor-pointer group/ind"
-              >
-                <div className="font-extrabold text-slate-900 text-sm group-hover/ind:text-emerald-600 transition-colors">{ind.name}</div>
-                <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">{ind.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
 
 
 

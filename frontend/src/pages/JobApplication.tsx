@@ -16,7 +16,7 @@ import * as z from 'zod';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import careersBg from '../assets/careers-bg.png';
+import careersBg from '../assets/careers-bg-new.png';
 import { PageHeader } from '@/components/ui/PageHeader';
 
 const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;

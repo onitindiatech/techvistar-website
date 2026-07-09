@@ -16,6 +16,7 @@ import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical, seoFromApi } from '@/lib/seoResolve';
 import { stripHtmlToText } from '@/lib/sanitizeHtml';
 import { PageHeader } from '@/components/ui/PageHeader';
+import careersBg from '../assets/careers-bg-new.png';
 
 export const JobDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -110,7 +111,7 @@ export const JobDetails = () => {
             )}
           </>
         }
-        backgroundImage={resolvedBanner}
+        backgroundImage={careersBg}
       >
         {isLoading ? (
           <div className="flex gap-4 pt-2 animate-pulse mt-4">

@@ -15,6 +15,7 @@ import { RichTextContent } from '@/components/common/RichTextContent';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical, seoFromApi } from '@/lib/seoResolve';
 import { stripHtmlToText } from '@/lib/sanitizeHtml';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export const JobDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -91,55 +92,45 @@ export const JobDetails = () => {
       <Navbar />
 
       {/* Hero Header Section */}
-      <section className="relative overflow-hidden bg-slate-950 pt-28 pb-16 md:pt-32 md:pb-24 border-b border-slate-900 text-white">
-        <div 
-          className="absolute inset-0 opacity-25 pointer-events-none z-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${resolvedBanner})` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/70 to-slate-950 pointer-events-none" />
-        
-        <div className="container mx-auto px-6 max-w-5xl relative z-10">
-          <Link 
-            to="/careers" 
-            className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors mb-6 uppercase tracking-wider"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Careers
-          </Link>
-
-          {isLoading ? (
-            <div className="animate-pulse space-y-4">
-              <div className="h-4 w-24 bg-slate-800 rounded" />
-              <div className="h-10 w-2/3 bg-slate-800 rounded" />
-              <div className="flex gap-4 pt-2">
-                <div className="h-4 w-20 bg-slate-800 rounded" />
-                <div className="h-4 w-20 bg-slate-800 rounded" />
-              </div>
-            </div>
-          ) : (
-            job && (
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="space-y-4"
+      <PageHeader
+        title={
+          <>
+            <div className="mb-6">
+              <Link 
+                to="/careers" 
+                className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider"
               >
-                <Badge variant="secondary" className="bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 font-black uppercase tracking-wider text-[9px] px-2.5 py-0.5 rounded">
-                  {job.department}
-                </Badge>
-                <h1 className="text-3xl md:text-5xl font-black text-white font-display tracking-tighter leading-tight">
-                  {job.title}
-                </h1>
-                <div className="flex flex-wrap gap-x-6 gap-y-3 text-xs font-bold uppercase tracking-wider text-slate-350 pt-2">
-                  <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-emerald-500" /> {job.location}</span>
-                  <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-emerald-500" /> {job.employmentType}</span>
-                  <span className="flex items-center gap-1.5"><Briefcase className="h-4 w-4 text-emerald-500" /> {job.experience}</span>
-                  <span className="flex items-center gap-1.5"><DollarSign className="h-4 w-4 text-emerald-500" /> {job.salary}</span>
-                </div>
-              </motion.div>
-            )
-          )}
-        </div>
-      </section>
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to Careers
+              </Link>
+            </div>
+            {isLoading ? (
+              <div className="h-10 w-2/3 bg-slate-800 rounded animate-pulse" />
+            ) : (
+              job?.title || 'Job Opening'
+            )}
+          </>
+        }
+        backgroundImage={resolvedBanner}
+      >
+        {isLoading ? (
+          <div className="flex gap-4 pt-2 animate-pulse mt-4">
+            <div className="h-4 w-20 bg-slate-800 rounded" />
+            <div className="h-4 w-20 bg-slate-800 rounded" />
+          </div>
+        ) : job ? (
+          <div className="space-y-4 mt-2">
+            <Badge variant="secondary" className="bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 font-black uppercase tracking-wider text-[9px] px-2.5 py-0.5 rounded inline-block">
+              {job.department}
+            </Badge>
+            <div className="flex flex-wrap gap-x-6 gap-y-3 text-xs font-bold uppercase tracking-wider text-zinc-300 pt-2">
+              <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-emerald-500" /> {job.location}</span>
+              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-emerald-500" /> {job.employmentType}</span>
+              <span className="flex items-center gap-1.5"><Briefcase className="h-4 w-4 text-emerald-500" /> {job.experience}</span>
+              <span className="flex items-center gap-1.5"><DollarSign className="h-4 w-4 text-emerald-500" /> {job.salary}</span>
+            </div>
+          </div>
+        ) : null}
+      </PageHeader>
 
       {/* Breadcrumbs */}
       <div className="bg-white border-b border-slate-200/80 py-3 px-6">

@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import careersBg from '../assets/careers-bg.png';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;
 
@@ -157,31 +158,28 @@ export const JobApplication = () => {
       <Navbar />
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden bg-zinc-950 pt-28 pb-12 border-b border-zinc-900 text-white">
-        <div 
-          className="absolute inset-0 opacity-40 pointer-events-none z-0"
-          style={{ 
-            backgroundImage: `url(${careersBg})`,
-            backgroundSize: 'auto 100%',
-            backgroundPosition: 'right',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
-        <div className="container mx-auto px-4 max-w-3xl relative z-10">
-          <Link 
-            to={`/careers/${job.slug}`} 
-            className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors mb-6"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Role Details
-          </Link>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white mb-2 font-display">
-            Apply for {job.title}
-          </h1>
-          <p className="text-zinc-400 text-xs md:text-sm font-medium">
+      <PageHeader
+        title={
+          <>
+            <div className="mb-6">
+              <Link 
+                to={`/careers/${job.slug}`} 
+                className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to Role Details
+              </Link>
+            </div>
+            {`Apply for ${job.title}`}
+          </>
+        }
+        backgroundImage={careersBg}
+      >
+        <div className="space-y-4 mt-2">
+          <p className="text-zinc-400 text-xs md:text-sm font-bold uppercase tracking-wider">
             {job.department} &bull; {job.location} &bull; {job.employmentType}
           </p>
         </div>
-      </section>
+      </PageHeader>
 
       {/* Main Application Form Container */}
       <section className="py-16">

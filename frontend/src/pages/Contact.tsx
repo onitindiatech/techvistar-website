@@ -16,7 +16,7 @@ import { submitContactForm } from '@/services/contact.service';
 import { LogoCloud } from '@/components/LogoCloud';
 import { FAQSection } from '@/components/faq';
 import { PageHeader } from '@/components/ui/PageHeader';
-import contactBg from '../assets/about-bg.png';
+import contactBg from '../assets/contact-header.png';
 
 export const Contact = () => {
   const { toast } = useToast();
@@ -103,6 +103,7 @@ export const Contact = () => {
           subtitle="Let's Connect"
           description="Have a project in mind or want to explore how we can help your business grow? We'd love to hear from you."
           backgroundImage={contactBg}
+          bgPosition="right bottom"
         />
 
         {/* HERO GRID SECTION - FORM AND INFO CARDS */}

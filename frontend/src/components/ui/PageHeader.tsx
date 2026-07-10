@@ -7,10 +7,12 @@ interface PageHeaderProps {
   subtitle?: React.ReactNode;
   description?: React.ReactNode;
   backgroundImage?: string;
+  bgPosition?: string;
+  bgSize?: string;
   children?: React.ReactNode;
 }
 
-export const PageHeader = ({ title, subtitle, description, backgroundImage, children }: PageHeaderProps) => {
+export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPosition, bgSize, children }: PageHeaderProps) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -41,8 +43,8 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, chil
           className="absolute inset-0 opacity-80 pointer-events-none z-0"
           style={{
             backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: 'auto 100%',
-            backgroundPosition: 'right',
+            backgroundSize: bgSize || 'auto 85%',
+            backgroundPosition: bgPosition || 'right center',
             backgroundRepeat: 'no-repeat',
           }}
           animate={{
@@ -59,8 +61,8 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, chil
             className="absolute inset-0"
             style={{
               backgroundImage: `url(${backgroundImage})`,
-              backgroundSize: 'auto 100%',
-              backgroundPosition: 'right',
+              backgroundSize: bgSize || 'auto 85%',
+              backgroundPosition: bgPosition || 'right center',
               backgroundRepeat: 'no-repeat',
             }}
             animate={{

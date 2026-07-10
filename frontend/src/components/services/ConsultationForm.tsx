@@ -12,6 +12,7 @@ interface ConsultationFormProps {
   serviceSlug?: string;
   formConfig: ServiceConsultationBlock;
   onSuccess?: () => void;
+  inline?: boolean;
 }
 
 export const ConsultationForm = ({
@@ -19,6 +20,7 @@ export const ConsultationForm = ({
   serviceSlug,
   formConfig,
   onSuccess,
+  inline = false,
 }: ConsultationFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -90,7 +92,11 @@ export const ConsultationForm = ({
   };
 
   return (
-    <div className="bg-white border-2 border-emerald-500 transition-colors duration-500 rounded-2xl p-6 md:p-7 shadow-xl shadow-emerald-500/20 text-left min-h-[80vh] sm:min-h-0 flex flex-col justify-center sm:block">
+    <div className={
+      inline 
+        ? "text-left w-full" 
+        : "bg-white border-2 border-emerald-500 transition-colors duration-500 rounded-2xl p-6 md:p-7 shadow-xl shadow-emerald-500/20 text-left min-h-[80vh] sm:min-h-0 flex flex-col justify-center sm:block"
+    }>
       <div className="flex items-center gap-2 mb-1.5">
         <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100">
           <Sparkles className="h-3.5 w-3.5 text-emerald-600" />

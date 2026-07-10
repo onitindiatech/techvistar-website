@@ -60,8 +60,8 @@ export const SolutionBenefitsSection = ({ solution }: SectionProps) => {
           <Target className="h-6 w-6 text-emerald-600" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 font-display">{solution.sectionCopy.benefitsTitle}</h2>
-          <p className="text-sm text-slate-500 font-medium mt-1">{solution.sectionCopy.benefitsSubtitle}</p>
+          <h2 className="text-2xl font-bold text-slate-900 font-display">{solution.sectionCopy?.benefitsTitle || 'Key Benefits'}</h2>
+          <p className="text-sm text-slate-500 font-medium mt-1">{solution.sectionCopy?.benefitsSubtitle || 'Value delivered by our solution'}</p>
         </div>
       </div>
 

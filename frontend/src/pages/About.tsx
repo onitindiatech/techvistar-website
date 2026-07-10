@@ -23,7 +23,7 @@ import { seoFromItem } from '@/lib/seoAdmin';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import { ABOUT_COPY, ABOUT_PAGE } from '@/data';
-import aboutBg from '../assets/about-bg.png';
+import aboutBg from '../assets/about-header.png';
 import logoImg from '@/assets/logo.webp';
 import { PageHeader } from '@/components/ui/PageHeader';
 
@@ -128,6 +128,7 @@ const About = () => {
         subtitle={ABOUT_PAGE.hero.eyebrow}
         description={ABOUT_PAGE.hero.lead}
         backgroundImage={aboutBg}
+        bgPosition="right bottom"
       />
 
             {/* Single structured document — tight vertical rhythm */}

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Clock, Calendar, ShieldCheck, Mail, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Service } from '@/data/services';
 import { ConsultationForm } from './ConsultationForm';
@@ -70,22 +71,11 @@ export const ServiceSidebar = ({ service, cmsConfig }: ServiceSidebarProps) => {
           </div>
         </div>
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-sm transition-all h-10">
-                {sidebar.buttonLabel}
-              </Button>
-            </motion.div>
-          </DialogTrigger>
-          <DialogContent className="border-none bg-transparent shadow-none p-0 w-[calc(100%-2rem)] sm:w-full max-w-2xl">
-            <ConsultationForm
-              serviceTitle={service.title}
-              serviceSlug={service.slug}
-              formConfig={consultation}
-            />
-          </DialogContent>
-        </Dialog>
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Button asChild className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-sm transition-all h-10">
+            <Link to="/contact">More Information</Link>
+          </Button>
+        </motion.div>
       </div>
 
       <div className="bg-slate-950 text-white rounded-3xl p-6 shadow-md border border-slate-800/80 relative overflow-hidden">

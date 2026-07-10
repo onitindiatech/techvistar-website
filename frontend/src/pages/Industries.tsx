@@ -15,18 +15,18 @@ import { mergePagesCmsConfig, DEFAULT_INDUSTRIES_LANDING_CMS } from '@/types/pag
 import { seoFromItem } from '@/lib/seoAdmin';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
-import workBg from '../assets/work-bg-new.png';
+import industryBg from '../assets/industry-header.png';
 import { IndustriesLandingHero } from '@/components/industries/IndustriesLandingHero';
 import { IndustriesCapabilitiesSection } from '@/components/industries/IndustriesCapabilitiesSection';
 import { IndustryCard } from '@/components/industries/IndustryCard';
 
 function resolveLandingBackground(imageKeyOrUrl: string): string {
   const trimmed = imageKeyOrUrl.trim();
-  if (!trimmed) return workBg;
+  if (!trimmed) return industryBg;
   if (trimmed.startsWith('http') || trimmed.startsWith('/') || trimmed.startsWith('data:')) {
     return trimmed;
   }
-  return IMAGE_MAP[trimmed] || workBg;
+  return IMAGE_MAP[trimmed] || industryBg;
 }
 
 export const Industries = () => {

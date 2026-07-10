@@ -1,5 +1,6 @@
 import { SolutionDetail } from '@/data/solutions';
 import { motion, useReducedMotion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 
 interface SectionProps {
   solution: SolutionDetail;
@@ -60,38 +61,38 @@ export const SolutionTechStackSection = ({ solution }: SectionProps) => {
           glowColor: 'rgba(49, 120, 198, 0.25)',
           icon: (
             <svg className="w-3.5 h-3.5 text-[#3178C6]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0H1.125zM13.43 19.313c-2.072 0-3.541-.832-4.475-2.457l2.091-1.378c.552 1.054 1.411 1.637 2.458 1.637 1.077 0 1.764-.51 1.764-1.317 0-2.42-5.63-1.076-5.63-5.362 0-1.848 1.498-3.238 3.593-3.238 1.776 0 3.037.66 3.918 2.016l-1.954 1.43c-.456-.833-1.139-1.258-1.964-1.258-.875 0-1.428.455-1.428 1.15 0 2.22 5.63.924 5.63 5.373 0 1.944-1.573 3.404-3.993 3.404h-.01zM7.742 10.74h-4.66V8.293h12.1v2.447H10.53v8.36h-2.79v-8.36z" />
+              <path d="M0 0h24v24H0V0zm20.1 17.5c-.2-1.7-1.3-2.5-3.1-2.5-1.8 0-2.9.9-2.9 2.4 0 1.4.9 2 2.4 2.5 1.4.4 2 .7 2 1.2 0 .5-.5.8-1.2.8-.9 0-1.5-.4-1.7-1.3h-2.1c.2 2.1 1.7 3.1 3.8 3.1 2.3 0 3.4-1.1 3.4-2.8 0-1.7-1.1-2.4-2.8-3-1.3-.4-1.8-.7-1.8-1.2 0-.4.4-.7 1-.7s1.3.3 1.5 1h2zm-8.3-6.5h-5.2v8.9H4.7V11h7.1v1.6z" />
             </svg>
           )
         };
       case 'nextjs':
         return {
-          borderColor: 'rgba(0, 0, 0, 0.2)',
+          borderColor: 'rgba(0, 0, 0, 0.3)',
           bg: 'rgba(0, 0, 0, 0.04)',
-          textColor: '#000000',
+          textColor: '#0f172a',
           hoverBg: 'rgba(0, 0, 0, 0.08)',
           glowColor: 'rgba(0, 0, 0, 0.15)',
           icon: (
-            <svg className="w-4 h-4 text-black" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22.8C6.037 22.8 1.2 17.963 1.2 12S6.037 1.2 12 1.2 22.8 6.037 22.8 12 17.963 22.8 12 22.8zm6.545-6.527l-5.918-7.945H10.39v9.273h1.8v-6.982l5.427 7.282a10.77 10.77 0 001.29-1.628H18.5v-.01z" />
+            <svg className="w-3.5 h-3.5 text-[#000000]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.7 18l-5.6-7.3v7.3H10v-10h1.8l5.2 6.8V8h2.1v10h-1.4z" />
             </svg>
           )
         };
       case 'tailwindcss':
+      case 'tailwindtokens':
         return {
-          borderColor: 'rgba(56, 189, 248, 0.4)',
-          bg: 'rgba(56, 189, 248, 0.06)',
-          textColor: '#0369a1',
-          hoverBg: 'rgba(56, 189, 248, 0.12)',
-          glowColor: 'rgba(56, 189, 248, 0.25)',
+          borderColor: 'rgba(6, 182, 212, 0.4)',
+          bg: 'rgba(6, 182, 212, 0.06)',
+          textColor: '#0891b2',
+          hoverBg: 'rgba(6, 182, 212, 0.12)',
+          glowColor: 'rgba(6, 182, 212, 0.25)',
           icon: (
-            <svg className="w-4 h-4 text-[#38bdf8]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/>
+            <svg className="w-3.5 h-3.5 text-[#06B6D4]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 6a6 6 0 0 1 12-6c0 3.3-2.7 6-6 6h-6zm-6 6a6 6 0 0 1 12-6c0 3.3-2.7 6-6 6H6zm0 6a6 6 0 0 1 12-6c0 3.3-2.7 6-6 6H6zm-6 6a6 6 0 0 1 12-6c0 3.3-2.7 6-6 6H0z" />
             </svg>
           )
         };
       case 'nodejs':
-      case 'node':
         return {
           borderColor: 'rgba(51, 153, 51, 0.4)',
           bg: 'rgba(51, 153, 51, 0.06)',
@@ -99,8 +100,177 @@ export const SolutionTechStackSection = ({ solution }: SectionProps) => {
           hoverBg: 'rgba(51, 153, 51, 0.12)',
           glowColor: 'rgba(51, 153, 51, 0.25)',
           icon: (
-            <svg className="w-4 h-4 text-[#339933]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M11.83 22.25L3.08 17.2V7l8.75-5.05L20.58 7v10.2l-8.75 5.05zm-.15-18.42l-7.07 4.09v8.18l7.07 4.09 7.07-4.09V7.92l-7.07-4.09zM12 11.23l-3.32 1.9v3.83l3.32-1.93v-3.8zM8.68 11.24L12 9.33l3.32 1.9v3.82l-3.32-1.92v-3.8z" />
+            <svg className="w-3.5 h-3.5 text-[#339933]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0L2.3 5.6v11.2L12 22.4l9.7-5.6V5.6L12 0zm4.5 15.2c-.3.5-.7.9-1.2 1.2-.5.3-1.1.4-1.8.4-1 0-1.7-.3-2.2-1-.3-.4-.5-.9-.5-1.6v-3.5h2v3.4c0 .4.1.7.3.9.2.2.5.3.9.3.4 0 .7-.1.9-.3.2-.2.3-.5.3-.9v-3.4h2v6.5zm-5-6.5v2h-2v-2h2zm0 3.5v3h-2v-3h2z" />
+            </svg>
+          )
+        };
+      case 'vite':
+        return {
+          borderColor: 'rgba(100, 108, 255, 0.4)',
+          bg: 'rgba(100, 108, 255, 0.06)',
+          textColor: '#6d28d9',
+          hoverBg: 'rgba(100, 108, 255, 0.12)',
+          glowColor: 'rgba(100, 108, 255, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#646CFF]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0L1.5 4l2.5 16.5L12 24l8-3.5L22.5 4z" />
+            </svg>
+          )
+        };
+      case 'flutter':
+        return {
+          borderColor: 'rgba(2, 86, 155, 0.4)',
+          bg: 'rgba(2, 86, 155, 0.06)',
+          textColor: '#0369a1',
+          hoverBg: 'rgba(2, 86, 155, 0.12)',
+          glowColor: 'rgba(2, 86, 155, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#02569B]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14.314 0L2.3 12l3.6 3.6 12.014-12.014h-3.6zM2.3 12l3.6 3.6 6.007-6.007-3.6-3.6L2.3 12zm15.614 3.6H14.3l-6.007 6.007L11.9 24.014l6.014-6.014z" />
+            </svg>
+          )
+        };
+      case 'swift':
+        return {
+          borderColor: 'rgba(240, 81, 56, 0.4)',
+          bg: 'rgba(240, 81, 56, 0.06)',
+          textColor: '#c2410c',
+          hoverBg: 'rgba(240, 81, 56, 0.12)',
+          glowColor: 'rgba(240, 81, 56, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#F05138]" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+          )
+        };
+      case 'firebase':
+        return {
+          borderColor: 'rgba(255, 202, 40, 0.4)',
+          bg: 'rgba(255, 202, 40, 0.06)',
+          textColor: '#b45309',
+          hoverBg: 'rgba(255, 202, 40, 0.12)',
+          glowColor: 'rgba(255, 202, 40, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#FFCA28]" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+          )
+        };
+      case 'figma':
+        return {
+          borderColor: 'rgba(242, 78, 30, 0.4)',
+          bg: 'rgba(242, 78, 30, 0.06)',
+          textColor: '#c2410c',
+          hoverBg: 'rgba(242, 78, 30, 0.12)',
+          glowColor: 'rgba(242, 78, 30, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#F24E1E]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C9.2 0 7 2.2 7 5v4c0 2.8 2.2 5 5 5s5-2.2 5-5V5c0-2.8-2.2-5-5-5zm0 10c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2s2 .9 2 2v3c0 1.1-.9 2-2 2z" />
+            </svg>
+          )
+        };
+      case 'openaiapi':
+        return {
+          borderColor: 'rgba(65, 41, 145, 0.4)',
+          bg: 'rgba(65, 41, 145, 0.06)',
+          textColor: '#4338ca',
+          hoverBg: 'rgba(65, 41, 145, 0.12)',
+          glowColor: 'rgba(65, 41, 145, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#412991]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.28 10.7a5.7 5.7 0 00-.77-4.13A5.77 5.77 0 0017.58 4a5.7 5.7 0 00-4.88 2.76A5.7 5.7 0 008.28 4a5.77 5.77 0 00-3.93 2.57A5.7 5.7 0 003.58 10.7a5.7 5.7 0 00.77 4.13A5.77 5.77 0 008.28 20a5.7 5.7 0 004.88-2.76A5.7 5.7 0 0017.58 20a5.77 5.77 0 003.93-2.57A5.7 5.7 0 0022.28 10.7z" />
+            </svg>
+          )
+        };
+      case 'langchain':
+        return {
+          borderColor: 'rgba(18, 18, 18, 0.3)',
+          bg: 'rgba(18, 18, 18, 0.04)',
+          textColor: '#1e293b',
+          hoverBg: 'rgba(18, 18, 18, 0.08)',
+          glowColor: 'rgba(18, 18, 18, 0.15)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#121212]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+            </svg>
+          )
+        };
+      case 'python':
+        return {
+          borderColor: 'rgba(55, 118, 171, 0.4)',
+          bg: 'rgba(55, 118, 171, 0.06)',
+          textColor: '#1d4ed8',
+          hoverBg: 'rgba(55, 118, 171, 0.12)',
+          glowColor: 'rgba(55, 118, 171, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#3776AB]" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+          )
+        };
+      case 'n8n':
+        return {
+          borderColor: 'rgba(255, 108, 55, 0.4)',
+          bg: 'rgba(255, 108, 55, 0.06)',
+          textColor: '#ea580c',
+          hoverBg: 'rgba(255, 108, 55, 0.12)',
+          glowColor: 'rgba(255, 108, 55, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#FF6C37]" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+          )
+        };
+      case 'pinecone':
+        return {
+          borderColor: 'rgba(28, 25, 23, 0.3)',
+          bg: 'rgba(28, 25, 23, 0.04)',
+          textColor: '#292524',
+          hoverBg: 'rgba(28, 25, 23, 0.08)',
+          glowColor: 'rgba(28, 25, 23, 0.15)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#1C1917]" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="12,2 22,22 2,22" />
+            </svg>
+          )
+        };
+      case 'huggingface':
+        return {
+          borderColor: 'rgba(255, 210, 30, 0.4)',
+          bg: 'rgba(255, 210, 30, 0.06)',
+          textColor: '#a16207',
+          hoverBg: 'rgba(255, 210, 30, 0.12)',
+          glowColor: 'rgba(255, 210, 30, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#FFD21E]" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="9" />
+            </svg>
+          )
+        };
+      case 'aws':
+        return {
+          borderColor: 'rgba(255, 153, 0, 0.4)',
+          bg: 'rgba(255, 153, 0, 0.06)',
+          textColor: '#d97706',
+          hoverBg: 'rgba(255, 153, 0, 0.12)',
+          glowColor: 'rgba(255, 153, 0, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#FF9900]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm3.2 15c0 1.2-.8 2.2-2 2.2s-2-1-2-2.2.8-2.2 2-2.2 2 1 2 2.2z" />
+            </svg>
+          )
+        };
+      case 'azure':
+        return {
+          borderColor: 'rgba(0, 120, 212, 0.4)',
+          bg: 'rgba(0, 120, 212, 0.06)',
+          textColor: '#0369a1',
+          hoverBg: 'rgba(0, 120, 212, 0.12)',
+          glowColor: 'rgba(0, 120, 212, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#0078D4]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M0 3.4l8.6 11.2L17.2 3.4H0zm24 17.2L15.4 6 6.8 20.6H24z" />
             </svg>
           )
         };
@@ -112,75 +282,58 @@ export const SolutionTechStackSection = ({ solution }: SectionProps) => {
           hoverBg: 'rgba(36, 150, 237, 0.12)',
           glowColor: 'rgba(36, 150, 237, 0.25)',
           icon: (
-            <svg className="w-4 h-4 text-[#2496ED]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M22.5 12.3c0-2.3-1.8-4.2-4.2-4.2h-1.5c0-.9-.7-1.5-1.5-1.5-.9 0-1.5.7-1.5 1.5H8.7c0-2.3-1.8-4.2-4.2-4.2-2.3 0-4.2 1.8-4.2 4.2 0 .8.2 1.5.6 2.1C.4 11.3 0 12.2 0 13.2c0 2.3 1.8 4.2 4.2 4.2h15.6c1.5 0 2.7-1.2 2.7-2.7 0-.9-.5-1.7-1.2-2.2.8-.2 1.2-.9 1.2-1.6zm-18.3.3c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4zm5.1 0c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4zm5.1 0c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4zm5.1 0c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z"/>
+            <svg className="w-3.5 h-3.5 text-[#2496ED]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.9 10.6h2.2v2.2h-2.2v-2.2zm-2.8 0h2.2v2.2h-2.2v-2.2zm-2.8 0h2.2v2.2H8.3v-2.2zm-2.8 0h2.2v2.2H5.5v-2.2zm8.4-2.8h2.2v2.2h-2.2V7.8zm-2.8 0h2.2v2.2h-2.2V7.8zm-2.8 0h2.2v2.2H8.3V7.8zm5.6-2.8h2.2v2.2h-2.2V5zm-8.4 8.4h2.2v2.2H5.5v-2.2zM24 12.3c-.3 0-.6-.1-.9-.1h-.4c-.1.5-.3.9-.6 1.3-.3.4-.6.7-1.1.9l-.6.3v.5c0 1.2-.4 2.2-1.2 3.1-.8.8-1.8 1.2-3.1 1.2-1.2 0-2.3-.4-3.1-1.2-.8-.9-1.2-1.9-1.2-3.1V5h2.2v10.3c0 .6.2 1.1.6 1.5.4.4.9.6 1.5.6s1.1-.2 1.5-.6c.4-.4.6-.9.6-1.5v-.8c0-.6.2-1.1.6-1.5.4-.4.9-.6 1.5-.6h.5c.3 0 .6-.1.9-.1V12.3z" />
             </svg>
           )
         };
-      case 'aws':
+      case 'kubernetes':
         return {
-          borderColor: 'rgba(255, 153, 0, 0.4)',
-          bg: 'rgba(255, 153, 0, 0.06)',
-          textColor: '#b45309',
-          hoverBg: 'rgba(255, 153, 0, 0.12)',
-          glowColor: 'rgba(255, 153, 0, 0.25)',
+          borderColor: 'rgba(50, 108, 229, 0.4)',
+          bg: 'rgba(50, 108, 229, 0.06)',
+          textColor: '#1d4ed8',
+          hoverBg: 'rgba(50, 108, 229, 0.12)',
+          glowColor: 'rgba(50, 108, 229, 0.25)',
           icon: (
-            <svg className="w-4 h-4 text-[#FF9900]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12.015 15.602c-1.748 0-3.328-.46-4.664-1.285l1.042-1.398c1.077.726 2.373 1.15 3.738 1.15 2.115 0 3.328-.864 3.328-2.222 0-1.314-1.042-2.023-3.085-2.507C9.362 8.653 8.35 7.6 8.35 5.922 8.35 3.868 9.998 2.5 12.568 2.5c1.41 0 2.7.34 3.778 1.012l-.995 1.485c-.933-.614-2.022-.922-3.013-.922-1.77 0-2.735.803-2.735 1.956 0 1.118.847 1.705 2.802 2.19 3.125.756 4.318 1.838 4.318 3.792-.001 2.153-1.638 3.589-4.693 3.589zm10.742-1.921l-3.34-8.813h1.758l2.352 6.544 1.93-6.544h1.564l-3.238 8.813h-1.026zm-18.775 0l-3.23-8.813h1.59l2.253 6.513 1.907-6.513h1.517l2.02 6.513 2.176-6.513h1.55l-3.254 8.813H9.37l-2.01-6.26-1.942 6.26h-1.44zm11.398-1.503c-2.316 2.45-5.694 3.914-9.355 3.914-3.5 0-6.757-1.353-9.053-3.64l.872-1.127c2.096 2.05 4.992 3.238 8.163 3.238 3.21 0 6.2-1.282 8.444-3.44l.93 1.055z" />
+            <svg className="w-3.5 h-3.5 text-[#326CE5]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0L1.7 5.9v12.2L12 24l10.3-5.9V5.9L12 0zm5.6 15.6L12 18.8l-5.6-3.2V9.6L12 6.4l5.6 3.2v6z" />
+            </svg>
+          )
+        };
+      case 'hubspot':
+        return {
+          borderColor: 'rgba(255, 122, 89, 0.4)',
+          bg: 'rgba(255, 122, 89, 0.06)',
+          textColor: '#ea580c',
+          hoverBg: 'rgba(255, 122, 89, 0.12)',
+          glowColor: 'rgba(255, 122, 89, 0.25)',
+          icon: (
+            <svg className="w-3.5 h-3.5 text-[#FF7A59]" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" />
             </svg>
           )
         };
       case 'postgresql':
         return {
-          borderColor: 'rgba(51, 103, 145, 0.4)',
-          bg: 'rgba(51, 103, 145, 0.06)',
-          textColor: '#1e40af',
-          hoverBg: 'rgba(51, 103, 145, 0.12)',
-          glowColor: 'rgba(51, 103, 145, 0.25)',
+          borderColor: 'rgba(65, 105, 225, 0.4)',
+          bg: 'rgba(65, 105, 225, 0.06)',
+          textColor: '#2563eb',
+          hoverBg: 'rgba(65, 105, 225, 0.12)',
+          glowColor: 'rgba(65, 105, 225, 0.25)',
           icon: (
-            <svg className="w-4 h-4 text-[#336791]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm0-22c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm1 14.5c0 1.933-1.567 3.5-3.5 3.5S6 18.433 6 16.5c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5zm-5 0c0 .828.672 1.5 1.5 1.5s1.5-.672 1.5-1.5-.672-1.5-1.5-1.5-1.5.672-1.5 1.5zm6-5c0 1.933-1.567 3.5-3.5 3.5S7 13.433 7 11.5 8.567 8 10.5 8s3.5 1.567 3.5 3.5zM9 11.5c0 .828.672 1.5 1.5 1.5s1.5-.672 1.5-1.5S11.328 10 10.5 10 9 10.672 9 11.5z" />
-            </svg>
-          )
-        };
-      case 'redis':
-        return {
-          borderColor: 'rgba(216, 44, 32, 0.4)',
-          bg: 'rgba(216, 44, 32, 0.06)',
-          textColor: '#b91c1c',
-          hoverBg: 'rgba(216, 44, 32, 0.12)',
-          glowColor: 'rgba(216, 44, 32, 0.25)',
-          icon: (
-            <svg className="w-4 h-4 text-[#D82C20]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.433 4.148c-1.39-1.047-3.232-1.782-5.433-2.133v11.751h1.5V11.23c2.201.351 4.043 1.086 5.433 2.133V4.148zM6.567 4.148c1.39-1.047 3.232-1.782 5.433-2.133v11.751h-1.5V11.23C8.299 11.58 6.457 10.846 5.067 9.799V4.148zm5.433 13.885v1.89c2.201-.35 4.043-1.086 5.433-2.133V6.262c-1.39 1.047-3.232 1.782-5.433 2.133v7.094l-1.5 1.834h3v-2.036c-1.39-1.047-3.232-1.781-5.433-2.132v7.093h1.5zm-3-8.926c-2.201-.351-4.043-1.086-5.433-2.133v11.528c1.39 1.047 3.232 1.782 5.433 2.133V9.107z"/>
-            </svg>
-          )
-        };
-      case 'vite':
-        return {
-          borderColor: 'rgba(100, 108, 255, 0.4)',
-          bg: 'rgba(100, 108, 255, 0.06)',
-          textColor: '#4338ca',
-          hoverBg: 'rgba(100, 108, 255, 0.12)',
-          glowColor: 'rgba(100, 108, 255, 0.25)',
-          icon: (
-            <svg className="w-4 h-4 text-[#646CFF]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M23.362 1.588a1.05 1.05 0 00-.737-.736C22.043.684 15.69 2.227 12 3.664 8.31 2.227 1.957.684 1.375.852a1.05 1.05 0 00-.737.736C.46 2.17.004 8.8.847 11.233c.843 2.433 10.231 11.758 10.741 12.26.233.23.61.23.843 0 .51-.502 9.898-9.827 10.74-12.26.844-2.433.388-9.063.19-9.645zm-1.875.526c.073.493.187 6.13-.377 7.747-.565 1.616-9.141 10.158-9.141 10.158S3.447 11.477 2.882 9.86c-.564-1.616-.45-7.253-.377-7.746.046-.32.32-.593.64-.64.838-.124 5.992-1.353 8.855-2.585 2.863 1.232 8.017 2.46 8.855 2.585.32.046.594.32.64.64z" />
+            <svg className="w-3.5 h-3.5 text-[#4169E1]" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" />
             </svg>
           )
         };
       default:
         return {
-          borderColor: 'rgba(148, 163, 184, 0.4)',
-          bg: 'rgba(241, 245, 249, 0.6)',
-          textColor: '#475569',
-          hoverBg: 'rgba(226, 232, 240, 0.8)',
-          glowColor: 'rgba(148, 163, 184, 0.2)',
-          icon: (
-            <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-          )
+          borderColor: 'rgba(16, 185, 129, 0.4)',
+          bg: 'rgba(16, 185, 129, 0.06)',
+          textColor: '#059669',
+          hoverBg: 'rgba(16, 185, 129, 0.12)',
+          glowColor: 'rgba(16, 185, 129, 0.2)',
+          icon: <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
         };
     }
   };
@@ -188,9 +341,9 @@ export const SolutionTechStackSection = ({ solution }: SectionProps) => {
   return (
     <section id="tech-stack" className="bg-white border border-slate-200/80 rounded-3xl p-5 md:p-6 scroll-mt-24 shadow-sm w-full h-fit">
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-slate-900 font-display">{solution.sectionCopy.techStackTitle}</h2>
+        <h2 className="text-2xl font-bold text-slate-900 font-display">{solution.sectionCopy?.techStackTitle || 'Core Technology Stack'}</h2>
         <p className="text-slate-500 text-sm leading-relaxed max-w-sm">
-          {solution.sectionCopy.techStackSubtitle}
+          {solution.sectionCopy?.techStackSubtitle || 'Built with enterprise-grade tools'}
         </p>
 
         <motion.div 

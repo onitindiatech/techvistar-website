@@ -21,8 +21,8 @@ export const SolutionProcessSection = ({ solution }: SectionProps) => {
             </span>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 font-display">{solution.sectionCopy.processTitle}</h2>
-            <p className="text-sm text-slate-500 font-medium mt-1">{solution.sectionCopy.processSubtitle}</p>
+            <h2 className="text-2xl font-bold text-slate-900 font-display">{solution.sectionCopy?.processTitle || 'Implementation Process'}</h2>
+            <p className="text-sm text-slate-500 font-medium mt-1">{solution.sectionCopy?.processSubtitle || 'How we deliver results'}</p>
           </div>
         </div>
 

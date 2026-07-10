@@ -198,7 +198,7 @@ export const Navbar = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] h-20 flex items-center',
         isScrolled 
-          ? 'bg-white/90 backdrop-blur-md shadow-md shadow-slate-100/45 border-b border-slate-200/50' 
+          ? 'bg-white shadow-md shadow-slate-100/45 border-b border-slate-200/50' 
           : 'bg-white border-b border-slate-100'
       )}
     >

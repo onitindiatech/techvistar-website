@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SOLUTIONS_DATA, SolutionDetail } from '@/data/solutions';
-import workBg from '../assets/work-bg.png';
+import solutionBg from '../assets/solution-header.png';
 import { LogoCloud } from '@/components/LogoCloud';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { useQuery } from '@tanstack/react-query';
@@ -140,7 +140,7 @@ export const Solutions = () => {
           title="Enterprise Solutions"
           subtitle="Our Capabilities"
           description="Deploying robust business automation, production-grade intelligence models, and highly secure cloud environments built to scale operations."
-          backgroundImage={workBg}
+          backgroundImage={solutionBg}
         />
 
         {/* LOADING SKELETON LAYER */}

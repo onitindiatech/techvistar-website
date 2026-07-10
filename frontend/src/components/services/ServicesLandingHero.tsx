@@ -16,17 +16,17 @@ export const ServicesLandingHero = ({
   onExplore,
 }: ServicesLandingHeroProps) => {
   return (
-    <section className="relative flex min-h-[78vh] items-center justify-center overflow-hidden bg-slate-950 pt-[4.5rem] md:pt-20">
+    <section className="relative overflow-hidden bg-slate-950 pt-28 pb-10 md:pt-32 md:pb-12">
       {backgroundImage && (
         <motion.div
-          className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-25"
+          className="pointer-events-none absolute inset-0 bg-[length:auto_90%] bg-right-bottom bg-no-repeat opacity-80"
           style={{ backgroundImage: `url(${backgroundImage})` }}
           animate={{ scale: [1, 1.03, 1] }}
           transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
         />
       )}
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/70 to-slate-950" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
 
       <motion.div
         className="pointer-events-none absolute -left-32 top-1/4 h-80 w-80 rounded-full bg-emerald-500/15 blur-[100px]"
@@ -48,7 +48,7 @@ export const ServicesLandingHero = ({
         }}
       />
 
-      <div className="container relative z-10 mx-auto max-w-5xl px-4 md:px-6 text-center">
+      <div className="container relative z-10 mx-auto max-w-5xl px-4 md:px-6 text-left">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -62,23 +62,12 @@ export const ServicesLandingHero = ({
             </Badge>
           )}
 
-          <h1 className="font-display text-[1.75rem] font-black leading-[1.12] tracking-tighter text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            {landing.title.split(' ').length > 2 ? (
-              <>
-                {landing.title.split(' ').slice(0, -2).join(' ')}{' '}
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-                  {landing.title.split(' ').slice(-2).join(' ')}
-                </span>
-              </>
-            ) : (
-              <span className="bg-gradient-to-r from-white via-emerald-100 to-emerald-300 bg-clip-text text-transparent">
-                {landing.title}
-              </span>
-            )}
+          <h1 className="text-4xl md:text-5xl font-extrabold font-display text-white mb-4">
+            {landing.title}
           </h1>
 
           {landing.description && (
-            <p className="mx-auto max-w-2xl text-sm font-semibold leading-relaxed text-slate-300 sm:text-base md:text-lg">
+            <p className="max-w-2xl text-sm font-semibold leading-relaxed text-slate-300 sm:text-base md:text-lg">
               {landing.description}
             </p>
           )}
@@ -88,7 +77,7 @@ export const ServicesLandingHero = ({
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-4"
+          className="mt-8 flex flex-wrap items-center justify-start gap-4"
         >
           <Button
             onClick={onExplore}

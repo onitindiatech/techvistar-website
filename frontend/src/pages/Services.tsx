@@ -10,7 +10,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, Layers, RotateCcw, Star } from 'lucide-react';
-import servicesBg from '../assets/services-bg.png';
+import servicesBg from '../assets/our-service-bg.png';
 import { ServicesLandingHero } from '@/components/services/ServicesLandingHero';
 import { ServiceCard } from '@/components/services/ServiceCard';
 import { cn } from '@/lib/utils';

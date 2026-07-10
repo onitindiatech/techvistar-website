@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
@@ -8,11 +8,22 @@ import { DotGrid } from '@/components/DotGrid';
 import logo from '../assets/logo.webp';
 import { 
   Phone, Mail, MapPin, Clock, ArrowRight, ArrowUp, Star,
-  Linkedin, Github, Instagram, Twitter, Youtube
+  Linkedin, Github, Instagram, Twitter, Youtube, Facebook
 } from 'lucide-react';
 import { subscribeNewsletter } from '@/services/newsletter.service';
+import { useFooterContent } from '@/hooks/useFooterContent';
+
+const SOCIAL_ICONS: Record<string, typeof Linkedin> = {
+  linkedin: Linkedin,
+  github: Github,
+  instagram: Instagram,
+  twitter: Twitter,
+  youtube: Youtube,
+  facebook: Facebook,
+};
 
 export const Footer = () => {
+  const footer = useFooterContent();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,13 +69,27 @@ export const Footer = () => {
     }
   };
 
+  const footerStyle: CSSProperties = {
+    backgroundColor: footer.backgroundColor,
+    ...(footer.backgroundImage
+      ? {
+          backgroundImage: `url(${footer.backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }
+      : {}),
+  };
+
   const itemFadeUp = {
     hidden: { opacity: 0, y: 15 },
     show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } }
   };
 
   return (
-    <footer className="relative overflow-hidden bg-[#05070B] border-t border-zinc-900 text-slate-400 py-16 md:py-24 select-none">
+    <footer
+      className="relative overflow-hidden border-t border-zinc-900 text-slate-400 py-16 md:py-24 select-none"
+      style={footerStyle}
+    >
       
       {/* Background DotGrid Animation */}
       <DotGrid 
@@ -92,12 +117,12 @@ export const Footer = () => {
           {/* Column 1: Left Premium Contact Card */}
           <motion.div variants={itemFadeUp} className="lg:col-span-4 md:col-span-2 space-y-6">
             <Link to="/" className="inline-flex items-center gap-3">
-              <img src={logo} alt="TechVistar" className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-500/10" />
-              <span className="text-xl font-bold font-display text-white tracking-tight">TechVistar</span>
+              <img src={footer.logo || logo} alt={footer.heading} className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-500/10" />
+              <span className="text-xl font-bold font-display text-white tracking-tight">{footer.heading}</span>
             </Link>
             
             <p className="text-xs sm:text-sm leading-relaxed text-slate-200 font-bold max-w-sm">
-              Deploying enterprise software architecture, cognitive AI models, and secure cloud infrastructures engineered for scalable conversions.
+              {footer.companyDescription}
             </p>
 
             {/* Info details with subtle hover glow */}
@@ -106,25 +131,25 @@ export const Footer = () => {
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover/info:bg-emerald-500/20 transition-all duration-300">
                   <Phone className="w-4 h-4" />
                 </div>
-                <a href="tel:+918800000000" className="text-slate-200 hover:text-emerald-400 transition-colors font-bold">+91 88000 00000</a>
+                <a href={`tel:${footer.phone.replace(/\s/g, '')}`} className="text-slate-200 hover:text-emerald-400 transition-colors font-bold">{footer.phone}</a>
               </div>
               <div className="flex items-center gap-3 group/info">
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover/info:bg-emerald-500/20 transition-all duration-300">
                   <Mail className="w-4 h-4" />
                 </div>
-                <a href="mailto:hello@techvistar.com" className="text-slate-200 hover:text-emerald-400 transition-colors font-bold">hello@techvistar.com</a>
+                <a href={`mailto:${footer.email}`} className="text-slate-200 hover:text-emerald-400 transition-colors font-bold">{footer.email}</a>
               </div>
               <div className="flex items-start gap-3 group/info">
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover/info:bg-emerald-500/20 transition-all duration-300 mt-0.5">
                   <MapPin className="w-4 h-4" />
                 </div>
-                <span className="text-slate-200 leading-relaxed font-bold">A-75, Sector 4, Noida, UP 201301</span>
+                <span className="text-slate-200 leading-relaxed font-bold">{footer.address}</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
                   <Clock className="w-4 h-4" />
                 </div>
-                <span className="text-slate-400 font-bold">Mon - Fri: 9:00 AM - 6:00 PM</span>
+                <span className="text-slate-400 font-bold">{footer.workingHours}</span>
               </div>
             </div>
 
@@ -162,16 +187,7 @@ export const Footer = () => {
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-5">
             <div className="font-extrabold font-display text-white text-xs uppercase tracking-widest border-b border-white/5 pb-2">Services</div>
             <ul className="space-y-3 font-bold text-xs sm:text-sm">
-              {[
-                { label: 'Web Development', href: '/services' },
-                { label: 'Mobile Apps', href: '/services' },
-                { label: 'UI/UX Design', href: '/services' },
-                { label: 'AI Solutions', href: '/services' },
-                { label: 'Cloud Migration', href: '/services' },
-                { label: 'DevOps Pipelines', href: '/services' },
-                { label: 'Automation Bots', href: '/services' },
-                { label: 'Custom Software', href: '/services' },
-              ].map((link) => (
+              {footer.serviceLinks.map((link) => (
                 <li key={link.label}>
                   <Link 
                     to={link.href}
@@ -189,16 +205,7 @@ export const Footer = () => {
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-5">
             <div className="font-extrabold font-display text-white text-xs uppercase tracking-widest border-b border-white/5 pb-2">Industries</div>
             <ul className="space-y-3 font-bold text-xs sm:text-sm">
-              {[
-                { label: 'Healthcare', href: '/industries' },
-                { label: 'Finance & Banking', href: '/industries' },
-                { label: 'LMS Education', href: '/industries' },
-                { label: 'Manufacturing', href: '/industries' },
-                { label: 'eCommerce Retail', href: '/industries' },
-                { label: 'Real Estate CRM', href: '/industries' },
-                { label: 'Logistics Tracker', href: '/industries' },
-                { label: 'Civic Government', href: '/industries' },
-              ].map((link) => (
+              {footer.industryLinks.map((link) => (
                 <li key={link.label}>
                   <Link 
                     to={link.href}
@@ -216,17 +223,7 @@ export const Footer = () => {
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-5">
             <div className="font-extrabold font-display text-white text-xs uppercase tracking-widest border-b border-white/5 pb-2">Company</div>
             <ul className="space-y-3 font-bold text-xs sm:text-sm">
-              {[
-                { label: 'About Us', href: '/about' },
-                { label: 'Our Portfolio', href: '/work' },
-                { label: 'Core Solutions', href: '/solutions' },
-                { label: 'Our Industries', href: '/industries' },
-                { label: 'Careers', href: '/careers' },
-                { label: 'Contact Us', href: '/contact' },
-                { label: 'Portal FAQ', href: '/contact' },
-                { label: 'Privacy Policy', href: '/privacy' },
-                { label: 'Terms of Use', href: '/terms' },
-              ].map((link) => (
+              {footer.companyLinks.map((link) => (
                 <li key={link.label}>
                   <Link 
                     to={link.href}
@@ -245,9 +242,9 @@ export const Footer = () => {
             <div className="font-extrabold font-display text-white text-xs uppercase tracking-widest border-b border-white/5 pb-2">Newsletter</div>
             
             <div className="space-y-3">
-              <div className="text-white text-xs font-bold leading-snug">Stay updated with TechVistar</div>
+              <div className="text-white text-xs font-bold leading-snug">{footer.newsletterHeading}</div>
               <p className="text-[11px] text-slate-300 font-semibold leading-relaxed">
-                Get product updates, technology insights, and engineering articles.
+                {footer.newsletterDescription}
               </p>
             </div>
 
@@ -272,21 +269,15 @@ export const Footer = () => {
           
           {/* Social circular buttons */}
           <div className="flex gap-3 order-2 md:order-1">
-            {[
-              { label: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
-              { label: 'GitHub', href: 'https://github.com', icon: Github },
-              { label: 'Instagram', href: 'https://instagram.com', icon: Instagram },
-              { label: 'Twitter', href: 'https://twitter.com', icon: Twitter },
-              { label: 'YouTube', href: 'https://youtube.com', icon: Youtube }
-            ].map((social) => {
-              const Icon = social.icon;
+            {footer.socialLinks.map((social) => {
+              const Icon = SOCIAL_ICONS[social.platform.toLowerCase()] || Linkedin;
               return (
                 <motion.a
-                  key={social.label}
-                  href={social.href}
+                  key={social.platform + social.url}
+                  href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={social.label}
+                  aria-label={social.platform}
                   whileHover={{ y: -3, scale: 1.05, rotate: 3, boxShadow: '0 0 15px rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.3)' }}
                   className="w-9 h-9 rounded-full bg-white/[0.02] border border-white/5 flex items-center justify-center text-slate-400 hover:text-emerald-400 transition-colors"
                 >
@@ -298,17 +289,37 @@ export const Footer = () => {
 
           {/* Center Copyright Info */}
           <p className="text-slate-500 order-3 md:order-2 text-center">
-            &copy; {new Date().getFullYear()} TechVistar. Made with ❤️ by TechVistar.
+            {footer.copyright}
+            {footer.bottomText ? ` ${footer.bottomText}` : ''}
           </p>
 
           {/* Right Links & Back to Top */}
           <div className="flex items-center gap-6 order-1 md:order-3">
-            <div className="flex gap-4 text-slate-500">
-              <a href="/privacy" className="hover:text-emerald-400 transition-colors">Privacy</a>
-              <a href="/terms" className="hover:text-emerald-400 transition-colors">Terms</a>
-              <a href="/cookies" className="hover:text-emerald-400 transition-colors">Cookies</a>
-              <a href="/sitemap" className="hover:text-emerald-400 transition-colors">Sitemap</a>
-            </div>
+            {footer.legalLinks.length > 0 && (
+              <div className="flex gap-4 text-slate-500">
+                {footer.legalLinks.map((link) =>
+                  link.href.startsWith('http') ? (
+                    <a
+                      key={link.label + link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-emerald-400 transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.label + link.href}
+                      to={link.href}
+                      className="hover:text-emerald-400 transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ),
+                )}
+              </div>
+            )}
 
             <motion.button
               onClick={scrollToTop}

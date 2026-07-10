@@ -71,27 +71,39 @@ export async function getAllServices(params: QueryParams = {}): Promise<{ servic
 }
 
 /**
+ * Extracts the service slug from a `/services/:slug` nav path.
+ */
+export function serviceSlugFromNavPath(path: string): string | null {
+  const match = path.match(/^\/services\/([^/?#]+)/);
+  return match?.[1] ?? null;
+}
+
+/**
+ * Keeps only nav items whose service slug is in the active (non-trashed) set.
+ */
+export function filterNavServicesByActiveSlugs<T extends { to: string }>(
+  items: T[],
+  activeSlugs: ReadonlySet<string>
+): T[] {
+  return items.filter((item) => {
+    const slug = serviceSlugFromNavPath(item.to);
+    return slug ? activeSlugs.has(slug) : false;
+  });
+}
+
+/**
  * Fetches details for a single active service by its slug.
+ * Trashed or missing services return an error (no static fallback).
  * @param slug Service slug
  */
 export async function getServiceBySlug(slug: string): Promise<any> {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/services/${slug}`, { cache: 'no-store' });
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Failed to fetch service details');
-    }
-    const result = await response.json();
-    return result.data;
-  } catch (error) {
-    console.warn(`Fallback to static data for service ${slug}`);
-    const { SERVICES } = await import('../data/services');
-    const staticService = SERVICES.find(s => s.slug === slug);
-    if (staticService) {
-      return staticService;
-    }
-    throw error;
+  const response = await fetch(`${API_BASE_URL}/api/services/${slug}`, { cache: 'no-store' });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to fetch service details');
   }
+  const result = await response.json();
+  return result.data;
 }
 
 /**

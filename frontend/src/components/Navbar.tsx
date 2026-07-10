@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { SITE } from '@/data';
 import { useQuery } from '@tanstack/react-query';
 import { getPublicPagesConfig } from '@/services/pages.service';
+import { getActiveServices, filterNavServicesByActiveSlugs } from '@/services/services.service';
 import { mergePagesCmsConfig } from '@/types/pagesCms';
 import logo from '../assets/logo.webp';
 
@@ -20,6 +21,15 @@ export const Navbar = () => {
     queryFn: getPublicPagesConfig,
     staleTime: 60_000,
   });
+  const { data: activeServices } = useQuery({
+    queryKey: ['activeServices'],
+    queryFn: getActiveServices,
+    staleTime: 5 * 60 * 1000,
+  });
+  const activeServiceSlugs = useMemo(
+    () => new Set((activeServices ?? []).map((service) => String(service.slug))),
+    [activeServices]
+  );
   const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
   const navLogo = websiteSettings.logo?.trim() || logo;
   const companyName = websiteSettings.companyName?.trim() || SITE.name;
@@ -107,6 +117,19 @@ export const Navbar = () => {
     { label: 'AI', to: '/services/ai', icon: Brain, desc: 'Cognitive models & AI agents.' },
     { label: 'Automation', to: '/services/automation', icon: Repeat, desc: 'RPA & workflow optimizers.' },
   ];
+
+  const publishedDevServices = useMemo(
+    () => (activeServices ? filterNavServicesByActiveSlugs(devServices, activeServiceSlugs) : []),
+    [activeServices, activeServiceSlugs]
+  );
+  const publishedDesignServices = useMemo(
+    () => (activeServices ? filterNavServicesByActiveSlugs(designServices, activeServiceSlugs) : []),
+    [activeServices, activeServiceSlugs]
+  );
+  const publishedCloudServices = useMemo(
+    () => (activeServices ? filterNavServicesByActiveSlugs(cloudServices, activeServiceSlugs) : []),
+    [activeServices, activeServiceSlugs]
+  );
 
   const bizSolutions = [
     { label: 'Enterprise Software', to: '/solutions/enterprise-software', icon: Building2, desc: 'Core business platforms.' },
@@ -397,7 +420,7 @@ export const Navbar = () => {
               <motion.div variants={columnVariants} className="col-span-3 space-y-4">
                 <div className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-1 px-3">Development Services</div>
                 <div className="space-y-0.5">
-                  {devServices.map((srv) => {
+                  {publishedDevServices.map((srv) => {
                     const IconComp = srv.icon;
                     return (
                       <Link
@@ -426,7 +449,7 @@ export const Navbar = () => {
               <motion.div variants={columnVariants} className="col-span-3 space-y-4">
                 <div className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-1 px-3">Design Services</div>
                 <div className="space-y-0.5">
-                  {designServices.map((srv) => {
+                  {publishedDesignServices.map((srv) => {
                     const IconComp = srv.icon;
                     return (
                       <Link
@@ -455,7 +478,7 @@ export const Navbar = () => {
               <motion.div variants={columnVariants} className="col-span-3 space-y-4">
                 <div className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-1 px-3">Cloud & AI</div>
                 <div className="space-y-0.5">
-                  {cloudServices.map((srv) => {
+                  {publishedCloudServices.map((srv) => {
                     const IconComp = srv.icon;
                     return (
                       <Link
@@ -692,7 +715,7 @@ export const Navbar = () => {
                         
                         <div className="space-y-2 pt-1">
                           <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-450 block">Development</span>
-                          {devServices.map(srv => (
+                          {publishedDevServices.map(srv => (
                             <Link key={srv.label} to={srv.to} onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 py-1 text-sm font-semibold text-slate-700 hover:text-emerald-600">
                               <srv.icon className="w-3.5 h-3.5 text-emerald-500/70" />
                               <span>{srv.label}</span>
@@ -702,7 +725,7 @@ export const Navbar = () => {
 
                         <div className="space-y-2 pt-2">
                           <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-455 block">Design</span>
-                          {designServices.map(srv => (
+                          {publishedDesignServices.map(srv => (
                             <Link key={srv.label} to={srv.to} onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 py-1 text-sm font-semibold text-slate-700 hover:text-emerald-600">
                               <srv.icon className="w-3.5 h-3.5 text-emerald-500/70" />
                               <span>{srv.label}</span>
@@ -712,7 +735,7 @@ export const Navbar = () => {
 
                         <div className="space-y-2 pt-2">
                           <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-450 block">Cloud & AI</span>
-                          {cloudServices.map(srv => (
+                          {publishedCloudServices.map(srv => (
                             <Link key={srv.label} to={srv.to} onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 py-1 text-sm font-semibold text-slate-700 hover:text-emerald-600">
                               <srv.icon className="w-3.5 h-3.5 text-emerald-500/70" />
                               <span>{srv.label}</span>

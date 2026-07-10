@@ -94,12 +94,14 @@ export function useFooterContent() {
     queryKey: ['activeServices'],
     queryFn: getActiveServices,
     staleTime: 5 * 60 * 1000,
+    retry: 2,
   });
 
   const { data: industries = [] } = useQuery({
     queryKey: ['activeIndustries'],
     queryFn: () => getActiveIndustries(),
     staleTime: 5 * 60 * 1000,
+    retry: 2,
   });
 
   return useMemo(() => {

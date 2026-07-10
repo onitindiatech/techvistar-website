@@ -44,7 +44,12 @@ app.use(helmet({
 //   - In production:  env.clientUrl (from .env)
 const allowedOrigins = env.isDev
   ? [...DEV_ORIGINS, 'https://techvistar-website.vercel.app']
-  : [env.clientUrl, 'https://techvistar-website.vercel.app'];
+  : [
+      env.clientUrl,
+      'https://techvistar-website.vercel.app',
+      'https://techvistar.com',
+      'https://www.techvistar.com',
+    ].filter((origin, index, list) => Boolean(origin) && list.indexOf(origin) === index);
 
 app.use(cors({
   origin: (origin, callback) => {

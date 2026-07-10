@@ -1,3 +1,5 @@
+import { adminFetch, getApiBaseUrl, publicFetch, readApiError } from '@/lib/api';
+
 export interface ContactSubmissionData {
   name: string;
   email: string;
@@ -20,13 +22,11 @@ interface ContactQueryParams {
   sortOrder?: 'asc' | 'desc';
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-
 /**
  * Submits the contact form data to the backend API (public).
  */
 export async function submitContactForm(data: ContactSubmissionData): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/contact`, {
+  const response = await publicFetch(`${getApiBaseUrl()}/api/contact`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -55,7 +55,7 @@ export async function submitContactForm(data: ContactSubmissionData): Promise<an
  * Fetches contact inquiries with pagination (admin).
  */
 export async function getAllContacts(params: ContactQueryParams = {}): Promise<{ contacts: any[]; pagination: any }> {
-  const url = new URL(`${API_BASE_URL}/api/contact/admin`);
+  const url = new URL(`${getApiBaseUrl()}/api/contact/admin`);
 
   if (params.page) url.searchParams.append('page', String(params.page));
   if (params.limit) url.searchParams.append('limit', String(params.limit));
@@ -65,10 +65,9 @@ export async function getAllContacts(params: ContactQueryParams = {}): Promise<{
   if (params.sortBy) url.searchParams.append('sortBy', params.sortBy);
   if (params.sortOrder) url.searchParams.append('sortOrder', params.sortOrder);
 
-  const response = await fetch(url.toString(), { credentials: 'include' });
+  const response = await adminFetch(url.toString());
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch contact inquiries');
+    throw new Error(await readApiError(response, 'Failed to fetch contact inquiries'));
   }
   const result = await response.json();
   return {
@@ -78,88 +77,70 @@ export async function getAllContacts(params: ContactQueryParams = {}): Promise<{
 }
 
 export async function updateContactStatus(id: string, status: ContactStatus): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/contact/admin/${id}/status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/contact/admin/${id}/status`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to update contact inquiry status');
+    throw new Error(await readApiError(response, 'Failed to update contact inquiry status'));
   }
   const result = await response.json();
   return result.data;
 }
 
 export async function deleteContact(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/contact/admin/${id}`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/contact/admin/${id}`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to delete contact inquiry');
+    throw new Error(await readApiError(response, 'Failed to delete contact inquiry'));
   }
 }
 
 export async function restoreContact(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/contact/admin/${id}/restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/contact/admin/${id}/restore`, {
     method: 'POST',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to restore contact inquiry');
+    throw new Error(await readApiError(response, 'Failed to restore contact inquiry'));
   }
 }
 
 export async function permanentlyDeleteContact(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/contact/admin/${id}/permanent`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/contact/admin/${id}/permanent`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to permanently delete contact inquiry');
+    throw new Error(await readApiError(response, 'Failed to permanently delete contact inquiry'));
   }
 }
 
 export async function bulkDeleteContacts(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/contact/admin/bulk-delete`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/contact/admin/bulk-delete`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk delete contacts');
+    throw new Error(await readApiError(response, 'Failed to bulk delete contacts'));
   }
 }
 
 export async function bulkRestoreContacts(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/contact/admin/bulk-restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/contact/admin/bulk-restore`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk restore contacts');
+    throw new Error(await readApiError(response, 'Failed to bulk restore contacts'));
   }
 }
 
 export async function bulkUpdateContactStatus(ids: string[], status: ContactStatus): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/contact/admin/bulk-status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/contact/admin/bulk-status`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids, status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk update contact status');
+    throw new Error(await readApiError(response, 'Failed to bulk update contact status'));
   }
 }

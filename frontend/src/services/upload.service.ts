@@ -3,7 +3,7 @@
  * @description Client service for CMS image uploads to Cloudinary via the backend API.
  */
 
-import { getAccessToken } from "@/services/auth.service";
+import { getAccessToken, getApiBaseUrl } from "@/lib/api";
 import type {
   UploadedImageData,
   UploadApiResponse,
@@ -12,8 +12,6 @@ import type {
   UploadedResumeData,
   ResumeUploadApiResponse,
 } from "@/types/upload";
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 export const UPLOAD_CONSTRAINTS = {
   maxFileSizeBytes: 5 * 1024 * 1024, // 5 MB
@@ -57,7 +55,7 @@ export function uploadImageFile(
     formData.append(UPLOAD_CONSTRAINTS.fieldName, file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", `${API_BASE_URL}/api/upload/image`);
+    xhr.open("POST", `${getApiBaseUrl()}/api/upload/image`);
     xhr.withCredentials = true;
 
     if (token) {
@@ -138,7 +136,7 @@ export function uploadVideoFile(
     formData.append(VIDEO_UPLOAD_CONSTRAINTS.fieldName, file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_BASE_URL}/api/upload/video`);
+    xhr.open('POST', `${getApiBaseUrl()}/api/upload/video`);
     xhr.withCredentials = true;
 
     if (token) {
@@ -224,7 +222,7 @@ export function uploadResumeFile(
     formData.append(RESUME_UPLOAD_CONSTRAINTS.fieldName, file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_BASE_URL}/api/upload/resume`);
+    xhr.open('POST', `${getApiBaseUrl()}/api/upload/resume`);
 
     xhr.upload.onprogress = (event) => {
       if (!onProgress || !event.lengthComputable) return;

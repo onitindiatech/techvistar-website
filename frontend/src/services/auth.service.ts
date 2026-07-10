@@ -1,11 +1,19 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-const ACCESS_TOKEN_KEY = "tv_admin_access_token";
+import {
+  getApiBaseUrl,
+  getAccessToken,
+  setAccessToken,
+  clearAccessToken,
+  adminFetch,
+  readApiError,
+} from '@/lib/api';
+
+export { getAccessToken, setAccessToken, clearAccessToken };
 
 interface AdminUser {
   id: string;
   name: string;
   email: string;
-  role: "admin";
+  role: 'admin';
 }
 
 interface AdminAuthResponse {
@@ -20,29 +28,8 @@ interface ApiEnvelope<T> {
   data: T;
 }
 
-export function getAccessToken(): string | null {
-  return localStorage.getItem(ACCESS_TOKEN_KEY);
-}
-
-function setAccessToken(token: string): void {
-  localStorage.setItem(ACCESS_TOKEN_KEY, token);
-}
-
-function clearAccessToken(): void {
-  localStorage.removeItem(ACCESS_TOKEN_KEY);
-}
-
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const token = getAccessToken();
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(init.headers || {}),
-    },
-    ...init,
-  });
+  const response = await adminFetch(`${getApiBaseUrl()}${path}`, init);
 
   let payload: ApiEnvelope<T> | null = null;
   const rawBody = await response.text();
@@ -56,20 +43,20 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   }
 
   if (!response.ok) {
-    throw new Error((payload as ApiEnvelope<T> | null)?.message || "Authentication request failed");
+    throw new Error(payload?.message || 'Authentication request failed');
   }
 
-  return ((payload?.data ?? payload) as T);
+  return (payload?.data ?? payload) as T;
 }
 
 export async function getCurrentAdmin() {
-  const data = await request<{ admin: AdminUser | null }>("/api/auth/me");
+  const data = await request<{ admin: AdminUser | null }>('/api/auth/me');
   return data.admin;
 }
 
 export async function loginAdmin(credentials: { email: string; password: string }) {
-  const data = await request<AdminAuthResponse>("/api/auth/login", {
-    method: "POST",
+  const data = await request<AdminAuthResponse>('/api/auth/login', {
+    method: 'POST',
     body: JSON.stringify(credentials),
   });
 
@@ -82,8 +69,8 @@ export async function loginAdmin(credentials: { email: string; password: string 
 
 export async function logoutAdmin() {
   try {
-    return await request<{ success: boolean }>("/api/auth/logout", {
-      method: "POST",
+    return await request<{ success: boolean }>('/api/auth/logout', {
+      method: 'POST',
     });
   } finally {
     clearAccessToken();

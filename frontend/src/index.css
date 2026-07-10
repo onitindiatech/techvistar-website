@@ -499,6 +499,11 @@
       gap: 0.625rem;
     }
 
+    .hero-main {
+      justify-content: flex-start;
+      padding-top: 0.125rem;
+    }
+
     .hero-trust-logos {
       gap: 0.5rem 0.75rem;
     }
@@ -516,6 +521,12 @@
     .mobile-touch-target {
       min-height: 2.75rem;
       min-width: 2.75rem;
+    }
+
+    /* Footer link columns — tighter alignment on small screens */
+    footer .container-custom {
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
   }
 

@@ -65,6 +65,7 @@ const Careers = () => {
   const { data: jobs, isLoading, error } = useQuery<Job[]>({
     queryKey: ['activeJobs'],
     queryFn: getActiveJobs,
+    retry: 2,
   });
 
   const activeJobs = useMemo(() => {

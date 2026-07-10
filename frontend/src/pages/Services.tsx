@@ -45,6 +45,7 @@ const Services = () => {
     queryFn: () => getActiveServices(),
     staleTime: 0,
     refetchOnMount: 'always',
+    retry: 2,
   });
 
   const activeServices = useMemo(

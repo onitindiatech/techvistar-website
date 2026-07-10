@@ -45,6 +45,7 @@ export const Industries = () => {
     queryFn: () => getActiveIndustries(),
     staleTime: 0,
     refetchOnMount: 'always',
+    retry: 2,
   });
 
   const industriesData = useMemo(() => {

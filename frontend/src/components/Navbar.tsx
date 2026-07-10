@@ -21,10 +21,11 @@ export const Navbar = () => {
     queryFn: getPublicPagesConfig,
     staleTime: 60_000,
   });
-  const { data: activeServices } = useQuery({
+  const { data: activeServices, isSuccess } = useQuery({
     queryKey: ['activeServices'],
     queryFn: getActiveServices,
     staleTime: 5 * 60 * 1000,
+    retry: 2,
   });
   const activeServiceSlugs = useMemo(
     () => new Set((activeServices ?? []).map((service) => String(service.slug))),
@@ -119,16 +120,16 @@ export const Navbar = () => {
   ];
 
   const publishedDevServices = useMemo(
-    () => (activeServices ? filterNavServicesByActiveSlugs(devServices, activeServiceSlugs) : []),
-    [activeServices, activeServiceSlugs]
+    () => (isSuccess ? filterNavServicesByActiveSlugs(devServices, activeServiceSlugs) : devServices),
+    [isSuccess, activeServiceSlugs]
   );
   const publishedDesignServices = useMemo(
-    () => (activeServices ? filterNavServicesByActiveSlugs(designServices, activeServiceSlugs) : []),
-    [activeServices, activeServiceSlugs]
+    () => (isSuccess ? filterNavServicesByActiveSlugs(designServices, activeServiceSlugs) : designServices),
+    [isSuccess, activeServiceSlugs]
   );
   const publishedCloudServices = useMemo(
-    () => (activeServices ? filterNavServicesByActiveSlugs(cloudServices, activeServiceSlugs) : []),
-    [activeServices, activeServiceSlugs]
+    () => (isSuccess ? filterNavServicesByActiveSlugs(cloudServices, activeServiceSlugs) : cloudServices),
+    [isSuccess, activeServiceSlugs]
   );
 
   const bizSolutions = [

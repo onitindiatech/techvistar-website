@@ -1,37 +1,31 @@
 import { ServicesCmsConfig } from '@/types/servicesCms';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+import { adminFetch, getApiBaseUrl, publicFetch, readApiError } from '@/lib/api';
 
 export async function getServicesCmsConfig(): Promise<ServicesCmsConfig> {
-  const response = await fetch(`${API_BASE_URL}/api/services/config`, { cache: 'no-store' });
+  const response = await publicFetch(`${getApiBaseUrl()}/api/services/config`);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch services CMS config');
+    throw new Error(await readApiError(response, 'Failed to fetch services CMS config'));
   }
   const result = await response.json();
   return result.data;
 }
 
 export async function getAdminServicesCmsConfig(): Promise<ServicesCmsConfig & { _id?: string }> {
-  const response = await fetch(`${API_BASE_URL}/api/services/admin/config`, { credentials: 'include' });
+  const response = await adminFetch(`${getApiBaseUrl()}/api/services/admin/config`);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch services CMS config');
+    throw new Error(await readApiError(response, 'Failed to fetch services CMS config'));
   }
   const result = await response.json();
   return result.data;
 }
 
 export async function updateServicesCmsConfig(data: ServicesCmsConfig): Promise<ServicesCmsConfig> {
-  const response = await fetch(`${API_BASE_URL}/api/services/admin/config`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/services/admin/config`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to update services CMS config');
+    throw new Error(await readApiError(response, 'Failed to update services CMS config'));
   }
   const result = await response.json();
   return result.data;

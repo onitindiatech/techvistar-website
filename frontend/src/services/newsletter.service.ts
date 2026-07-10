@@ -1,3 +1,5 @@
+import { adminFetch, getApiBaseUrl, publicFetch, readApiError } from '@/lib/api';
+
 export interface NewsletterSubscriptionData {
   email: string;
   source: 'footer' | 'blog_popup' | 'contact_form' | 'hero';
@@ -16,14 +18,12 @@ interface NewsletterQueryParams {
   sortOrder?: 'asc' | 'desc';
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-
 /**
  * Submits the newsletter subscription to the backend API (public).
  */
 export async function subscribeNewsletter(data: NewsletterSubscriptionData): Promise<any> {
-  const url = `${API_BASE_URL}/api/newsletter`;
-  const response = await fetch(url, {
+  const url = `${getApiBaseUrl()}/api/newsletter`;
+  const response = await publicFetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: data.email, source: data.source }),
@@ -43,7 +43,7 @@ export async function subscribeNewsletter(data: NewsletterSubscriptionData): Pro
  * Fetches subscribers with pagination (admin).
  */
 export async function getAllSubscribers(params: NewsletterQueryParams = {}): Promise<{ subscribers: any[]; pagination: any }> {
-  const url = new URL(`${API_BASE_URL}/api/newsletter/admin`);
+  const url = new URL(`${getApiBaseUrl()}/api/newsletter/admin`);
 
   if (params.page) url.searchParams.append('page', String(params.page));
   if (params.limit) url.searchParams.append('limit', String(params.limit));
@@ -54,10 +54,9 @@ export async function getAllSubscribers(params: NewsletterQueryParams = {}): Pro
   if (params.sortBy) url.searchParams.append('sortBy', params.sortBy);
   if (params.sortOrder) url.searchParams.append('sortOrder', params.sortOrder);
 
-  const response = await fetch(url.toString(), { credentials: 'include' });
+  const response = await adminFetch(url.toString());
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch newsletter subscribers');
+    throw new Error(await readApiError(response, 'Failed to fetch newsletter subscribers'));
   }
   const result = await response.json();
   return {
@@ -67,88 +66,70 @@ export async function getAllSubscribers(params: NewsletterQueryParams = {}): Pro
 }
 
 export async function updateSubscriberStatus(id: string, status: NewsletterStatus): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/newsletter/admin/${id}/status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/newsletter/admin/${id}/status`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to update subscriber status');
+    throw new Error(await readApiError(response, 'Failed to update subscriber status'));
   }
   const result = await response.json();
   return result.data;
 }
 
 export async function deleteSubscriber(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/newsletter/admin/${id}`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/newsletter/admin/${id}`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to delete subscriber');
+    throw new Error(await readApiError(response, 'Failed to delete subscriber'));
   }
 }
 
 export async function restoreSubscriber(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/newsletter/admin/${id}/restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/newsletter/admin/${id}/restore`, {
     method: 'POST',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to restore subscriber');
+    throw new Error(await readApiError(response, 'Failed to restore subscriber'));
   }
 }
 
 export async function permanentlyDeleteSubscriber(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/newsletter/admin/${id}/permanent`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/newsletter/admin/${id}/permanent`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to permanently delete subscriber');
+    throw new Error(await readApiError(response, 'Failed to permanently delete subscriber'));
   }
 }
 
 export async function bulkDeleteSubscribers(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/newsletter/admin/bulk-delete`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/newsletter/admin/bulk-delete`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk delete subscribers');
+    throw new Error(await readApiError(response, 'Failed to bulk delete subscribers'));
   }
 }
 
 export async function bulkRestoreSubscribers(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/newsletter/admin/bulk-restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/newsletter/admin/bulk-restore`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk restore subscribers');
+    throw new Error(await readApiError(response, 'Failed to bulk restore subscribers'));
   }
 }
 
 export async function bulkUpdateSubscriberStatus(ids: string[], status: NewsletterStatus): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/newsletter/admin/bulk-status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/newsletter/admin/bulk-status`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids, status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk update subscriber status');
+    throw new Error(await readApiError(response, 'Failed to bulk update subscriber status'));
   }
 }

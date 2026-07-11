@@ -25,6 +25,7 @@ const MEDIA_SECTION_PATHS: Array<{ section: string; urlKey: string; publicIdKey:
   { section: 'about', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
   { section: 'contact', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
   { section: 'solutionsLanding', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
+  { section: 'solutionsLanding', urlKey: 'cta.backgroundImage', publicIdKey: 'cta.backgroundImagePublicId' },
   { section: 'industriesLanding', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
   { section: 'industriesLanding', urlKey: 'intro.icon', publicIdKey: 'intro.iconPublicId' },
   { section: 'industriesLanding', urlKey: 'cta.backgroundImage', publicIdKey: 'cta.backgroundImagePublicId' },

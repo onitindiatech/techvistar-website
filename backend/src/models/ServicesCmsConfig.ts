@@ -38,6 +38,14 @@ export interface IServicesLandingConfig extends ISeoFields {
   backgroundImagePublicId?: string;
   offeringsLabel: string;
   learnMoreLabel: string;
+  ctaText: string;
+  categoryEyebrow: string;
+  featuredEyebrow: string;
+  featuredTitle: string;
+  featuredDescription: string;
+  catalogEyebrow: string;
+  catalogTitle: string;
+  catalogDescription: string;
 }
 
 export interface IHomeServicesSectionConfig {
@@ -122,6 +130,22 @@ const servicesCmsConfigSchema = new Schema<IServicesCmsConfig>(
       canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/services' },
       offeringsLabel: { type: String, trim: true, default: 'Key Offerings' },
       learnMoreLabel: { type: String, trim: true, default: 'Learn more' },
+      ctaText: { type: String, trim: true, default: 'Explore Services' },
+      categoryEyebrow: { type: String, trim: true, default: 'Browse by category' },
+      featuredEyebrow: { type: String, trim: true, default: 'Top Picks' },
+      featuredTitle: { type: String, trim: true, default: 'Featured Services' },
+      featuredDescription: {
+        type: String,
+        trim: true,
+        default: 'Our most recommended enterprise solutions.',
+      },
+      catalogEyebrow: { type: String, trim: true, default: 'Full Catalog' },
+      catalogTitle: { type: String, trim: true, default: 'All Services' },
+      catalogDescription: {
+        type: String,
+        trim: true,
+        default: 'Explore the complete range of enterprise-grade solutions.',
+      },
     },
     homeSection: {
       tag: { type: String, trim: true, default: 'Our services' },

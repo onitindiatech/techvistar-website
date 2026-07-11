@@ -299,11 +299,44 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
     },
     solutionsLanding: {
       hero: landingHeroSchema,
-      intro: {
-        title: { type: String, trim: true, default: '' },
-        description: { type: String, trim: true, default: '' },
+      categoryNav: {
+        eyebrow: { type: String, trim: true, default: 'Browse by category' },
       },
-      cta: ctaBlockSchema,
+      featured: {
+        eyebrow: { type: String, trim: true, default: 'Top Picks' },
+        title: { type: String, trim: true, default: 'Featured Solutions' },
+        description: {
+          type: String,
+          trim: true,
+          default: 'Our most recommended enterprise solution programs.',
+        },
+        learnMoreLabel: { type: String, trim: true, default: 'Learn more' },
+      },
+      catalog: {
+        eyebrow: { type: String, trim: true, default: 'Full catalog' },
+        title: { type: String, trim: true, default: 'All Solutions' },
+        description: {
+          type: String,
+          trim: true,
+          default: 'Explore every solution vertical we deliver with enterprise-grade outcomes.',
+        },
+        learnMoreLabel: { type: String, trim: true, default: 'Learn more' },
+      },
+      intro: {
+        title: { type: String, trim: true, default: 'Solution capabilities' },
+        description: {
+          type: String,
+          trim: true,
+          default:
+            'Enterprise-grade programs across business automation, applied AI, and digital infrastructure.',
+        },
+      },
+      capabilities: {
+        eyebrow: { type: String, trim: true, default: 'Feature highlights' },
+        stats: { type: [statItemSchema], default: [] },
+        cards: { type: [industryCapabilityCardSchema], default: [] },
+      },
+      cta: extendedCtaBlockSchema,
       ...seoMongooseFields,
       seoTitle: { type: String, trim: true, default: 'Solutions | TechVistar' },
       canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/solutions' },

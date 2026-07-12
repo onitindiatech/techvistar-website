@@ -18,10 +18,12 @@ import {
   adminBulkStatusIndustries
 } from '@/controllers/industry.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
+import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
 
 const router = Router();
 
 // ─── Administrative CRUD Endpoints ───────────────────────────────────────────
+router.use('/admin', adminLimiter);
 router.get('/admin', authMiddleware, adminGetIndustries);
 router.post('/admin', authMiddleware, adminCreateIndustry);
 router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteIndustries);
@@ -33,7 +35,7 @@ router.put('/admin/:id', authMiddleware, adminUpdateIndustry);
 router.delete('/admin/:id', authMiddleware, adminDeleteIndustry);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.get('/', getPublicIndustries);
-router.get('/:slug', getPublicIndustryBySlug);
+router.get('/', publicReadLimiter, getPublicIndustries);
+router.get('/:slug', publicReadLimiter, getPublicIndustryBySlug);
 
 export default router;

@@ -30,6 +30,9 @@ import { DEV_ORIGINS }   from '@/constants';
 
 const app: Application = express();
 
+// Trust Render's reverse proxy so rate limiting and req.ip use the real client IP.
+app.set('trust proxy', 1);
+
 // ── 1. Security headers (Helmet) ──────────────────────────────────────────────
 // Sets 11+ security headers: X-Content-Type-Options, X-Frame-Options,
 // Content-Security-Policy, Strict-Transport-Security, etc.

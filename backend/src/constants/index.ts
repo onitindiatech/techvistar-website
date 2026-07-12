@@ -82,10 +82,14 @@ export const DB = {
 } as const;
 
 // ─── Rate Limiting ────────────────────────────────────────────────────────────
-export const RATE_LIMIT = {
-  WINDOW_MS:   15 * 60 * 1000,  // 15 minutes
-  MAX_REQUESTS: 100,              // Max requests per window per IP
-  SKIP_SUCCESSFUL_REQUESTS: false,
+export const PUBLIC_READ_RATE_LIMIT = {
+  WINDOW_MS:    15 * 60 * 1000, // 15 minutes
+  MAX_REQUESTS: 1500,            // High ceiling — normal SPA browsing must not be blocked
+} as const;
+
+export const ADMIN_RATE_LIMIT = {
+  WINDOW_MS:    15 * 60 * 1000, // 15 minutes
+  MAX_REQUESTS: 300,             // Moderate limit for authenticated admin CRUD
 } as const;
 
 export const CONTACT_RATE_LIMIT = {
@@ -96,6 +100,16 @@ export const CONTACT_RATE_LIMIT = {
 export const NEWSLETTER_RATE_LIMIT = {
   WINDOW_MS:    15 * 60 * 1000, // 15 minutes
   MAX_REQUESTS: 3,              // Max 3 requests per window per IP
+} as const;
+
+export const RESUME_UPLOAD_RATE_LIMIT = {
+  WINDOW_MS:    15 * 60 * 1000, // 15 minutes
+  MAX_REQUESTS: 10,
+} as const;
+
+export const CAREER_APPLICATION_RATE_LIMIT = {
+  WINDOW_MS:    15 * 60 * 1000, // 15 minutes
+  MAX_REQUESTS: 8,              // Aligns with contact/resume abuse profile
 } as const;
 
 // ─── Media Upload (Cloudinary — Phase 1.5) ────────────────────────────────────

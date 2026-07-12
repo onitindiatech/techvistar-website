@@ -20,10 +20,12 @@ import {
   adminUpdateFAQOrder,
 } from '@/controllers/faq.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
+import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
 
 const router = Router();
 
 // ─── Administrative CRUD Endpoints ───────────────────────────────────────────
+router.use('/admin', adminLimiter);
 router.get('/admin', authMiddleware, adminGetFAQs);
 router.post('/admin', authMiddleware, adminCreateFAQ);
 router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteFAQs);
@@ -37,7 +39,7 @@ router.put('/admin/:id', authMiddleware, adminUpdateFAQ);
 router.delete('/admin/:id', authMiddleware, adminDeleteFAQ);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.get('/', getPublicFAQs);
-router.get('/:faqId', getPublicFAQById);
+router.get('/', publicReadLimiter, getPublicFAQs);
+router.get('/:faqId', publicReadLimiter, getPublicFAQById);
 
 export default router;

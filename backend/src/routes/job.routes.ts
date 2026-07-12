@@ -19,10 +19,12 @@ import {
 } from '@/controllers/job.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
 import { adminGetApplicationsByJob } from '@/controllers/jobApplication.controller';
+import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
 
 const router = Router();
 
 // ─── Administrative CRUD Endpoints ───────────────────────────────────────────
+router.use('/admin', adminLimiter);
 router.get('/admin', authMiddleware, adminGetJobs);
 router.get('/admin/:jobId/applications', authMiddleware, adminGetApplicationsByJob);
 router.post('/admin', authMiddleware, adminCreateJob);
@@ -35,7 +37,7 @@ router.put('/admin/:id', authMiddleware, adminUpdateJob);
 router.delete('/admin/:id', authMiddleware, adminDeleteJob);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.get('/', listJobs);
-router.get('/:slug', getJobBySlug);
+router.get('/', publicReadLimiter, listJobs);
+router.get('/:slug', publicReadLimiter, getJobBySlug);
 
 export default router;

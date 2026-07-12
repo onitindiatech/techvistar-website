@@ -169,7 +169,7 @@ export const PAGINATION = {
 export const API_VERSION = 'v1' as const;
 
 // ─── CORS Origins ─────────────────────────────────────────────────────────────
-// Development origins — production origins come from env.clientUrl
+// Development origins — production origins come from env.clientUrls (CLIENT_URL)
 export const DEV_ORIGINS = [
   'http://localhost:8080',   // Vite dev server (frontend)
   'http://localhost:8081',   // Vite dev server — fallback port when 8080 is occupied

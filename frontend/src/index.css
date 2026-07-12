@@ -411,6 +411,21 @@
       border-radius: 10px !important;
     }
 
+    .hero-cta-row--inline {
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+    }
+
+    .hero-cta-row--inline > * {
+      width: auto !important;
+      flex: 1 1 calc(50% - 6px) !important;
+      min-width: 0 !important;
+    }
+
+    .hero-cta-row--inline button {
+      width: 100% !important;
+    }
+
     .hero-tall-features {
       display: flex !important;
       flex-direction: column !important;

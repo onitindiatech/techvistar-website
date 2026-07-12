@@ -49,6 +49,26 @@ export interface HomeHeroConfig {
   trustLogos: HomeTrustLogo[];
 }
 
+export type HomeMobileHeroAlignment = 'left' | 'center' | 'right';
+export type HomeMobileHeroCtaLayout = 'stack' | 'inline';
+
+/** Copy shown on phones (≤767px) when enabled; desktop hero is unchanged. */
+export interface HomeMobileHeroConfig {
+  enabled: boolean;
+  badge: string;
+  heading: string;
+  headingLine2: string;
+  mobileHighlightedHeading: string;
+  description: string;
+  ctaPrimary: string;
+  ctaPrimaryLink: string;
+  ctaSecondary: string;
+  ctaSecondaryLink: string;
+  maxWidth: string;
+  alignment: HomeMobileHeroAlignment;
+  ctaLayout: HomeMobileHeroCtaLayout;
+}
+
 export interface HomeStatItem {
   icon: string;
   value: string;
@@ -177,6 +197,7 @@ export interface HomeFooterConfig {
 
 export interface HomeCmsConfig {
   hero: HomeHeroConfig;
+  mobileHero: HomeMobileHeroConfig;
   stats: HomeStatItem[];
   benefits: HomeBenefitsSection;
   featuredServices: HomeFeaturedBlock;
@@ -283,6 +304,21 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
     animationEnabled: true,
     showScrollIndicator: true,
     trustLogos: [],
+  },
+  mobileHero: {
+    enabled: false,
+    badge: '',
+    heading: '',
+    headingLine2: '',
+    mobileHighlightedHeading: '',
+    description: '',
+    ctaPrimary: '',
+    ctaPrimaryLink: '',
+    ctaSecondary: '',
+    ctaSecondaryLink: '',
+    maxWidth: '',
+    alignment: 'left',
+    ctaLayout: 'stack',
   },
   stats: [],
   benefits: {
@@ -400,6 +436,44 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
   },
 };
 
+function mergeMobileHeroConfig(
+  defaults: HomeMobileHeroConfig,
+  partial?: Partial<HomeMobileHeroConfig> | null,
+  hero?: HomeHeroConfig
+): HomeMobileHeroConfig {
+  const merged: HomeMobileHeroConfig = { ...defaults };
+
+  if (partial) {
+    const copyFields = ['badge', 'heading', 'headingLine2', 'mobileHighlightedHeading', 'description', 'maxWidth'] as const;
+    for (const key of copyFields) {
+      const val = partial[key];
+      if (typeof val === 'string' && val.trim() !== '') {
+        merged[key] = val.trim();
+      }
+    }
+
+    const ctaFields = ['ctaPrimary', 'ctaSecondary', 'ctaPrimaryLink', 'ctaSecondaryLink'] as const;
+    for (const key of ctaFields) {
+      if (partial[key] !== undefined && partial[key] !== null) {
+        merged[key] = String(partial[key]).trim();
+      }
+    }
+
+    if (partial.enabled !== undefined && partial.enabled !== null) {
+      merged.enabled = Boolean(partial.enabled);
+    }
+    if (partial.alignment) merged.alignment = partial.alignment;
+    if (partial.ctaLayout) merged.ctaLayout = partial.ctaLayout;
+  }
+
+  if (hero) {
+    if (!merged.ctaPrimaryLink?.trim()) merged.ctaPrimaryLink = hero.ctaPrimaryLink;
+    if (!merged.ctaSecondaryLink?.trim()) merged.ctaSecondaryLink = hero.ctaSecondaryLink;
+  }
+
+  return merged;
+}
+
 /** Merge legacy partial home config from API with full defaults. */
 export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCmsConfig {
   if (!api) return DEFAULT_HOME_CMS;
@@ -484,8 +558,11 @@ export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCms
   if (!footer.companyDescription?.trim()) footer.companyDescription = DEFAULT_HOME_CMS.footer.companyDescription;
   if (!footer.copyright?.trim()) footer.copyright = DEFAULT_HOME_CMS.footer.copyright;
 
+  const mobileHero = mergeMobileHeroConfig(DEFAULT_HOME_CMS.mobileHero, api.mobileHero, hero);
+
   return {
     hero,
+    mobileHero,
     stats,
     benefits,
     featuredServices,

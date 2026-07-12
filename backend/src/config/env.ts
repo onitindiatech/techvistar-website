@@ -33,6 +33,17 @@ function optionalInt(key: string, fallback: number): number {
   return isNaN(parsed) ? fallback : parsed;
 }
 
+// ─── Helper: Parse comma-separated client URLs ───────────────────────────────
+function parseClientUrls(raw: string): string[] {
+  const urls = raw
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  return urls.length > 0 ? [...new Set(urls)] : ['http://localhost:8080'];
+}
+
+const clientUrls = parseClientUrls(optional('CLIENT_URL', 'http://localhost:8080'));
+
 // ─── Exported config object ───────────────────────────────────────────────────
 // Constructed once at module load time — any missing required var crashes here,
 // before the HTTP server ever starts.
@@ -41,7 +52,8 @@ export const env = {
   // ── Server ────────────────────────────────────────────────────────────────
   nodeEnv:    optional('NODE_ENV', 'development'),
   port:       optionalInt('PORT', 5000),
-  clientUrl:  optional('CLIENT_URL', 'http://localhost:8080'),
+  clientUrl:  clientUrls[0],
+  clientUrls,
   apiPrefix:  optional('API_PREFIX', '/api'),
 
   // ── Database (MongoDB) ────────────────────────────────────────────────────

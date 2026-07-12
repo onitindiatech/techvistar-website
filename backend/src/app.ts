@@ -40,11 +40,9 @@ app.use(helmet({
 
 // ── 2. CORS ───────────────────────────────────────────────────────────────────
 // Allowed origins:
-//   - In development: localhost:8080 (frontend), localhost:3000 (admin)
-//   - In production:  env.clientUrl (from .env)
-const allowedOrigins = env.isDev
-  ? [...DEV_ORIGINS, 'https://techvistar-website.vercel.app']
-  : [env.clientUrl, 'https://techvistar-website.vercel.app'];
+//   - In development: DEV_ORIGINS + any localhost/127.0.0.1 port (see callback)
+//   - In production:  env.clientUrls (comma-separated CLIENT_URL)
+const allowedOrigins = env.isDev ? [...DEV_ORIGINS] : env.clientUrls;
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -54,7 +52,7 @@ app.use(cors({
     if (env.isDev && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
       return callback(null, true);
     }
-    if (allowedOrigins.includes(origin as typeof allowedOrigins[number])) {
+    if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
     return callback(new Error(`CORS: Origin ${origin} not allowed`));

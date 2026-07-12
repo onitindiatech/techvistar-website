@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import {
   motion,
   useScroll,
@@ -13,6 +13,9 @@ import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { HeroBackgroundMedia } from '@/components/HeroBackgroundMedia';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
+import { useMobileViewport } from '@/hooks/useMobileViewport';
+import { resolveHomeHeroContent } from '@/lib/resolveHomeHeroContent';
+import { DEFAULT_HOME_CMS } from '@/types/homeCms';
 import { AnimatedStat } from '@/components/ui/AnimatedStat';
 
 // Premium Enterprise 3D-style SVG components with custom linearGradients and shadows
@@ -217,11 +220,45 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
   const reduceMotion = prefersReducedMotion === true;
   const cms = useHomeCms();
   const hero = cms.hero;
-  const line1 = hero.headlineLine1.trim();
-  const line2 = hero.headlineLine2.trim();
-  const accent = hero.headlineAccent.trim();
+  const mobileHero = cms.mobileHero ?? DEFAULT_HOME_CMS.mobileHero;
+  const isMobileViewport = useMobileViewport();
+  const display = useMemo(
+    () => resolveHomeHeroContent(hero, mobileHero, isMobileViewport),
+    [
+      hero,
+      mobileHero,
+      mobileHero.enabled,
+      mobileHero.badge,
+      mobileHero.heading,
+      mobileHero.headingLine2,
+      mobileHero.mobileHighlightedHeading,
+      mobileHero.description,
+      mobileHero.ctaPrimary,
+      mobileHero.ctaPrimaryLink,
+      mobileHero.ctaSecondary,
+      mobileHero.ctaSecondaryLink,
+      isMobileViewport,
+    ]
+  );
+  const line1 = display.headlineLine1;
+  const line2 = display.headlineLine2;
+  const accent = display.headlineAccent;
   const animateHighlight = !reduceMotion && hero.animationEnabled;
-  const heroHeadlineLabel = [line1, line2, accent].filter(Boolean).join(' ');
+  const heroHeadlineLabel = display.useSingleHeading
+    ? display.singleHeading
+    : [line1, line2, accent].filter(Boolean).join(' ');
+  const mobileAlignmentClass =
+    display.source === 'mobile'
+      ? display.alignment === 'center'
+        ? 'items-center text-center'
+        : display.alignment === 'right'
+          ? 'items-end text-right'
+          : 'items-start text-left'
+      : 'items-start text-left';
+  const mobileCopyStyle =
+    display.source === 'mobile' && display.maxWidth
+      ? { maxWidth: display.maxWidth.includes('px') ? display.maxWidth : `${display.maxWidth}px` }
+      : undefined;
 
   return (
     <section
@@ -297,15 +334,15 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
               variants={container}
               initial="hidden"
               animate="visible"
-              style={{ transformStyle: 'preserve-3d' }}
-              className="hero-copy-inner flex w-full min-w-0 flex-col items-start"
+              style={{ transformStyle: 'preserve-3d', ...mobileCopyStyle }}
+              className={cn('hero-copy-inner flex w-full min-w-0 flex-col', mobileAlignmentClass)}
             >
-              {hero.badge?.trim() ? (
+              {display.badge ? (
                 <motion.span
                   variants={fadeUp}
                   className="hero-badge mb-1.5 md:mb-3.5 inline-flex w-fit max-w-full shrink-0 items-center gap-2 self-start overflow-visible whitespace-nowrap rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] text-emerald-300"
                 >
-                  {hero.badge.trim()}
+                  {display.badge}
                 </motion.span>
               ) : null}
               <motion.h1
@@ -321,6 +358,12 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                   'tracking-[-0.026em] md:tracking-[-0.032em] lg:tracking-[-0.035em]'
                 )}
               >
+                {display.useSingleHeading ? (
+                  <span className="block w-full max-w-[20ch] md:max-w-none text-pretty [text-wrap:pretty]">
+                    {display.singleHeading}
+                  </span>
+                ) : (
+                  <>
                 {line1 ? (
                   <span className="block w-full max-w-[20ch] md:max-w-none md:whitespace-nowrap text-pretty [text-wrap:pretty]">
                     {line1}
@@ -336,6 +379,8 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                     <HeroHighlightText text={accent} animate={animateHighlight} />
                   </span>
                 ) : null}
+                  </>
+                )}
               </motion.h1>
 
               <motion.p
@@ -343,13 +388,16 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                 style={{ transform: 'translateZ(8px)' }}
                 className="hero-tagline mt-1.5 md:mt-5 max-w-[34ch] md:max-w-xl text-zinc-200 font-medium text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] text-pretty text-[0.875rem] md:text-base"
               >
-                {hero.tagline}
+                {display.tagline}
               </motion.p>
 
               <motion.div
                 variants={fadeUp}
                 style={{ transform: 'translateZ(20px)' }}
-                className="hero-cta-row mt-2 md:mt-7"
+                className={cn(
+                  'hero-cta-row mt-2 md:mt-7',
+                  display.source === 'mobile' && display.ctaLayout === 'inline' && 'hero-cta-row--inline'
+                )}
               >
                 <motion.div
                   whileHover={
@@ -365,8 +413,8 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                     className="h-11 sm:h-12 w-full lg:w-auto min-w-0 lg:min-w-[11.5rem] rounded-lg border-0 bg-primary px-6 sm:px-8 text-[0.9375rem] sm:text-base font-semibold text-primary-foreground shadow-[0_12px_40px_-12px_rgba(34,197,94,0.45)] transition-shadow hover:bg-primary/92 hover:shadow-[0_16px_48px_-10px_rgba(34,197,94,0.4)]"
                     asChild
                   >
-                    <Link to={hero.ctaPrimaryLink} className="inline-flex items-center justify-center">
-                      <span>{hero.ctaPrimary}</span>
+                    <Link to={display.ctaPrimaryLink} className="inline-flex items-center justify-center">
+                      <span>{display.ctaPrimary}</span>
                     </Link>
                   </Button>
                 </motion.div>
@@ -383,8 +431,8 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                     className="h-11 sm:h-12 w-full lg:w-auto min-w-0 lg:min-w-[11.5rem] rounded-lg border-white/15 bg-zinc-950/60 px-6 sm:px-8 text-[0.9375rem] sm:text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-colors hover:border-white/25 hover:bg-white/5"
                     asChild
                   >
-                    <Link to={hero.ctaSecondaryLink} className="inline-flex items-center justify-center">
-                      <span>{hero.ctaSecondary}</span>
+                    <Link to={display.ctaSecondaryLink} className="inline-flex items-center justify-center">
+                      <span>{display.ctaSecondary}</span>
                     </Link>
                   </Button>
                 </motion.div>

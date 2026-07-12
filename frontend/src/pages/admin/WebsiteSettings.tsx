@@ -1,12 +1,15 @@
 ﻿import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Plus } from 'lucide-react';
 import { CmsImageField } from '@/components/admin/common/CmsImageField';
 import { CmsTextFields, CmsSectionCard } from '@/components/admin/common/CmsSettingsFields';
 import { CmsPageLayout, CmsSectionAnchor } from '@/components/admin/common/CmsPageLayout';
+import { CmsSortableList } from '@/components/admin/common/CmsSortableList';
 import { usePagesCmsSettings } from '@/hooks/usePagesCmsSettings';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import type { WebsiteSettingsConfig } from '@/types/websiteSettings';
+import type { WebsiteFooterLink, WebsiteSettingsConfig } from '@/types/websiteSettings';
 import { Palette, Navigation, Phone, AlignJustify, Share2, Search, BarChart2, Wrench } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -160,7 +163,11 @@ const WebsiteSettings = () => {
       </CmsSectionAnchor>
 
       <CmsSectionAnchor id="footer">
-        <CmsSectionCard title="Footer" description="Footer copy, newsletter block, branding, and optional background styling." icon={AlignJustify}>
+        <CmsSectionCard
+          title="Footer"
+          description="Global footer used on every page — branding, newsletter, links, and background styling. Contact details come from Contact Details above."
+          icon={AlignJustify}
+        >
           <CmsTextFields
             twoColumn
             fields={[
@@ -177,6 +184,97 @@ const WebsiteSettings = () => {
           />
           <CmsImageField label="Footer logo" value={form.footer.logo} onChange={(url, publicId) => setForm((prev) => ({ ...prev, footer: { ...prev.footer, logo: url, logoPublicId: publicId ?? prev.footer.logoPublicId } }))} />
           <CmsImageField label="Footer background image (optional)" value={form.footer.backgroundImage} onChange={(url, publicId) => setForm((prev) => ({ ...prev, footer: { ...prev.footer, backgroundImage: url, backgroundImagePublicId: publicId ?? prev.footer.backgroundImagePublicId } }))} />
+
+          <div className="space-y-3 border-t border-slate-100 pt-4">
+            <Label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Company links</Label>
+            <CmsSortableList<WebsiteFooterLink>
+              items={form.footer.companyLinks}
+              onChange={(companyLinks) => patchFooter('companyLinks', companyLinks)}
+              onDuplicate={(item) => ({ ...item, sortOrder: item.sortOrder + 1 })}
+              renderItem={(link, index) => (
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <Input
+                    placeholder="Label"
+                    value={link.label}
+                    onChange={(e) => {
+                      const companyLinks = [...form.footer.companyLinks];
+                      companyLinks[index] = { ...companyLinks[index], label: e.target.value };
+                      patchFooter('companyLinks', companyLinks);
+                    }}
+                  />
+                  <Input
+                    placeholder="Href (e.g. /about)"
+                    value={link.href}
+                    onChange={(e) => {
+                      const companyLinks = [...form.footer.companyLinks];
+                      companyLinks[index] = { ...companyLinks[index], href: e.target.value };
+                      patchFooter('companyLinks', companyLinks);
+                    }}
+                  />
+                </div>
+              )}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                patchFooter('companyLinks', [
+                  ...form.footer.companyLinks,
+                  { label: '', href: '', sortOrder: form.footer.companyLinks.length },
+                ])
+              }
+            >
+              <Plus className="mr-1 h-4 w-4" /> Add company link
+            </Button>
+          </div>
+
+          <div className="space-y-3 border-t border-slate-100 pt-4">
+            <Label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Legal links</Label>
+            <CmsSortableList<WebsiteFooterLink>
+              items={form.footer.legalLinks}
+              onChange={(legalLinks) => patchFooter('legalLinks', legalLinks)}
+              onDuplicate={(item) => ({ ...item, sortOrder: item.sortOrder + 1 })}
+              renderItem={(link, index) => (
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <Input
+                    placeholder="Label"
+                    value={link.label}
+                    onChange={(e) => {
+                      const legalLinks = [...form.footer.legalLinks];
+                      legalLinks[index] = { ...legalLinks[index], label: e.target.value };
+                      patchFooter('legalLinks', legalLinks);
+                    }}
+                  />
+                  <Input
+                    placeholder="Href"
+                    value={link.href}
+                    onChange={(e) => {
+                      const legalLinks = [...form.footer.legalLinks];
+                      legalLinks[index] = { ...legalLinks[index], href: e.target.value };
+                      patchFooter('legalLinks', legalLinks);
+                    }}
+                  />
+                </div>
+              )}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                patchFooter('legalLinks', [
+                  ...form.footer.legalLinks,
+                  { label: '', href: '', sortOrder: form.footer.legalLinks.length },
+                ])
+              }
+            >
+              <Plus className="mr-1 h-4 w-4" /> Add legal link
+            </Button>
+            <p className="text-[11px] text-slate-500">
+              Services and Industries columns are populated automatically from published services and industries.
+            </p>
+          </div>
         </CmsSectionCard>
       </CmsSectionAnchor>
 

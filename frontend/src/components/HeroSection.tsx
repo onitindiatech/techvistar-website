@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { HeroBackgroundMedia } from '@/components/HeroBackgroundMedia';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
 import { useMobileViewport } from '@/hooks/useMobileViewport';
+import { useLargeTabletViewport } from '@/hooks/useLargeTabletViewport';
 import { resolveHomeHeroContent } from '@/lib/resolveHomeHeroContent';
 import { DEFAULT_HOME_CMS } from '@/types/homeCms';
 import { AnimatedStat } from '@/components/ui/AnimatedStat';
@@ -222,6 +223,33 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
   const hero = cms.hero;
   const mobileHero = cms.mobileHero ?? DEFAULT_HOME_CMS.mobileHero;
   const isMobileViewport = useMobileViewport();
+  const isLargeTabletViewport = useLargeTabletViewport();
+  const ipadProHero = cms.ipadProHero ?? DEFAULT_HOME_CMS.ipadProHero;
+  const showIpadProEnrichment = isLargeTabletViewport && ipadProHero.enabled;
+  const ipadProMetrics = useMemo(
+    () =>
+      (ipadProHero.metrics?.length ? ipadProHero.metrics : DEFAULT_HOME_CMS.ipadProHero.metrics)
+        .slice()
+        .sort((a, b) => a.sortOrder - b.sortOrder),
+    [ipadProHero.metrics]
+  );
+  const ipadProHighlights = useMemo(
+    () =>
+      (ipadProHero.highlights?.length ? ipadProHero.highlights : DEFAULT_HOME_CMS.ipadProHero.highlights).filter(
+        Boolean
+      ),
+    [ipadProHero.highlights]
+  );
+  const statsForCard = useMemo(() => {
+    if (showIpadProEnrichment && ipadProHero.showMetrics) {
+      return ipadProMetrics;
+    }
+    return TALL_MOBILE_METRICS;
+  }, [showIpadProEnrichment, ipadProHero.showMetrics, ipadProMetrics]);
+  const sortedTrustLogos = useMemo(
+    () => hero.trustLogos.slice().sort((a, b) => a.sortOrder - b.sortOrder),
+    [hero.trustLogos]
+  );
   const display = useMemo(
     () => resolveHomeHeroContent(hero, mobileHero, isMobileViewport),
     [
@@ -248,7 +276,7 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
     ? display.singleHeading
     : [line1, line2, accent].filter(Boolean).join(' ');
   const mobileAlignmentClass =
-    display.source === 'mobile'
+    display.source === 'responsive'
       ? display.alignment === 'center'
         ? 'items-center text-center'
         : display.alignment === 'right'
@@ -256,7 +284,7 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
           : 'items-start text-left'
       : 'items-start text-left';
   const mobileCopyStyle =
-    display.source === 'mobile' && display.maxWidth
+    display.source === 'responsive' && display.maxWidth
       ? { maxWidth: display.maxWidth.includes('px') ? display.maxWidth : `${display.maxWidth}px` }
       : undefined;
 
@@ -268,7 +296,14 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
       onMouseLeave={handleMouseLeave}
       aria-label="Introduction"
       style={{ position: 'relative' }}
-      className="relative isolate min-h-[100svh] md:min-h-[100dvh] lg:h-[100svh] lg:min-h-0 overflow-hidden bg-zinc-950 selection:bg-primary/30 [perspective:1400px]"
+      className={cn(
+        'relative isolate min-h-[100svh] md:min-h-[100dvh] lg:h-[100svh] lg:min-h-0 overflow-hidden bg-zinc-950 selection:bg-primary/30 [perspective:1400px]',
+        showIpadProEnrichment && 'hero-ipad-pro-enriched',
+        showIpadProEnrichment && ipadProHero.showFeatureCards && 'hero-show-feature-cards',
+        showIpadProEnrichment && ipadProHero.showMetrics && 'hero-show-metrics',
+        showIpadProEnrichment && ipadProHero.showHighlightPills && 'hero-show-highlights',
+        showIpadProEnrichment && ipadProHero.showClientStrip && 'hero-show-client-strip'
+      )}
     >
       <HeroBackgroundMedia hero={hero} />
 
@@ -396,7 +431,7 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                 style={{ transform: 'translateZ(20px)' }}
                 className={cn(
                   'hero-cta-row mt-2 md:mt-7',
-                  display.source === 'mobile' && display.ctaLayout === 'inline' && 'hero-cta-row--inline'
+                  display.source === 'responsive' && display.ctaLayout === 'inline' && 'hero-cta-row--inline'
                 )}
               >
                 <motion.div
@@ -437,40 +472,92 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                   </Button>
                 </motion.div>
               </motion.div>
-
-              <div
-                className="hero-tall-features"
-                aria-label="Core capabilities"
-              >
-                <ul className="hero-tall-features-grid">
-                  {TALL_MOBILE_HERO_FEATURES.map(({ icon: Icon, label, desc }) => (
-                    <li key={label} className="hero-tall-features-item">
-                      <span className="hero-tall-features-icon" aria-hidden>
-                        <Icon className="h-4 w-4" strokeWidth={2} />
-                      </span>
-                      <div className="hero-tall-features-content">
-                        <span className="hero-tall-features-label">{label}</span>
-                        <p className="hero-tall-features-desc">{desc}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <div className="hero-tall-stats-card" aria-label="Company highlights">
-                  {TALL_MOBILE_METRICS.map(({ value, label }) => (
-                    <AnimatedStat
-                      key={label}
-                      value={value}
-                      label={label}
-                      variant="hero-tall"
-                    />
-                  ))}
-                </div>
-              </div>
             </motion.div>
           </motion.div>
+
+          <div
+            className="hero-tall-features"
+            aria-label="Core capabilities"
+          >
+            <ul className="hero-tall-features-grid">
+              {TALL_MOBILE_HERO_FEATURES.map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="hero-tall-features-item">
+                  <span className="hero-tall-features-icon" aria-hidden>
+                    <Icon className="h-4 w-4" strokeWidth={2} />
+                  </span>
+                  <div className="hero-tall-features-content">
+                    <span className="hero-tall-features-label">{label}</span>
+                    <p className="hero-tall-features-desc">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="hero-tall-stats-card" aria-label="Company highlights">
+              {statsForCard.map(({ value, label }) => (
+                <AnimatedStat
+                  key={`${value}-${label}`}
+                  value={value}
+                  label={label}
+                  variant="hero-tall"
+                />
+              ))}
+            </div>
+          </div>
+
+          {showIpadProEnrichment && ipadProHero.showHighlightPills && ipadProHighlights.length > 0 ? (
+            <div className="hero-ipad-highlights" aria-label="Why Choose TechVistar">
+              <p className="hero-ipad-highlights-title">Why Choose TechVistar</p>
+              <ul className="hero-ipad-highlights-pills">
+                {ipadProHighlights.map((highlight) => (
+                  <li key={highlight} className="hero-ipad-highlight-pill">
+                    <span aria-hidden className="hero-ipad-highlight-pill-check">✓</span>
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
 
         <div className="hero-trust-footer w-full shrink-0 flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-5 md:gap-6">
+          {showIpadProEnrichment && ipadProHero.showClientStrip ? (
+            <div className="hero-ipad-client-strip w-full md:col-span-2" aria-label="Client logos">
+              <div className="hero-ipad-client-strip-logos opacity-50 grayscale select-none">
+                {sortedTrustLogos.length > 0 ? (
+                  sortedTrustLogos.map((logo) => (
+                    <img
+                      key={logo.url + logo.alt}
+                      src={logo.url}
+                      alt={logo.alt}
+                      className="h-4 w-auto object-contain"
+                      loading="lazy"
+                    />
+                  ))
+                ) : (
+                  <>
+                    <svg className="h-4 w-auto text-white/80" viewBox="0 0 100 24" fill="currentColor" aria-hidden>
+                      <path d="M12 4L4 18h16L12 4zm0 3.5l5.5 9.5H6.5L12 7.5z" fillRule="evenodd" />
+                      <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">ACME</text>
+                    </svg>
+                    <svg className="h-4 w-auto text-white/80" viewBox="0 0 110 24" fill="currentColor" aria-hidden>
+                      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="2" fill="none" />
+                      <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" />
+                      <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">GLOBEX</text>
+                    </svg>
+                    <svg className="h-4 w-auto text-white/80" viewBox="0 0 110 24" fill="currentColor" aria-hidden>
+                      <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" fill="none" />
+                      <circle cx="12" cy="12" r="3" fill="currentColor" />
+                      <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">INITECH</text>
+                    </svg>
+                    <svg className="h-4 w-auto text-white/80" viewBox="0 0 120 24" fill="currentColor" aria-hidden>
+                      <polygon points="12,3 20,8 20,16 12,21 4,16 4,8" stroke="currentColor" strokeWidth="2" fill="none" />
+                      <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">UMBRELLA</text>
+                    </svg>
+                  </>
+                )}
+              </div>
+            </div>
+          ) : null}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -481,11 +568,8 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
               Trusted by industry leaders
             </p>
             <div className="hero-trust-logos opacity-60 grayscale select-none">
-              {hero.trustLogos.length > 0 ? (
-                hero.trustLogos
-                  .slice()
-                  .sort((a, b) => a.sortOrder - b.sortOrder)
-                  .map((logo) => (
+              {sortedTrustLogos.length > 0 ? (
+                sortedTrustLogos.map((logo) => (
                     <img key={logo.url + logo.alt} src={logo.url} alt={logo.alt} className="h-4 sm:h-5 w-auto object-contain" loading="lazy" />
                   ))
               ) : (

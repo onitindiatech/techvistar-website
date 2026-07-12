@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loader2, Plus, Image, BarChart2, Gift, Briefcase, FolderOpen, Phone, AlignJustify, Search, Smartphone } from 'lucide-react';
+import { Loader2, Plus, Image, BarChart2, Gift, Briefcase, FolderOpen, Phone, Search, LayoutGrid } from 'lucide-react';
 import { SeoManager } from '@/components/admin/common/SeoManager';
 import { CmsImageField } from '@/components/admin/common/CmsImageField';
 import { CmsMediaField } from '@/components/admin/common/CmsMediaField';
@@ -19,18 +19,19 @@ import {
   type HomeCmsConfig,
   type HomeStatItem,
   type HomeBenefitCard,
-  type HomeMobileHeroConfig,
+  type HomeResponsiveHeroCopyConfig,
+  type HomeResponsiveHeroLayoutConfig,
+  type HomeResponsiveHeroMetric,
 } from '@/types/homeCms';
 
 const HOME_NAV_SECTIONS = [
   { id: 'hero',         label: 'Hero',              icon: Image       },
-  { id: 'mobile-hero',  label: 'Mobile Hero',       icon: Smartphone  },
+  { id: 'responsive-hero', label: 'Responsive Hero', icon: LayoutGrid },
   { id: 'stats',        label: 'Stats',             icon: BarChart2   },
   { id: 'benefits',  label: 'Benefits',          icon: Gift        },
   { id: 'services',  label: 'Services Section',  icon: Briefcase   },
   { id: 'portfolio', label: 'Portfolio Section', icon: FolderOpen  },
   { id: 'contact',   label: 'Contact Section',   icon: Phone       },
-  { id: 'footer',    label: 'Footer',            icon: AlignJustify },
   { id: 'seo',       label: 'SEO',               icon: Search      },
 ];
 
@@ -52,10 +53,24 @@ const HomeSettings = () => {
     setIsDirty(true);
   };
 
-  const patchMobileHero = <K extends keyof HomeMobileHeroConfig>(key: K, value: HomeMobileHeroConfig[K]) => {
+  const patchResponsiveHeroCopy = <K extends keyof HomeResponsiveHeroCopyConfig>(
+    key: K,
+    value: HomeResponsiveHeroCopyConfig[K]
+  ) => {
     setForm((prev) => ({
       ...prev,
       mobileHero: { ...DEFAULT_HOME_CMS.mobileHero, ...prev.mobileHero, [key]: value },
+    }));
+    setIsDirty(true);
+  };
+
+  const patchResponsiveHeroLayout = <K extends keyof HomeResponsiveHeroLayoutConfig>(
+    key: K,
+    value: HomeResponsiveHeroLayoutConfig[K]
+  ) => {
+    setForm((prev) => ({
+      ...prev,
+      ipadProHero: { ...DEFAULT_HOME_CMS.ipadProHero, ...prev.ipadProHero, [key]: value },
     }));
     setIsDirty(true);
   };
@@ -196,69 +211,206 @@ const HomeSettings = () => {
       ),
     },
     {
-      id: 'mobile-hero',
-      title: 'Mobile Hero Settings',
-      description: 'Copy shown on phones (≤767px) when enabled. Desktop and tablet hero is unchanged.',
+      id: 'responsive-hero',
+      title: 'Responsive Hero Settings',
+      description:
+        'Customize the Hero experience across responsive devices including phones, foldables, and tablets. Desktop hero (≥1200px) uses the main Hero section above.',
       children: (
         <>
-          <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/50 px-4 py-3">
-            <Switch
-              checked={form.mobileHero.enabled}
-              onCheckedChange={(v) => patchMobileHero('enabled', v)}
-              id="mobile-hero-enabled"
+          <CmsSectionCard
+            title="Responsive visibility"
+            description="Control which compact and tablet breakpoints use this configuration."
+          >
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/50 px-4 py-3">
+                <Switch
+                  checked={form.mobileHero.enabled}
+                  onCheckedChange={(v) => patchResponsiveHeroCopy('enabled', v)}
+                  id="responsive-hero-phones-enabled"
+                />
+                <div>
+                  <Label htmlFor="responsive-hero-phones-enabled" className="text-sm font-semibold text-slate-800">
+                    Phones & compact layouts (≤767px)
+                  </Label>
+                  <p className="text-[11px] text-slate-500">When off, phones use the desktop hero copy.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/50 px-4 py-3">
+                <Switch
+                  checked={form.ipadProHero.enabled}
+                  onCheckedChange={(v) => patchResponsiveHeroLayout('enabled', v)}
+                  id="responsive-hero-tablet-enabled"
+                />
+                <div>
+                  <Label htmlFor="responsive-hero-tablet-enabled" className="text-sm font-semibold text-slate-800">
+                    Large tablets (1024–1199px)
+                  </Label>
+                  <p className="text-[11px] text-slate-500">Enriched layout with cards, metrics, and highlights.</p>
+                </div>
+              </div>
+            </div>
+          </CmsSectionCard>
+
+          <CmsSectionCard title="Hero copy" description="Badge, heading, description, and CTA overrides for responsive viewports.">
+            <CmsTextFields
+              fields={[
+                { key: 'badge', label: 'Badge' },
+                { key: 'heading', label: 'Heading (Line 1)', type: 'textarea' },
+                { key: 'headingLine2', label: 'Heading (Line 2)', type: 'textarea' },
+                { key: 'mobileHighlightedHeading', label: 'Highlighted Heading', type: 'textarea' },
+                { key: 'description', label: 'Description', type: 'textarea' },
+                { key: 'ctaPrimary', label: 'Primary Button Text' },
+                { key: 'ctaPrimaryLink', label: 'Primary Button Link' },
+                { key: 'ctaSecondary', label: 'Secondary Button Text' },
+                { key: 'ctaSecondaryLink', label: 'Secondary Button Link' },
+                { key: 'maxWidth', label: 'Max Content Width (e.g. 360 or 360px)' },
+              ]}
+              values={form.mobileHero as unknown as Record<string, string>}
+              onChange={(key, value) => patchResponsiveHeroCopy(key as keyof HomeResponsiveHeroCopyConfig, value)}
             />
-            <div>
-              <Label htmlFor="mobile-hero-enabled" className="text-sm font-semibold text-slate-800">
-                Enable Mobile Hero
-              </Label>
-              <p className="text-[11px] text-slate-500">
-                When off, phones use the desktop hero CMS content.
-              </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label className="text-xs font-semibold text-slate-600">Content alignment</Label>
+                <select
+                  className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  value={form.mobileHero.alignment}
+                  onChange={(e) =>
+                    patchResponsiveHeroCopy('alignment', e.target.value as HomeResponsiveHeroCopyConfig['alignment'])
+                  }
+                >
+                  <option value="left">Left</option>
+                  <option value="center">Center</option>
+                  <option value="right">Right</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-semibold text-slate-600">CTA layout</Label>
+                <select
+                  className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  value={form.mobileHero.ctaLayout}
+                  onChange={(e) =>
+                    patchResponsiveHeroCopy('ctaLayout', e.target.value as HomeResponsiveHeroCopyConfig['ctaLayout'])
+                  }
+                >
+                  <option value="stack">Stack</option>
+                  <option value="inline">Inline</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <CmsTextFields
-            fields={[
-              { key: 'badge', label: 'Mobile Badge' },
-              { key: 'heading', label: 'Mobile Heading (Line 1)', type: 'textarea' },
-              { key: 'headingLine2', label: 'Mobile Heading (Line 2)', type: 'textarea' },
-              { key: 'mobileHighlightedHeading', label: 'Mobile Highlighted Heading', type: 'textarea' },
-              { key: 'description', label: 'Mobile Description', type: 'textarea' },
-              { key: 'ctaPrimary', label: 'Primary Button Text' },
-              { key: 'ctaPrimaryLink', label: 'Primary Button Link' },
-              { key: 'ctaSecondary', label: 'Secondary Button Text' },
-              { key: 'ctaSecondaryLink', label: 'Secondary Button Link' },
-              { key: 'maxWidth', label: 'Mobile Hero Max Width (e.g. 360 or 360px)' },
-            ]}
-            values={form.mobileHero as unknown as Record<string, string>}
-            onChange={(key, value) => patchMobileHero(key as keyof HomeMobileHeroConfig, value)}
-          />
-          <div className="grid gap-4 sm:grid-cols-2">
+          </CmsSectionCard>
+
+          <CmsSectionCard
+            title="Responsive enrichment"
+            description="Feature cards, metrics, highlight pills, and client strip for tablet breakpoints."
+          >
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={form.ipadProHero.showFeatureCards}
+                  onCheckedChange={(v) => patchResponsiveHeroLayout('showFeatureCards', v)}
+                  id="responsive-feature-cards"
+                />
+                <Label htmlFor="responsive-feature-cards">Feature cards</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={form.ipadProHero.showMetrics}
+                  onCheckedChange={(v) => patchResponsiveHeroLayout('showMetrics', v)}
+                  id="responsive-metrics"
+                />
+                <Label htmlFor="responsive-metrics">Metrics strip</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={form.ipadProHero.showHighlightPills}
+                  onCheckedChange={(v) => patchResponsiveHeroLayout('showHighlightPills', v)}
+                  id="responsive-highlights"
+                />
+                <Label htmlFor="responsive-highlights">Highlight pills</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={form.ipadProHero.showClientStrip}
+                  onCheckedChange={(v) => patchResponsiveHeroLayout('showClientStrip', v)}
+                  id="responsive-client-strip"
+                />
+                <Label htmlFor="responsive-client-strip">Client logo strip</Label>
+              </div>
+            </div>
+            <CmsSortableList<HomeResponsiveHeroMetric>
+              items={form.ipadProHero.metrics}
+              onChange={(metrics) => patchResponsiveHeroLayout('metrics', metrics)}
+              onDuplicate={(item) => ({ ...item, sortOrder: item.sortOrder + 1 })}
+              renderItem={(metric, index) => (
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <Input
+                    placeholder="Value (e.g. 50+)"
+                    value={metric.value}
+                    onChange={(e) => {
+                      const metrics = [...form.ipadProHero.metrics];
+                      metrics[index] = { ...metrics[index], value: e.target.value };
+                      patchResponsiveHeroLayout('metrics', metrics);
+                    }}
+                  />
+                  <Input
+                    placeholder="Label"
+                    value={metric.label}
+                    onChange={(e) => {
+                      const metrics = [...form.ipadProHero.metrics];
+                      metrics[index] = { ...metrics[index], label: e.target.value };
+                      patchResponsiveHeroLayout('metrics', metrics);
+                    }}
+                  />
+                </div>
+              )}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                patchResponsiveHeroLayout('metrics', [
+                  ...form.ipadProHero.metrics,
+                  { value: '', label: '', sortOrder: form.ipadProHero.metrics.length },
+                ])
+              }
+            >
+              <Plus className="mr-1 h-4 w-4" /> Add metric
+            </Button>
             <div className="space-y-2">
-              <Label className="text-xs font-semibold text-slate-600">Mobile Hero Alignment</Label>
-              <select
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                value={form.mobileHero.alignment}
-                onChange={(e) => patchMobileHero('alignment', e.target.value as HomeMobileHeroConfig['alignment'])}
+              <Label className="text-xs font-semibold text-slate-600">Highlight pills</Label>
+              {(form.ipadProHero.highlights.length ? form.ipadProHero.highlights : ['']).map((highlight, index) => (
+                <Input
+                  key={`highlight-${index}`}
+                  placeholder="e.g. AI Automation"
+                  value={highlight}
+                  onChange={(e) => {
+                    const highlights = [...form.ipadProHero.highlights];
+                    highlights[index] = e.target.value;
+                    patchResponsiveHeroLayout(
+                      'highlights',
+                      highlights.filter((h, i) => h.trim() || i < highlights.length - 1)
+                    );
+                  }}
+                />
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => patchResponsiveHeroLayout('highlights', [...form.ipadProHero.highlights, ''])}
               >
-                <option value="left">Left</option>
-                <option value="center">Center</option>
-                <option value="right">Right</option>
-              </select>
+                <Plus className="mr-1 h-4 w-4" /> Add highlight
+              </Button>
             </div>
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold text-slate-600">Mobile Hero CTA Layout</Label>
-              <select
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                value={form.mobileHero.ctaLayout}
-                onChange={(e) => patchMobileHero('ctaLayout', e.target.value as HomeMobileHeroConfig['ctaLayout'])}
-              >
-                <option value="stack">Stack</option>
-                <option value="inline">Inline</option>
-              </select>
-            </div>
-          </div>
+            <p className="text-[11px] text-slate-500">
+              Trusted By and Explore TechVistar follow the main Hero section. Client logo strip reuses Trust logos.
+            </p>
+          </CmsSectionCard>
+
           <div className="rounded-2xl border border-slate-200 bg-zinc-950 p-4 text-white">
-            <p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-emerald-400">Mobile preview (≤767px)</p>
+            <p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-emerald-400">
+              Compact preview (phones ≤767px)
+            </p>
             <div
               className="mx-auto w-full max-w-[280px] rounded-xl border border-white/10 bg-black/40 p-4"
               style={{
@@ -602,31 +754,6 @@ const HomeSettings = () => {
       ),
     },
     {
-      id: 'footer',
-      title: 'Footer',
-      description: 'Company info, links, newsletter, and legal.',
-      children: (
-        <>
-          <CmsImageField label="Footer logo" value={form.footer.logo} onChange={(url, publicId) => patchBlock('footer', { logo: url, logoPublicId: publicId })} />
-          <CmsTextFields
-            fields={[
-              { key: 'companyDescription', label: 'Company description', type: 'textarea' },
-              { key: 'phone', label: 'Phone' },
-              { key: 'email', label: 'Email' },
-              { key: 'address', label: 'Address' },
-              { key: 'workingHours', label: 'Working hours' },
-              { key: 'newsletterHeading', label: 'Newsletter heading' },
-              { key: 'newsletterDescription', label: 'Newsletter description', type: 'textarea' },
-              { key: 'copyright', label: 'Copyright' },
-              { key: 'bottomText', label: 'Bottom footer text' },
-            ]}
-            values={form.footer as unknown as Record<string, string>}
-            onChange={(key, value) => patchBlock('footer', { [key]: value })}
-          />
-        </>
-      ),
-    },
-    {
       id: 'seo',
       title: 'SEO',
       description: 'Home page search metadata.',
@@ -645,7 +772,7 @@ const HomeSettings = () => {
   return (
     <CmsPageLayout
       title="Home CMS"
-      description="Manage every homepage section — hero, mobile hero, stats, benefits, featured content, portfolio, contact, footer, and SEO."
+      description="Manage every homepage section — hero, responsive hero, stats, benefits, featured content, portfolio, contact, and SEO."
       sections={HOME_NAV_SECTIONS}
       onSave={handleSave}
       onDiscard={() => setIsDirty(false)}

@@ -185,6 +185,20 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
         alignment: { type: String, trim: true, default: 'left', enum: ['left', 'center', 'right'] },
         ctaLayout: { type: String, trim: true, default: 'stack', enum: ['stack', 'inline'] },
       },
+      ipadProHero: {
+        enabled: { type: Boolean, default: false },
+        showFeatureCards: { type: Boolean, default: true },
+        showMetrics: { type: Boolean, default: true },
+        showHighlightPills: { type: Boolean, default: true },
+        showClientStrip: { type: Boolean, default: true },
+        metrics: {
+          type: [{ value: String, label: String, sortOrder: Number }],
+          default: [],
+        },
+        highlights: { type: [String], default: [] },
+      },
+      /** Optional unified responsive hero payload (falls back to mobileHero + ipadProHero). */
+      responsiveHero: { type: Schema.Types.Mixed, default: null },
       stats: { type: [statItemSchema], default: [] },
       benefits: {
         badge: { type: String, trim: true, default: '' },
@@ -465,6 +479,8 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
         backgroundImage: { type: String, trim: true, default: '' },
         backgroundImagePublicId: { type: String, trim: true, default: '' },
         backgroundColor: { type: String, trim: true, default: '#05070B' },
+        companyLinks: { type: [footerLinkSchema], default: [] },
+        legalLinks: { type: [footerLinkSchema], default: [] },
       },
       socialLinks: {
         linkedin: { type: String, trim: true, default: '' },

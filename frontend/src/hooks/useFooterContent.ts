@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useHomeCms } from '@/contexts/HomeCmsContext';
 import { getPublicPagesConfig } from '@/services/pages.service';
 import { mergePagesCmsConfig } from '@/types/pagesCms';
-import { DEFAULT_HOME_CMS, HomeFooterLink, HomeSocialLink } from '@/types/homeCms';
-import type { WebsiteSocialLinks } from '@/types/websiteSettings';
+import {
+  DEFAULT_WEBSITE_SETTINGS,
+  type WebsiteFooterLink,
+  type WebsiteSocialLinks,
+} from '@/types/websiteSettings';
 import { getActiveServices } from '@/services/services.service';
 import { getActiveIndustries } from '@/services/industry.service';
 import defaultLogoUrl from '@/assets/logo.webp';
@@ -12,11 +14,17 @@ import defaultLogoUrl from '@/assets/logo.webp';
 const INVALID_FOOTER_PATHS = new Set(['/privacy', '/terms', '/cookies', '/sitemap']);
 const FOOTER_SERVICES_MAX = 10;
 
+export interface FooterSocialLink {
+  platform: string;
+  url: string;
+  sortOrder: number;
+}
+
 function isFeaturedService(service: { featured?: unknown }): boolean {
   return service.featured === true || service.featured === 'true';
 }
 
-function buildFooterServiceLinks(services: Array<Record<string, unknown>>): HomeFooterLink[] {
+function buildFooterServiceLinks(services: Array<Record<string, unknown>>): WebsiteFooterLink[] {
   const published = services
     .filter((service) => service?.slug)
     .sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
@@ -59,7 +67,7 @@ function normalizeCompanyHref(href: string, label: string): string {
   return href;
 }
 
-function websiteSocialToArray(social: WebsiteSocialLinks): HomeSocialLink[] {
+function websiteSocialToArray(social: WebsiteSocialLinks): FooterSocialLink[] {
   const entries: Array<[string, string]> = [
     ['linkedin', social.linkedin],
     ['github', social.github],
@@ -78,9 +86,8 @@ function websiteSocialToArray(social: WebsiteSocialLinks): HomeSocialLink[] {
     .filter((item) => item.url);
 }
 
+/** Global footer content — sourced exclusively from Website Settings CMS. */
 export function useFooterContent() {
-  const homeFooter = useHomeCms().footer;
-
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
@@ -108,42 +115,28 @@ export function useFooterContent() {
     const heading =
       wsFooter.heading?.trim() || websiteSettings.companyName?.trim() || 'TechVistar';
     const companyDescription =
-      wsFooter.description?.trim() ||
-      homeFooter.companyDescription?.trim() ||
-      DEFAULT_HOME_CMS.footer.companyDescription;
+      wsFooter.description?.trim() || DEFAULT_WEBSITE_SETTINGS.footer.description;
     const logo =
-      wsFooter.logo?.trim() ||
-      websiteSettings.logo?.trim() ||
-      homeFooter.logo?.trim() ||
-      defaultLogoUrl;
-    const phone = websiteSettings.phone?.trim() || homeFooter.phone;
-    const email = websiteSettings.email?.trim() || homeFooter.email;
-    const address = websiteSettings.address?.trim() || homeFooter.address;
-    const workingHours = websiteSettings.workingHours?.trim() || homeFooter.workingHours;
+      wsFooter.logo?.trim() || websiteSettings.logo?.trim() || defaultLogoUrl;
+    const phone = websiteSettings.phone?.trim() || '';
+    const email = websiteSettings.email?.trim() || '';
+    const address = websiteSettings.address?.trim() || '';
+    const workingHours = websiteSettings.workingHours?.trim() || '';
     const newsletterHeading =
-      wsFooter.newsletterHeading?.trim() || homeFooter.newsletterHeading;
+      wsFooter.newsletterHeading?.trim() || DEFAULT_WEBSITE_SETTINGS.footer.newsletterHeading;
     const newsletterDescription =
-      wsFooter.newsletterDescription?.trim() || homeFooter.newsletterDescription;
+      wsFooter.newsletterDescription?.trim() || DEFAULT_WEBSITE_SETTINGS.footer.newsletterDescription;
     const copyright =
-      wsFooter.copyright?.trim() ||
-      homeFooter.copyright?.trim() ||
-      DEFAULT_HOME_CMS.footer.copyright;
-    const bottomText = wsFooter.bottomText?.trim() || homeFooter.bottomText?.trim() || '';
+      wsFooter.copyright?.trim() || DEFAULT_WEBSITE_SETTINGS.footer.copyright;
+    const bottomText = wsFooter.bottomText?.trim() || '';
     const backgroundColor = wsFooter.backgroundColor?.trim() || '#05070B';
     const backgroundImage = wsFooter.backgroundImage?.trim() || '';
 
-    const wsSocial = websiteSocialToArray(websiteSettings.socialLinks);
-    const socialLinks = wsSocial.length
-      ? wsSocial
-      : sortLinks(
-          homeFooter.socialLinks?.length
-            ? homeFooter.socialLinks
-            : DEFAULT_HOME_CMS.footer.socialLinks,
-        );
+    const socialLinks = websiteSocialToArray(websiteSettings.socialLinks);
 
     const serviceLinks = buildFooterServiceLinks(services as Array<Record<string, unknown>>);
 
-    const industryLinks: HomeFooterLink[] = [...industries]
+    const industryLinks: WebsiteFooterLink[] = [...industries]
       .filter((industry) => industry?.slug)
       .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
       .map((industry, index) => ({
@@ -153,9 +146,9 @@ export function useFooterContent() {
       }));
 
     const companyLinks = sortLinks(
-      homeFooter.companyLinks?.length
-        ? homeFooter.companyLinks
-        : DEFAULT_HOME_CMS.footer.companyLinks,
+      wsFooter.companyLinks?.length
+        ? wsFooter.companyLinks
+        : DEFAULT_WEBSITE_SETTINGS.footer.companyLinks,
     )
       .map((link) => ({
         ...link,
@@ -164,7 +157,7 @@ export function useFooterContent() {
       .filter((link) => isValidFooterHref(link.href));
 
     const legalLinks = sortLinks(
-      homeFooter.legalLinks?.length ? homeFooter.legalLinks : DEFAULT_HOME_CMS.footer.legalLinks,
+      wsFooter.legalLinks?.length ? wsFooter.legalLinks : DEFAULT_WEBSITE_SETTINGS.footer.legalLinks,
     ).filter((link) => isValidFooterHref(link.href));
 
     return {
@@ -187,5 +180,5 @@ export function useFooterContent() {
       companyLinks,
       legalLinks,
     };
-  }, [homeFooter, websiteSettings, wsFooter, services, industries]);
+  }, [websiteSettings, wsFooter, services, industries]);
 }

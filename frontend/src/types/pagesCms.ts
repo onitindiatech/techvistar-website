@@ -174,12 +174,15 @@ export interface CareersLandingCmsConfig extends SeoMetadata {
 import {
   DEFAULT_WEBSITE_SETTINGS,
   WebsiteSettingsConfig,
+  mergeWebsiteSettingsConfig,
+  type LegacyHomeFooterConfig,
 } from '@/types/websiteSettings';
 
 export type {
   WebsiteSettingsConfig,
   WebsiteNavbarSettings,
   WebsiteFooterSettings,
+  WebsiteFooterLink,
   WebsiteSocialLinks,
   WebsiteSeoDefaults,
   WebsiteAnalyticsSettings,
@@ -520,7 +523,10 @@ export function mergePagesCmsConfig(api?: Partial<PagesCmsConfig> | null): Pages
     solutionsLanding: deepMergeSection(DEFAULT_SOLUTIONS_LANDING_CMS, api.solutionsLanding),
     industriesLanding: deepMergeSection(DEFAULT_INDUSTRIES_LANDING_CMS, api.industriesLanding),
     careers: deepMergeSection(DEFAULT_CAREERS_LANDING_CMS, api.careers as Partial<CareersLandingCmsConfig>),
-    websiteSettings: deepMergeSection(DEFAULT_WEBSITE_SETTINGS, api.websiteSettings),
+    websiteSettings: mergeWebsiteSettingsConfig(
+      api.websiteSettings,
+      (api.home as { footer?: LegacyHomeFooterConfig } | undefined)?.footer,
+    ),
   };
 }
 

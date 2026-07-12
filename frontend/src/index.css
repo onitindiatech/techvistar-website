@@ -546,8 +546,9 @@
       justify-content: center !important;
       text-align: center !important;
       width: 100% !important;
-      margin-top: 0 !important;
+      margin-top: auto !important;
       gap: 12px !important;
+      flex-shrink: 0 !important;
     }
 
     .hero-trust-label {
@@ -575,9 +576,815 @@
     }
   }
 
-  /* Tall-mobile hero enrichment — hidden by default on desktop/tablet */
+  /* Tall responsive hero enrichment — hidden by default on desktop (1366px+) */
   .hero-tall-features {
     display: none;
+  }
+
+  /* ─── Small tablet portrait (768px–991px): mobile-style stack + top offset ─ */
+  @media (min-width: 768px) and (max-width: 991px) {
+    #home {
+      height: auto !important;
+      min-height: 100svh;
+      overflow-x: clip;
+    }
+
+    .hero-shell {
+      height: auto !important;
+      min-height: 100dvh;
+      overflow-x: clip;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      gap: clamp(1rem, 2.5vh, 1.5rem) !important;
+      grid-template-rows: unset !important;
+      padding-top: calc(clamp(96px, 10vh, 120px) + 2rem + env(safe-area-inset-top, 0px)) !important;
+      padding-bottom: max(1.25rem, env(safe-area-inset-bottom)) !important;
+    }
+
+    .hero-main {
+      flex: 1 1 auto;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      align-items: stretch !important;
+      width: 100% !important;
+      min-height: 0 !important;
+      gap: 0 !important;
+    }
+
+    .hero-copy {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: visible !important;
+    }
+
+    .hero-copy-inner {
+      width: 100% !important;
+      align-items: flex-start !important;
+      text-align: left !important;
+      overflow: visible !important;
+    }
+
+    .hero-headline {
+      font-size: clamp(1.75rem, 3.8vw + 0.5rem, 2.35rem) !important;
+      line-height: 1.14 !important;
+      margin-bottom: 0.75rem !important;
+    }
+
+    .hero-headline span {
+      white-space: normal !important;
+      max-width: 24ch;
+    }
+
+    .hero-tagline {
+      font-size: 0.9375rem !important;
+      max-width: 38ch;
+      -webkit-line-clamp: unset !important;
+      display: block !important;
+      overflow: visible !important;
+      margin-top: 0 !important;
+      margin-bottom: 1.25rem !important;
+    }
+
+    .hero-cta-row {
+      flex-direction: column !important;
+      gap: 0.75rem !important;
+      width: 100% !important;
+      max-width: 28rem !important;
+      margin-top: 0 !important;
+      margin-bottom: 1.5rem !important;
+    }
+
+    .hero-cta-row > * {
+      width: 100% !important;
+    }
+
+    .hero-tall-features {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 1rem !important;
+      width: 100% !important;
+      margin-top: 0 !important;
+      margin-bottom: 0.5rem !important;
+      flex-shrink: 0 !important;
+    }
+
+    .hero-tall-features-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 0.75rem !important;
+      width: 100% !important;
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .hero-tall-features-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0.625rem !important;
+      padding: 1rem !important;
+      border-radius: 0.75rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      background: rgba(18, 18, 22, 0.45) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 10px 30px -10px rgba(0, 0, 0, 0.7) !important;
+      min-width: 0 !important;
+    }
+
+    .hero-tall-features-icon {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 2rem !important;
+      height: 2rem !important;
+      border-radius: 0.5rem !important;
+      border: 1px solid rgba(16, 185, 129, 0.25) !important;
+      background: rgba(16, 185, 129, 0.08) !important;
+      color: #10b981 !important;
+      flex-shrink: 0 !important;
+    }
+
+    .hero-tall-features-content {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0.25rem !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+
+    .hero-tall-features-label {
+      font-size: 0.8125rem !important;
+      font-weight: 600 !important;
+      color: #ffffff !important;
+      line-height: 1.25 !important;
+    }
+
+    .hero-tall-features-desc {
+      font-size: 0.6875rem !important;
+      color: #a1a1aa !important;
+      line-height: 1.35 !important;
+    }
+
+    .hero-tall-stats-card {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: stretch !important;
+      width: 100% !important;
+      border-radius: 0.75rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.06) !important;
+      background: rgba(9, 9, 11, 0.45) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      padding: 0.75rem 0 !important;
+      margin-top: 0.25rem !important;
+      flex-shrink: 0 !important;
+    }
+
+    .hero-tall-stats-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex: 1 1 0% !important;
+      min-width: 0 !important;
+      text-align: center !important;
+      padding: 0 0.5rem !important;
+    }
+
+    .hero-tall-stats-item:not(:last-child) {
+      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .hero-tall-stats-value {
+      font-size: 1.125rem !important;
+      font-weight: 800 !important;
+      color: #34d399 !important;
+      line-height: 1.2 !important;
+      white-space: nowrap !important;
+    }
+
+    .hero-tall-stats-label {
+      font-size: 0.625rem !important;
+      font-weight: 600 !important;
+      color: #a1a1aa !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      margin-top: 0.125rem !important;
+      white-space: nowrap !important;
+    }
+
+    .hero-trust-footer {
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
+      width: 100% !important;
+      margin-top: auto !important;
+      flex-shrink: 0 !important;
+      gap: 0.75rem !important;
+    }
+
+    .hero-trust-label {
+      text-align: center !important;
+      width: 100% !important;
+    }
+
+    .hero-trust-logos {
+      justify-content: center !important;
+      flex-wrap: wrap !important;
+    }
+  }
+
+  /* ─── Surface Pro 7 (~912×1368): extra top offset only ─────────────────── */
+  @media (min-width: 896px) and (max-width: 928px) and (min-height: 1200px) {
+    .hero-shell {
+      padding-top: calc(clamp(96px, 10vh, 120px) + 2rem + 1.75rem + env(safe-area-inset-top, 0px)) !important;
+    }
+  }
+
+  /* ─── Surface Duo (~540×720): compact single-viewport fit ──────────────── */
+  @media (min-width: 520px) and (max-width: 560px) and (min-height: 680px) and (max-height: 760px) {
+    .hero-shell {
+      gap: 0.5rem !important;
+      padding-top: calc(56px + env(safe-area-inset-top, 0px) + 1.75rem) !important;
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom)) !important;
+      min-height: 100svh;
+      max-height: 100svh;
+      overflow: hidden;
+    }
+
+    .hero-main {
+      min-height: 0 !important;
+    }
+
+    .hero-badge {
+      margin-bottom: 8px !important;
+    }
+
+    .hero-headline {
+      font-size: clamp(1.5rem, 7vw, 1.95rem) !important;
+      line-height: 1.12 !important;
+      margin-bottom: 8px !important;
+    }
+
+    .hero-tagline {
+      font-size: 0.8125rem !important;
+      line-height: 1.35 !important;
+      margin-bottom: 12px !important;
+    }
+
+    .hero-cta-row {
+      gap: 8px !important;
+      margin-bottom: 12px !important;
+    }
+
+    .hero-cta-row button {
+      height: 42px !important;
+    }
+
+    .hero-copy-inner {
+      gap: 0.25rem !important;
+      padding-bottom: 0.375rem !important;
+    }
+
+    .hero-tall-features {
+      gap: 10px !important;
+      margin-bottom: 10px !important;
+    }
+
+    .hero-tall-features-grid {
+      gap: 8px !important;
+    }
+
+    .hero-tall-features-item {
+      padding: 10px !important;
+      gap: 6px !important;
+    }
+
+    .hero-tall-features-icon {
+      width: 26px !important;
+      height: 26px !important;
+    }
+
+    .hero-tall-features-label {
+      font-size: 0.75rem !important;
+    }
+
+    .hero-tall-features-desc {
+      font-size: 0.625rem !important;
+      line-height: 1.25 !important;
+    }
+
+    .hero-tall-stats-card {
+      padding: 8px 0 !important;
+    }
+
+    .hero-tall-stats-value {
+      font-size: 1rem !important;
+    }
+
+    .hero-tall-stats-label {
+      font-size: 0.5625rem !important;
+    }
+
+    .hero-trust-footer {
+      gap: 6px !important;
+      padding-bottom: max(0.25rem, env(safe-area-inset-bottom)) !important;
+    }
+
+    .hero-trust-label {
+      margin-bottom: 0 !important;
+      font-size: 9px !important;
+    }
+
+    .hero-trust-logos {
+      gap: 8px 14px !important;
+    }
+
+    .hero-trust-logos img,
+    .hero-trust-logos svg {
+      height: 12px !important;
+    }
+  }
+
+  /* ─── Nest Hub (~1024×600): compact feature cards below CTAs ───────────── */
+  @media (min-width: 1024px) and (max-width: 1100px) and (max-height: 650px) {
+    .hero-shell {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      grid-template-rows: unset !important;
+      gap: 0.625rem !important;
+      min-height: 100svh;
+    }
+
+    .hero-main {
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 1 1 auto;
+      min-height: 0;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .hero-tall-features {
+      display: flex !important;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 42rem;
+      margin-top: 0.625rem;
+      flex-shrink: 0;
+    }
+
+    .hero-tall-features-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hero-tall-features-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.625rem;
+      border-radius: 0.625rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(18, 18, 22, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      min-width: 0;
+    }
+
+    .hero-tall-features-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 0.375rem;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.08);
+      color: #34d399;
+      flex-shrink: 0;
+    }
+
+    .hero-tall-features-icon svg {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+
+    .hero-tall-features-content {
+      min-width: 0;
+    }
+
+    .hero-tall-features-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .hero-tall-features-desc {
+      display: none;
+    }
+
+    .hero-tall-stats-card {
+      display: none;
+    }
+
+    .hero-trust-footer {
+      flex-shrink: 0;
+      margin-top: auto;
+      width: 100%;
+    }
+  }
+
+  /* ─── Nest Hub Max (~1280×800): feature cards with breathing room ─────── */
+  @media (min-width: 1200px) and (max-width: 1365px) and (min-height: 700px) and (max-height: 850px) {
+    .hero-shell {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      grid-template-rows: unset !important;
+      gap: 0.875rem !important;
+      min-height: 100svh;
+    }
+
+    .hero-main {
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 1 1 auto;
+      min-height: 0;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .hero-tall-features {
+      display: flex !important;
+      flex-direction: column;
+      gap: 0.625rem;
+      width: 100%;
+      max-width: 46rem;
+      margin-top: 1rem;
+      flex-shrink: 0;
+    }
+
+    .hero-tall-features-grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.625rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hero-tall-features-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.375rem;
+      padding: 0.625rem 0.75rem;
+      border-radius: 0.625rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(18, 18, 22, 0.5);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      min-width: 0;
+    }
+
+    .hero-tall-features-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 0.375rem;
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      background: rgba(16, 185, 129, 0.1);
+      color: #34d399;
+      flex-shrink: 0;
+    }
+
+    .hero-tall-features-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .hero-tall-features-desc {
+      font-size: 0.5625rem;
+      color: #a1a1aa;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-tall-stats-card {
+      display: none;
+    }
+
+    .hero-trust-footer {
+      flex-shrink: 0;
+      margin-top: auto;
+      width: 100%;
+    }
+  }
+
+  /* ─── Large tablet (1024px–1199px): CMS-enabled premium layout only ─────── */
+  @media (min-width: 1024px) and (max-width: 1199px) and (min-height: 700px) {
+    #home.hero-ipad-pro-enriched .hero-shell {
+      display: grid !important;
+      grid-template-rows: minmax(0, 1fr) auto;
+      padding-top: calc(7.75rem + env(safe-area-inset-top, 0px)) !important;
+      gap: clamp(0.75rem, 1.75vh, 1.25rem);
+      min-height: 100svh;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-main {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
+      width: 100%;
+      min-height: 0;
+      padding-left: clamp(2.5rem, 8vw, 5rem);
+      padding-right: clamp(1.5rem, 4vw, 2.5rem);
+      padding-top: clamp(0.25rem, 1.5vh, 0.75rem);
+      box-sizing: border-box;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-copy {
+      width: 55% !important;
+      max-width: 55% !important;
+      min-width: min(100%, 32rem);
+    }
+
+    #home.hero-ipad-pro-enriched .hero-copy-inner {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-headline {
+      font-size: clamp(2.4rem, 3vw + 0.95rem, 3.9rem) !important;
+      line-height: 1.09 !important;
+      letter-spacing: -0.034em !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-headline span {
+      white-space: normal !important;
+      max-width: 100%;
+      text-wrap: pretty;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tagline {
+      font-size: 1.125rem !important;
+      line-height: 1.55 !important;
+      max-width: 46ch !important;
+      margin-top: 1.25rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-cta-row {
+      margin-top: 1.75rem !important;
+      gap: 1rem !important;
+      max-width: 100% !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-cta-row > * {
+      width: auto !important;
+      flex: 0 1 auto !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-cta-row button {
+      min-height: 3rem !important;
+      min-width: 12rem !important;
+      font-size: 1rem !important;
+      padding-left: 1.75rem !important;
+      padding-right: 1.75rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-features {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 55% !important;
+      max-width: 55% !important;
+      min-width: min(100%, 32rem);
+      margin-top: 1.75rem !important;
+      margin-bottom: 0 !important;
+      gap: 0.625rem !important;
+      flex-shrink: 0;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-features-grid {
+      display: none !important;
+    }
+
+    #home.hero-ipad-pro-enriched.hero-show-feature-cards .hero-tall-features-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 0.625rem !important;
+      width: 100% !important;
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-features-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+      gap: 0.5rem !important;
+      padding: 0.8125rem !important;
+      border-radius: 0.75rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      background: rgba(18, 18, 22, 0.45) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 10px 30px -10px rgba(0, 0, 0, 0.7) !important;
+      min-width: 0 !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-features-icon {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 1.75rem !important;
+      height: 1.75rem !important;
+      border-radius: 0.5rem !important;
+      border: 1px solid rgba(16, 185, 129, 0.25) !important;
+      background: rgba(16, 185, 129, 0.08) !important;
+      color: #10b981 !important;
+      flex-shrink: 0 !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-features-icon svg {
+      width: 0.875rem !important;
+      height: 0.875rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-features-label {
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      color: #ffffff !important;
+      line-height: 1.25 !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-features-desc {
+      font-size: 0.625rem !important;
+      color: #a1a1aa !important;
+      line-height: 1.32 !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-stats-card {
+      display: none !important;
+    }
+
+    #home.hero-ipad-pro-enriched.hero-show-metrics .hero-tall-stats-card {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: stretch !important;
+      width: 100% !important;
+      border-radius: 0.75rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.06) !important;
+      background: rgba(9, 9, 11, 0.45) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      padding: 0.625rem 0 !important;
+      margin-top: 0.25rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-stats-item {
+      flex: 1 1 0% !important;
+      min-width: 0 !important;
+      padding: 0 0.375rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-stats-value {
+      font-size: 1.0625rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-tall-stats-label {
+      font-size: 0.5625rem !important;
+      white-space: nowrap !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-ipad-highlights {
+      width: 55% !important;
+      max-width: 55% !important;
+      min-width: min(100%, 32rem);
+      margin-top: 0.75rem !important;
+      flex-shrink: 0;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-ipad-highlights-title {
+      font-size: 0.625rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.18em !important;
+      text-transform: uppercase !important;
+      color: rgba(161, 161, 170, 0.95) !important;
+      margin-bottom: 0.5rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-ipad-highlights-pills {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 0.5rem !important;
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-ipad-highlight-pill {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.375rem 0.625rem !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(16, 185, 129, 0.2) !important;
+      background: rgba(16, 185, 129, 0.06) !important;
+      font-size: 0.6875rem !important;
+      font-weight: 600 !important;
+      color: #e4e4e7 !important;
+      line-height: 1.2 !important;
+      white-space: nowrap !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-ipad-highlight-pill-check {
+      color: #34d399 !important;
+      font-size: 0.625rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-trust-footer {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      align-items: flex-end !important;
+      justify-content: space-between !important;
+      width: 100%;
+      gap: 0.75rem 1.25rem;
+      margin-top: auto;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-ipad-client-strip {
+      width: 55% !important;
+      max-width: 55% !important;
+      margin-left: clamp(2.5rem, 8vw, 5rem);
+      margin-bottom: 0.25rem !important;
+      flex: 0 0 100%;
+      order: -1;
+    }
+
+    #home.hero-ipad-pro-enriched .hero-ipad-client-strip-logos {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      gap: 0.75rem 1.25rem !important;
+    }
+
+    #home.hero-ipad-pro-enriched .animate-hero-circle-orbit {
+      width: min(64vmin, 500px) !important;
+      height: min(64vmin, 500px) !important;
+    }
+
+    #home.hero-ipad-pro-enriched .blur-\[120px\] {
+      width: min(82vw, 540px) !important;
+      height: min(82vw, 540px) !important;
+    }
+
+    #home.hero-ipad-pro-enriched .border-emerald-500\/15 {
+      width: min(66vw, 400px) !important;
+      height: min(66vw, 400px) !important;
+    }
+  }
+
+  /* ─── Desktop (1366px+): preserve approved layout — hide enrichment panel ── */
+  @media (min-width: 1366px) {
+    .hero-tall-features {
+      display: none !important;
+    }
+
+    .hero-main {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: flex-start !important;
+      width: 100%;
+    }
   }
 
   .gradient-border {
@@ -634,6 +1441,30 @@
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+/* Enterprise logo marquee — Contact page LogoCloud */
+.enterprise-marquee-track {
+  animation: enterprise-logo-marquee 48s linear infinite;
+}
+
+.enterprise-marquee-scroller:hover .enterprise-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enterprise-marquee-track {
+    animation: none;
+  }
+}
+
+@keyframes enterprise-logo-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -737,17 +1568,6 @@
 
     .hero-headline span + span {
       margin-top: 0.125rem !important;
-    }
-
-    .hero-badge {
-      flex-shrink: 0;
-      width: fit-content;
-      max-width: 100%;
-      overflow: visible;
-      white-space: nowrap;
-      padding-left: 0.875rem;
-      padding-right: 0.875rem;
-      letter-spacing: 0.08em;
     }
 
     .hero-copy-inner {

@@ -16,6 +16,7 @@ import { SolutionFeaturesSection } from '@/components/solutions/SolutionFeatures
 import { SolutionProcessSection } from '@/components/solutions/SolutionProcessSection';
 import { SolutionBenefitsSection } from '@/components/solutions/SolutionBenefitsSection';
 import { SolutionTechStackSection } from '@/components/solutions/SolutionTechStackSection';
+import { SolutionRelatedSection } from '@/components/solutions/SolutionRelatedSection';
 
 export const SolutionDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -108,6 +109,7 @@ export const SolutionDetails = () => {
             <SolutionProcessSection solution={solution} />
             <SolutionBenefitsSection solution={solution} />
             <SolutionTechStackSection solution={solution} />
+            <SolutionRelatedSection solution={solution} />
           </div>
         </section>
 

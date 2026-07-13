@@ -4,6 +4,7 @@ import { CmsImageField } from '@/components/admin/common/CmsImageField';
 import { CmsTextFields, CmsSectionCard } from '@/components/admin/common/CmsSettingsFields';
 import { CmsPageLayout, CmsSectionAnchor } from '@/components/admin/common/CmsPageLayout';
 import { CmsSortableList } from '@/components/admin/common/CmsSortableList';
+import { CmsFutureFeatureCallout } from '@/components/admin/common/CmsFutureFeatureCallout';
 import { usePagesCmsSettings } from '@/hooks/usePagesCmsSettings';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -118,17 +119,21 @@ const WebsiteSettings = () => {
       </CmsSectionAnchor>
 
       <CmsSectionAnchor id="navigation">
-        <CmsSectionCard title="Navigation" description="Navbar CTA, layout toggles, and optional announcement bar." icon={Navigation}>
+        <CmsSectionCard title="Navigation" description="Navbar CTA, layout toggles, and site-wide announcement bar." icon={Navigation}>
           <CmsTextFields
             twoColumn
             fields={[{ key: 'ctaButtonText', label: 'CTA button text' }, { key: 'ctaButtonLink', label: 'CTA button link' }]}
             values={form.navbar as unknown as Record<string, string>}
             onChange={(key, value) => patchNavbar(key as keyof WebsiteSettingsConfig['navbar'], value)}
           />
-          {toggleRow('Sticky navbar', 'Keep the navbar fixed while scrolling.', form.navbar.stickyEnabled, (v) => patchNavbar('stickyEnabled', v))}
-          {toggleRow('Transparent navbar', 'Use transparent styling at the top of the page.', form.navbar.transparentEnabled, (v) => patchNavbar('transparentEnabled', v))}
-          {toggleRow('Show search', 'Display a search control in the navbar.', form.navbar.showSearch, (v) => patchNavbar('showSearch', v))}
-          {toggleRow('Announcement bar', 'Show a slim announcement strip above the navbar.', form.navbar.announcementBarEnabled, (v) => patchNavbar('announcementBarEnabled', v))}
+          <CmsFutureFeatureCallout>
+            Sticky navbar, transparent navbar, and search controls are saved for a future release. They do not
+            change the public navbar yet. The navbar remains fixed with the current styling.
+          </CmsFutureFeatureCallout>
+          {toggleRow('Sticky navbar (future)', 'Not connected to the public navbar yet.', form.navbar.stickyEnabled, (v) => patchNavbar('stickyEnabled', v))}
+          {toggleRow('Transparent navbar (future)', 'Not connected to the public navbar yet.', form.navbar.transparentEnabled, (v) => patchNavbar('transparentEnabled', v))}
+          {toggleRow('Show search (future)', 'Not connected to the public navbar yet.', form.navbar.showSearch, (v) => patchNavbar('showSearch', v))}
+          {toggleRow('Announcement bar', 'Shows a slim strip above the navbar on all public pages when enabled and text is provided.', form.navbar.announcementBarEnabled, (v) => patchNavbar('announcementBarEnabled', v))}
           <CmsTextFields
             fields={[
               { key: 'announcementText', label: 'Announcement text', type: 'textarea' },

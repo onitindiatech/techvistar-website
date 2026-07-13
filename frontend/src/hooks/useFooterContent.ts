@@ -10,6 +10,11 @@ import {
 import { getActiveServices } from '@/services/services.service';
 import { getActiveIndustries } from '@/services/industry.service';
 import defaultLogoUrl from '@/assets/logo.webp';
+import {
+  cloudinaryUrlFromPublicId,
+  isBundledAssetUrl,
+  preferCmsImage,
+} from '@/lib/mediaFallbacks';
 
 const INVALID_FOOTER_PATHS = new Set(['/privacy', '/terms', '/cookies', '/sitemap']);
 const FOOTER_SERVICES_MAX = 10;
@@ -67,6 +72,25 @@ function normalizeCompanyHref(href: string, label: string): string {
   return href;
 }
 
+function resolveFooterLogo(
+  footerLogo: string | undefined,
+  footerLogoPublicId: string | undefined,
+  brandingLogo: string | undefined,
+  fallback: string,
+): string {
+  const footerUrl = footerLogo?.trim() || '';
+  if (footerUrl && !isBundledAssetUrl(footerUrl)) {
+    return footerUrl;
+  }
+
+  const fromPublicId = cloudinaryUrlFromPublicId(footerLogoPublicId, brandingLogo);
+  if (fromPublicId) {
+    return fromPublicId;
+  }
+
+  return preferCmsImage(brandingLogo, footerUrl, fallback);
+}
+
 function websiteSocialToArray(social: WebsiteSocialLinks): FooterSocialLink[] {
   const entries: Array<[string, string]> = [
     ['linkedin', social.linkedin],
@@ -116,8 +140,12 @@ export function useFooterContent() {
       wsFooter.heading?.trim() || websiteSettings.companyName?.trim() || 'TechVistar';
     const companyDescription =
       wsFooter.description?.trim() || DEFAULT_WEBSITE_SETTINGS.footer.description;
-    const logo =
-      wsFooter.logo?.trim() || websiteSettings.logo?.trim() || defaultLogoUrl;
+    const logo = resolveFooterLogo(
+      wsFooter.logo,
+      wsFooter.logoPublicId,
+      websiteSettings.logo,
+      defaultLogoUrl,
+    );
     const phone = websiteSettings.phone?.trim() || '';
     const email = websiteSettings.email?.trim() || '';
     const address = websiteSettings.address?.trim() || '';

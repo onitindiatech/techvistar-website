@@ -181,7 +181,7 @@ export const DEFAULT_WEBSITE_SETTINGS: WebsiteSettingsConfig = {
     newsletterHeading: 'Stay updated with TechVistar',
     newsletterDescription: 'Get product updates, technology insights, and engineering articles.',
     bottomText: '',
-    logo: defaultLogoUrl,
+    logo: '',
     backgroundImage: '',
     backgroundColor: '#05070B',
     companyLinks: DEFAULT_FOOTER_COMPANY_LINKS,

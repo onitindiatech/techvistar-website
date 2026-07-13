@@ -553,7 +553,7 @@ export const Contact = () => {
           </div>
         </section>
 
-        <FAQSection pageFilter="all" layout="split" limit={4} showViewAll={true} />
+        <FAQSection pageFilter="contact" layout="split" limit={4} showViewAll={true} />
 
         {/* TRUSTED BY CLIENT LOGOS SECTION */}
         <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mt-8 md:mt-10 relative z-10 border-t border-slate-200/60">

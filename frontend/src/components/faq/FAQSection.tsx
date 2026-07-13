@@ -66,12 +66,13 @@ export const FAQSection = ({
       items = items.filter((faq) => faq.featured);
     }
     if (pageFilter && pageFilter !== 'all') {
-      items = items.filter((faq) => faq.page === pageFilter);
+      items = items.filter((faq) => faq.page === pageFilter || faq.page === 'all');
     }
     if (categoryFilter) {
       items = items.filter((faq) => faq.category === categoryFilter);
     }
-    return items;
+
+    return [...items].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
   }, [allFAQs, pageFilter, categoryFilter, featuredOnly]);
 
   const displayedFAQs = useMemo(() => {

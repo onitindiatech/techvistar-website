@@ -50,7 +50,7 @@ const Index = () => {
       </a>
       <main id="main-content" className="min-h-screen bg-background">
         <Navbar />
-        <HeroSection showAnnouncementBar />
+        <HeroSection />
 
         <ServicesSection />
         <TechStackSection minHeight="280px" />

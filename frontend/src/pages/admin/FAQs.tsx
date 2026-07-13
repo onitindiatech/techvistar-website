@@ -458,6 +458,17 @@ const FAQs = () => {
         onAction={viewMode === "trash" ? undefined : handleOpenCreate}
       />
 
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-950">
+        <p className="text-sm font-semibold">Public site behavior</p>
+        <p className="mt-1 text-[12px] leading-relaxed text-emerald-900/90">
+          <strong>Page:</strong> Live on the Contact page — FAQs with page <em>contact</em> or <em>all</em> appear
+          there. Values <em>home</em>, <em>services</em>, <em>work</em>, and <em>careers</em> are stored for a future
+          release; those routes do not render the global FAQ component yet.
+          <br />
+          <strong>Featured:</strong> Featured FAQs sort to the top within each FAQ section that uses them.
+        </p>
+      </div>
+
       <div className="bg-white rounded-2xl border border-slate-200/60 p-4 space-y-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex-1 max-w-md relative">

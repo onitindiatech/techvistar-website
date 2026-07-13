@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { RichTextEditor } from '@/components/admin/common/RichTextEditor';
 import { normalizeRichContent } from '@/lib/sanitizeHtml';
 import { Trash, Plus } from 'lucide-react';
+import { CmsFutureFeatureCallout } from '@/components/admin/common/CmsFutureFeatureCallout';
 import type { DetailedOffering } from '@/data/services';
 
 const OFFERING_COLORS = ['green', 'blue', 'purple', 'red', 'orange', 'indigo', 'gold', 'gray'];
@@ -155,6 +156,9 @@ export function IndustryExtendedCmsFields({
   if (activeTab === 'faqs') {
     return (
       <div className="space-y-4">
+        <CmsFutureFeatureCallout>
+          Industry FAQs are saved to the database but are not rendered on public industry detail pages yet.
+        </CmsFutureFeatureCallout>
         <div className="flex items-center justify-between">
           <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500">Industry FAQs</span>
           <Button
@@ -204,6 +208,9 @@ export function IndustryExtendedCmsFields({
     return (
       <div className="space-y-6">
         <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-5">
+          <CmsFutureFeatureCallout>
+            Related services selections are saved but not rendered on public industry detail pages yet.
+          </CmsFutureFeatureCallout>
           <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Related Services</p>
           <div className="flex flex-wrap gap-2">
             {allServiceOptions.map((opt) => {

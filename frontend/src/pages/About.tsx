@@ -320,7 +320,7 @@ const About = () => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-100/80 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-teal-800 ring-1 ring-teal-800/10">
-                    {ABOUT_PAGE.commitmentHeading}
+                    {about.teamSection.heading || ABOUT_PAGE.commitmentHeading}
                   </span>
                   <p className="mt-2 text-sm font-semibold text-slate-800 leading-relaxed">{about.teamSection.description}</p>
                 </div>

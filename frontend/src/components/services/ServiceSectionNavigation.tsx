@@ -11,7 +11,6 @@ const baseNavItems: NavItem[] = [
   { id: 'offerings', label: 'Offerings' },
   { id: 'process', label: 'Process' },
   { id: 'technology', label: 'Technology' },
-  { id: 'contact', label: 'Contact' },
 ];
 
 interface ServiceSectionNavigationProps {
@@ -19,7 +18,11 @@ interface ServiceSectionNavigationProps {
 }
 
 export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavigationProps) => {
-  const navItems = showFaq ? baseNavItems : baseNavItems.filter((item) => item.id !== 'faq');
+  const navItems: NavItem[] = [
+    ...baseNavItems,
+    ...(showFaq ? [{ id: 'faq', label: 'FAQ' }] : []),
+    { id: 'contact', label: 'Contact' },
+  ];
   const [activeId, setActiveId] = useState<string>('overview');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 

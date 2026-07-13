@@ -33,7 +33,7 @@ console.log('\n[mediaAsset] Cloudinary lifecycle helpers\n');
 run('detects Cloudinary delivery URLs', () => {
   assert.strictEqual(
     isCloudinaryDeliveryUrl(
-      'https://res.cloudinary.com/dwjsxhryn/image/upload/v1/techvistar/uploads/abc.jpg'
+      'https://res.cloudinary.com/test-cloud/image/upload/v1/techvistar/uploads/abc.jpg'
     ),
     true
   );
@@ -46,7 +46,7 @@ run('detects Cloudinary delivery URLs', () => {
 
 run('extracts public_id from versioned Cloudinary URL', () => {
   const id = extractCloudinaryPublicId(
-    'https://res.cloudinary.com/dwjsxhryn/image/upload/v1783513184/techvistar/uploads/x0kbffsos.jpg'
+    'https://res.cloudinary.com/test-cloud/image/upload/v1783513184/techvistar/uploads/x0kbffsos.jpg'
   );
   assert.strictEqual(id, 'techvistar/uploads/x0kbffsos');
 });

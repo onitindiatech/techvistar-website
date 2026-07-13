@@ -20,10 +20,11 @@ import 'dotenv/config'; // Load .env FIRST — before any other import reads pro
 
 import http from 'http';
 import app             from './app';
-import { env }         from '@/config/env';
+import { env, normalizeOrigin } from '@/config/env';
 import { connectDB, disconnectDB } from '@/config/database';
 import '@/config/cloudinary'; // Phase 1.5 — configure Cloudinary SDK at startup
 import { logger, setupProcessLogger } from '@/utils/logger';
+import { DEV_ORIGINS, PRODUCTION_CORS_FALLBACK_ORIGINS } from '@/constants';
 
 // ─── Register process-level error handlers ────────────────────────────────────
 // Must be set up before anything async happens
@@ -32,10 +33,21 @@ setupProcessLogger();
 // ─── Startup ──────────────────────────────────────────────────────────────────
 async function startServer(): Promise<void> {
   try {
+    const allowedOrigins = [
+      ...new Set(
+        (env.isDev ? [...DEV_ORIGINS] : [...env.clientUrls, ...PRODUCTION_CORS_FALLBACK_ORIGINS]).map(
+          normalizeOrigin,
+        ),
+      ),
+    ];
+
     logger.info('════════════════════════════════════════════════════');
     logger.info('  TechVistar API Server — Starting Up');
     logger.info(`  Environment: ${env.nodeEnv}`);
     logger.info(`  Port:        ${env.port}`);
+    logger.info(`[CORS] process.env.CLIENT_URL: ${process.env.CLIENT_URL ?? '(unset)'}`);
+    logger.info(`[CORS] env.clientUrls: ${JSON.stringify(env.clientUrls)}`);
+    logger.info(`[CORS] allowedOrigins: ${JSON.stringify(allowedOrigins)}`);
     logger.info('════════════════════════════════════════════════════');
 
     // ── Step 1: Connect to MongoDB ─────────────────────────────────────────

@@ -33,11 +33,19 @@ function optionalInt(key: string, fallback: number): number {
   return isNaN(parsed) ? fallback : parsed;
 }
 
+// ─── Helper: Normalize origin for CORS comparison ────────────────────────────
+/** Strip whitespace and trailing slashes so CLIENT_URL entries match browser Origin headers. */
+export function normalizeOrigin(origin: string): string {
+  const trimmed = origin.trim();
+  if (!trimmed) return trimmed;
+  return trimmed.replace(/\/+$/, '');
+}
+
 // ─── Helper: Parse comma-separated client URLs ───────────────────────────────
 function parseClientUrls(raw: string): string[] {
   const urls = raw
     .split(',')
-    .map((entry) => entry.trim())
+    .map((entry) => normalizeOrigin(entry))
     .filter(Boolean);
   return urls.length > 0 ? [...new Set(urls)] : ['http://localhost:8080'];
 }

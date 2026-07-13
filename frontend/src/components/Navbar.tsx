@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getPublicPagesConfig } from '@/services/pages.service';
 import { getActiveServices, filterNavServicesByActiveSlugs } from '@/services/services.service';
 import { mergePagesCmsConfig } from '@/types/pagesCms';
+import { AnnouncementBar } from '@/components/AnnouncementBar';
 import logo from '../assets/logo.webp';
 
 export const Navbar = () => {
@@ -36,6 +37,9 @@ export const Navbar = () => {
   const companyName = websiteSettings.companyName?.trim() || SITE.name;
   const ctaText = websiteSettings.navbar.ctaButtonText || 'Contact Us';
   const ctaLink = websiteSettings.navbar.ctaButtonLink || '/contact';
+  const showAnnouncement =
+    websiteSettings.navbar.announcementBarEnabled &&
+    Boolean(websiteSettings.navbar.announcementText?.trim());
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
@@ -54,6 +58,15 @@ export const Navbar = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (showAnnouncement) {
+      document.documentElement.setAttribute('data-announcement-bar', 'true');
+    } else {
+      document.documentElement.removeAttribute('data-announcement-bar');
+    }
+    return () => document.documentElement.removeAttribute('data-announcement-bar');
+  }, [showAnnouncement]);
 
   useEffect(() => {
     if (!isMobileMenuOpen) {
@@ -191,17 +204,25 @@ export const Navbar = () => {
   };
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] h-[56px] md:h-20 flex items-center',
-        isScrolled 
-          ? 'bg-white shadow-md shadow-slate-100/45 border-b border-slate-200/50' 
-          : 'bg-white border-b border-slate-100'
-      )}
-    >
+    <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
+      {showAnnouncement ? (
+        <AnnouncementBar
+          text={websiteSettings.navbar.announcementText}
+          link={websiteSettings.navbar.announcementLink}
+          buttonText={websiteSettings.navbar.announcementButtonText}
+        />
+      ) : null}
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className={cn(
+          'w-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] h-[56px] md:h-20 flex items-center',
+          isScrolled
+            ? 'bg-white shadow-md shadow-slate-100/45 border-b border-slate-200/50'
+            : 'bg-white border-b border-slate-100'
+        )}
+      >
       <div className="w-full mx-auto flex items-center justify-between px-4 md:px-6 lg:px-12 xl:px-20 relative h-full gap-2" ref={dropdownRef}>
         {/* Logo Branding */}
         <Link to="/" className="flex items-center gap-2 md:gap-3 group shrink min-w-0">
@@ -821,7 +842,8 @@ export const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+      </motion.header>
+    </div>
   );
 };
 

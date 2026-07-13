@@ -17,7 +17,9 @@ import { OverviewSection } from '@/components/services/OverviewSection';
 import { SolutionsSection } from '@/components/services/SolutionsSection';
 import { ProcessSection } from '@/components/services/ProcessSection';
 import { TechnologySection } from '@/components/services/TechnologySection';
-
+import { FAQSection } from '@/components/services/FAQSection';
+import { RelatedServicesSection } from '@/components/services/RelatedServicesSection';
+import { IndustriesSection } from '@/components/services/IndustriesSection';
 import { ServiceSidebar } from '@/components/services/ServiceSidebar';
 import { CTASection } from '@/components/services/CTASection';
 
@@ -115,7 +117,9 @@ const ServiceDetails = () => {
               <SolutionsSection service={service} />
               <ProcessSection service={service} />
               <TechnologySection service={service} />
-
+              {showFaq ? <FAQSection service={service} /> : null}
+              <RelatedServicesSection service={service} />
+              <IndustriesSection service={service} />
             </div>
 
             <div className="space-y-6">

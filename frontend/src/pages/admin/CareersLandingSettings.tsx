@@ -61,6 +61,7 @@ const CareersLandingSettings = () => {
             fields={[
               { key: 'eyebrow', label: 'Eyebrow' },
               { key: 'title', label: 'Title' },
+              { key: 'subtitle', label: 'Subtitle (gradient line)' },
               { key: 'description', label: 'Description', type: 'textarea', fullWidth: true },
             ]}
             values={form.hero as unknown as Record<string, string>}

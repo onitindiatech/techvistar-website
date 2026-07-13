@@ -196,6 +196,10 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
           default: [],
         },
         highlights: { type: [String], default: [] },
+        featureCards: {
+          type: [{ icon: String, label: String, description: String, sortOrder: Number }],
+          default: [],
+        },
       },
       /** Optional unified responsive hero payload (falls back to mobileHero + ipadProHero). */
       responsiveHero: { type: Schema.Types.Mixed, default: null },

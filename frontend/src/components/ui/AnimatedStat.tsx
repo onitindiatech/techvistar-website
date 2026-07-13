@@ -25,13 +25,17 @@ export const AnimatedStat: React.FC<AnimatedStatProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Parse the stat value
-  const isNumeric = /^[^\d]*\d+/.test(value);
-  const parsedNum = isNumeric ? parseFloat(value.replace(/[^\d.]/g, '')) : 0;
-  const prefix = isNumeric ? value.match(/^([^\d]*)/)?.[0] || '' : '';
-  const suffix = isNumeric ? value.match(/\d+\.?\d*(.*)$/)?.[1] || '' : '';
-  const hasDecimals = isNumeric && value.includes('.');
-  const decimalPlaces = hasDecimals ? (value.split('.')[1] || '').replace(/[^\d]/g, '').length : 0;
+  // Parse the stat value — only animate a single leading number (e.g. "50+", "99%").
+  // Values with extra digits after the first number (e.g. "24/7") render literally.
+  const numericMatch = value.match(/^([^\d]*)(\d+(?:\.\d+)?)(.*)$/);
+  const suffixPart = numericMatch?.[3] ?? '';
+  const isNumeric = Boolean(numericMatch) && !/\d/.test(suffixPart);
+  const numberPart = numericMatch?.[2] ?? '';
+  const parsedNum = isNumeric ? parseFloat(numberPart) : 0;
+  const prefix = isNumeric ? numericMatch![1] : '';
+  const suffix = isNumeric ? suffixPart : '';
+  const hasDecimals = isNumeric && numberPart.includes('.');
+  const decimalPlaces = hasDecimals ? (numberPart.split('.')[1] || '').length : 0;
 
   useEffect(() => {
     const observer = new IntersectionObserver(

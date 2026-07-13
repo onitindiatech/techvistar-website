@@ -369,6 +369,22 @@ const ContactSettings = () => {
             onChange={(k, v) => patchNested('contactInfo', k, v)}
           />
         </CmsSectionCard>
+
+        <CmsSectionCard
+          title="HQ summary (contact cards)"
+          description="Heading, address, and hours shown in the contact info cards and HQ map section."
+          icon={MapPin}
+        >
+          <CmsTextFields
+            fields={[
+              { key: 'heading', label: 'Office heading', placeholder: 'TechVistar HQ' },
+              { key: 'address', label: 'Address', type: 'textarea', fullWidth: true },
+              { key: 'hours', label: 'Working hours', placeholder: 'Mon–Sat, 9 AM – 7 PM IST' },
+            ]}
+            values={form.office as unknown as Record<string, string>}
+            onChange={(k, v) => patchNested('office', k, v)}
+          />
+        </CmsSectionCard>
       </CmsSectionAnchor>
 
       {/* ── Our Offices ───────────────────────────────────────────────────── */}

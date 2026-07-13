@@ -83,6 +83,13 @@ export interface HomeResponsiveHeroMetric {
 /** @deprecated Use HomeResponsiveHeroMetric */
 export type HomeIpadProMetric = HomeResponsiveHeroMetric;
 
+export interface HomeResponsiveHeroFeatureCard {
+  icon: string;
+  label: string;
+  description: string;
+  sortOrder: number;
+}
+
 /** Layout enrichment for large responsive tablets (1024–1199px). Stored as `ipadProHero` in API. */
 export interface HomeResponsiveHeroLayoutConfig {
   enabled: boolean;
@@ -92,6 +99,7 @@ export interface HomeResponsiveHeroLayoutConfig {
   showClientStrip: boolean;
   metrics: HomeResponsiveHeroMetric[];
   highlights: string[];
+  featureCards: HomeResponsiveHeroFeatureCard[];
 }
 
 /** @deprecated Stored as `ipadProHero` in API — use HomeResponsiveHeroLayoutConfig */
@@ -109,6 +117,7 @@ export interface HomeResponsiveHeroUnifiedPayload extends Partial<HomeResponsive
   showClientStrip?: boolean;
   metrics?: HomeResponsiveHeroMetric[];
   highlights?: string[];
+  featureCards?: HomeResponsiveHeroFeatureCard[];
 }
 
 export interface HomeStatItem {
@@ -316,6 +325,32 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
       'Cloud Native',
       '24×7 Support',
     ],
+    featureCards: [
+      {
+        icon: 'Brain',
+        label: 'AI Powered',
+        description: 'Intelligent automation for modern businesses.',
+        sortOrder: 0,
+      },
+      {
+        icon: 'Shield',
+        label: 'Enterprise Ready',
+        description: 'Built for secure enterprise workloads.',
+        sortOrder: 1,
+      },
+      {
+        icon: 'Cloud',
+        label: 'Cloud Native',
+        description: 'Modern cloud-first architecture.',
+        sortOrder: 2,
+      },
+      {
+        icon: 'Layers',
+        label: 'Secure & Scalable',
+        description: 'Designed to scale without compromise.',
+        sortOrder: 3,
+      },
+    ],
   },
   stats: [],
   benefits: {
@@ -465,6 +500,7 @@ function splitResponsiveHeroUnifiedPayload(
     showClientStrip,
     metrics,
     highlights,
+    featureCards,
     ...copyFields
   } = payload;
 
@@ -478,6 +514,7 @@ function splitResponsiveHeroUnifiedPayload(
   if (showClientStrip !== undefined && showClientStrip !== null) layout.showClientStrip = Boolean(showClientStrip);
   if (metrics?.length) layout.metrics = metrics;
   if (highlights?.length) layout.highlights = highlights;
+  if (featureCards?.length) layout.featureCards = featureCards;
 
   return {
     copy: copyFields,
@@ -493,6 +530,7 @@ function mergeResponsiveHeroLayoutConfig(
     ...defaults,
     metrics: defaults.metrics.map((m) => ({ ...m })),
     highlights: [...defaults.highlights],
+    featureCards: defaults.featureCards.map((c) => ({ ...c })),
   };
 
   if (!partial) return merged;
@@ -525,6 +563,15 @@ function mergeResponsiveHeroLayoutConfig(
     merged.highlights = partial.highlights
       .map((h) => String(h).trim())
       .filter(Boolean);
+  }
+
+  if (partial.featureCards?.length) {
+    merged.featureCards = partial.featureCards.map((card, i) => ({
+      icon: String(card.icon ?? 'Circle').trim() || 'Circle',
+      label: String(card.label ?? '').trim(),
+      description: String(card.description ?? '').trim(),
+      sortOrder: typeof card.sortOrder === 'number' ? card.sortOrder : i,
+    }));
   }
 
   return merged;
@@ -600,7 +647,7 @@ export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCms
   }
 
   const benefits = mergeBlock(DEFAULT_HOME_CMS.benefits, api.benefits);
-  if (!benefits.cards?.length) {
+  if (benefits.visible !== false && !benefits.cards?.length) {
     benefits.cards = DEFAULT_HOME_CMS.benefits.cards;
   }
 

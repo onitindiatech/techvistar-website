@@ -14,7 +14,12 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+coverage
 *.local
+
+# Environment files (never commit secrets)
+.env
+/.env
 
 # Editor directories and files
 .vscode/*
@@ -42,3 +47,10 @@ backend/uploads/
 # Temporary Vite config parsing timestamps
 *.timestamp-*.mjs
 *.timestamp-*.js
+
+# Temporary Render simulation / local test copies
+_render_isolated/
+backend/_render_sim/
+
+# Cloudinary migration run logs (written under backend/logs/)
+backend/logs/cloudinary-migration-*.json

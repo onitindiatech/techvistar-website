@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -54,8 +55,23 @@ export const ServicesSection = () => {
 
   const activeServices = [...(apiServices || []).map(decorateService)].sort((a, b) => a.order - b.order);
 
-  // Show first 11 active services regardless of featured flag
-  const services = activeServices.slice(0, 11);
+  const services = useMemo(() => {
+    const limit = Math.max(1, homeFeatured.limit || 6);
+    const manualSlugs = (homeFeatured.manualSelection || []).map((slug) => slug.trim()).filter(Boolean);
+
+    let selected = activeServices;
+
+    if (manualSlugs.length > 0) {
+      const bySlug = new Map(selected.map((service) => [service.slug, service]));
+      selected = manualSlugs
+        .map((slug) => bySlug.get(slug))
+        .filter((service): service is NonNullable<typeof service> => Boolean(service));
+    } else if (homeFeatured.featuredOnly) {
+      selected = selected.filter((service) => service.featured === true || service.featured === 'true');
+    }
+
+    return selected.slice(0, limit);
+  }, [activeServices, homeFeatured.featuredOnly, homeFeatured.limit, homeFeatured.manualSelection]);
 
   if (homeFeatured.visible === false) return null;
 

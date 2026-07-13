@@ -7,6 +7,7 @@ import { CmsTextFields, CmsSectionCard } from '@/components/admin/common/CmsSett
 import { CmsAccordionLayout } from '@/components/admin/common/CmsAccordionLayout';
 import { CmsPageLayout, CmsSectionAnchor } from '@/components/admin/common/CmsPageLayout';
 import { CmsSortableList } from '@/components/admin/common/CmsSortableList';
+import { CmsFutureFeatureCallout } from '@/components/admin/common/CmsFutureFeatureCallout';
 import { usePagesCmsSettings } from '@/hooks/usePagesCmsSettings';
 import { seoFromItem } from '@/lib/seoAdmin';
 import { CMS_ICON_OPTIONS } from '@/lib/cmsIcons';
@@ -22,6 +23,8 @@ import {
   type HomeResponsiveHeroCopyConfig,
   type HomeResponsiveHeroLayoutConfig,
   type HomeResponsiveHeroMetric,
+  type HomeResponsiveHeroFeatureCard,
+  type HomeTrustLogo,
 } from '@/types/homeCms';
 
 const HOME_NAV_SECTIONS = [
@@ -204,9 +207,59 @@ const HomeSettings = () => {
             </div>
             <div className="flex items-center gap-2 pt-6">
               <Switch checked={form.hero.showScrollIndicator} onCheckedChange={(v) => patchHero('showScrollIndicator', v)} id="hero-scroll" />
-              <Label htmlFor="hero-scroll">Scroll indicator</Label>
+              <div>
+                <Label htmlFor="hero-scroll">Scroll indicator</Label>
+                <p className="text-[11px] text-slate-500">Visible on tablet/desktop (≥768px) inside the homepage hero.</p>
+              </div>
             </div>
           </div>
+          <CmsSectionCard
+            title="Trust logos"
+            description="Client logos shown in the hero trust footer on all breakpoints. Also used by the client logo strip when Responsive Enrichment is enabled on large tablets (1024–1199px)."
+          >
+            <CmsSortableList<HomeTrustLogo>
+              items={form.hero.trustLogos}
+              onChange={(trustLogos) => patchHero('trustLogos', trustLogos)}
+              onDuplicate={(item) => ({ ...item, sortOrder: item.sortOrder + 1, alt: `${item.alt} (copy)` })}
+              renderItem={(logo, index) => (
+                <div className="space-y-2">
+                  <CmsImageField
+                    label="Logo image"
+                    value={logo.url}
+                    onChange={(url) => {
+                      const trustLogos = [...form.hero.trustLogos];
+                      trustLogos[index] = { ...trustLogos[index], url };
+                      patchHero('trustLogos', trustLogos);
+                    }}
+                  />
+                  <Input
+                    placeholder="Alt text (e.g. Acme Corp)"
+                    value={logo.alt}
+                    onChange={(e) => {
+                      const trustLogos = [...form.hero.trustLogos];
+                      trustLogos[index] = { ...trustLogos[index], alt: e.target.value };
+                      patchHero('trustLogos', trustLogos);
+                    }}
+                  />
+                </div>
+              )}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                patchHero('trustLogos', [
+                  ...form.hero.trustLogos,
+                  { url: '', alt: '', sortOrder: form.hero.trustLogos.length },
+                ])
+              }
+            >
+              <Plus className="mr-1 h-4 w-4" /> Add trust logo
+            </Button>
+            <p className="text-[11px] text-slate-500">
+              When empty, placeholder logos appear in the hero trust footer until you upload real client logos.
+            </p>
+          </CmsSectionCard>
         </>
       ),
     },
@@ -245,13 +298,16 @@ const HomeSettings = () => {
                   <Label htmlFor="responsive-hero-tablet-enabled" className="text-sm font-semibold text-slate-800">
                     Large tablets (1024–1199px)
                   </Label>
-                  <p className="text-[11px] text-slate-500">Enriched layout with cards, metrics, and highlights.</p>
+                  <p className="text-[11px] text-slate-500">Enriched layout with cards, metrics, and highlights. Requires viewport 1024–1199px and height ≥700px for pills/strip.</p>
                 </div>
               </div>
             </div>
           </CmsSectionCard>
 
-          <CmsSectionCard title="Hero copy" description="Badge, heading, description, and CTA overrides for responsive viewports.">
+          <CmsSectionCard
+            title="Hero copy (phones)"
+            description="Badge, heading, description, and CTA overrides. Visible only on phones (≤767px) when “Phones & compact layouts” is enabled above."
+          >
             <CmsTextFields
               fields={[
                 { key: 'badge', label: 'Badge' },
@@ -301,43 +357,138 @@ const HomeSettings = () => {
 
           <CmsSectionCard
             title="Responsive enrichment"
-            description="Feature cards, metrics, highlight pills, and client strip for tablet breakpoints."
+            description="Feature cards, metrics, highlight pills, and client strip inside the homepage hero. Visibility depends on viewport — see each control below."
           >
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2.5">
                 <Switch
                   checked={form.ipadProHero.showFeatureCards}
                   onCheckedChange={(v) => patchResponsiveHeroLayout('showFeatureCards', v)}
                   id="responsive-feature-cards"
+                  className="mt-0.5"
                 />
-                <Label htmlFor="responsive-feature-cards">Feature cards</Label>
+                <div>
+                  <Label htmlFor="responsive-feature-cards">Feature cards</Label>
+                  <p className="text-[11px] text-slate-500">
+                    Visible on phones (≤767px) and large tablets (1024–1199px). Hidden on desktop (≥1366px).
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2.5">
                 <Switch
                   checked={form.ipadProHero.showMetrics}
                   onCheckedChange={(v) => patchResponsiveHeroLayout('showMetrics', v)}
                   id="responsive-metrics"
+                  className="mt-0.5"
                 />
-                <Label htmlFor="responsive-metrics">Metrics strip</Label>
+                <div>
+                  <Label htmlFor="responsive-metrics">Metrics strip</Label>
+                  <p className="text-[11px] text-slate-500">
+                    Same breakpoints as feature cards. Requires at least one metric below.
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2.5">
                 <Switch
                   checked={form.ipadProHero.showHighlightPills}
                   onCheckedChange={(v) => patchResponsiveHeroLayout('showHighlightPills', v)}
                   id="responsive-highlights"
+                  className="mt-0.5"
                 />
-                <Label htmlFor="responsive-highlights">Highlight pills</Label>
+                <div>
+                  <Label htmlFor="responsive-highlights">Highlight pills</Label>
+                  <p className="text-[11px] text-slate-500">
+                    Visible only on large tablets (1024–1199px) when Responsive Enrichment is enabled and viewport height ≥700px.
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2.5">
                 <Switch
                   checked={form.ipadProHero.showClientStrip}
                   onCheckedChange={(v) => patchResponsiveHeroLayout('showClientStrip', v)}
                   id="responsive-client-strip"
+                  className="mt-0.5"
                 />
-                <Label htmlFor="responsive-client-strip">Client logo strip</Label>
+                <div>
+                  <Label htmlFor="responsive-client-strip">Client logo strip</Label>
+                  <p className="text-[11px] text-slate-500">
+                    Visible only on large tablets (1024–1199px) when Responsive Enrichment is enabled. Uses Trust logos from the Hero section.
+                  </p>
+                </div>
               </div>
             </div>
-            <CmsSortableList<HomeResponsiveHeroMetric>
+            <div className="space-y-2">
+              <Label className="text-xs font-semibold text-slate-600">Feature cards</Label>
+              <p className="text-[11px] text-slate-500">
+                Edit card icon, title, and description. Shown when the Feature cards toggle is on.
+              </p>
+              <CmsSortableList<HomeResponsiveHeroFeatureCard>
+                items={form.ipadProHero.featureCards}
+                onChange={(featureCards) => patchResponsiveHeroLayout('featureCards', featureCards)}
+                onDuplicate={(item) => ({
+                  ...item,
+                  sortOrder: item.sortOrder + 1,
+                  label: item.label ? `${item.label} (copy)` : '',
+                })}
+                renderItem={(card, index) => (
+                  <div className="space-y-2">
+                    <select
+                      className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                      value={card.icon}
+                      onChange={(e) => {
+                        const featureCards = [...form.ipadProHero.featureCards];
+                        featureCards[index] = { ...featureCards[index], icon: e.target.value };
+                        patchResponsiveHeroLayout('featureCards', featureCards);
+                      }}
+                    >
+                      {CMS_ICON_OPTIONS.map((icon) => (
+                        <option key={icon} value={icon}>{icon}</option>
+                      ))}
+                    </select>
+                    <Input
+                      placeholder="Title (e.g. AI Powered)"
+                      value={card.label}
+                      onChange={(e) => {
+                        const featureCards = [...form.ipadProHero.featureCards];
+                        featureCards[index] = { ...featureCards[index], label: e.target.value };
+                        patchResponsiveHeroLayout('featureCards', featureCards);
+                      }}
+                    />
+                    <Input
+                      placeholder="Description"
+                      value={card.description}
+                      onChange={(e) => {
+                        const featureCards = [...form.ipadProHero.featureCards];
+                        featureCards[index] = { ...featureCards[index], description: e.target.value };
+                        patchResponsiveHeroLayout('featureCards', featureCards);
+                      }}
+                    />
+                  </div>
+                )}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  patchResponsiveHeroLayout('featureCards', [
+                    ...form.ipadProHero.featureCards,
+                    {
+                      icon: 'Circle',
+                      label: '',
+                      description: '',
+                      sortOrder: form.ipadProHero.featureCards.length,
+                    },
+                  ])
+                }
+              >
+                <Plus className="mr-1 h-4 w-4" /> Add feature card
+              </Button>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs font-semibold text-slate-600">Metrics strip</Label>
+              <p className="text-[11px] text-slate-500">Shown when the Metrics strip toggle is on.</p>
+              <CmsSortableList<HomeResponsiveHeroMetric>
               items={form.ipadProHero.metrics}
               onChange={(metrics) => patchResponsiveHeroLayout('metrics', metrics)}
               onDuplicate={(item) => ({ ...item, sortOrder: item.sortOrder + 1 })}
@@ -376,8 +527,12 @@ const HomeSettings = () => {
             >
               <Plus className="mr-1 h-4 w-4" /> Add metric
             </Button>
+            </div>
             <div className="space-y-2">
               <Label className="text-xs font-semibold text-slate-600">Highlight pills</Label>
+              <p className="text-[11px] text-slate-500">
+                Shown when Highlight pills toggle is on. Section title “Why Choose TechVistar” is fixed in the hero layout.
+              </p>
               {(form.ipadProHero.highlights.length ? form.ipadProHero.highlights : ['']).map((highlight, index) => (
                 <Input
                   key={`highlight-${index}`}
@@ -403,7 +558,7 @@ const HomeSettings = () => {
               </Button>
             </div>
             <p className="text-[11px] text-slate-500">
-              Trusted By and Explore TechVistar follow the main Hero section. Client logo strip reuses Trust logos.
+              “Explore TechVistar” scroll indicator and “Trusted by industry leaders” footer copy are controlled in the main Hero section.
             </p>
           </CmsSectionCard>
 
@@ -673,12 +828,16 @@ const HomeSettings = () => {
     {
       id: 'featured-industries',
       title: 'Featured Industries',
-      description: 'Presentation only — reuses Industries API data.',
+      description: 'Homepage industries section — not live on the public site yet.',
       children: (
         <>
+          <CmsFutureFeatureCallout>
+            This section is stored in CMS but is not rendered on the homepage yet. You can prepare copy below for a
+            future release. The visibility toggle has no public effect until the section ships.
+          </CmsFutureFeatureCallout>
           <div className="flex items-center gap-2">
-            <Switch checked={form.featuredIndustries.visible} onCheckedChange={(v) => patchBlock('featuredIndustries', { visible: v })} id="fi-visible" />
-            <Label htmlFor="fi-visible">Section visible</Label>
+            <Switch checked={form.featuredIndustries.visible} disabled id="fi-visible" />
+            <Label htmlFor="fi-visible">Section visible (future — not live)</Label>
           </div>
           <CmsTextFields
             fields={[

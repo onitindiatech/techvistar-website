@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 declare global {
@@ -26,6 +25,17 @@ function trackGaPageView(pathname: string, search: string): void {
   });
 }
 
+/** Append gtag.js to <head> the same way Clarity is loaded (Helmet does not reliably inject external scripts). */
+function loadGtagScript(measurementId: string): void {
+  const src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+  if (document.querySelector(`script[src="${src}"]`)) return;
+
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = src;
+  document.head.appendChild(script);
+}
+
 function loadClarity(projectId: string): void {
   if (document.querySelector(`script[src*="clarity.ms/tag/${projectId}"]`)) return;
 
@@ -49,7 +59,7 @@ function loadClarity(projectId: string): void {
 
 /**
  * Production-only GA4 + Microsoft Clarity.
- * External GA script tag uses react-helmet-async (same pattern as PageSeo).
+ * Both scripts are appended via document.createElement so they reliably load over the network.
  * SPA route changes send GA4 page_view events via React Router location.
  */
 export function Analytics() {
@@ -68,6 +78,7 @@ export function Analytics() {
       window.gtag('js', new Date());
       // Automatic first page_view off — SPA navigations are tracked manually.
       window.gtag('config', GA_MEASUREMENT_ID, { send_page_view: false });
+      loadGtagScript(GA_MEASUREMENT_ID);
     }
 
     if (CLARITY_PROJECT_ID) {
@@ -80,15 +91,7 @@ export function Analytics() {
     trackGaPageView(location.pathname, location.search);
   }, [location.pathname, location.search]);
 
-  if (!analyticsEnabled) return null;
-
-  return (
-    <Helmet>
-      {GA_MEASUREMENT_ID ? (
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
-      ) : null}
-    </Helmet>
-  );
+  return null;
 }
 
 export default Analytics;

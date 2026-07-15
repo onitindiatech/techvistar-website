@@ -2,7 +2,6 @@ import { JsonLd } from '@/components/JsonLd';
 import { PageSeo } from '@/components/common/PageSeo';
 import { Navbar } from '@/components/Navbar';
 import { HeroSection } from '@/components/HeroSection';
-import { ServicesSection } from '@/components/ServicesSection';
 import { Footer } from '@/components/Footer';
 import { lazySection } from '@/components/common/LazySection';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
@@ -10,6 +9,10 @@ import { buildCanonical } from '@/lib/seoResolve';
 import { seoFromItem } from '@/lib/seoAdmin';
 import { DEFAULT_HOME_CMS } from '@/types/homeCms';
 
+const ServicesSection = lazySection(
+  () => import('@/components/ServicesSection'),
+  'ServicesSection',
+);
 const TechStackSection = lazySection(
   () => import('@/components/TechStackSection'),
   'TechStackSection',
@@ -52,7 +55,7 @@ const Index = () => {
         <Navbar />
         <HeroSection />
 
-        <ServicesSection />
+        <ServicesSection minHeight="320px" />
         <TechStackSection minHeight="280px" />
         <ProjectsSection minHeight="480px" />
         <BenefitsSection minHeight="360px" />

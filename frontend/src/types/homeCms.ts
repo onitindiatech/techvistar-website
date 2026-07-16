@@ -377,7 +377,7 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
     layout: 'featured-grid',
     featuredOnly: true,
     manualSelection: [],
-    limit: 6,
+    limit: 8,
     visible: true,
   },
   featuredIndustries: {

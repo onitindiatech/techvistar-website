@@ -14,6 +14,8 @@ type StatsCardProps = {
   trendStatus?: "ok" | "new" | "none";
   data?: any[];
   isOnlineIndicator?: boolean;
+  /** Permanent CMS stock — not scoped by the dashboard date filter */
+  isInventory?: boolean;
 };
 
 const PALETTES: Record<string, { bg: string; iconBg: string; text: string; stroke: string }> = {
@@ -95,6 +97,7 @@ export const StatsCard = ({
   trendStatus = "ok",
   data = [],
   isOnlineIndicator = false,
+  isInventory = false,
 }: StatsCardProps) => {
   const hasTrend = trendStatus === "ok" && typeof trend === "number";
   const showNew = trendStatus === "new";
@@ -140,10 +143,19 @@ export const StatsCard = ({
           </div>
         </div>
 
-        {/* Maximize Icon */}
-        <button className="text-slate-300 hover:text-slate-500 transition-colors p-1" aria-label="Maximize metric">
-          <Maximize2 className="w-3.5 h-3.5" />
-        </button>
+        <div className="flex items-center gap-1.5">
+          {isInventory && (
+            <span
+              className="rounded border border-slate-100 bg-slate-50 px-1.5 py-0.5 text-[9px] font-medium leading-none text-slate-400"
+              title="Total stock — not affected by the date filter"
+            >
+              Current Inventory
+            </span>
+          )}
+          <button className="text-slate-300 hover:text-slate-500 transition-colors p-1" aria-label="Maximize metric">
+            <Maximize2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
 
       {/* Center/Bottom section: Value, Trend, Sparkline */}

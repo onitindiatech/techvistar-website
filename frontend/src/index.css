@@ -1583,6 +1583,20 @@
   }
 }
 
+/* Rotating conic beam for premium card borders (hover) */
+@keyframes service-border-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Traveling edge highlight */
+@keyframes service-border-dash {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
 @layer components {
   .card-glass {
     @apply bg-card/95 backdrop-blur-sm border border-border shadow-sm;

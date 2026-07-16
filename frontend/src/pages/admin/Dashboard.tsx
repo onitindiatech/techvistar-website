@@ -38,6 +38,16 @@ const METRIC_ICONS: Record<string, LucideIcon> = {
   admins: ShieldCheck,
 };
 
+/** Permanent CMS stock — not scoped by the dashboard date filter */
+const INVENTORY_METRIC_KEYS = new Set([
+  "services",
+  "industries",
+  "solutions",
+  "projects",
+  "faqs",
+  "admins",
+]);
+
 const PIE_COLORS = ["#10b981", "#0ea5e9", "#f59e0b", "#8b5cf6", "#ef4444", "#64748b", "#ec4899", "#14b8a6"];
 
 const STATUS_COLORS: Record<string, string> = {
@@ -226,6 +236,7 @@ const Dashboard = () => {
     trendStatus: metric.trendStatus ?? "ok",
     data: metric.series.map((point) => ({ value: point.value })),
     isOnlineIndicator: false,
+    isInventory: INVENTORY_METRIC_KEYS.has(metric.key),
   }));
 
   const platformChartData = data.platformOverview.series.map((row) => ({
@@ -312,6 +323,7 @@ const Dashboard = () => {
             trendStatus={item.trendStatus}
             data={item.data}
             isOnlineIndicator={item.isOnlineIndicator}
+            isInventory={item.isInventory}
           />
         ))}
       </motion.div>

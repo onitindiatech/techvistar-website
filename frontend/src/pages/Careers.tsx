@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveJobs, Job } from '@/services/job.service';
@@ -16,7 +16,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import DEFAULT_CAREERS_HERO_BG from '../assets/careers-bg-new.png';
 import { 
   Briefcase, MapPin, Clock, Search, Users,
-  ArrowRight, ChevronRight, RotateCcw, HelpCircle, Mail, MessageSquare, Code, UserCheck
+  ArrowRight, ChevronRight, RotateCcw, Mail, MessageSquare, Code, UserCheck
 } from 'lucide-react';
 
 const HERO_BG = DEFAULT_CAREERS_HERO_BG;
@@ -48,19 +48,11 @@ const PROCESS_STYLES = [
   { icon: Mail, color: "from-blue-400 to-blue-600", textCol: "text-blue-600", bgCol: "bg-blue-50" },
 ];
 
-const FAQS_LIST = [
-  { q: "What does the typical hiring timeline look like?", a: "Our average hiring timeline is 2-3 weeks from initial application to final offer letter, depending on technical stage alignment." },
-  { q: "Do you offer relocation support for office-based roles?", a: "Yes, we offer structured relocation packages for senior engineering and leadership roles requiring relocation to our regional hubs." },
-  { q: "Can I apply to multiple open positions simultaneously?", a: "We recommend applying to the single role that matches your primary qualifications best, but our recruitment team automatically cross-reviews candidate applications for other open campaigns." },
-  { q: "What is your remote/hybrid work structure policy?", a: "Our team operates on a flexible hybrid policy—remote-first workflows with option of working from regional collaboration spaces whenever needed." }
-];
-
 const Careers = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDept, setSelectedDept] = useState('All');
   const [selectedLoc, setSelectedLoc] = useState('All');
   const [selectedEmpType, setSelectedEmpType] = useState('All');
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   const { data: jobs, isLoading, error } = useQuery<Job[]>({
     queryKey: ['activeJobs'],
@@ -431,49 +423,7 @@ const Careers = () => {
           </div>
         </section>
 
-        {/* 6. FAQ Accordion Block */}
-        <section className="py-16 md:py-24 bg-white border-t border-slate-100">
-          <div className="container mx-auto px-4 md:px-6 max-w-4xl space-y-10 md:space-y-12">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
-              <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Frequently Asked Questions</h2>
-              <p className="text-slate-500 text-xs sm:text-sm font-semibold">Clear details about application guidelines and recruitment paths.</p>
-            </div>
-
-            <div className="space-y-4">
-              {FAQS_LIST.map((faq, idx) => {
-                const isOpen = activeFaq === idx;
-                return (
-                  <div key={idx} className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
-                    <button
-                      onClick={() => setActiveFaq(isOpen ? null : idx)}
-                      className="w-full p-5 flex items-center justify-between text-left focus:outline-none"
-                    >
-                      <span className="text-xs font-bold text-slate-800 flex items-center gap-2">
-                        <HelpCircle className="w-4 h-4 text-emerald-500" /> {faq.q}
-                      </span>
-                      <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-90 text-emerald-500' : ''}`} />
-                    </button>
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          className="px-5 pb-5 pt-1 text-[11px] text-slate-500 leading-relaxed font-semibold border-t border-slate-150 bg-white"
-                        >
-                          {faq.a}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* 7. Bottom CTA Block */}
+        {/* 6. Bottom CTA Block */}
         <section className="py-16 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white border-t border-slate-900">
           <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center space-y-6">
             <h2 className="text-2xl sm:text-3xl font-black font-display tracking-tight">{careers.cta.title}</h2>

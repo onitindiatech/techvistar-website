@@ -10,6 +10,7 @@ import {
 } from '@/controllers/office.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
 import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
+import { publicCmsCache } from '@/middleware/publicCmsCache.middleware';
 
 const router = Router();
 
@@ -23,6 +24,6 @@ router.put('/admin/:id', authMiddleware, adminUpdateOffice);
 router.delete('/admin/:id', authMiddleware, adminDeleteOffice);
 
 // Public Endpoints
-router.get('/', publicReadLimiter, getPublicOffices);
+router.get('/', publicReadLimiter, publicCmsCache, getPublicOffices);
 
 export default router;

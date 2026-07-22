@@ -73,6 +73,8 @@ export class ServicesCmsConfigService {
   }
 
   async getPublicConfig(): Promise<IServicesCmsConfig> {
+    const config = await ServicesCmsConfig.findOne({ configKey: CONFIG_KEY }).lean();
+    if (config) return config as IServicesCmsConfig;
     return this.ensureConfig();
   }
 

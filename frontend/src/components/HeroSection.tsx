@@ -103,7 +103,6 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
   const navbarSettings = mergePagesCmsConfig(pagesConfig).websiteSettings.navbar;
   const showAnnouncementBar =

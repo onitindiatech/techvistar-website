@@ -30,14 +30,11 @@ const ServiceDetails = () => {
     queryKey: ['serviceDetails', slug],
     queryFn: () => getServiceBySlug(slug || ''),
     enabled: !!slug,
-    staleTime: 0,
-    refetchOnMount: 'always',
   });
 
   const { data: cmsConfigApi } = useQuery({
     queryKey: ['servicesCmsConfig'],
     queryFn: getServicesCmsConfig,
-    staleTime: 60_000,
   });
 
   const cmsConfig = mergeServicesCmsConfig(cmsConfigApi);

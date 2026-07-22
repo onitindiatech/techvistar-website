@@ -173,7 +173,7 @@ export class IndustryService {
     if (category && category !== 'All') {
       query.category = { $regex: new RegExp('^' + category + '$', 'i') };
     }
-    return Industry.find(query).sort({ displayOrder: 1, createdAt: 1 });
+    return Industry.find(query).sort({ displayOrder: 1, createdAt: 1 }).lean() as Promise<IIndustry[]>;
   }
 
   /**
@@ -260,11 +260,11 @@ export class IndustryService {
    */
   async getIndustryBySlug(slug: string): Promise<IIndustry> {
     logger.info('[IndustryService] Retrieving active industry by slug', { slug });
-    const industry = await Industry.findOne({ slug, status: 'active', isDeleted: { $ne: true } });
+    const industry = await Industry.findOne({ slug, status: 'active', isDeleted: { $ne: true } }).lean();
     if (!industry) {
       throw ApiError.notFound(`Industry not found for slug "${slug}"`);
     }
-    return industry;
+    return industry as IIndustry;
   }
 }
 

@@ -29,7 +29,6 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
   const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
   const inquiryEmail = resolveSupportEmail(websiteSettings);

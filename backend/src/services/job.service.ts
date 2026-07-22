@@ -187,7 +187,7 @@ export class JobService {
     if (filters.featured !== undefined) {
       query.featured = filters.featured;
     }
-    return Job.find(query).sort({ displayOrder: 1, createdAt: -1 });
+    return Job.find(query).sort({ displayOrder: 1, createdAt: -1 }).lean() as Promise<IJob[]>;
   }
 
   /**
@@ -274,11 +274,11 @@ export class JobService {
    */
   async getJobBySlug(slug: string): Promise<IJob> {
     logger.info('[JobService] Retrieving active job by slug', { slug });
-    const job = await Job.findOne({ slug, status: 'active', isDeleted: { $ne: true } });
+    const job = await Job.findOne({ slug, status: 'active', isDeleted: { $ne: true } }).lean();
     if (!job) {
       throw ApiError.notFound(`Job listing not found for slug "${slug}"`);
     }
-    return job;
+    return job as IJob;
   }
 
   /**

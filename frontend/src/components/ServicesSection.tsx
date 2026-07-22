@@ -75,7 +75,6 @@ export const ServicesSection = () => {
   const { data: cmsConfigApi } = useQuery({
     queryKey: ['servicesCmsConfig'],
     queryFn: getServicesCmsConfig,
-    staleTime: 60_000,
   });
 
   const sectionCopy = mergeServicesCmsConfig(cmsConfigApi).homeSection;
@@ -85,8 +84,6 @@ export const ServicesSection = () => {
   const { data: apiServices } = useQuery({
     queryKey: ['activeServices'],
     queryFn: getActiveServices,
-    staleTime: 0,
-    refetchOnMount: 'always',
   });
 
   const activeServices = [...(apiServices || []).map(decorateService)].sort((a, b) => a.order - b.order);

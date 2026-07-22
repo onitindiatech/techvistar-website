@@ -21,6 +21,7 @@ import {
 } from '@/controllers/faq.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
 import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
+import { publicCmsCache } from '@/middleware/publicCmsCache.middleware';
 
 const router = Router();
 
@@ -39,7 +40,7 @@ router.put('/admin/:id', authMiddleware, adminUpdateFAQ);
 router.delete('/admin/:id', authMiddleware, adminDeleteFAQ);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.get('/', publicReadLimiter, getPublicFAQs);
-router.get('/:faqId', publicReadLimiter, getPublicFAQById);
+router.get('/', publicReadLimiter, publicCmsCache, getPublicFAQs);
+router.get('/:faqId', publicReadLimiter, publicCmsCache, getPublicFAQById);
 
 export default router;

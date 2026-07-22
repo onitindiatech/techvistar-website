@@ -10,7 +10,6 @@ export function HomeCmsProvider({ children }: { children: React.ReactNode }) {
   const { data } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const home = useMemo(() => mergePagesCmsConfig(data).home, [data]);

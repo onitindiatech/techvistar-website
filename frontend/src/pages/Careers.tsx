@@ -97,7 +97,6 @@ const Careers = () => {
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const careers = mergePagesCmsConfig(pagesConfig).careers;

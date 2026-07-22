@@ -18,21 +18,14 @@ export const Navbar = () => {
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
   const { data: activeServices } = useQuery({
     queryKey: ['activeServices'],
     queryFn: getActiveServices,
-    staleTime: 30_000,
-    refetchOnWindowFocus: true,
-    retry: 2,
   });
   const { data: activeSolutions } = useQuery({
     queryKey: ['activeSolutions'],
     queryFn: () => getActiveSolutions(),
-    staleTime: 30_000,
-    refetchOnWindowFocus: true,
-    retry: 2,
   });
   const serviceNavColumns = useMemo(
     () => buildServiceNavColumns(activeServices),

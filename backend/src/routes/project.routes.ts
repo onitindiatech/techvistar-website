@@ -19,6 +19,7 @@ import {
 } from '@/controllers/project.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
 import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
+import { publicCmsCache } from '@/middleware/publicCmsCache.middleware';
 
 const router = Router();
 
@@ -35,7 +36,7 @@ router.put('/admin/:id', authMiddleware, adminUpdateProject);
 router.delete('/admin/:id', authMiddleware, adminDeleteProject);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.get('/', publicReadLimiter, getPublicProjects);
-router.get('/:slug', publicReadLimiter, getPublicProjectBySlug);
+router.get('/', publicReadLimiter, publicCmsCache, getPublicProjects);
+router.get('/:slug', publicReadLimiter, publicCmsCache, getPublicProjectBySlug);
 
 export default router;

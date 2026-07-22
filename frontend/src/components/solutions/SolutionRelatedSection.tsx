@@ -14,7 +14,6 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
   const { data: apiSolutions } = useQuery({
     queryKey: ['activeSolutions'],
     queryFn: getActiveSolutions,
-    staleTime: 60_000,
   });
 
   const activeSolutions = useMemo(

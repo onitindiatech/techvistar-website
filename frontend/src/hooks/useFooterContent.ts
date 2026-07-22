@@ -120,7 +120,6 @@ export function useFooterContent() {
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
@@ -129,15 +128,11 @@ export function useFooterContent() {
   const { data: services = [] } = useQuery({
     queryKey: ['activeServices'],
     queryFn: getActiveServices,
-    staleTime: 5 * 60 * 1000,
-    retry: 2,
   });
 
   const { data: industries = [] } = useQuery({
     queryKey: ['activeIndustries'],
     queryFn: () => getActiveIndustries(),
-    staleTime: 5 * 60 * 1000,
-    retry: 2,
   });
 
   return useMemo(() => {

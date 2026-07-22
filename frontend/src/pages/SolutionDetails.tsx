@@ -26,8 +26,6 @@ export const SolutionDetails = () => {
     queryKey: ['solutionDetails', slug],
     queryFn: () => getSolutionBySlug(slug || ''),
     enabled: !!slug,
-    staleTime: 0,
-    refetchOnMount: 'always',
   });
 
   const solution = apiSolution ? decorateSolution(apiSolution) : undefined;

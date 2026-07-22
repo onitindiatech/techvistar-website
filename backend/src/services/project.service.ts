@@ -193,7 +193,8 @@ export class ProjectService {
   async getActiveProjects(): Promise<IProject[]> {
     logger.info('[ProjectService] Retrieving all active projects');
     return ProjectModel.find({ isDeleted: { $ne: true } })
-      .sort({ displayOrder: 1, date: -1 });
+      .sort({ displayOrder: 1, date: -1 })
+      .lean() as Promise<IProject[]>;
   }
 
   /**
@@ -271,11 +272,11 @@ export class ProjectService {
    */
   async getProjectBySlug(slug: string): Promise<IProject> {
     logger.info('[ProjectService] Retrieving active project by slug', { slug });
-    const project = await ProjectModel.findOne({ slug, isDeleted: { $ne: true } });
+    const project = await ProjectModel.findOne({ slug, isDeleted: { $ne: true } }).lean();
     if (!project) {
       throw ApiError.notFound(`Project not found for slug "${slug}"`);
     }
-    return project;
+    return project as IProject;
   }
 }
 

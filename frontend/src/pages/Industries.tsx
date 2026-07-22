@@ -33,7 +33,6 @@ export const Industries = () => {
   const { data: pagesConfigApi } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const landing = mergePagesCmsConfig(pagesConfigApi).industriesLanding;
@@ -43,8 +42,6 @@ export const Industries = () => {
   const { data: apiIndustries, isLoading, isError, error, isSuccess } = useQuery({
     queryKey: ['activeIndustries'],
     queryFn: () => getActiveIndustries(),
-    staleTime: 0,
-    refetchOnMount: 'always',
     retry: 2,
   });
 

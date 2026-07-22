@@ -25,6 +25,7 @@ import { connectDB, disconnectDB } from '@/config/database';
 import '@/config/cloudinary'; // Phase 1.5 — configure Cloudinary SDK at startup
 import { logger, setupProcessLogger } from '@/utils/logger';
 import { DEV_ORIGINS, PRODUCTION_CORS_FALLBACK_ORIGINS } from '@/constants';
+import { serviceService } from '@/services/service.service';
 
 // ─── Register process-level error handlers ────────────────────────────────────
 // Must be set up before anything async happens
@@ -55,6 +56,7 @@ async function startServer(): Promise<void> {
     // Development: start anyway in 'degraded' state so you can work without a local MongoDB.
     try {
       await connectDB();
+      await serviceService.seedFallbackServicesIfNeeded();
     } catch (dbErr) {
       if (env.isProd) {
         throw dbErr; // Re-throw to outer catch → process.exit(1)

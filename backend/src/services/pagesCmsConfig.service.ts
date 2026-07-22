@@ -123,6 +123,8 @@ export class PagesCmsConfigService {
   }
 
   async getPublicConfig(): Promise<IPagesCmsConfig> {
+    const config = await PagesCmsConfig.findOne({ configKey: CONFIG_KEY }).lean();
+    if (config) return config as IPagesCmsConfig;
     return this.ensureConfig();
   }
 

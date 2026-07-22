@@ -24,11 +24,12 @@ import {
 } from '@/controllers/servicesCmsConfig.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
 import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
+import { publicCmsCache } from '@/middleware/publicCmsCache.middleware';
 
 const router = Router();
 
 // ─── CMS page config (must be before /:slug) ─────────────────────────────────
-router.get('/config', publicReadLimiter, getPublicServicesCmsConfig);
+router.get('/config', publicReadLimiter, publicCmsCache, getPublicServicesCmsConfig);
 
 // ─── Administrative CRUD Endpoints ───────────────────────────────────────────
 router.use('/admin', adminLimiter);
@@ -46,9 +47,9 @@ router.delete('/admin/:id', authMiddleware, adminDeleteService);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
 // GET /api/services - Returns all active services sorted by displayOrder
-router.get('/', publicReadLimiter, getPublicServices);
+router.get('/', publicReadLimiter, publicCmsCache, getPublicServices);
 
 // GET /api/services/:slug - Returns details of a specific active service
-router.get('/:slug', publicReadLimiter, getPublicServiceBySlug);
+router.get('/:slug', publicReadLimiter, publicCmsCache, getPublicServiceBySlug);
 
 export default router;

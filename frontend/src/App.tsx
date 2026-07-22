@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Suspense, lazy, useEffect, useState, type ReactNode } from "react";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
@@ -10,6 +10,7 @@ import { WebsiteBrandingEffect } from "@/components/WebsiteBrandingEffect";
 import { RouteFallback } from "@/components/common/RouteFallback";
 import { Analytics } from "@/components/Analytics";
 import { ClickSpark } from "@/components/ui/ClickSpark";
+import { queryClient } from "@/lib/queryClient";
 
 // Public pages — code-split per route
 const Index = lazy(() => import("./pages/Index"));
@@ -51,8 +52,6 @@ const AdminJobs = lazy(() => import("./pages/admin/Jobs"));
 const AdminApplications = lazy(() => import("./pages/admin/Applications"));
 const AdminContacts = lazy(() => import("./pages/admin/Contacts"));
 const AdminNewsletter = lazy(() => import("./pages/admin/Newsletter"));
-
-const queryClient = new QueryClient();
 
 const withSuspense = (element: ReactNode) => (
   <Suspense fallback={<RouteFallback />}>{element}</Suspense>

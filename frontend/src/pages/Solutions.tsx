@@ -40,7 +40,6 @@ export const Solutions = () => {
   const { data: pagesConfigApi } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const landing = mergePagesCmsConfig(pagesConfigApi).solutionsLanding;
@@ -48,8 +47,6 @@ export const Solutions = () => {
   const { data: apiSolutions, isLoading, isError, error } = useQuery({
     queryKey: ['activeSolutions'],
     queryFn: () => getActiveSolutions(),
-    staleTime: 0,
-    refetchOnMount: 'always',
     retry: 2,
   });
 

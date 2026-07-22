@@ -34,7 +34,6 @@ const Services = () => {
   const { data: cmsConfigApi } = useQuery({
     queryKey: ['servicesCmsConfig'],
     queryFn: getServicesCmsConfig,
-    staleTime: 60_000,
   });
 
   const cmsConfig = mergeServicesCmsConfig(cmsConfigApi);
@@ -43,8 +42,6 @@ const Services = () => {
   const { data: apiServices, isLoading, isError, error } = useQuery({
     queryKey: ['activeServices'],
     queryFn: () => getActiveServices(),
-    staleTime: 0,
-    refetchOnMount: 'always',
     retry: 2,
   });
 

@@ -92,7 +92,6 @@ export const Work = () => {
   const { data: pagesConfigApi } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const landing = mergePagesCmsConfig(pagesConfigApi).portfolioLanding;

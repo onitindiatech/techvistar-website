@@ -97,7 +97,6 @@ const About = () => {
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const about = mergePagesCmsConfig(pagesConfig).about;

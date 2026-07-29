@@ -17,7 +17,6 @@
  */
 
 import { Router, Request, Response } from 'express';
-import rateLimit from 'express-rate-limit';
 import healthRouter from './health.routes';
 import contactRouter from './contact.routes';
 import newsletterRouter from './newsletter.routes';
@@ -31,28 +30,12 @@ import authRouter    from './auth.routes';
 import industryRouter from './industry.routes';
 import uploadRouter   from './upload.routes';
 import pagesRouter    from './pages.routes';
-import { RATE_LIMIT } from '@/constants';
+import officeRouter   from './office.routes';
 
 const router = Router();
 
-// ─── Global API Rate Limiter ───────────────────────────────────────────────────
-// Applied to ALL /api/* routes — individual routes can have stricter limits
-const globalRateLimiter = rateLimit({
-  windowMs:        RATE_LIMIT.WINDOW_MS,    // 15 minutes
-  max:             process.env.NODE_ENV === 'development' ? 1000 : RATE_LIMIT.MAX_REQUESTS, // 1000 requests in dev, 100 in prod
-  standardHeaders: true,                   // Return rate limit info in headers
-  legacyHeaders:   false,                  // Disable deprecated X-RateLimit-* headers
-  message: {
-    success:    false,
-    statusCode: 429,
-    code:       'TOO_MANY_REQUESTS',
-    message:    'Too many requests from this IP. Please try again after 15 minutes.',
-  },
-});
-
-router.use(globalRateLimiter);
-
 // ─── Route mounts ─────────────────────────────────────────────────────────────
+// Rate limiting is applied per route group in each sub-router (see rateLimit.middleware.ts).
 router.use('/health', healthRouter);
 router.use('/contact', contactRouter);
 router.use('/newsletter', newsletterRouter);
@@ -66,6 +49,7 @@ router.use('/auth',      authRouter);
 router.use('/industries', industryRouter);
 router.use('/upload',     uploadRouter);
 router.use('/pages',      pagesRouter);
+router.use('/offices',    officeRouter);
 
 // ─── API root info ─────────────────────────────────────────────────────────────
 // GET /api → Basic API info (not a real endpoint, just useful for developers)

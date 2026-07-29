@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, type CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SiteSection } from '@/components/SiteSection';
@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import DomeGallery from '@/components/ui/DomeGallery';
 import { Check, ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
+import { useHomeCms } from '@/contexts/HomeCmsContext';
+import { resolveCmsMediaSrc } from '@/components/admin/common/CmsImageField';
 
 // Import all project work images for the dome gallery
 import cropHealth from '@/assets/crop_health_analysis.png';
@@ -31,8 +33,26 @@ const WHATSAPP_CHAT_IMAGES = [
 ];
 
 export const DomeGallerySection = () => {
+  const { portfolio } = useHomeCms();
   const { ref, isInView } = useAnimatedSection();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
+
+  const features = useMemo(
+    () => (portfolio.features?.length ? portfolio.features : []).filter(Boolean),
+    [portfolio.features],
+  );
+
+  const sectionStyle = useMemo((): CSSProperties | undefined => {
+    const backgroundImage = resolveCmsMediaSrc(portfolio.backgroundImage || '');
+    if (!backgroundImage) return undefined;
+    return {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    };
+  }, [portfolio.backgroundImage]);
+
+  if (!portfolio.visible) return null;
 
   // Prevent background scroll when modal is open
   useEffect(() => {
@@ -69,6 +89,7 @@ export const DomeGallerySection = () => {
       ref={ref} 
       id="dome-gallery-section" 
       className="relative overflow-hidden bg-white border-y border-slate-100/80 !pt-16 !pb-16 md:!pt-24 md:!pb-24"
+      style={sectionStyle}
     >
       {/* Light Grid Pattern */}
       <div 
@@ -110,50 +131,45 @@ export const DomeGallerySection = () => {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-emerald-700">
-                Project Demo
+                {portfolio.badge}
               </span>
             </div>
 
-            {/* Main Heading */}
             <h2 className="text-3xl sm:text-4xl lg:text-[2.5rem] font-black text-slate-900 leading-[1.12] tracking-tight">
-              Explore Our Projects <br />
-              <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 bg-clip-text text-transparent">
-                In An Immersive 3D Experience
-              </span>
+              {portfolio.heading}{' '}
+              {portfolio.highlight ? (
+                <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 bg-clip-text text-transparent">
+                  {portfolio.highlight}
+                </span>
+              ) : null}
             </h2>
 
-            {/* Description */}
             <p className="text-slate-500 text-sm sm:text-[0.95rem] leading-relaxed max-w-xl">
-              Showcase our latest work through an interactive 3D project globe. Drag, rotate, and explore real projects with smooth animations.
+              {portfolio.description}
             </p>
 
-            {/* Feature Points */}
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
-              {[
-                'Interactive 3D Experience',
-                'Click Any Project',
-                'Live Case Studies',
-                'Real Business Solutions'
-              ].map((feat) => (
-                <li key={feat} className="flex items-center gap-2.5 text-slate-700 font-medium text-[0.85rem] sm:text-sm">
-                  <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100 shrink-0">
-                    <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
-                  </div>
-                  <span>{feat}</span>
-                </li>
-              ))}
-            </ul>
+            {features.length > 0 ? (
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+                {features.map((feat) => (
+                  <li key={feat} className="flex items-center gap-2.5 text-slate-700 font-medium text-[0.85rem] sm:text-sm">
+                    <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100 shrink-0">
+                      <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
+                    </div>
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
 
-            {/* Buttons */}
             <div className="flex flex-wrap gap-4 pt-3">
               <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl px-6 py-5 shadow-lg shadow-emerald-500/10 transition-all duration-300">
-                <Link to="/work">
-                  Explore Portfolio <ArrowRight className="w-4 h-4 ml-1" />
+                <Link to={portfolio.primaryButtonLink || '/work'}>
+                  {portfolio.primaryButtonText} <ArrowRight className="w-4 h-4 ml-1" />
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-slate-200 hover:border-emerald-500/30 hover:bg-emerald-50/20 text-slate-700 font-semibold rounded-xl px-6 py-5 transition-all duration-300">
-                <Link to="/work">
-                  View Case Studies
+                <Link to={portfolio.secondaryButtonLink || '/work'}>
+                  {portfolio.secondaryButtonText}
                 </Link>
               </Button>
             </div>
@@ -168,21 +184,23 @@ export const DomeGallerySection = () => {
           >
             {/* Wrapper slightly shifted right on desktop, with the auto-rotating interactive DomeGallery */}
             <div className="w-full h-full max-w-[550px] lg:translate-x-8 relative">
-              <DomeGallery
-                images={WHATSAPP_CHAT_IMAGES}
-                overlayBlurColor="#ffffff" // Overlay blur color matches white background of section
-                grayscale={false}
-                fit={0.42} // Scaled down fit to make it 20-25% smaller
-                minRadius={380} // Smaller minimum radius for the container
-                maxRadius={500}
-                imageBorderRadius="16px"
-                openedImageBorderRadius="20px"
-                openedImageWidth="380px"
-                openedImageHeight="285px"
-                dragSensitivity={18}
-                segments={35}
-                onImageClick={(index) => setActiveIdx(index)}
-              />
+              {portfolio.globeEnabled ? (
+                <DomeGallery
+                  images={WHATSAPP_CHAT_IMAGES}
+                  overlayBlurColor="#ffffff"
+                  grayscale={false}
+                  fit={0.42}
+                  minRadius={380}
+                  maxRadius={500}
+                  imageBorderRadius="16px"
+                  openedImageBorderRadius="20px"
+                  openedImageWidth="380px"
+                  openedImageHeight="285px"
+                  dragSensitivity={Math.max(8, Math.round(18 / (portfolio.animationSpeed || 1)))}
+                  segments={35}
+                  onImageClick={(index) => setActiveIdx(index)}
+                />
+              ) : null}
             </div>
           </motion.div>
 

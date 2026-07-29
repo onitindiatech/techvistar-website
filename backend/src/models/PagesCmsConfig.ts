@@ -170,6 +170,39 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
           default: [],
         },
       },
+      mobileHero: {
+        enabled: { type: Boolean, default: false },
+        badge: { type: String, trim: true, default: '' },
+        heading: { type: String, trim: true, default: '' },
+        headingLine2: { type: String, trim: true, default: '' },
+        mobileHighlightedHeading: { type: String, trim: true, default: '' },
+        description: { type: String, trim: true, default: '' },
+        ctaPrimary: { type: String, trim: true, default: '' },
+        ctaPrimaryLink: { type: String, trim: true, default: '' },
+        ctaSecondary: { type: String, trim: true, default: '' },
+        ctaSecondaryLink: { type: String, trim: true, default: '' },
+        maxWidth: { type: String, trim: true, default: '' },
+        alignment: { type: String, trim: true, default: 'left', enum: ['left', 'center', 'right'] },
+        ctaLayout: { type: String, trim: true, default: 'stack', enum: ['stack', 'inline'] },
+      },
+      ipadProHero: {
+        enabled: { type: Boolean, default: false },
+        showFeatureCards: { type: Boolean, default: true },
+        showMetrics: { type: Boolean, default: true },
+        showHighlightPills: { type: Boolean, default: true },
+        showClientStrip: { type: Boolean, default: true },
+        metrics: {
+          type: [{ value: String, label: String, sortOrder: Number }],
+          default: [],
+        },
+        highlights: { type: [String], default: [] },
+        featureCards: {
+          type: [{ icon: String, label: String, description: String, sortOrder: Number }],
+          default: [],
+        },
+      },
+      /** Optional unified responsive hero payload (falls back to mobileHero + ipadProHero). */
+      responsiveHero: { type: Schema.Types.Mixed, default: null },
       stats: { type: [statItemSchema], default: [] },
       benefits: {
         badge: { type: String, trim: true, default: '' },
@@ -299,11 +332,44 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
     },
     solutionsLanding: {
       hero: landingHeroSchema,
-      intro: {
-        title: { type: String, trim: true, default: '' },
-        description: { type: String, trim: true, default: '' },
+      categoryNav: {
+        eyebrow: { type: String, trim: true, default: 'Browse by category' },
       },
-      cta: ctaBlockSchema,
+      featured: {
+        eyebrow: { type: String, trim: true, default: 'Top Picks' },
+        title: { type: String, trim: true, default: 'Featured Solutions' },
+        description: {
+          type: String,
+          trim: true,
+          default: 'Our most recommended enterprise solution programs.',
+        },
+        learnMoreLabel: { type: String, trim: true, default: 'Learn more' },
+      },
+      catalog: {
+        eyebrow: { type: String, trim: true, default: 'Full catalog' },
+        title: { type: String, trim: true, default: 'All Solutions' },
+        description: {
+          type: String,
+          trim: true,
+          default: 'Explore every solution vertical we deliver with enterprise-grade outcomes.',
+        },
+        learnMoreLabel: { type: String, trim: true, default: 'Learn more' },
+      },
+      intro: {
+        title: { type: String, trim: true, default: 'Solution capabilities' },
+        description: {
+          type: String,
+          trim: true,
+          default:
+            'Enterprise-grade programs across business automation, applied AI, and digital infrastructure.',
+        },
+      },
+      capabilities: {
+        eyebrow: { type: String, trim: true, default: 'Feature highlights' },
+        stats: { type: [statItemSchema], default: [] },
+        cards: { type: [industryCapabilityCardSchema], default: [] },
+      },
+      cta: extendedCtaBlockSchema,
       ...seoMongooseFields,
       seoTitle: { type: String, trim: true, default: 'Solutions | TechVistar' },
       canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/solutions' },
@@ -417,6 +483,8 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
         backgroundImage: { type: String, trim: true, default: '' },
         backgroundImagePublicId: { type: String, trim: true, default: '' },
         backgroundColor: { type: String, trim: true, default: '#05070B' },
+        companyLinks: { type: [footerLinkSchema], default: [] },
+        legalLinks: { type: [footerLinkSchema], default: [] },
       },
       socialLinks: {
         linkedin: { type: String, trim: true, default: '' },

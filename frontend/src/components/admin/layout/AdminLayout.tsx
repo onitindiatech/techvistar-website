@@ -18,7 +18,7 @@ const AdminLayout = () => {
       </div>
 
       <div className="flex min-h-screen relative z-10">
-        <aside className="hidden w-[280px] shrink-0 xl:block bg-white/80 backdrop-blur-xl border-r border-slate-200/60 shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative z-20">
+        <aside className="hidden w-[280px] shrink-0 xl:block bg-slate-900 border-r border-slate-800 relative z-20">
           <Sidebar />
         </aside>
 
@@ -40,7 +40,7 @@ const AdminLayout = () => {
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed left-0 top-0 bottom-0 z-50 w-[280px] bg-white/95 backdrop-blur-xl shadow-2xl xl:hidden flex flex-col border-r border-slate-200/50"
+                className="fixed left-0 top-0 bottom-0 z-50 w-[280px] bg-slate-900 shadow-2xl xl:hidden flex flex-col border-r border-slate-800"
               >
                 <Sidebar onClose={() => setMobileOpen(false)} />
               </motion.div>

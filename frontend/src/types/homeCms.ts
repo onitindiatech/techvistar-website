@@ -49,6 +49,77 @@ export interface HomeHeroConfig {
   trustLogos: HomeTrustLogo[];
 }
 
+export type HomeMobileHeroAlignment = 'left' | 'center' | 'right';
+export type HomeMobileHeroCtaLayout = 'stack' | 'inline';
+export type HomeResponsiveHeroAlignment = HomeMobileHeroAlignment;
+export type HomeResponsiveHeroCtaLayout = HomeMobileHeroCtaLayout;
+
+/** Copy overrides for compact responsive viewports (phones, foldables, small tablets). */
+export interface HomeResponsiveHeroCopyConfig {
+  enabled: boolean;
+  badge: string;
+  heading: string;
+  headingLine2: string;
+  mobileHighlightedHeading: string;
+  description: string;
+  ctaPrimary: string;
+  ctaPrimaryLink: string;
+  ctaSecondary: string;
+  ctaSecondaryLink: string;
+  maxWidth: string;
+  alignment: HomeResponsiveHeroAlignment;
+  ctaLayout: HomeResponsiveHeroCtaLayout;
+}
+
+/** @deprecated Stored as `mobileHero` in API — use HomeResponsiveHeroCopyConfig */
+export type HomeMobileHeroConfig = HomeResponsiveHeroCopyConfig;
+
+export interface HomeResponsiveHeroMetric {
+  value: string;
+  label: string;
+  sortOrder: number;
+}
+
+/** @deprecated Use HomeResponsiveHeroMetric */
+export type HomeIpadProMetric = HomeResponsiveHeroMetric;
+
+export interface HomeResponsiveHeroFeatureCard {
+  icon: string;
+  label: string;
+  description: string;
+  sortOrder: number;
+}
+
+/** Layout enrichment for large responsive tablets (1024–1199px). Stored as `ipadProHero` in API. */
+export interface HomeResponsiveHeroLayoutConfig {
+  enabled: boolean;
+  showFeatureCards: boolean;
+  showMetrics: boolean;
+  showHighlightPills: boolean;
+  showClientStrip: boolean;
+  metrics: HomeResponsiveHeroMetric[];
+  highlights: string[];
+  featureCards: HomeResponsiveHeroFeatureCard[];
+}
+
+/** @deprecated Stored as `ipadProHero` in API — use HomeResponsiveHeroLayoutConfig */
+export type HomeIpadProHeroConfig = HomeResponsiveHeroLayoutConfig;
+
+/**
+ * Optional unified API payload. When present, maps into `mobileHero` + `ipadProHero`.
+ * Legacy documents may only store the split fields.
+ */
+export interface HomeResponsiveHeroUnifiedPayload extends Partial<HomeResponsiveHeroCopyConfig> {
+  tabletEnabled?: boolean;
+  showFeatureCards?: boolean;
+  showMetrics?: boolean;
+  showHighlightPills?: boolean;
+  showClientStrip?: boolean;
+  metrics?: HomeResponsiveHeroMetric[];
+  highlights?: string[];
+  featureCards?: HomeResponsiveHeroFeatureCard[];
+}
+
 export interface HomeStatItem {
   icon: string;
   value: string;
@@ -143,86 +214,23 @@ export interface HomeContactCtaSection {
   visible: boolean;
 }
 
-export interface HomeFooterLink {
-  label: string;
-  href: string;
-  sortOrder: number;
-}
-
-export interface HomeSocialLink {
-  platform: string;
-  url: string;
-  sortOrder: number;
-}
-
-export interface HomeFooterConfig {
-  logo: string;
-  logoPublicId?: string;
-  companyDescription: string;
-  phone: string;
-  email: string;
-  address: string;
-  workingHours: string;
-  newsletterHeading: string;
-  newsletterDescription: string;
-  socialLinks: HomeSocialLink[];
-  quickLinks: HomeFooterLink[];
-  servicesLinks: HomeFooterLink[];
-  industryLinks: HomeFooterLink[];
-  companyLinks: HomeFooterLink[];
-  legalLinks: HomeFooterLink[];
-  copyright: string;
-  bottomText: string;
-}
-
 export interface HomeCmsConfig {
   hero: HomeHeroConfig;
+  /** Responsive hero copy — API field `mobileHero` */
+  mobileHero: HomeResponsiveHeroCopyConfig;
+  /** Responsive hero layout enrichment — API field `ipadProHero` */
+  ipadProHero: HomeResponsiveHeroLayoutConfig;
   stats: HomeStatItem[];
   benefits: HomeBenefitsSection;
   featuredServices: HomeFeaturedBlock;
   featuredIndustries: HomeFeaturedBlock;
   portfolio: HomePortfolioSection;
   contactCta: HomeContactCtaSection;
-  footer: HomeFooterConfig;
   cta: HomeCtaBlock;
   seo: SeoMetadata;
 }
 
 const BENEFIT_ICON_NAMES = ['Cpu', 'Shield', 'Users', 'ClipboardCheck', 'DollarSign', 'Layers'] as const;
-
-const DEFAULT_FOOTER_SERVICES: HomeFooterLink[] = [
-  { label: 'Web Development', href: '/services', sortOrder: 0 },
-  { label: 'Mobile Apps', href: '/services', sortOrder: 1 },
-  { label: 'UI/UX Design', href: '/services', sortOrder: 2 },
-  { label: 'AI Solutions', href: '/services', sortOrder: 3 },
-  { label: 'Cloud Migration', href: '/services', sortOrder: 4 },
-  { label: 'DevOps Pipelines', href: '/services', sortOrder: 5 },
-  { label: 'Automation Bots', href: '/services', sortOrder: 6 },
-  { label: 'Custom Software', href: '/services', sortOrder: 7 },
-];
-
-const DEFAULT_FOOTER_INDUSTRIES: HomeFooterLink[] = [
-  { label: 'Healthcare', href: '/industries', sortOrder: 0 },
-  { label: 'Finance & Banking', href: '/industries', sortOrder: 1 },
-  { label: 'LMS Education', href: '/industries', sortOrder: 2 },
-  { label: 'Manufacturing', href: '/industries', sortOrder: 3 },
-  { label: 'eCommerce Retail', href: '/industries', sortOrder: 4 },
-  { label: 'Real Estate CRM', href: '/industries', sortOrder: 5 },
-  { label: 'Logistics Tracker', href: '/industries', sortOrder: 6 },
-  { label: 'Civic Government', href: '/industries', sortOrder: 7 },
-];
-
-const DEFAULT_FOOTER_COMPANY: HomeFooterLink[] = [
-  { label: 'About Us', href: '/about', sortOrder: 0 },
-  { label: 'Our Portfolio', href: '/work', sortOrder: 1 },
-  { label: 'Core Solutions', href: '/solutions', sortOrder: 2 },
-  { label: 'Our Industries', href: '/industries', sortOrder: 3 },
-  { label: 'Careers', href: '/careers', sortOrder: 4 },
-  { label: 'Contact Us', href: '/contact', sortOrder: 5 },
-  { label: 'Portal FAQ', href: '/contact#faq-section', sortOrder: 6 },
-];
-
-const DEFAULT_FOOTER_LEGAL: HomeFooterLink[] = [];
 
 const DEFAULT_CONTACT_CATEGORIES: HomeContactCategory[] = [
   { id: 'web', label: 'Web Dev', icon: 'Globe', sortOrder: 0 },
@@ -283,6 +291,66 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
     animationEnabled: true,
     showScrollIndicator: true,
     trustLogos: [],
+  },
+  mobileHero: {
+    enabled: false,
+    badge: '',
+    heading: '',
+    headingLine2: '',
+    mobileHighlightedHeading: '',
+    description: '',
+    ctaPrimary: '',
+    ctaPrimaryLink: '',
+    ctaSecondary: '',
+    ctaSecondaryLink: '',
+    maxWidth: '',
+    alignment: 'left',
+    ctaLayout: 'stack',
+  },
+  ipadProHero: {
+    enabled: false,
+    showFeatureCards: true,
+    showMetrics: true,
+    showHighlightPills: true,
+    showClientStrip: true,
+    metrics: [
+      { value: '50+', label: 'Projects', sortOrder: 0 },
+      { value: '15+', label: 'Industries', sortOrder: 1 },
+      { value: '24/7', label: 'Support', sortOrder: 2 },
+      { value: '99%', label: 'Client Satisfaction', sortOrder: 3 },
+    ],
+    highlights: [
+      'AI Automation',
+      'Enterprise Security',
+      'Cloud Native',
+      '24×7 Support',
+    ],
+    featureCards: [
+      {
+        icon: 'Brain',
+        label: 'AI Powered',
+        description: 'Intelligent automation for modern businesses.',
+        sortOrder: 0,
+      },
+      {
+        icon: 'Shield',
+        label: 'Enterprise Ready',
+        description: 'Built for secure enterprise workloads.',
+        sortOrder: 1,
+      },
+      {
+        icon: 'Cloud',
+        label: 'Cloud Native',
+        description: 'Modern cloud-first architecture.',
+        sortOrder: 2,
+      },
+      {
+        icon: 'Layers',
+        label: 'Secure & Scalable',
+        description: 'Designed to scale without compromise.',
+        sortOrder: 3,
+      },
+    ],
   },
   stats: [],
   benefits: {
@@ -360,31 +428,6 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
     backgroundImagePublicId: '',
     visible: true,
   },
-  footer: {
-    logo: '',
-    companyDescription:
-      'Deploying enterprise software architecture, cognitive AI models, and secure cloud infrastructures engineered for scalable conversions.',
-    phone: '+91 88000 00000',
-    email: 'hello@techvistar.com',
-    address: 'A-75, Sector 4, Noida, UP 201301',
-    workingHours: 'Mon - Fri: 9:00 AM - 6:00 PM',
-    newsletterHeading: 'Stay updated with TechVistar',
-    newsletterDescription: 'Get product updates, technology insights, and engineering articles.',
-    socialLinks: [
-      { platform: 'linkedin', url: 'https://linkedin.com', sortOrder: 0 },
-      { platform: 'github', url: 'https://github.com', sortOrder: 1 },
-      { platform: 'instagram', url: 'https://instagram.com', sortOrder: 2 },
-      { platform: 'twitter', url: 'https://twitter.com', sortOrder: 3 },
-      { platform: 'youtube', url: 'https://youtube.com', sortOrder: 4 },
-    ],
-    quickLinks: [],
-    servicesLinks: DEFAULT_FOOTER_SERVICES,
-    industryLinks: DEFAULT_FOOTER_INDUSTRIES,
-    companyLinks: DEFAULT_FOOTER_COMPANY,
-    legalLinks: DEFAULT_FOOTER_LEGAL,
-    copyright: `© ${new Date().getFullYear()} TechVistar. Made with ❤️ by TechVistar.`,
-    bottomText: '',
-  },
   cta: {
     title: 'Ready to build something measurable?',
     description: 'Tell us about your scope—we respond within one business day.',
@@ -399,6 +442,143 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
     robotsFollow: true,
   },
 };
+
+function mergeResponsiveHeroCopyConfig(
+  defaults: HomeResponsiveHeroCopyConfig,
+  partial?: Partial<HomeResponsiveHeroCopyConfig> | null,
+  hero?: HomeHeroConfig
+): HomeResponsiveHeroCopyConfig {
+  const merged: HomeResponsiveHeroCopyConfig = { ...defaults };
+
+  if (partial) {
+    const copyFields = ['badge', 'heading', 'headingLine2', 'mobileHighlightedHeading', 'description', 'maxWidth'] as const;
+    for (const key of copyFields) {
+      const val = partial[key];
+      if (typeof val === 'string' && val.trim() !== '') {
+        merged[key] = val.trim();
+      }
+    }
+
+    const ctaFields = ['ctaPrimary', 'ctaSecondary', 'ctaPrimaryLink', 'ctaSecondaryLink'] as const;
+    for (const key of ctaFields) {
+      if (partial[key] !== undefined && partial[key] !== null) {
+        merged[key] = String(partial[key]).trim();
+      }
+    }
+
+    if (partial.enabled !== undefined && partial.enabled !== null) {
+      merged.enabled = Boolean(partial.enabled);
+    }
+    if (partial.alignment) merged.alignment = partial.alignment;
+    if (partial.ctaLayout) merged.ctaLayout = partial.ctaLayout;
+  }
+
+  if (hero) {
+    if (!merged.ctaPrimaryLink?.trim()) merged.ctaPrimaryLink = hero.ctaPrimaryLink;
+    if (!merged.ctaSecondaryLink?.trim()) merged.ctaSecondaryLink = hero.ctaSecondaryLink;
+  }
+
+  return merged;
+}
+
+/** @deprecated Use mergeResponsiveHeroCopyConfig */
+const mergeMobileHeroConfig = mergeResponsiveHeroCopyConfig;
+
+function splitResponsiveHeroUnifiedPayload(
+  payload?: HomeResponsiveHeroUnifiedPayload | null
+): {
+  copy?: Partial<HomeResponsiveHeroCopyConfig>;
+  layout?: Partial<HomeResponsiveHeroLayoutConfig>;
+} {
+  if (!payload) return {};
+
+  const {
+    tabletEnabled,
+    showFeatureCards,
+    showMetrics,
+    showHighlightPills,
+    showClientStrip,
+    metrics,
+    highlights,
+    featureCards,
+    ...copyFields
+  } = payload;
+
+  const layout: Partial<HomeResponsiveHeroLayoutConfig> = {};
+  if (tabletEnabled !== undefined && tabletEnabled !== null) layout.enabled = Boolean(tabletEnabled);
+  if (showFeatureCards !== undefined && showFeatureCards !== null) layout.showFeatureCards = Boolean(showFeatureCards);
+  if (showMetrics !== undefined && showMetrics !== null) layout.showMetrics = Boolean(showMetrics);
+  if (showHighlightPills !== undefined && showHighlightPills !== null) {
+    layout.showHighlightPills = Boolean(showHighlightPills);
+  }
+  if (showClientStrip !== undefined && showClientStrip !== null) layout.showClientStrip = Boolean(showClientStrip);
+  if (metrics?.length) layout.metrics = metrics;
+  if (highlights?.length) layout.highlights = highlights;
+  if (featureCards?.length) layout.featureCards = featureCards;
+
+  return {
+    copy: copyFields,
+    layout: Object.keys(layout).length > 0 ? layout : undefined,
+  };
+}
+
+function mergeResponsiveHeroLayoutConfig(
+  defaults: HomeResponsiveHeroLayoutConfig,
+  partial?: Partial<HomeResponsiveHeroLayoutConfig> | null
+): HomeResponsiveHeroLayoutConfig {
+  const merged: HomeResponsiveHeroLayoutConfig = {
+    ...defaults,
+    metrics: defaults.metrics.map((m) => ({ ...m })),
+    highlights: [...defaults.highlights],
+    featureCards: defaults.featureCards.map((c) => ({ ...c })),
+  };
+
+  if (!partial) return merged;
+
+  if (partial.enabled !== undefined && partial.enabled !== null) {
+    merged.enabled = Boolean(partial.enabled);
+  }
+  if (partial.showFeatureCards !== undefined && partial.showFeatureCards !== null) {
+    merged.showFeatureCards = Boolean(partial.showFeatureCards);
+  }
+  if (partial.showMetrics !== undefined && partial.showMetrics !== null) {
+    merged.showMetrics = Boolean(partial.showMetrics);
+  }
+  if (partial.showHighlightPills !== undefined && partial.showHighlightPills !== null) {
+    merged.showHighlightPills = Boolean(partial.showHighlightPills);
+  }
+  if (partial.showClientStrip !== undefined && partial.showClientStrip !== null) {
+    merged.showClientStrip = Boolean(partial.showClientStrip);
+  }
+
+  if (partial.metrics?.length) {
+    merged.metrics = partial.metrics.map((m, i) => ({
+      value: String(m.value ?? '').trim(),
+      label: String(m.label ?? '').trim(),
+      sortOrder: typeof m.sortOrder === 'number' ? m.sortOrder : i,
+    }));
+  }
+
+  if (partial.highlights?.length) {
+    merged.highlights = partial.highlights
+      .map((h) => String(h).trim())
+      .filter(Boolean);
+  }
+
+  if (partial.featureCards?.length) {
+    merged.featureCards = partial.featureCards.map((card, i) => ({
+      icon: String(card.icon ?? 'Circle').trim() || 'Circle',
+      label: String(card.label ?? '').trim(),
+      description: String(card.description ?? '').trim(),
+      sortOrder: typeof card.sortOrder === 'number' ? card.sortOrder : i,
+    }));
+  }
+
+  return merged;
+}
+
+/** @deprecated Use mergeResponsiveHeroLayoutConfig */
+const mergeIpadProHeroConfig = mergeResponsiveHeroLayoutConfig;
 
 /** Merge legacy partial home config from API with full defaults. */
 export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCmsConfig {
@@ -467,7 +647,7 @@ export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCms
   }
 
   const benefits = mergeBlock(DEFAULT_HOME_CMS.benefits, api.benefits);
-  if (!benefits.cards?.length) {
+  if (benefits.visible !== false && !benefits.cards?.length) {
     benefits.cards = DEFAULT_HOME_CMS.benefits.cards;
   }
 
@@ -476,23 +656,30 @@ export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCms
   if (!contactCta.budgetOptions?.length) contactCta.budgetOptions = DEFAULT_HOME_CMS.contactCta.budgetOptions;
   if (!contactCta.steps?.length) contactCta.steps = DEFAULT_HOME_CMS.contactCta.steps;
 
-  const footer = mergeBlock(DEFAULT_HOME_CMS.footer, api.footer);
-  if (!footer.servicesLinks?.length) footer.servicesLinks = DEFAULT_HOME_CMS.footer.servicesLinks;
-  if (!footer.industryLinks?.length) footer.industryLinks = DEFAULT_HOME_CMS.footer.industryLinks;
-  if (!footer.companyLinks?.length) footer.companyLinks = DEFAULT_HOME_CMS.footer.companyLinks;
-  if (!footer.socialLinks?.length) footer.socialLinks = DEFAULT_HOME_CMS.footer.socialLinks;
-  if (!footer.companyDescription?.trim()) footer.companyDescription = DEFAULT_HOME_CMS.footer.companyDescription;
-  if (!footer.copyright?.trim()) footer.copyright = DEFAULT_HOME_CMS.footer.copyright;
+  const responsiveUnified = splitResponsiveHeroUnifiedPayload(
+    (api as { responsiveHero?: HomeResponsiveHeroUnifiedPayload | null }).responsiveHero
+  );
+
+  const mobileHero = mergeResponsiveHeroCopyConfig(
+    DEFAULT_HOME_CMS.mobileHero,
+    { ...api.mobileHero, ...responsiveUnified.copy },
+    hero
+  );
+  const ipadProHero = mergeResponsiveHeroLayoutConfig(DEFAULT_HOME_CMS.ipadProHero, {
+    ...api.ipadProHero,
+    ...responsiveUnified.layout,
+  });
 
   return {
     hero,
+    mobileHero,
+    ipadProHero,
     stats,
     benefits,
     featuredServices,
     featuredIndustries: mergeBlock(DEFAULT_HOME_CMS.featuredIndustries, api.featuredIndustries),
     portfolio: mergeBlock(DEFAULT_HOME_CMS.portfolio, api.portfolio),
     contactCta,
-    footer,
     cta: mergeBlock(DEFAULT_HOME_CMS.cta, api.cta),
     seo: mergeBlock(DEFAULT_HOME_CMS.seo, api.seo),
   };

@@ -44,6 +44,14 @@ export interface ServicesLandingConfig extends SeoMetadata {
   backgroundImage: string;
   offeringsLabel: string;
   learnMoreLabel: string;
+  ctaText: string;
+  categoryEyebrow: string;
+  featuredEyebrow: string;
+  featuredTitle: string;
+  featuredDescription: string;
+  catalogEyebrow: string;
+  catalogTitle: string;
+  catalogDescription: string;
 }
 
 export interface HomeServicesSectionConfig {
@@ -73,8 +81,18 @@ export const DEFAULT_SERVICES_CMS_CONFIG: ServicesCmsConfig = {
     seoDescription:
       'Explore TechVistar productized services across web development, AI, cloud, automation, and digital growth.',
     canonicalUrl: 'https://techvistar.com/services',
+    robotsIndex: true,
+    robotsFollow: true,
     offeringsLabel: 'Key Offerings',
     learnMoreLabel: 'Learn more',
+    ctaText: 'Explore Services',
+    categoryEyebrow: 'Browse by category',
+    featuredEyebrow: 'Top Picks',
+    featuredTitle: 'Featured Services',
+    featuredDescription: 'Our most recommended enterprise solutions.',
+    catalogEyebrow: 'Full Catalog',
+    catalogTitle: 'All Services',
+    catalogDescription: 'Explore the complete range of enterprise-grade solutions.',
   },
   homeSection: {
     tag: 'Our services',

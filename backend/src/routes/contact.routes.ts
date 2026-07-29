@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import rateLimit from 'express-rate-limit';
 import {
   submitContactForm,
   adminGetContacts,
@@ -12,24 +11,12 @@ import {
   adminBulkStatusContacts,
 } from '@/controllers/contact.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
-import { CONTACT_RATE_LIMIT } from '@/constants';
+import { adminLimiter, contactLimiter } from '@/middleware/rateLimit.middleware';
 
 const router = Router();
 
-const contactRateLimiter = rateLimit({
-  windowMs: CONTACT_RATE_LIMIT.WINDOW_MS,
-  max: CONTACT_RATE_LIMIT.MAX_REQUESTS,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: {
-    success: false,
-    statusCode: 429,
-    code: 'TOO_MANY_REQUESTS',
-    message: 'Too many submissions from this IP. Please try again after 15 minutes.',
-  },
-});
-
 // ─── Administrative Endpoints ──────────────────────────────────────────────────
+router.use('/admin', adminLimiter);
 router.get('/admin', authMiddleware, adminGetContacts);
 router.patch('/admin/:id/status', authMiddleware, adminUpdateContactStatus);
 router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteContacts);
@@ -40,6 +27,6 @@ router.delete('/admin/:id/permanent', authMiddleware, adminPermanentlyDeleteCont
 router.delete('/admin/:id', authMiddleware, adminDeleteContact);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.post('/', contactRateLimiter, submitContactForm);
+router.post('/', contactLimiter, submitContactForm);
 
 export default router;

@@ -109,7 +109,9 @@ const Services = () => {
             <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-2 text-emerald-600">
                 <Layers className="h-4 w-4" />
-                <span className="text-[10px] font-black uppercase tracking-widest">Browse by category</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">
+                  {landing.categoryEyebrow}
+                </span>
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
@@ -183,13 +185,15 @@ const Services = () => {
                   <div className="max-w-2xl space-y-3">
                     <div className="flex items-center gap-2 text-emerald-600">
                       <Star className="h-4 w-4 fill-emerald-500 text-emerald-500" />
-                      <span className="text-[10px] font-black uppercase tracking-widest">Top Picks</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest">
+                        {landing.featuredEyebrow}
+                      </span>
                     </div>
                     <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-                      Featured Services
+                      {landing.featuredTitle}
                     </h2>
                     <p className="text-sm font-semibold text-slate-500">
-                      Our most recommended enterprise solutions.
+                      {landing.featuredDescription}
                     </p>
                   </div>
 
@@ -214,15 +218,15 @@ const Services = () => {
                 <div className="max-w-2xl space-y-3">
                   <div className="flex items-center gap-2 text-emerald-600">
                     <Layers className="h-4 w-4" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Full Catalog</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">
+                      {landing.catalogEyebrow}
+                    </span>
                   </div>
                   <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-                    {featuredServices.length > 0 ? 'All Services' : landing.title}
+                    {featuredServices.length > 0 ? landing.catalogTitle : landing.title}
                   </h2>
                   <p className="text-sm font-semibold text-slate-500">
-                    {featuredServices.length > 0
-                      ? 'Explore the complete range of enterprise-grade solutions.'
-                      : landing.description}
+                    {featuredServices.length > 0 ? landing.catalogDescription : landing.description}
                   </p>
                 </div>
 

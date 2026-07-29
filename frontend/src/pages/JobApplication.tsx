@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import careersBg from '../assets/careers-bg-new.png';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { MobileBackButton } from '@/components/ui/MobileBackButton';
 
 const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;
 
@@ -156,12 +157,7 @@ export const JobApplication = () => {
         title={
           <>
             <div className="mb-6">
-              <Link 
-                to={`/careers/${job.slug}`} 
-                className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" /> Back to Role Details
-              </Link>
+              <MobileBackButton to={`/careers/${job.slug}`} label="Role Details" />
             </div>
             {`Apply for ${job.title}`}
           </>

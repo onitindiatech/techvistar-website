@@ -84,7 +84,7 @@ export const ServicesLandingHero = ({
             size="lg"
             className="h-12 rounded-xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500"
           >
-            Explore Services
+            {landing.ctaText?.trim() || 'Explore Services'}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </motion.div>

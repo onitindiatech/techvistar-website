@@ -30,6 +30,9 @@ import { DEV_ORIGINS }   from '@/constants';
 
 const app: Application = express();
 
+// Trust Render's reverse proxy so rate limiting and req.ip use the real client IP.
+app.set('trust proxy', 1);
+
 // ── 1. Security headers (Helmet) ──────────────────────────────────────────────
 // Sets 11+ security headers: X-Content-Type-Options, X-Frame-Options,
 // Content-Security-Policy, Strict-Transport-Security, etc.
@@ -40,11 +43,11 @@ app.use(helmet({
 
 // ── 2. CORS ───────────────────────────────────────────────────────────────────
 // Allowed origins:
-//   - In development: localhost:8080 (frontend), localhost:3000 (admin)
-//   - In production:  env.clientUrl (from .env)
+//   - In development: DEV_ORIGINS + any localhost/127.0.0.1 port (see callback) + techvistar vercel app
+//   - In production:  env.clientUrls (comma-separated CLIENT_URL)
 const allowedOrigins = env.isDev
   ? [...DEV_ORIGINS, 'https://techvistar-website.vercel.app']
-  : [
+  : env.clientUrls || [
       env.clientUrl,
       'https://techvistar-website.vercel.app',
       'https://techvistar.com',
@@ -59,7 +62,7 @@ app.use(cors({
     if (env.isDev && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
       return callback(null, true);
     }
-    if (allowedOrigins.includes(origin as typeof allowedOrigins[number])) {
+    if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
     return callback(new Error(`CORS: Origin ${origin} not allowed`));

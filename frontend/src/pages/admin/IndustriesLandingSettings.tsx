@@ -1,9 +1,9 @@
+import { useState } from 'react';
 import { Loader2, Plus, Trash } from 'lucide-react';
-import { PageHeader } from '@/components/admin/common/PageHeader';
 import { SeoManager } from '@/components/admin/common/SeoManager';
 import { CmsImageField } from '@/components/admin/common/CmsImageField';
 import { CmsSectionCard, CmsTextFields } from '@/components/admin/common/CmsSettingsFields';
-import { CmsStickySaveBar } from '@/components/admin/common/CmsAccordionLayout';
+import { CmsPageLayout, CmsSectionAnchor } from '@/components/admin/common/CmsPageLayout';
 import { usePagesCmsSettings } from '@/hooks/usePagesCmsSettings';
 import { seoFromItem } from '@/lib/seoAdmin';
 import {
@@ -13,6 +13,18 @@ import {
 } from '@/types/pagesCms';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Image, AlignLeft, LayoutGrid, Zap, Megaphone, PanelRight, ClipboardList, Search } from 'lucide-react';
+
+const NAV_SECTIONS = [
+  { id: 'hero',         label: 'Hero',               icon: Image         },
+  { id: 'intro',        label: 'Intro / Header',      icon: AlignLeft     },
+  { id: 'catalog',      label: 'Industry Listing',    icon: LayoutGrid    },
+  { id: 'capabilities', label: 'Capabilities',        icon: Zap           },
+  { id: 'cta',          label: 'Bottom CTA',          icon: Megaphone     },
+  { id: 'sidebar',      label: 'Sidebar Defaults',    icon: PanelRight    },
+  { id: 'consultation', label: 'Consultation Form',   icon: ClipboardList },
+  { id: 'seo',          label: 'SEO',                 icon: Search        },
+];
 
 const CAPABILITY_ICONS = ['ShieldCheck', 'Layers', 'Headphones', 'Rocket', 'Building2', 'Globe', 'Cpu', 'Cloud'];
 const CAPABILITY_COLORS = [
@@ -26,6 +38,8 @@ const CAPABILITY_COLORS = [
 
 const IndustriesLandingSettings = () => {
   const { form, setForm, isLoading, save, isSaving } = usePagesCmsSettings('industriesLanding');
+  const [isDirty, setIsDirty] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
   if (isLoading) {
     return (
@@ -39,11 +53,19 @@ const IndustriesLandingSettings = () => {
     section: S,
     key: string,
     value: string
-  ) =>
+  ) => {
     setForm((prev) => ({
       ...prev,
       [section]: { ...(prev[section] as Record<string, string>), [key]: value },
     }));
+    setIsDirty(true);
+  };
+
+  const handleSave = async () => {
+    await save();
+    setIsDirty(false);
+    setLastSaved(new Date());
+  };
 
   const patchStat = (idx: number, key: keyof CmsStatItem, value: string) => {
     const stats = [...(form.capabilities?.stats || [])];
@@ -64,12 +86,17 @@ const IndustriesLandingSettings = () => {
   };
 
   return (
-    <div className="max-w-4xl space-y-8">
-      <PageHeader
-        title="Industries Landing CMS"
-        description="Manage every visible section on /industries — hero, catalog, capabilities, CTA, global sidebar defaults, and SEO."
-      />
-
+    <CmsPageLayout
+      title="Industries Landing CMS"
+      description="Manage every visible section on /industries — hero, catalog, capabilities, CTA, global sidebar defaults, and SEO."
+      sections={NAV_SECTIONS}
+      onSave={handleSave}
+      onDiscard={() => setIsDirty(false)}
+      isSaving={isSaving}
+      isDirty={isDirty}
+      lastSaved={lastSaved}
+    >
+      <CmsSectionAnchor id="hero">
       <CmsSectionCard title="Hero">
         <CmsTextFields
           fields={[
@@ -89,7 +116,9 @@ const IndustriesLandingSettings = () => {
           onChange={(url) => patch('hero', 'backgroundImage', url)}
         />
       </CmsSectionCard>
+      </CmsSectionAnchor>
 
+      <CmsSectionAnchor id="intro">
       <CmsSectionCard title="Intro / Capabilities Header" description="Headline above the capabilities stats and cards section.">
         <CmsTextFields
           fields={[
@@ -105,7 +134,9 @@ const IndustriesLandingSettings = () => {
           onChange={(url) => patch('intro', 'icon', url)}
         />
       </CmsSectionCard>
+      </CmsSectionAnchor>
 
+      <CmsSectionAnchor id="catalog">
       <CmsSectionCard title="Industry Listing Section">
         <CmsTextFields
           fields={[
@@ -119,7 +150,9 @@ const IndustriesLandingSettings = () => {
           onChange={(k, v) => patch('catalog', k, v)}
         />
       </CmsSectionCard>
+      </CmsSectionAnchor>
 
+      <CmsSectionAnchor id="capabilities">
       <CmsSectionCard title="Capabilities Section">
         <CmsTextFields
           fields={[{ key: 'eyebrow', label: 'Eyebrow' }]}
@@ -254,7 +287,9 @@ const IndustriesLandingSettings = () => {
           ))}
         </div>
       </CmsSectionCard>
+      </CmsSectionAnchor>
 
+      <CmsSectionAnchor id="cta">
       <CmsSectionCard title="Bottom CTA">
         <CmsTextFields
           fields={[
@@ -275,7 +310,9 @@ const IndustriesLandingSettings = () => {
           onChange={(url) => patch('cta', 'backgroundImage', url)}
         />
       </CmsSectionCard>
+      </CmsSectionAnchor>
 
+      <CmsSectionAnchor id="sidebar">
       <CmsSectionCard title="Global Sidebar Defaults" description="Used on industry detail pages when per-industry sidebar fields are empty.">
         {(Object.keys(form.sidebarDefaults) as Array<keyof typeof form.sidebarDefaults>).map((key) => (
           <div key={key}>
@@ -293,7 +330,9 @@ const IndustriesLandingSettings = () => {
           </div>
         ))}
       </CmsSectionCard>
+      </CmsSectionAnchor>
 
+      <CmsSectionAnchor id="consultation">
       <CmsSectionCard title="Global Consultation Form Defaults">
         {(Object.keys(form.consultationDefaults) as Array<keyof typeof form.consultationDefaults>).map((key) => (
           <div key={key}>
@@ -311,7 +350,9 @@ const IndustriesLandingSettings = () => {
           </div>
         ))}
       </CmsSectionCard>
+      </CmsSectionAnchor>
 
+      <CmsSectionAnchor id="seo">
       <CmsSectionCard title="SEO">
         <SeoManager
           value={seoFromItem(form as unknown as Record<string, unknown>)}
@@ -322,9 +363,8 @@ const IndustriesLandingSettings = () => {
           defaultImage={form.hero.backgroundImage}
         />
       </CmsSectionCard>
-
-      <CmsStickySaveBar onSave={save} isSaving={isSaving} />
-    </div>
+      </CmsSectionAnchor>
+    </CmsPageLayout>
   );
 };
 

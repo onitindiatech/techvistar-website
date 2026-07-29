@@ -17,10 +17,12 @@ import {
   adminBulkStatusApplications,
 } from '@/controllers/jobApplication.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
+import { adminLimiter, careerApplicationLimiter } from '@/middleware/rateLimit.middleware';
 
 const router = Router();
 
 // ─── Administrative Endpoints ──────────────────────────────────────────────────
+router.use('/admin', adminLimiter);
 router.get('/admin', authMiddleware, adminGetApplications);
 router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteApplications);
 router.post('/admin/bulk-restore', authMiddleware, adminBulkRestoreApplications);
@@ -32,6 +34,6 @@ router.delete('/admin/:id', authMiddleware, adminDeleteApplication);
 router.get('/admin/:id', authMiddleware, adminGetApplicationById);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.post('/', submitApplication);
+router.post('/', careerApplicationLimiter, submitApplication);
 
 export default router;

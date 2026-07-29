@@ -6,6 +6,7 @@ import { Clock, ShieldCheck, Headphones, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { ConsultationForm } from '@/components/services/ConsultationForm';
+import { AnimatedStat } from '@/components/ui/AnimatedStat';
 import {
   IndustriesLandingCmsConfig,
   DEFAULT_INDUSTRIES_LANDING_CMS,
@@ -59,10 +60,12 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
             </div>
           )}
           {industry.statistics?.slice(0, 3).map((stat, idx) => (
-            <div key={idx} className="flex items-center justify-between border-b border-slate-100 pb-3 text-xs">
-              <span className="font-semibold uppercase tracking-wider text-slate-400">{stat.label}</span>
-              <span className="font-bold text-slate-800">{stat.value}</span>
-            </div>
+            <AnimatedStat
+              key={idx}
+              value={stat.value}
+              label={stat.label}
+              variant="sidebar-row"
+            />
           ))}
           <Dialog>
             <DialogTrigger asChild>

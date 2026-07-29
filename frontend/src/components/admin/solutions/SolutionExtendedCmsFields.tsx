@@ -13,6 +13,7 @@ import {
   type SolutionSectionCopy,
 } from '@/lib/solutionDetailDefaults';
 import { Plus } from 'lucide-react';
+import { CmsFutureFeatureCallout } from '@/components/admin/common/CmsFutureFeatureCallout';
 
 export interface SolutionFaqRow {
   q: string;
@@ -364,6 +365,9 @@ export function SolutionExtendedCmsFields({
   if (activeTab === 'faqs') {
     return (
       <div className="space-y-4">
+        <CmsFutureFeatureCallout>
+          Solution FAQs are saved to the database but are not rendered on public solution detail pages yet.
+        </CmsFutureFeatureCallout>
         <div className="flex items-center justify-between">
           <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500">Solution FAQs</span>
           <Button
@@ -456,7 +460,7 @@ export function SolutionExtendedCmsFields({
     return (
       <div className="space-y-4">
         <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500">Related Solutions</span>
-        <p className="text-xs text-slate-500">Select solutions to feature as related offerings on the detail page.</p>
+        <p className="text-xs text-slate-500">Live on solution detail pages when selected below (up to 3 related solutions).</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[360px] overflow-y-auto">
           {allSolutionOptions.map((opt) => (
             <label

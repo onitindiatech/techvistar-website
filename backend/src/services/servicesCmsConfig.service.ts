@@ -39,6 +39,29 @@ function applyFlattenedMedia(
   return { ...payload, landing };
 }
 
+function deepMergeSection(
+  previous: Record<string, unknown> | undefined,
+  incoming: Record<string, unknown>
+): Record<string, unknown> {
+  const base = { ...(previous || {}) };
+  for (const [key, value] of Object.entries(incoming)) {
+    if (value === undefined) continue;
+    if (
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      base[key] &&
+      typeof base[key] === 'object' &&
+      !Array.isArray(base[key])
+    ) {
+      base[key] = deepMergeSection(base[key] as Record<string, unknown>, value as Record<string, unknown>);
+    } else {
+      base[key] = value;
+    }
+  }
+  return base;
+}
+
 export class ServicesCmsConfigService {
   async ensureConfig(): Promise<IServicesCmsConfig> {
     let config = await ServicesCmsConfig.findOne({ configKey: CONFIG_KEY });
@@ -55,21 +78,30 @@ export class ServicesCmsConfigService {
 
   async updateConfig(data: Record<string, unknown>, updatedBy?: string): Promise<IServicesCmsConfig> {
     const previous = await ServicesCmsConfig.findOne({ configKey: CONFIG_KEY }).lean();
-    const merged = {
-      ...(previous ? (previous as unknown as Record<string, unknown>) : {}),
-      ...data,
+    const prevRecord = (previous as unknown as Record<string, unknown>) || {};
+
+    let merged: Record<string, unknown> = {
+      ...prevRecord,
       configKey: CONFIG_KEY,
       updatedBy: updatedBy || 'Admin',
     };
 
+    for (const [section, incoming] of Object.entries(data)) {
+      if (section === 'configKey' || section === 'updatedBy') continue;
+      if (!incoming || typeof incoming !== 'object' || Array.isArray(incoming)) continue;
+      merged[section] = deepMergeSection(
+        prevRecord[section] as Record<string, unknown> | undefined,
+        incoming as Record<string, unknown>
+      );
+    }
+
     const prevFlat = flattenConfigMedia(previous as unknown as Record<string, unknown>);
+    const mergedLanding = (merged.landing as Record<string, unknown>) || {};
     const nextFlat = {
       'landing.backgroundImage':
-        ((data.landing as Record<string, unknown>)?.backgroundImage as string) ??
-        prevFlat['landing.backgroundImage'] ??
-        '',
+        (mergedLanding.backgroundImage as string) ?? prevFlat['landing.backgroundImage'] ?? '',
       'landing.backgroundImagePublicId':
-        ((data.landing as Record<string, unknown>)?.backgroundImagePublicId as string) ??
+        (mergedLanding.backgroundImagePublicId as string) ??
         prevFlat['landing.backgroundImagePublicId'] ??
         '',
     };

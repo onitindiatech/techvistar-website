@@ -61,10 +61,60 @@ export interface ContactCmsConfig extends SeoMetadata {
   cta: CmsCtaBlock;
 }
 
+export interface SolutionsLandingHeroBlock extends LandingHeroBlock {
+  ctaText: string;
+  ctaLink: string;
+}
+
+export interface SolutionsCategoryNavBlock {
+  eyebrow: string;
+}
+
+export interface SolutionsFeaturedBlock {
+  eyebrow: string;
+  title: string;
+  description: string;
+  learnMoreLabel: string;
+}
+
+export interface SolutionsCatalogBlock {
+  eyebrow: string;
+  title: string;
+  description: string;
+  learnMoreLabel: string;
+}
+
+export interface SolutionsCapabilityItem {
+  icon: string;
+  title: string;
+  description: string;
+  color: string;
+  image?: string;
+  imagePublicId?: string;
+}
+
+export interface SolutionsCapabilitiesBlock {
+  eyebrow: string;
+  stats: CmsStatItem[];
+  cards: SolutionsCapabilityItem[];
+}
+
+export interface SolutionsExtendedCtaBlock extends CmsCtaBlock {
+  badge: string;
+  secondaryButtonText: string;
+  secondaryButtonLink: string;
+  backgroundImage?: string;
+  backgroundImagePublicId?: string;
+}
+
 export interface SolutionsLandingCmsConfig extends SeoMetadata {
-  hero: LandingHeroBlock;
+  hero: SolutionsLandingHeroBlock;
+  categoryNav: SolutionsCategoryNavBlock;
+  featured: SolutionsFeaturedBlock;
+  catalog: SolutionsCatalogBlock;
   intro: { title: string; description: string };
-  cta: CmsCtaBlock;
+  capabilities: SolutionsCapabilitiesBlock;
+  cta: SolutionsExtendedCtaBlock;
 }
 
 export interface IndustriesLandingHeroBlock extends LandingHeroBlock {
@@ -124,12 +174,15 @@ export interface CareersLandingCmsConfig extends SeoMetadata {
 import {
   DEFAULT_WEBSITE_SETTINGS,
   WebsiteSettingsConfig,
+  mergeWebsiteSettingsConfig,
+  type LegacyHomeFooterConfig,
 } from '@/types/websiteSettings';
 
 export type {
   WebsiteSettingsConfig,
   WebsiteNavbarSettings,
   WebsiteFooterSettings,
+  WebsiteFooterLink,
   WebsiteSocialLinks,
   WebsiteSeoDefaults,
   WebsiteAnalyticsSettings,
@@ -216,16 +269,77 @@ export const DEFAULT_SOLUTIONS_LANDING_CMS: SolutionsLandingCmsConfig = {
     description:
       'Deploying robust business automation, production-grade intelligence models, and highly secure cloud environments built to scale operations.',
     backgroundImage: '',
+    ctaText: 'Explore Solutions',
+    ctaLink: '#all-solutions',
+  },
+  categoryNav: {
+    eyebrow: 'Browse by category',
+  },
+  featured: {
+    eyebrow: 'Top Picks',
+    title: 'Featured Solutions',
+    description: 'Our most recommended enterprise solution programs.',
+    learnMoreLabel: 'Learn more',
+  },
+  catalog: {
+    eyebrow: 'Full catalog',
+    title: 'All Solutions',
+    description: 'Explore every solution vertical we deliver with enterprise-grade outcomes.',
+    learnMoreLabel: 'Learn more',
   },
   intro: {
-    title: 'Structured solution verticals',
-    description: 'Business, AI, and digital infrastructure programs—each scoped with measurable outcomes.',
+    title: 'Solution capabilities',
+    description:
+      'Enterprise-grade programs across business automation, applied AI, and digital infrastructure.',
+  },
+  capabilities: {
+    eyebrow: 'Feature highlights',
+    stats: [
+      { value: '50+', label: 'Solutions deployed' },
+      { value: '99.9%', label: 'SLA uptime' },
+      { value: '24/7', label: 'Enterprise support' },
+      { value: '4', label: 'Core verticals' },
+    ],
+    cards: [
+      {
+        icon: 'Brain',
+        title: 'AI Powered',
+        description:
+          'Autonomous agents, document intelligence, and predictive models integrated into your stack.',
+        color: 'from-emerald-500 to-teal-600',
+      },
+      {
+        icon: 'ShieldCheck',
+        title: 'Enterprise Ready',
+        description:
+          'Compliance-first architecture with governance, audit trails, and role-based controls.',
+        color: 'from-blue-500 to-indigo-600',
+      },
+      {
+        icon: 'Cloud',
+        title: 'Cloud Native',
+        description:
+          'Containerized deployments, resilient APIs, and infrastructure built to scale globally.',
+        color: 'from-violet-500 to-purple-600',
+      },
+      {
+        icon: 'Layers',
+        title: 'Secure & Scalable',
+        description:
+          'Encryption, redundancy, and performance patterns engineered for mission-critical workloads.',
+        color: 'from-orange-500 to-amber-600',
+      },
+    ],
   },
   cta: {
+    badge: "Let's collaborate",
     title: 'Ready to Deploy a Solution?',
     description: 'Discuss your requirements with our solutions architects.',
     buttonText: 'Contact us',
     buttonLink: '/contact',
+    secondaryButtonText: 'Contact Us',
+    secondaryButtonLink: '/contact',
+    backgroundImage: '',
   },
   seoTitle: 'Solutions | TechVistar',
   seoDescription: 'Explore TechVistar business, AI, and digital solutions engineered for measurable outcomes.',
@@ -409,7 +523,10 @@ export function mergePagesCmsConfig(api?: Partial<PagesCmsConfig> | null): Pages
     solutionsLanding: deepMergeSection(DEFAULT_SOLUTIONS_LANDING_CMS, api.solutionsLanding),
     industriesLanding: deepMergeSection(DEFAULT_INDUSTRIES_LANDING_CMS, api.industriesLanding),
     careers: deepMergeSection(DEFAULT_CAREERS_LANDING_CMS, api.careers as Partial<CareersLandingCmsConfig>),
-    websiteSettings: deepMergeSection(DEFAULT_WEBSITE_SETTINGS, api.websiteSettings),
+    websiteSettings: mergeWebsiteSettingsConfig(
+      api.websiteSettings,
+      (api.home as { footer?: LegacyHomeFooterConfig } | undefined)?.footer,
+    ),
   };
 }
 

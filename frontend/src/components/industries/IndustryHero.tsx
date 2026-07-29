@@ -4,6 +4,9 @@ import { Industry } from '@/data/industries';
 import { getIndustryHeroImage } from '@/data/industry.adapter';
 import { RichTextContent } from '@/components/common/RichTextContent';
 
+import { MobileBackButton } from '@/components/ui/MobileBackButton';
+import { AnimatedStat } from '@/components/ui/AnimatedStat';
+
 interface IndustryHeroProps {
   industry: Industry;
 }
@@ -42,12 +45,7 @@ export const IndustryHero = ({ industry }: IndustryHeroProps) => {
   return (
     <section className="border-b border-slate-200 bg-white pb-8 pt-[4.5rem] md:pb-14 md:pt-28">
       <div className="mx-auto w-full px-4 md:px-6 lg:px-12 xl:px-20 detail-page-gutter">
-        <Link
-          to="/industries"
-          className="mb-6 inline-flex items-center text-sm font-medium text-slate-500 transition-colors hover:text-emerald-600"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to all industries
-        </Link>
+        <MobileBackButton to="/industries" label="All Industries" className="mb-6" />
 
         <div className="relative z-10 flex w-full flex-col gap-12">
           <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
@@ -105,18 +103,14 @@ export const IndustryHero = ({ industry }: IndustryHeroProps) => {
                   const IconComponent = getStatIcon(stat.iconType);
                   const theme = getThemeClasses(stat.colorTheme);
                   return (
-                    <div
+                    <AnimatedStat
                       key={idx}
-                      className="flex items-center gap-2.5 rounded-xl border border-slate-100 bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
-                    >
-                      <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${theme}`}>
-                        <IconComponent className="h-4 w-4" />
-                      </div>
-                      <div>
-                        <p className="mb-0.5 text-sm font-bold leading-none text-slate-900">{stat.value}</p>
-                        <p className="text-[10px] font-semibold leading-tight text-slate-500">{stat.label}</p>
-                      </div>
-                    </div>
+                      value={stat.value}
+                      label={stat.label}
+                      variant="hero-card"
+                      icon={<IconComponent className="h-4 w-4" />}
+                      themeIconClass={theme}
+                    />
                   );
                 })}
               </div>

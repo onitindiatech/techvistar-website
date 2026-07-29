@@ -18,10 +18,12 @@ import {
   adminBulkStatusProjects,
 } from '@/controllers/project.controller';
 import { authMiddleware } from '@/middleware/auth.middleware';
+import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
 
 const router = Router();
 
 // ─── Administrative CRUD Endpoints ───────────────────────────────────────────
+router.use('/admin', adminLimiter);
 router.get('/admin', authMiddleware, adminGetProjects);
 router.post('/admin', authMiddleware, adminCreateProject);
 router.post('/admin/bulk-delete', authMiddleware, adminBulkDeleteProjects);
@@ -33,7 +35,7 @@ router.put('/admin/:id', authMiddleware, adminUpdateProject);
 router.delete('/admin/:id', authMiddleware, adminDeleteProject);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.get('/', getPublicProjects);
-router.get('/:slug', getPublicProjectBySlug);
+router.get('/', publicReadLimiter, getPublicProjects);
+router.get('/:slug', publicReadLimiter, getPublicProjectBySlug);
 
 export default router;

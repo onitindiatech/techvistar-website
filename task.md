@@ -1,5 +1,6 @@
 - [x] Fix copy-paste stray syntax lines in backend `service.service.ts`
 - [x] Fix missing `ApiError` import in `contact.service.ts`
 - [x] Prefix unused parameter `req` to `_req` in `jobApplication.controller.ts`
-- [x] Re-run build check for backend and verify success
-- [x] Confirm backend dev server starts and resolves the "Failed to fetch" issue
+- [x] Update icons and copy in `HeroSection.tsx`
+- [x] Add global navbar offset padding and card styles in `index.css`
+- [x] Verify build compiles and runsdev server starts and resolves the "Failed to fetch" issue

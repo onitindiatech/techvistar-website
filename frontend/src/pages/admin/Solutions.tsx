@@ -23,6 +23,7 @@ import { RichTextEditor } from "@/components/admin/common/RichTextEditor";
 import { normalizeRichContent, stripHtmlToText } from "@/lib/sanitizeHtml";
 import { CmsImageField } from "@/components/admin/common/CmsImageField";
 import { CmsSortableList } from "@/components/admin/common/CmsSortableList";
+import { CmsFutureFeatureCallout } from "@/components/admin/common/CmsFutureFeatureCallout";
 import { SeoManager } from "@/components/admin/common/SeoManager";
 import { seoFromItem, seoToPayload } from "@/lib/seoAdmin";
 import { EMPTY_SEO, SeoMetadata } from "@/types/seo";
@@ -1168,6 +1169,10 @@ const Solutions = () => {
                     </div>
 
                     <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/50 space-y-4">
+                      <CmsFutureFeatureCallout>
+                        Challenges content is saved to the database but is not rendered on public solution detail pages
+                        yet. Hero stats in the Solution CMS tab are live; this separate challenges block is deferred.
+                      </CmsFutureFeatureCallout>
                       <h4 className="text-xs font-extrabold uppercase text-slate-650 tracking-wider">Challenges Managed</h4>
                       
                       <div className="space-y-2">
@@ -1395,6 +1400,11 @@ const Solutions = () => {
                       <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Tech Stack (Comma-separated)</label>
                       <Input value={techStackText} onChange={(e) => setTechStackText(e.target.value)} placeholder="e.g. React, Node.js, AWS, Docker" className="h-10 rounded-lg border-slate-200" />
                     </div>
+
+                    <CmsFutureFeatureCallout>
+                      Metrics highlights are saved but not shown on public solution detail pages. Use Hero Stats in the
+                      Solution CMS tab for live metrics on the solution hero.
+                    </CmsFutureFeatureCallout>
 
                     <div className="flex items-center justify-between pb-3 border-b border-slate-100 pt-4">
                       <h4 className="text-xs font-extrabold uppercase text-slate-650 tracking-wider">Metrics Highlights</h4>

@@ -1,413 +1,290 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { AlertCircle, Layers, RotateCcw, Star } from 'lucide-react';
+import { getActiveSolutions } from '@/services/solutions.service';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { decorateSolution, decorateStaticSolution, SOLUTIONS_DATA, SolutionDetail } from '@/data/solutions';
+import { IMAGE_MAP } from '@/data/services';
+import { mergePagesCmsConfig, DEFAULT_SOLUTIONS_LANDING_CMS } from '@/types/pagesCms';
+import { seoFromItem } from '@/lib/seoAdmin';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { 
-  ArrowRight, Sparkle, Loader2
-} from 'lucide-react';
+import { SolutionsLandingHero } from '@/components/solutions/SolutionsLandingHero';
+import { SolutionCard } from '@/components/solutions/SolutionCard';
+import { SolutionsCapabilitiesSection } from '@/components/solutions/SolutionsCapabilitiesSection';
+import { SolutionsLandingCta } from '@/components/solutions/SolutionsLandingCta';
 import { cn } from '@/lib/utils';
-import { SOLUTIONS_DATA, SolutionDetail } from '@/data/solutions';
 import solutionBg from '../assets/solution-header.png';
-import { LogoCloud } from '@/components/LogoCloud';
-import { PageHeader } from '@/components/ui/PageHeader';
-import { useQuery } from '@tanstack/react-query';
-import { getActiveSolutions } from '@/services/solutions.service';
-import { decorateSolution } from '@/data/solutions';
 
-interface SolutionCategory {
-  id: string;
-  label: string;
-  tagline: string;
-  desc: string;
-  items: SolutionDetail[];
+type SolutionListItem = SolutionDetail & { featured?: boolean };
+
+function resolveLandingBackground(imageKeyOrUrl: string): string {
+  const trimmed = imageKeyOrUrl.trim();
+  if (!trimmed) return solutionBg;
+  if (trimmed.startsWith('http') || trimmed.startsWith('/') || trimmed.startsWith('data:')) {
+    return trimmed;
+  }
+  return IMAGE_MAP[trimmed] || solutionBg;
+}
+
+function isFeatured(solution: SolutionListItem): boolean {
+  return solution.featured === true || (solution.featured as unknown) === 'true';
 }
 
 export const Solutions = () => {
-  const { data: apiSolutions, isLoading } = useQuery({
-    queryKey: ['activeSolutions'],
-    queryFn: () => getActiveSolutions(),
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  const { data: pagesConfigApi } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
   });
 
-  const solutionsData = apiSolutions && apiSolutions.length > 0
-    ? apiSolutions.map(decorateSolution)
-    : Object.values(SOLUTIONS_DATA);
+  const landing = mergePagesCmsConfig(pagesConfigApi).solutionsLanding;
 
-  const [activeCategory, setActiveCategory] = useState('business-solutions');
+  const { data: apiSolutions, isLoading, isError, error } = useQuery({
+    queryKey: ['activeSolutions'],
+    queryFn: () => getActiveSolutions(),
+    staleTime: 0,
+    refetchOnMount: 'always',
+    retry: 2,
+  });
 
-  const categoryRefs = {
-    'business-solutions': useRef<HTMLDivElement>(null),
-    'ai-solutions': useRef<HTMLDivElement>(null),
-    'digital-solutions': useRef<HTMLDivElement>(null),
-    'commerce-growth-solutions': useRef<HTMLDivElement>(null),
+  const activeSolutions = useMemo((): SolutionListItem[] => {
+    if (apiSolutions !== undefined) {
+      return apiSolutions.map((item: Record<string, unknown>) => ({
+        ...decorateSolution(item),
+        featured: item.featured === true || item.featured === 'true',
+      }));
+    }
+    if (isError) {
+      return Object.values(SOLUTIONS_DATA).map((item) => ({
+        ...decorateStaticSolution(item),
+        featured: false,
+      }));
+    }
+    return [];
+  }, [apiSolutions, isError]);
+
+  const categories = useMemo(
+    () => ['All', ...Array.from(new Set(activeSolutions.map((s) => s.category)))],
+    [activeSolutions]
+  );
+
+  const filteredSolutions = useMemo(() => {
+    const base =
+      selectedCategory === 'All'
+        ? activeSolutions
+        : activeSolutions.filter((s) => s.category === selectedCategory);
+    return [...base];
+  }, [activeSolutions, selectedCategory]);
+
+  const featuredSolutions = useMemo(
+    () => filteredSolutions.filter(isFeatured),
+    [filteredSolutions]
+  );
+
+  const remainingSolutions = useMemo(
+    () => filteredSolutions.filter((s) => !isFeatured(s)),
+    [filteredSolutions]
+  );
+
+  const scrollToAllSolutions = () => {
+    const el = document.getElementById('all-solutions');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Track active section on scroll
-  useEffect(() => {
-    if (isLoading) return;
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 200;
-
-      for (const [key, ref] of Object.entries(categoryRefs)) {
-        if (ref.current) {
-          const offsetTop = ref.current.offsetTop;
-          const offsetHeight = ref.current.offsetHeight;
-
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveCategory(key);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isLoading]);
-
-  const scrollToSection = (id: keyof typeof categoryRefs) => {
-    const element = categoryRefs[id].current;
-    if (element) {
-      const offset = element.offsetTop - 140;
-      window.scrollTo({
-        top: offset,
-        behavior: 'smooth',
-      });
-      setActiveCategory(id);
-    }
-  };
-
-  // Dynamically partition CMS data (Clean & Decoupled Architecture)
-  const categories: SolutionCategory[] = [
-    {
-      id: 'business-solutions',
-      label: 'Business Solutions',
-      tagline: 'Optimize Operations',
-      desc: 'Replace fragmented tools with centralized enterprise platforms built to automate workflows and preserve database compliance.',
-      items: solutionsData.filter(s => s.category === 'Business Solutions')
-    },
-    {
-      id: 'ai-solutions',
-      label: 'AI Solutions',
-      tagline: 'Cognitive Systems',
-      desc: 'Integrate autonomous intelligence agents, document classification solvers, and predictive models into your business backend.',
-      items: solutionsData.filter(s => s.category === 'AI Solutions')
-    },
-    {
-      id: 'digital-solutions',
-      label: 'Digital Solutions',
-      tagline: 'Infrastructure & Security',
-      desc: 'Establish secure API endpoints, redundant container networks, and encryption compliance protocols.',
-      items: solutionsData.filter(s => s.category === 'Digital Solutions')
-    },
-    {
-      id: 'commerce-growth-solutions',
-      label: 'Commerce & Growth Solutions',
-      tagline: 'Scale Revenue Platforms',
-      desc: 'Build scalable online stores, SaaS architectures, and API ecosystems with optimized workflows.',
-      items: solutionsData.filter(s => s.category === 'Commerce & Growth Solutions')
-    }
-  ];
-
-  // Animation Variant Helpers
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.08
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: 'spring', stiffness: 260, damping: 22 }
-    }
-  };
+  const catalog = landing.catalog || DEFAULT_SOLUTIONS_LANDING_CMS.catalog;
+  const featured = landing.featured || DEFAULT_SOLUTIONS_LANDING_CMS.featured;
+  const categoryNav = landing.categoryNav || DEFAULT_SOLUTIONS_LANDING_CMS.categoryNav;
 
   return (
     <>
-      <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 animate-fade-in pb-16">
+      <PageSeo
+        seo={seoFromItem(landing as unknown as Record<string, unknown>)}
+        defaults={{
+          title: landing.seoTitle || DEFAULT_SOLUTIONS_LANDING_CMS.seoTitle || 'Solutions | TechVistar',
+          description: landing.seoDescription || DEFAULT_SOLUTIONS_LANDING_CMS.seoDescription || '',
+          url: buildCanonical('/solutions'),
+        }}
+      />
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      <main id="main-content" className="min-h-screen bg-slate-50 font-sans text-slate-900">
         <Navbar />
 
-        {/* HERO SECTION */}
-        <PageHeader 
-          title="Enterprise Solutions"
-          subtitle="Our Capabilities"
-          description="Deploying robust business automation, production-grade intelligence models, and highly secure cloud environments built to scale operations."
-          backgroundImage={solutionBg}
+        <SolutionsLandingHero
+          landing={landing}
+          backgroundImage={resolveLandingBackground(landing.hero.backgroundImage || '')}
+          onExplore={scrollToAllSolutions}
         />
 
-        {/* LOADING SKELETON LAYER */}
-        <AnimatePresence mode="wait">
-          {isLoading ? (
-            <motion.div 
-              key="skeletons"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="container-custom max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16 space-y-12 md:space-y-16"
-            >
-              <div className="space-y-10">
-                <div className="h-6 w-48 bg-slate-200/60 rounded animate-pulse" />
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="bg-white border border-slate-200/50 rounded-2xl p-6 h-52 space-y-4 animate-pulse shadow-sm">
-                      <div className="w-10 h-10 bg-slate-100 rounded-xl" />
-                      <div className="h-5 bg-slate-200/60 rounded w-2/3" />
-                      <div className="h-3 bg-slate-200/40 rounded w-full" />
-                      <div className="h-3 bg-slate-200/40 rounded w-5/6" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div 
-              key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              
-              {/* STICKY CATEGORY NAVIGATION */}
-              <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-y border-slate-200/80 py-3 md:py-4 mt-0 shadow-sm select-none">
-                <div className="container-custom max-w-7xl mx-auto px-4 md:px-6 overflow-x-auto scrollbar-none">
-                  <div className="flex justify-start md:justify-center gap-3 sm:gap-8 min-w-max md:min-w-0 text-[10px] sm:text-xs md:text-sm font-bold">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => scrollToSection(cat.id as any)}
-                      className={cn(
-                         "relative pb-1 px-1 transition-colors hover:text-emerald-600 mobile-touch-target shrink-0",
-                        activeCategory === cat.id ? "text-emerald-600" : "text-slate-500"
-                      )}
-                    >
-                      <span>{cat.label}</span>
-                      {activeCategory === cat.id && (
-                        <motion.div 
-                          layoutId="activeTabUnderline"
-                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full"
-                        />
-                      )}
-                    </button>
-                  ))}
-                  </div>
-                </div>
+        <section className="border-b border-slate-200 bg-white py-8">
+          <div className="container mx-auto max-w-7xl px-4 md:px-6">
+            <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+              <div className="flex items-center gap-2 text-emerald-600">
+                <Layers className="h-4 w-4" />
+                <span className="text-[10px] font-black uppercase tracking-widest">
+                  {categoryNav.eyebrow}
+                </span>
               </div>
 
-              {/* SOLUTION CATEGORY LISTINGS */}
-              <div className="space-y-12 md:space-y-16 py-12 md:py-16">
+              <div className="flex flex-wrap items-center gap-2">
                 {categories.map((cat) => (
-                  <section 
-                    key={cat.id}
-                    ref={categoryRefs[cat.id as keyof typeof categoryRefs]}
-                    className="container-custom max-w-7xl mx-auto px-4 md:px-6 scroll-mt-28"
+                  <Button
+                    key={cat}
+                    variant={selectedCategory === cat ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setSelectedCategory(cat)}
+                    className={cn(
+                      'rounded-xl text-xs font-bold transition-all',
+                      selectedCategory === cat
+                        ? 'border-emerald-600 bg-emerald-600 text-white shadow-md shadow-emerald-500/15 hover:bg-emerald-500'
+                        : 'border-slate-200 bg-white text-slate-600 hover:border-emerald-500/30 hover:bg-emerald-50/50'
+                    )}
                   >
-                    {/* Category Header */}
-                    <div className="mb-10 space-y-2 border-b border-slate-200/60 pb-6 relative">
-                      <span className="text-[10px] font-extrabold text-emerald-600 uppercase tracking-widest block">
-                        {cat.tagline}
-                      </span>
-                      <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">
-                        {cat.label}
-                      </h2>
-                      <p className="text-xs sm:text-sm text-slate-500 font-semibold max-w-2xl mt-1 leading-relaxed">
-                        {cat.desc}
-                      </p>
-                    </div>
+                    {cat}
+                  </Button>
+                ))}
 
-                    {/* Cards Grid */}
-                    <motion.div 
-                      variants={containerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true, margin: "-100px" }}
-                      className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
-                    >
-                      {cat.items.map((sol) => {
-                        const Icon = sol.icon;
-                        return (
-                          <Link to={`/solutions/${sol.slug}`} key={sol.slug} className="flex">
-                            <motion.div
-                              variants={itemVariants}
-                              whileHover={{ y: -6, scale: 1.01 }}
-                              className="bg-white border border-slate-200/60 rounded-2xl p-6 flex flex-col justify-between shadow-md hover:border-emerald-500/30 hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:bg-emerald-500/[0.005] transition-all duration-300 group cursor-pointer w-full"
-                            >
-                              <div className="space-y-4">
-                                <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 w-fit group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                                  <Icon className="w-5.5 h-5.5" />
-                                </div>
-                                <h3 className="font-extrabold text-slate-900 text-base leading-tight group-hover:text-emerald-700 transition-colors">
-                                  {sol.title}
-                                </h3>
-                                <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-                                  {sol.desc}
-                                </p>
-                              </div>
+                {selectedCategory !== 'All' && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCategory('All')}
+                    className="flex h-9 items-center gap-1.5 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    Reset
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
 
-                              <div className="pt-6 border-t border-slate-100/80 mt-6 flex justify-between items-center text-xs font-bold text-emerald-600">
-                                <span className="group-hover:translate-x-0.5 transition-transform">Learn More</span>
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
-                              </div>
-                            </motion.div>
-                          </Link>
-                        );
-                      })}
-                    </motion.div>
-                  </section>
+        {isLoading ? (
+          <section className="py-16 md:py-24">
+            <div className="container mx-auto max-w-7xl px-4 md:px-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {[...Array(6)].map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="h-[420px] animate-pulse rounded-3xl border border-slate-100 bg-white"
+                  />
                 ))}
               </div>
-
-              {/* 2. OPTIONAL FEATURED SOLUTION SECTION BELOW THE LISTINGS */}
-              <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16 border-t border-slate-200/40">
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.5 }}
-                  className="rounded-3xl border border-slate-200/80 bg-white p-8 md:p-12 shadow-lg overflow-hidden relative flex flex-col lg:flex-row gap-10 items-center justify-between"
-                >
-                  <div className="absolute -top-1/4 -right-1/4 w-[400px] h-[400px] bg-emerald-500/[0.03] rounded-full blur-[100px] pointer-events-none" />
-                  
-                  <div className="space-y-6 lg:max-w-xl">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 text-xs font-bold uppercase tracking-wider">
-                      <Sparkle className="w-3.5 h-3.5 fill-current" />
-                      <span>Featured Solution Capability</span>
+            </div>
+          </section>
+        ) : isError ? (
+          <section className="py-16 md:py-24">
+            <div className="container mx-auto max-w-lg px-4 md:px-6">
+              <div className="flex flex-col items-center rounded-2xl border border-red-100 bg-red-50/50 p-8 text-center">
+                <div className="mb-4 rounded-xl bg-red-100 p-3 text-red-600">
+                  <AlertCircle className="h-8 w-8" />
+                </div>
+                <h3 className="mb-1 text-lg font-bold text-red-900">Failed to load solutions</h3>
+                <p className="mb-6 text-sm leading-relaxed text-red-700">
+                  {error instanceof Error ? error.message : 'An unexpected server error occurred.'}
+                </p>
+                <Button onClick={() => window.location.reload()} variant="outline">
+                  Reload Page
+                </Button>
+              </div>
+            </div>
+          </section>
+        ) : (
+          <>
+            {featuredSolutions.length > 0 && (
+              <section id="featured-solutions" className="border-b border-slate-100 bg-white py-16 md:py-24">
+                <div className="container mx-auto max-w-7xl space-y-10 px-4 md:space-y-12 md:px-6">
+                  <div className="max-w-2xl space-y-3">
+                    <div className="flex items-center gap-2 text-emerald-600">
+                      <Star className="h-4 w-4 fill-emerald-500 text-emerald-500" />
+                      <span className="text-[10px] font-black uppercase tracking-widest">
+                        {featured.eyebrow}
+                      </span>
                     </div>
-
-                    <h2 className="text-3xl sm:text-4.5xl font-extrabold font-display text-slate-900 tracking-tight leading-none">
-                      Intelligent Workflows
+                    <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+                      {featured.title}
                     </h2>
-
-                    <p className="text-slate-600 font-semibold text-sm sm:text-base leading-relaxed">
-                      Transform enterprise operations by deploying cognitive agents that run autonomous file consolidation, reporting, and webhook orchestrations under absolute security compliance.
+                    <p className="text-sm font-semibold text-slate-500">
+                      {featured.description}
                     </p>
-
-                    <div className="grid grid-cols-3 gap-6 border-y border-slate-100 py-6 font-bold text-xs sm:text-sm">
-                      <div>
-                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">40%</span>
-                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">Cost Reduction</span>
-                      </div>
-                      <div>
-                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">99.9%</span>
-                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">SLA Uptime</span>
-                      </div>
-                      <div>
-                        <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">10x</span>
-                        <span className="text-slate-500 uppercase tracking-widest text-[9px] block mt-1">Process Speed</span>
-                      </div>
-                    </div>
-
-                    <Link to="/solutions/business-automation">
-                      <Button className="h-11 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all shadow-md mt-2 flex items-center gap-2">
-                        <span>Explore Featured Solution</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </Link>
                   </div>
 
-                  <div className="w-full lg:w-[460px] h-72 sm:h-80 rounded-2xl bg-slate-50 border border-slate-200/80 p-6 flex flex-col justify-between shadow-inner relative overflow-hidden shrink-0">
-                    <div className="flex justify-between items-center pb-4 border-b border-slate-200/80">
-                      <div className="flex gap-1.5">
-                        <span className="w-3 h-3 rounded-full bg-red-400" />
-                        <span className="w-3 h-3 rounded-full bg-yellow-400" />
-                        <span className="w-3 h-3 rounded-full bg-emerald-400" />
-                      </div>
-                      <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest">Workflow Engine</span>
-                    </div>
-
-                    <div className="space-y-4 pt-4">
-                      <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-slate-200/60 shadow-sm">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 font-bold text-xs">01</div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-800 leading-none">Business Automation</div>
-                          <span className="text-[9px] text-slate-400 font-bold block mt-1">Consolidating monthly financial ledger files...</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-slate-200/60 shadow-sm">
-                        <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100 font-bold text-xs">02</div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-800 leading-none">AI Orchestration</div>
-                          <span className="text-[9px] text-slate-400 font-bold block mt-1">Executing classification mapping algorithms...</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between items-center text-[10px] text-emerald-600 font-extrabold uppercase pt-4 border-t border-slate-200/85">
-                      <div className="flex items-center gap-1">
-                        <Loader2 className="w-3 h-3 animate-spin" />
-                        <span>Active Run</span>
-                      </div>
-                      <span>100% Secure</span>
-                    </div>
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {featuredSolutions.map((solution, index) => (
+                      <SolutionCard
+                        key={solution.slug}
+                        solution={solution}
+                        featured
+                        index={index}
+                        learnMoreLabel={featured.learnMoreLabel}
+                      />
+                    ))}
                   </div>
-                </motion.div>
+                </div>
               </section>
+            )}
 
-            </motion.div>
-          )}
-        </AnimatePresence>
+            <section id="all-solutions" className="bg-slate-50 py-16 md:py-24">
+              <div className="container mx-auto max-w-7xl space-y-10 px-4 md:space-y-12 md:px-6">
+                <div className="max-w-2xl space-y-3">
+                  <div className="flex items-center gap-2 text-emerald-600">
+                    <Layers className="h-4 w-4" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">
+                      {catalog.eyebrow}
+                    </span>
+                  </div>
+                  <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+                    {featuredSolutions.length > 0 ? catalog.title : landing.hero.title}
+                  </h2>
+                  <p className="text-sm font-semibold text-slate-500">
+                    {featuredSolutions.length > 0 ? catalog.description : landing.hero.description}
+                  </p>
+                </div>
 
-        {/* TRUSTED BY CLIENT LOGOS SECTION */}
-        <section className="container-custom max-w-7xl mx-auto px-6 mt-10 relative z-10 border-t border-slate-200/80">
-          <LogoCloud />
-        </section>
-
-        {/* FINAL CTA SECTION */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-12">
-          <motion.div 
-            whileHover={{ y: -2 }}
-            className="relative overflow-hidden bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-700 border border-emerald-500/30 rounded-3xl p-8 md:p-12 text-white shadow-[0_20px_50px_rgba(16,185,129,0.15)] text-center w-full"
-          >
-            <div className="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-            <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-emerald-300/20 blur-2xl pointer-events-none" />
-
-            <div className="absolute inset-0 pointer-events-none z-0 opacity-10" aria-hidden="true">
-              <svg width="100%" height="100%">
-                <pattern id="cta-mesh-solutions" width="16" height="16" patternUnits="userSpaceOnUse">
-                  <path d="M 16 0 L 0 0 0 16" fill="none" stroke="currentColor" strokeWidth="1" />
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#cta-mesh-solutions)" />
-              </svg>
-            </div>
-            
-            <div className="max-w-2xl mx-auto relative z-10 space-y-6">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-xs font-semibold select-none">
-                <Sparkle className="h-3 w-3 text-emerald-100 animate-pulse" />
-                <span>Let's collaborate</span>
+                {remainingSolutions.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {remainingSolutions.map((solution, index) => (
+                      <SolutionCard
+                        key={solution.slug}
+                        solution={solution}
+                        index={index}
+                        learnMoreLabel={catalog.learnMoreLabel}
+                      />
+                    ))}
+                  </div>
+                ) : featuredSolutions.length === 0 ? (
+                  <div className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
+                    <h3 className="mb-2 text-lg font-bold text-slate-800">No solutions found.</h3>
+                    <p className="text-sm text-slate-500">Try changing your category filter.</p>
+                  </div>
+                ) : (
+                  <div className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
+                    <p className="text-sm font-semibold text-slate-500">
+                      All solutions in this category are featured above.
+                    </p>
+                  </div>
+                )}
               </div>
+            </section>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Ready to Deploy a Solution?</h3>
-              
-              <p className="text-emerald-50/90 font-medium text-sm sm:text-base leading-relaxed">
-                Connect with our engineering leads to outline timelines, compliance metrics, and technical requirements.
-              </p>
-              
-              <div className="pt-2 flex flex-wrap justify-center gap-4">
-                <Link to="/contact">
-                  <Button className="bg-white text-emerald-700 hover:bg-slate-50 font-bold border-none shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] px-7 py-3 rounded-xl inline-flex items-center gap-2 transition-all h-11 text-xs md:text-sm">
-                    Book Consultation
-                  </Button>
-                </Link>
-                <Link to="/contact">
-                  <Button variant="outline" className="border-white/30 hover:border-white text-white hover:bg-white/10 font-bold px-7 py-3 rounded-xl inline-flex items-center gap-2 h-11 text-xs md:text-sm transition-all">
-                    Contact Us
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        </section>
+            <SolutionsCapabilitiesSection
+              landing={landing}
+              solutionCount={activeSolutions.length}
+            />
+          </>
+        )}
 
+        <SolutionsLandingCta cta={landing.cta || DEFAULT_SOLUTIONS_LANDING_CMS.cta} />
+
+        <Footer />
       </main>
-
-      <Footer />
     </>
   );
 };

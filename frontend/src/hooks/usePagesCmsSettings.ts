@@ -44,7 +44,7 @@ export function usePagesCmsSettings<K extends SectionKey>(section: K) {
     form,
     setForm,
     isLoading,
-    save: () => saveMutation.mutate(form),
+    save: () => saveMutation.mutateAsync(form),
     isSaving: saveMutation.isPending,
   };
 }

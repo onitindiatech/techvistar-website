@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { SOLUTIONS_DATA, decorateSolution, decorateStaticSolution } from '@/data/solutions';
+import { decorateSolution } from '@/data/solutions';
 import { useQuery } from '@tanstack/react-query';
 import { getSolutionBySlug } from '@/services/solutions.service';
 import { PageSeo } from '@/components/common/PageSeo';
@@ -16,6 +16,7 @@ import { SolutionFeaturesSection } from '@/components/solutions/SolutionFeatures
 import { SolutionProcessSection } from '@/components/solutions/SolutionProcessSection';
 import { SolutionBenefitsSection } from '@/components/solutions/SolutionBenefitsSection';
 import { SolutionTechStackSection } from '@/components/solutions/SolutionTechStackSection';
+import { SolutionRelatedSection } from '@/components/solutions/SolutionRelatedSection';
 
 export const SolutionDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -28,11 +29,7 @@ export const SolutionDetails = () => {
     refetchOnMount: 'always',
   });
 
-  const solution = apiSolution
-    ? decorateSolution(apiSolution)
-    : slug && SOLUTIONS_DATA[slug]
-      ? decorateStaticSolution(SOLUTIONS_DATA[slug])
-      : undefined;
+  const solution = apiSolution ? decorateSolution(apiSolution) : undefined;
 
   const solutionSeo = apiSolution
     ? seoFromApi(apiSolution as Record<string, unknown>)
@@ -112,6 +109,7 @@ export const SolutionDetails = () => {
             <SolutionProcessSection solution={solution} />
             <SolutionBenefitsSection solution={solution} />
             <SolutionTechStackSection solution={solution} />
+            <SolutionRelatedSection solution={solution} />
           </div>
         </section>
 

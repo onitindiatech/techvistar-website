@@ -15,8 +15,8 @@ import { RichTextContent } from '@/components/common/RichTextContent';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import workBg from '../assets/work-bg-new.png';
-import { PageHeader } from '@/components/ui/PageHeader';
 import '../components/ui/GlassIcons.css';
+import { MobileBackButton } from '@/components/ui/MobileBackButton';
 
 const ProjectDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -101,7 +101,20 @@ const ProjectDetails = () => {
     );
   }
 
-
+  // Get 2-3 related projects based on category or tags, excluding current
+  const relatedProjects = projectsData.filter((p) => p.id !== project.id)
+    .map((p) => {
+      // Calculate relevance score
+      let score = 0;
+      if (p.category === project.category) score += 3;
+      const sharedTags = p.tags.filter((t) => project.tags.includes(t)).length;
+      score += sharedTags;
+      return { project: p, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((item) => item.project);
 
   return (
     <>
@@ -115,9 +128,7 @@ const ProjectDetails = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent z-0 pointer-events-none" />
           
           <div className="container mx-auto px-4 max-w-6xl relative z-10">
-            <Link to="/work" className="inline-flex items-center text-sm text-emerald-400 hover:text-emerald-300 mb-6 md:mb-8 transition-colors font-medium">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back to all projects
-            </Link>
+            <MobileBackButton to="/work" label="All Projects" className="mb-6 md:mb-8" />
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
               <div>
@@ -133,11 +144,42 @@ const ProjectDetails = () => {
                   {project.title}
                 </h1>
               </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full sm:w-auto">
+                <a
+                  href={project.liveUrl !== '#' ? project.liveUrl : undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition-colors ${
+                    project.liveUrl === '#'
+                      ? 'border-zinc-700 text-zinc-500 cursor-not-allowed opacity-60'
+                      : 'border-emerald-500/30 bg-emerald-600 text-white hover:bg-emerald-500'
+                  }`}
+                  onClick={(e) => project.liveUrl === '#' && e.preventDefault()}
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Live Demo
+                </a>
+                <a
+                  href={project.githubUrl !== '#' ? project.githubUrl : undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition-colors ${
+                    project.githubUrl === '#'
+                      ? 'border-zinc-700 text-zinc-500 cursor-not-allowed opacity-60'
+                      : 'border-zinc-600 bg-zinc-800/50 text-white hover:bg-zinc-800'
+                  }`}
+                  onClick={(e) => project.githubUrl === '#' && e.preventDefault()}
+                >
+                  <Github className="w-4 h-4" />
+                  GitHub Code
+                </a>
+              </div>
             </div>
           </div>
         </section>
 
-                {/* Project Content Area */}
+        {/* Project Content Area */}
         <section className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
@@ -327,9 +369,57 @@ const ProjectDetails = () => {
 
           </div>
 
+          {/* Gallery Section */}
+          {project.gallery.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 font-display">Project Gallery</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {project.gallery.map((img, i) => (
+                  <div key={i} className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                    <img
+                      src={img}
+                      alt={`${project.title} Screenshot ${i + 1}`}
+                      className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-
-
+          {/* Related Projects Section */}
+          {relatedProjects.length > 0 && (
+            <div className="mt-16 border-t border-slate-200 pt-12">
+              <h2 className="text-2xl font-bold text-slate-900 mb-8 font-display">Related Projects</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {relatedProjects.map((rp) => (
+                  <Card key={rp.id} className="border-slate-200 bg-white hover:shadow-md transition-shadow">
+                    <div className="h-32 bg-slate-100 overflow-hidden relative">
+                      <img src={rp.thumbnail} alt={rp.title} className="w-full h-full object-cover" />
+                    </div>
+                    <CardHeader className="p-4 pb-2">
+                      <Badge variant="secondary" className="w-fit text-[10px] bg-primary/10 text-primary mb-1">
+                        {rp.category}
+                      </Badge>
+                      <CardTitle className="text-sm font-bold text-slate-900 font-display line-clamp-1">
+                        <Link to={`/work/${rp.slug}`} className="hover:text-primary">
+                          {rp.title}
+                        </Link>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0">
+                      <p className="text-slate-600 text-xs line-clamp-2 mb-3">
+                        {rp.description}
+                      </p>
+                      <Link to={`/work/${rp.slug}`} className="text-xs font-semibold text-primary hover:underline">
+                        View details →
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
 
         </section>
 

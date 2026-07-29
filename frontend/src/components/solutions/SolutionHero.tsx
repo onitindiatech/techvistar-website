@@ -3,6 +3,9 @@ import { ArrowLeft, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { SolutionDetail, resolveSolutionIcon } from '@/data/solutions';
 
+import { MobileBackButton } from '@/components/ui/MobileBackButton';
+import { AnimatedStat } from '@/components/ui/AnimatedStat';
+
 interface SolutionHeroProps {
   solution: SolutionDetail;
 }
@@ -44,9 +47,7 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
 
       <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-12 xl:px-20 relative z-10 detail-page-gutter">
         
-        <Link to="/solutions" className="inline-flex items-center text-sm text-slate-500 hover:text-emerald-600 mb-4 transition-colors font-medium">
-          <ArrowLeft className="mr-2 h-4 w-4" /> {backLinkText}
-        </Link>
+        <MobileBackButton to="/solutions" label="All Solutions" className="mb-4" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center mb-6">
           
@@ -162,18 +163,14 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
             {heroStats.map((stat, idx) => {
               const StatIcon = resolveSolutionIcon(stat.icon);
               return (
-                <div key={`${stat.label}-${idx}`} className="bg-white border border-slate-100 rounded-2xl p-4 md:p-5 transition-all hover:shadow-md hover:-translate-y-0.5 duration-300">
-                  <div className="flex gap-4 items-start">
-                    <div className="h-10 w-10 rounded-[12px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
-                      <StatIcon className="h-[18px] w-[18px]" strokeWidth={2.5} />
-                    </div>
-                    <div className="pt-0.5">
-                      <h3 className="text-[24px] font-black text-slate-900 leading-none mb-1.5">{stat.value}</h3>
-                      <p className="text-[13px] font-bold text-slate-800 mb-1.5">{stat.label}</p>
-                      <p className="text-[12px] text-slate-500 leading-relaxed font-medium">{stat.description}</p>
-                    </div>
-                  </div>
-                </div>
+                <AnimatedStat
+                  key={`${stat.label}-${idx}`}
+                  value={stat.value}
+                  label={stat.label}
+                  description={stat.description}
+                  variant="solution-card"
+                  icon={<StatIcon className="h-[18px] w-[18px]" strokeWidth={2.5} />}
+                />
               );
             })}
           </div>

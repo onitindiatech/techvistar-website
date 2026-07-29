@@ -11,7 +11,10 @@
     "test": "ts-node -r tsconfig-paths/register --transpile-only src/utils/mediaAsset.test.ts && ts-node -r tsconfig-paths/register --transpile-only src/services/cloudinary.service.test.ts",
     "seed:industries": "ts-node-dev --transpile-only -r tsconfig-paths/register src/database/seedIndustries.ts",
     "seed:solutions": "ts-node-dev --transpile-only -r tsconfig-paths/register src/database/seedSolutions.ts",
-    "seed:portfolio": "ts-node-dev --transpile-only -r tsconfig-paths/register src/database/seedPortfolio.ts"
+    "seed:portfolio": "ts-node-dev --transpile-only -r tsconfig-paths/register src/database/seedPortfolio.ts",
+    "migrate:cloudinary": "ts-node -r tsconfig-paths/register --transpile-only scripts/migrate-cloudinary-assets.ts",
+    "migrate:cloudinary:dry-run": "ts-node -r tsconfig-paths/register --transpile-only scripts/migrate-cloudinary-assets.ts --dry-run",
+    "migrate:cloudinary:verify": "ts-node -r tsconfig-paths/register --transpile-only scripts/migrate-cloudinary-assets.ts --verify-only"
   },
   "keywords": [
     "express",

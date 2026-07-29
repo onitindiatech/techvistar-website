@@ -3,6 +3,7 @@ import { Building2 } from 'lucide-react';
 import { resolveLucideIcon } from '@/lib/resolveLucideIcon';
 import { IndustriesLandingCmsConfig } from '@/types/pagesCms';
 import { DEFAULT_INDUSTRIES_LANDING_CMS } from '@/types/pagesCms';
+import { AnimatedStat } from '@/components/ui/AnimatedStat';
 
 interface IndustriesCapabilitiesSectionProps {
   landing: IndustriesLandingCmsConfig;
@@ -48,17 +49,12 @@ export const IndustriesCapabilitiesSection = ({
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {stats.map((stat, index) => (
-            <motion.div
+            <AnimatedStat
               key={`${stat.label}-${index}`}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.06 }}
-              className="rounded-2xl border border-slate-200/80 bg-slate-50/80 px-4 py-5 text-center shadow-sm"
-            >
-              <p className="font-display text-xl font-black text-emerald-700 md:text-2xl">{stat.value}</p>
-              <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">{stat.label}</p>
-            </motion.div>
+              value={stat.value}
+              label={stat.label}
+              variant="capability-card"
+            />
           ))}
         </div>
 

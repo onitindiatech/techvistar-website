@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import {
   motion,
   useScroll,
@@ -13,6 +13,15 @@ import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { HeroBackgroundMedia } from '@/components/HeroBackgroundMedia';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
+import { useQuery } from '@tanstack/react-query';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { mergePagesCmsConfig } from '@/types/pagesCms';
+import { useMobileViewport } from '@/hooks/useMobileViewport';
+import { useLargeTabletViewport } from '@/hooks/useLargeTabletViewport';
+import { resolveHomeHeroContent } from '@/lib/resolveHomeHeroContent';
+import { DEFAULT_HOME_CMS } from '@/types/homeCms';
+import { AnimatedStat } from '@/components/ui/AnimatedStat';
+import { getCmsIcon } from '@/lib/cmsIcons';
 
 const spring = { type: 'spring' as const, stiffness: 420, damping: 36, mass: 0.8 };
 
@@ -67,11 +76,11 @@ function HeroHighlightText({
 }
 
 type HeroSectionProps = {
-  /** Extra top padding when the homepage announcement marquee is shown under the navbar */
+  /** @deprecated Announcement visibility is read from Website Settings CMS. */
   showAnnouncementBar?: boolean;
 };
 
-export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) => {
+export const HeroSection = (_props: HeroSectionProps = {}) => {
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -110,12 +119,93 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
 
   const reduceMotion = prefersReducedMotion === true;
   const cms = useHomeCms();
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
+  });
+  const navbarSettings = mergePagesCmsConfig(pagesConfig).websiteSettings.navbar;
+  const showAnnouncementBar =
+    navbarSettings.announcementBarEnabled && Boolean(navbarSettings.announcementText?.trim());
   const hero = cms.hero;
-  const line1 = hero.headlineLine1.trim();
-  const line2 = hero.headlineLine2.trim();
-  const accent = hero.headlineAccent.trim();
+  const mobileHero = cms.mobileHero ?? DEFAULT_HOME_CMS.mobileHero;
+  const isMobileViewport = useMobileViewport();
+  const isLargeTabletViewport = useLargeTabletViewport();
+  const ipadProHero = cms.ipadProHero ?? DEFAULT_HOME_CMS.ipadProHero;
+  const showIpadProEnrichment = isLargeTabletViewport && ipadProHero.enabled;
+  const enrichmentControlsActive = isMobileViewport || showIpadProEnrichment;
+  const showFeatureCardsGrid = !enrichmentControlsActive || ipadProHero.showFeatureCards;
+  const showMetricsCard = !enrichmentControlsActive || ipadProHero.showMetrics;
+  const showHighlightsBlock = showIpadProEnrichment && ipadProHero.showHighlightPills;
+  const showClientLogoStrip = showIpadProEnrichment && ipadProHero.showClientStrip;
+  const ipadProMetrics = useMemo(
+    () =>
+      (ipadProHero.metrics?.length ? ipadProHero.metrics : DEFAULT_HOME_CMS.ipadProHero.metrics)
+        .slice()
+        .sort((a, b) => a.sortOrder - b.sortOrder),
+    [ipadProHero.metrics]
+  );
+  const ipadProHighlights = useMemo(
+    () =>
+      (ipadProHero.highlights?.length ? ipadProHero.highlights : DEFAULT_HOME_CMS.ipadProHero.highlights).filter(
+        Boolean
+      ),
+    [ipadProHero.highlights]
+  );
+  const featureCardsForGrid = useMemo(() => {
+    const cards = ipadProHero.featureCards?.length
+      ? ipadProHero.featureCards
+      : DEFAULT_HOME_CMS.ipadProHero.featureCards;
+    return cards
+      .slice()
+      .sort((a, b) => a.sortOrder - b.sortOrder)
+      .filter((card) => card.label?.trim() || card.description?.trim());
+  }, [ipadProHero.featureCards]);
+  const statsForCard = useMemo(() => {
+    if (!showMetricsCard) return [];
+    return ipadProMetrics;
+  }, [showMetricsCard, ipadProMetrics]);
+  const sortedTrustLogos = useMemo(
+    () => hero.trustLogos.slice().sort((a, b) => a.sortOrder - b.sortOrder),
+    [hero.trustLogos]
+  );
+  const display = useMemo(
+    () => resolveHomeHeroContent(hero, mobileHero, isMobileViewport),
+    [
+      hero,
+      mobileHero,
+      mobileHero.enabled,
+      mobileHero.badge,
+      mobileHero.heading,
+      mobileHero.headingLine2,
+      mobileHero.mobileHighlightedHeading,
+      mobileHero.description,
+      mobileHero.ctaPrimary,
+      mobileHero.ctaPrimaryLink,
+      mobileHero.ctaSecondary,
+      mobileHero.ctaSecondaryLink,
+      isMobileViewport,
+    ]
+  );
+  const line1 = display.headlineLine1;
+  const line2 = display.headlineLine2;
+  const accent = display.headlineAccent;
   const animateHighlight = !reduceMotion && hero.animationEnabled;
-  const heroHeadlineLabel = [line1, line2, accent].filter(Boolean).join(' ');
+  const heroHeadlineLabel = display.useSingleHeading
+    ? display.singleHeading
+    : [line1, line2, accent].filter(Boolean).join(' ');
+  const mobileAlignmentClass =
+    display.source === 'responsive'
+      ? display.alignment === 'center'
+        ? 'items-center text-center'
+        : display.alignment === 'right'
+          ? 'items-end text-right'
+          : 'items-start text-left'
+      : 'items-start text-left';
+  const mobileCopyStyle =
+    display.source === 'responsive' && display.maxWidth
+      ? { maxWidth: display.maxWidth.includes('px') ? display.maxWidth : `${display.maxWidth}px` }
+      : undefined;
 
   return (
     <section
@@ -124,7 +214,15 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       aria-label="Introduction"
-      className="relative isolate min-h-[100dvh] lg:h-[100svh] lg:min-h-0 overflow-hidden bg-zinc-950 selection:bg-primary/30 [perspective:1400px]"
+      style={{ position: 'relative' }}
+      className={cn(
+        'relative isolate min-h-[100svh] md:min-h-[100dvh] lg:h-[100svh] lg:min-h-0 overflow-hidden bg-zinc-950 selection:bg-primary/30 [perspective:1400px]',
+        showIpadProEnrichment && 'hero-ipad-pro-enriched',
+        enrichmentControlsActive && ipadProHero.showFeatureCards && 'hero-show-feature-cards',
+        enrichmentControlsActive && ipadProHero.showMetrics && 'hero-show-metrics',
+        showHighlightsBlock && 'hero-show-highlights',
+        showClientLogoStrip && 'hero-show-client-strip'
+      )}
     >
       <HeroBackgroundMedia hero={hero} />
 
@@ -176,10 +274,10 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
         className={cn(
-          'container-custom relative z-10 hero-shell min-h-[100dvh] lg:h-[100svh] lg:min-h-0 pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6 md:pb-10',
+          'container-custom relative z-10 hero-shell min-h-[100svh] md:min-h-[100dvh] lg:h-[100svh] lg:min-h-0 pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6 md:pb-10',
           showAnnouncementBar
-            ? 'pt-[max(4rem,calc(env(safe-area-inset-top)+3.25rem))] md:pt-[8rem] lg:pt-[9rem]'
-            : 'pt-[max(3.75rem,calc(env(safe-area-inset-top)+3rem))] md:pt-[7rem] lg:pt-[8rem]'
+            ? 'max-md:pt-[calc(5.5rem+env(safe-area-inset-top,0px))] md:pt-[8rem] lg:pt-[9rem]'
+            : 'max-md:pt-[calc(5rem+env(safe-area-inset-top,0px))] md:pt-[7rem] lg:pt-[8rem]'
         )}
       >
         <div className="hero-main">
@@ -190,15 +288,15 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
               variants={container}
               initial="hidden"
               animate="visible"
-              style={{ transformStyle: 'preserve-3d' }}
-              className="flex w-full min-w-0 flex-col items-start"
+              style={{ transformStyle: 'preserve-3d', ...mobileCopyStyle }}
+              className={cn('hero-copy-inner flex w-full min-w-0 flex-col', mobileAlignmentClass)}
             >
-              {hero.badge?.trim() ? (
+              {display.badge ? (
                 <motion.span
                   variants={fadeUp}
-                  className="mb-2 md:mb-3.5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] md:tracking-[0.2em] text-emerald-300"
+                  className="hero-badge mb-1.5 md:mb-3.5 inline-flex w-fit max-w-full shrink-0 items-center gap-2 self-start overflow-visible whitespace-nowrap rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] text-emerald-300"
                 >
-                  {hero.badge.trim()}
+                  {display.badge}
                 </motion.span>
               ) : null}
               <motion.h1
@@ -214,6 +312,12 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                   'tracking-[-0.026em] md:tracking-[-0.032em] lg:tracking-[-0.035em]'
                 )}
               >
+                {display.useSingleHeading ? (
+                  <span className="block w-full max-w-[20ch] md:max-w-none text-pretty [text-wrap:pretty]">
+                    {display.singleHeading}
+                  </span>
+                ) : (
+                  <>
                 {line1 ? (
                   <span className="block w-full max-w-[20ch] md:max-w-none md:whitespace-nowrap text-pretty [text-wrap:pretty]">
                     {line1}
@@ -229,20 +333,25 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                     <HeroHighlightText text={accent} animate={animateHighlight} />
                   </span>
                 ) : null}
+                  </>
+                )}
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
                 style={{ transform: 'translateZ(8px)' }}
-                className="hero-tagline mt-2.5 md:mt-5 max-w-[34ch] md:max-w-xl text-zinc-200 font-medium text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] text-pretty text-[0.875rem] md:text-base"
+                className="hero-tagline mt-1.5 md:mt-5 max-w-[34ch] md:max-w-xl text-zinc-200 font-medium text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] text-pretty text-[0.875rem] md:text-base"
               >
-                {hero.tagline}
+                {display.tagline}
               </motion.p>
 
               <motion.div
                 variants={fadeUp}
                 style={{ transform: 'translateZ(20px)' }}
-                className="hero-cta-row mt-3.5 md:mt-7"
+                className={cn(
+                  'hero-cta-row mt-2 md:mt-7',
+                  display.source === 'responsive' && display.ctaLayout === 'inline' && 'hero-cta-row--inline'
+                )}
               >
                 <motion.div
                   whileHover={
@@ -258,8 +367,8 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                     className="h-11 sm:h-12 w-full lg:w-auto min-w-0 lg:min-w-[11.5rem] rounded-lg border-0 bg-primary px-6 sm:px-8 text-[0.9375rem] sm:text-base font-semibold text-primary-foreground shadow-[0_12px_40px_-12px_rgba(34,197,94,0.45)] transition-shadow hover:bg-primary/92 hover:shadow-[0_16px_48px_-10px_rgba(34,197,94,0.4)]"
                     asChild
                   >
-                    <Link to={hero.ctaPrimaryLink} className="inline-flex items-center justify-center">
-                      <span>{hero.ctaPrimary}</span>
+                    <Link to={display.ctaPrimaryLink} className="inline-flex items-center justify-center">
+                      <span>{display.ctaPrimary}</span>
                     </Link>
                   </Button>
                 </motion.div>
@@ -276,32 +385,116 @@ export const HeroSection = ({ showAnnouncementBar = false }: HeroSectionProps) =
                     className="h-11 sm:h-12 w-full lg:w-auto min-w-0 lg:min-w-[11.5rem] rounded-lg border-white/15 bg-zinc-950/60 px-6 sm:px-8 text-[0.9375rem] sm:text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-colors hover:border-white/25 hover:bg-white/5"
                     asChild
                   >
-                    <Link to={hero.ctaSecondaryLink} className="inline-flex items-center justify-center">
-                      <span>{hero.ctaSecondary}</span>
+                    <Link to={display.ctaSecondaryLink} className="inline-flex items-center justify-center">
+                      <span>{display.ctaSecondary}</span>
                     </Link>
                   </Button>
                 </motion.div>
               </motion.div>
             </motion.div>
           </motion.div>
+
+          {(showFeatureCardsGrid || (showMetricsCard && statsForCard.length > 0)) ? (
+            <div className="hero-tall-features" aria-label="Core capabilities">
+              {showFeatureCardsGrid && featureCardsForGrid.length > 0 ? (
+                <ul className="hero-tall-features-grid">
+                  {featureCardsForGrid.map((card) => {
+                    const Icon = getCmsIcon(card.icon);
+                    return (
+                      <li key={`${card.label}-${card.sortOrder}`} className="hero-tall-features-item">
+                        <span className="hero-tall-features-icon" aria-hidden>
+                          <Icon className="h-4 w-4" strokeWidth={2} />
+                        </span>
+                        <div className="hero-tall-features-content">
+                          <span className="hero-tall-features-label">{card.label}</span>
+                          <p className="hero-tall-features-desc">{card.description}</p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
+              {showMetricsCard && statsForCard.length > 0 ? (
+                <div className="hero-tall-stats-card" aria-label="Company highlights">
+                  {statsForCard.map(({ value, label }) => (
+                    <AnimatedStat
+                      key={`${value}-${label}`}
+                      value={value}
+                      label={label}
+                      variant="hero-tall"
+                    />
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+
+          {showHighlightsBlock && ipadProHighlights.length > 0 ? (
+            <div className="hero-ipad-highlights" aria-label="Why Choose TechVistar">
+              <p className="hero-ipad-highlights-title">Why Choose TechVistar</p>
+              <ul className="hero-ipad-highlights-pills">
+                {ipadProHighlights.map((highlight) => (
+                  <li key={highlight} className="hero-ipad-highlight-pill">
+                    <span aria-hidden className="hero-ipad-highlight-pill-check">✓</span>
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
 
-        <div className="w-full shrink-0 flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-5 md:gap-6">
+        <div className="hero-trust-footer w-full shrink-0 flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-5 md:gap-6">
+          {showClientLogoStrip ? (
+            <div className="hero-ipad-client-strip w-full md:col-span-2" aria-label="Client logos">
+              <div className="hero-ipad-client-strip-logos opacity-50 grayscale select-none">
+                {sortedTrustLogos.length > 0 ? (
+                  sortedTrustLogos.map((logo) => (
+                    <img
+                      key={logo.url + logo.alt}
+                      src={logo.url}
+                      alt={logo.alt}
+                      className="h-4 w-auto object-contain"
+                      loading="lazy"
+                    />
+                  ))
+                ) : (
+                  <>
+                    <svg className="h-4 w-auto text-white/80" viewBox="0 0 100 24" fill="currentColor" aria-hidden>
+                      <path d="M12 4L4 18h16L12 4zm0 3.5l5.5 9.5H6.5L12 7.5z" fillRule="evenodd" />
+                      <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">ACME</text>
+                    </svg>
+                    <svg className="h-4 w-auto text-white/80" viewBox="0 0 110 24" fill="currentColor" aria-hidden>
+                      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="2" fill="none" />
+                      <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" />
+                      <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">GLOBEX</text>
+                    </svg>
+                    <svg className="h-4 w-auto text-white/80" viewBox="0 0 110 24" fill="currentColor" aria-hidden>
+                      <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" fill="none" />
+                      <circle cx="12" cy="12" r="3" fill="currentColor" />
+                      <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">INITECH</text>
+                    </svg>
+                    <svg className="h-4 w-auto text-white/80" viewBox="0 0 120 24" fill="currentColor" aria-hidden>
+                      <polygon points="12,3 20,8 20,16 12,21 4,16 4,8" stroke="currentColor" strokeWidth="2" fill="none" />
+                      <text x="28" y="17" className="text-[11px] font-black font-sans tracking-[0.1em]" fill="currentColor">UMBRELLA</text>
+                    </svg>
+                  </>
+                )}
+              </div>
+            </div>
+          ) : null}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
             className="text-left w-full min-w-0 md:flex-1"
           >
-            <p className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-400/90 font-bold mb-2 sm:mb-3 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
+            <p className="hero-trust-label text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-400/90 font-bold mb-2 sm:mb-3 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
               Trusted by industry leaders
             </p>
             <div className="hero-trust-logos opacity-60 grayscale select-none">
-              {hero.trustLogos.length > 0 ? (
-                hero.trustLogos
-                  .slice()
-                  .sort((a, b) => a.sortOrder - b.sortOrder)
-                  .map((logo) => (
+              {sortedTrustLogos.length > 0 ? (
+                sortedTrustLogos.map((logo) => (
                     <img key={logo.url + logo.alt} src={logo.url} alt={logo.alt} className="h-4 sm:h-5 w-auto object-contain" loading="lazy" />
                   ))
               ) : (

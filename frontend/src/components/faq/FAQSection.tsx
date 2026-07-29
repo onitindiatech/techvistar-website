@@ -37,25 +37,27 @@ export const FAQSection = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   // ── Data source: API with static fallback ──────────────────────────────────
-  const { data: apiFAQs } = useQuery({
+  const { data: apiFAQs, isSuccess } = useQuery({
     queryKey: ['faqs'],
     queryFn:  getActiveFAQs,
     staleTime: 5 * 60 * 1000,
   });
 
-  // Map API response to the component-expected shape, or fall back to static data
+  // Prefer API data once loaded; static seed data only before the first successful fetch.
   const allFAQs = useMemo(() => {
-    if (!apiFAQs || apiFAQs.length === 0) return [...STATIC_FAQS];
-    return apiFAQs.map((f: any) => ({
-      id:       f.faqId,
-      question: f.question,
-      answer:   f.answer,
-      category: f.category,
-      page:     f.page,
-      tags:     f.tags ?? [],
-      featured: f.featured ?? false,
-    }));
-  }, [apiFAQs]);
+    if (isSuccess) {
+      return (apiFAQs ?? []).map((f: any) => ({
+        id:       f.faqId,
+        question: f.question,
+        answer:   f.answer,
+        category: f.category,
+        page:     f.page,
+        tags:     f.tags ?? [],
+        featured: f.featured ?? false,
+      }));
+    }
+    return [...STATIC_FAQS];
+  }, [apiFAQs, isSuccess]);
 
   const filteredFAQs = useMemo(() => {
     let items = allFAQs;
@@ -64,12 +66,13 @@ export const FAQSection = ({
       items = items.filter((faq) => faq.featured);
     }
     if (pageFilter && pageFilter !== 'all') {
-      items = items.filter((faq) => faq.page === pageFilter);
+      items = items.filter((faq) => faq.page === pageFilter || faq.page === 'all');
     }
     if (categoryFilter) {
       items = items.filter((faq) => faq.category === categoryFilter);
     }
-    return items;
+
+    return [...items].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
   }, [allFAQs, pageFilter, categoryFilter, featuredOnly]);
 
   const displayedFAQs = useMemo(() => {

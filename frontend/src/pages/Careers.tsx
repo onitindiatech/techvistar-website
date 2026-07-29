@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveJobs, Job } from '@/services/job.service';
 import { getPublicPagesConfig } from '@/services/pages.service';
+import { mergePagesCmsConfig, DEFAULT_CAREERS_LANDING_CMS } from '@/types/pagesCms';
 import { seoFromItem } from '@/lib/seoAdmin';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
@@ -11,20 +12,22 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import HERO_BG from '../assets/careers-bg-new.png';
 import { PageHeader } from '@/components/ui/PageHeader';
+import DEFAULT_CAREERS_HERO_BG from '../assets/careers-bg-new.png';
 import { 
   Briefcase, MapPin, Clock, Search, Users,
   ArrowRight, ChevronRight, RotateCcw, HelpCircle, Mail, MessageSquare, Code, UserCheck
 } from 'lucide-react';
 
-const BENEFITS_LIST = [
-  { title: "Great Team", desc: "Work with talented and supportive people who care.", image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop" },
-  { title: "Learning & Growth", desc: "Continuous learning with courses, mentorship and more.", image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=400&auto=format&fit=crop" },
-  { title: "Flexible Work", desc: "Hybrid work environment and flexible hours.", image: "https://images.unsplash.com/photo-1527689368864-3a821dbccc34?q=80&w=400&auto=format&fit=crop" },
-  { title: "Health Benefits", desc: "Comprehensive health insurance for you and your family.", image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=400&auto=format&fit=crop" },
-  { title: "Career Growth", desc: "Clear career paths and internal our culture opportunities.", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop" },
-  { title: "Recognition", desc: "Celebrate wins and get recognized for your impact.", image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=400&auto=format&fit=crop" },
+const HERO_BG = DEFAULT_CAREERS_HERO_BG;
+
+const BENEFIT_IMAGES = [
+  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1527689368864-3a821dbccc34?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=400&auto=format&fit=crop",
 ];
 
 const LIFE_GALLERY = [
@@ -36,13 +39,13 @@ const LIFE_GALLERY = [
   { url: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=800&auto=format&fit=crop", title: "Workspace Celebrations" }
 ];
 
-const PROCESS_TIMELINE = [
-  { phase: "1. Application", desc: "Submit your application online.", icon: Briefcase, color: "from-teal-400 to-teal-600", textCol: "text-teal-600", bgCol: "bg-teal-50" },
-  { phase: "2. Resume Review", desc: "Our team reviews your application carefully.", icon: Users, color: "from-emerald-400 to-emerald-600", textCol: "text-emerald-600", bgCol: "bg-emerald-50" },
-  { phase: "3. Technical Round", desc: "Online assessment or technical interview.", icon: Code, color: "from-orange-400 to-orange-600", textCol: "text-orange-600", bgCol: "bg-orange-50" },
-  { phase: "4. Interview Round", desc: "Meet the team and discuss your experience.", icon: MessageSquare, color: "from-pink-400 to-pink-650", textCol: "text-pink-600", bgCol: "bg-pink-50" },
-  { phase: "5. HR Discussion", desc: "A conversation about you, our culture and role.", icon: UserCheck, color: "from-purple-400 to-purple-600", textCol: "text-purple-650", bgCol: "bg-purple-50" },
-  { phase: "6. Offer", desc: "Welcome to the team! Let's build the future.", icon: Mail, color: "from-blue-400 to-blue-600", textCol: "text-blue-600", bgCol: "bg-blue-50" }
+const PROCESS_STYLES = [
+  { icon: Briefcase, color: "from-teal-400 to-teal-600", textCol: "text-teal-600", bgCol: "bg-teal-50" },
+  { icon: Users, color: "from-emerald-400 to-emerald-600", textCol: "text-emerald-600", bgCol: "bg-emerald-50" },
+  { icon: Code, color: "from-orange-400 to-orange-600", textCol: "text-orange-600", bgCol: "bg-orange-50" },
+  { icon: MessageSquare, color: "from-pink-400 to-pink-650", textCol: "text-pink-600", bgCol: "bg-pink-50" },
+  { icon: UserCheck, color: "from-purple-400 to-purple-600", textCol: "text-purple-650", bgCol: "bg-purple-50" },
+  { icon: Mail, color: "from-blue-400 to-blue-600", textCol: "text-blue-600", bgCol: "bg-blue-50" },
 ];
 
 const FAQS_LIST = [
@@ -104,7 +107,24 @@ const Careers = () => {
     staleTime: 60_000,
   });
 
-  const careersSeo = seoFromItem(pagesConfig?.careers as Record<string, unknown> | undefined);
+  const careers = mergePagesCmsConfig(pagesConfig).careers;
+  const careersSeo = seoFromItem(careers as unknown as Record<string, unknown>);
+  const heroBg = careers.hero.backgroundImage?.trim() || HERO_BG;
+
+  const benefitsList = careers.benefits.map((benefit, idx) => ({
+    title: benefit.title,
+    desc: benefit.description,
+    image: BENEFIT_IMAGES[idx] || BENEFIT_IMAGES[0],
+  }));
+
+  const processTimeline = careers.hiringProcess.map((step, idx) => {
+    const style = PROCESS_STYLES[idx] || PROCESS_STYLES[0];
+    return {
+      phase: `${step.step}. ${step.title}`,
+      desc: step.description,
+      ...style,
+    };
+  });
 
   const handleScrollToPositions = () => {
     const el = document.getElementById('open-positions');
@@ -116,8 +136,8 @@ const Careers = () => {
       <PageSeo
         seo={careersSeo}
         defaults={{
-          title: 'Careers at TechVistar | Join our engineering team',
-          description: 'Explore open roles at TechVistar and join a collaborative engineering team.',
+          title: careers.seoTitle || DEFAULT_CAREERS_LANDING_CMS.seoTitle || 'Careers at TechVistar | Join our engineering team',
+          description: careers.seoDescription || DEFAULT_CAREERS_LANDING_CMS.seoDescription || '',
           url: buildCanonical('/careers'),
         }}
       />
@@ -128,11 +148,21 @@ const Careers = () => {
         <Navbar />
 
         {/* 1. Hero Section */}
-        <PageHeader 
-          title={<>Build technology that <span className="text-emerald-500">solves real business problems</span></>}
-          subtitle="Careers at TechVistar"
-          description="Join our premium global squad of systems architects, designer engineers, and full stack builders to construct state-of-the-art enterprise digital hubs."
-          backgroundImage={HERO_BG}
+        <PageHeader
+          title={
+            careers.hero.subtitle ? (
+              <>
+                {careers.hero.title}{' '}
+                <span className="text-emerald-500">{careers.hero.subtitle}</span>
+              </>
+            ) : (
+              careers.hero.title
+            )
+          }
+          subtitle={careers.hero.eyebrow || 'Careers at TechVistar'}
+          description={careers.hero.description}
+          backgroundImage={heroBg}
+          bgPosition="right bottom"
         >
           <div className="flex flex-wrap items-center gap-4">
             <Button onClick={handleScrollToPositions} size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 px-6 rounded-xl shadow-lg shadow-emerald-500/20">
@@ -149,13 +179,13 @@ const Careers = () => {
 
         {/* 2. Open Positions (Completely matching reference style) */}
         <section id="open-positions" className="pt-4 pb-12 md:pt-6 md:pb-16 bg-white border-b border-slate-100">
-          <div className="container mx-auto px-6 max-w-7xl space-y-6 md:space-y-8">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl space-y-6 md:space-y-8">
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-emerald-600">
                 <Briefcase className="h-4.5 w-4.5" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Available Roles</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-extrabold font-display text-slate-900 tracking-tight">Open Positions</h2>
+              <h2 className="text-2xl md:text-4xl font-extrabold font-display text-slate-900 tracking-tight">Open Positions</h2>
             </div>
 
             {/* Filter Bar (One Rounded Container) */}
@@ -304,14 +334,14 @@ const Careers = () => {
 
         {/* 3. Why Join TechVistar (Exactly matching reference card design) */}
         <section className="pt-4 pb-12 md:pt-6 md:pb-16 bg-slate-50 border-b border-slate-100">
-          <div className="container mx-auto px-6 max-w-7xl space-y-10 md:space-y-12">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl space-y-10 md:space-y-12">
             <div className="text-center max-w-2xl mx-auto space-y-2">
               <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Why Join TechVistar?</h2>
               <p className="text-slate-500 text-xs sm:text-sm font-semibold">We empower people to do their best work and grow together.</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-              {BENEFITS_LIST.map((benefit, idx) => {
+              {benefitsList.map((benefit, idx) => {
                 return (
                   <motion.div 
                     key={idx} 
@@ -342,19 +372,18 @@ const Careers = () => {
 
         {/* 4. Hiring Process (Perfect horizontal step icons sequence) */}
         <section className="py-10 md:py-12 bg-white border-b border-slate-100">
-          <div className="container mx-auto px-6 max-w-7xl space-y-12">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl space-y-12">
             <div className="text-center max-w-2xl mx-auto space-y-2">
               <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Our Hiring Process</h2>
               <p className="text-slate-500 text-xs sm:text-sm font-semibold">Our simple and transparent hiring process</p>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative max-w-5xl mx-auto">
-              {PROCESS_TIMELINE.map((step, idx) => {
+              {processTimeline.map((step, idx) => {
                 const Icon = step.icon;
                 return (
                   <div key={idx} className="flex flex-col items-center text-center space-y-3 relative z-10 flex-1 group">
-                    {/* Animated connecting line to the right of steps (excluding last step) */}
-                    {idx < PROCESS_TIMELINE.length - 1 && (
+                    {idx < processTimeline.length - 1 && (
                       <div className="hidden md:block absolute left-[50%] right-[-50%] top-6 h-[2px] bg-slate-100 border-dashed border-t-2 pointer-events-none group-hover:border-emerald-250 transition-colors" />
                     )}
 
@@ -378,10 +407,10 @@ const Careers = () => {
 
         {/* 5. Life at TechVistar */}
         <section id="life-at-techvistar" className="py-10 md:py-12 bg-slate-50">
-          <div className="container mx-auto px-6 max-w-7xl space-y-10">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl space-y-10">
             <div className="text-center max-w-2xl mx-auto space-y-2">
-              <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Life at TechVistar</h2>
-              <p className="text-slate-500 text-xs sm:text-sm font-semibold">Real photography of workspaces, collaboration synch, and cultural events.</p>
+              <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">{careers.culture.title}</h2>
+              <p className="text-slate-500 text-xs sm:text-sm font-semibold">{careers.culture.description}</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -402,8 +431,8 @@ const Careers = () => {
         </section>
 
         {/* 6. FAQ Accordion Block */}
-        <section className="py-24 bg-white border-t border-slate-100">
-          <div className="container mx-auto px-6 max-w-4xl space-y-12">
+        <section className="py-16 md:py-24 bg-white border-t border-slate-100">
+          <div className="container mx-auto px-4 md:px-6 max-w-4xl space-y-10 md:space-y-12">
             <div className="text-center max-w-2xl mx-auto space-y-2">
               <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Frequently Asked Questions</h2>
               <p className="text-slate-500 text-xs sm:text-sm font-semibold">Clear details about application guidelines and recruitment paths.</p>
@@ -445,14 +474,14 @@ const Careers = () => {
 
         {/* 7. Bottom CTA Block */}
         <section className="py-16 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white border-t border-slate-900">
-          <div className="container mx-auto px-6 max-w-4xl text-center space-y-6">
-            <h2 className="text-2xl sm:text-3xl font-black font-display tracking-tight">Didn't find the right opening?</h2>
+          <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center space-y-6">
+            <h2 className="text-2xl sm:text-3xl font-black font-display tracking-tight">{careers.cta.title}</h2>
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto font-medium">
-              We are constantly seeking outstanding designers, systems developers, and backend builders. Submit your portfolio details for general open considerations.
+              {careers.cta.description}
             </p>
             <div className="pt-2">
               <Button asChild className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-11 px-6 rounded-full shadow-lg shadow-emerald-500/10">
-                <Link to="/contact">Submit Open Application</Link>
+                <Link to={careers.cta.buttonLink || '/contact'}>{careers.cta.buttonText}</Link>
               </Button>
             </div>
           </div>

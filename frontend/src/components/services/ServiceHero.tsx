@@ -16,6 +16,9 @@ import {
 import { Service, getServiceHeroImage } from '@/data/services';
 import { RichTextContent } from '@/components/common/RichTextContent';
 
+import { MobileBackButton } from '@/components/ui/MobileBackButton';
+import { AnimatedStat } from '@/components/ui/AnimatedStat';
+
 interface ServiceHeroProps {
   service: Service;
 }
@@ -86,9 +89,7 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
   return (
     <section className="bg-white border-b border-slate-200 pt-[4.5rem] pb-8 md:pt-28 md:pb-14 mb-6 md:mb-8">
       <div className="w-full mx-auto px-4 md:px-6 lg:px-12 xl:px-20 detail-page-gutter">
-        <Link to="/services" className="inline-flex items-center text-sm text-slate-500 hover:text-emerald-600 mb-6 transition-colors font-medium">
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to all services
-        </Link>
+        <MobileBackButton to="/services" label="All Services" className="mb-6" />
 
         {/* Main Grid: Centered Content */}
         <div className="flex flex-col gap-12 w-full relative z-10">
@@ -158,15 +159,14 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
                     const IconComponent = getStatIcon(stat.iconType);
                     const theme = getThemeClasses(stat.colorTheme);
                     return (
-                      <div key={idx} className="flex items-center gap-2.5 p-3 bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                        <div className={`h-8 w-8 rounded-full ${theme.iconBg} flex items-center justify-center shrink-0`}>
-                          <IconComponent className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-slate-900 leading-none mb-0.5">{stat.value}</p>
-                          <p className="text-[10px] text-slate-500 leading-tight font-semibold">{stat.label}</p>
-                        </div>
-                      </div>
+                      <AnimatedStat
+                        key={idx}
+                        value={stat.value}
+                        label={stat.label}
+                        variant="hero-card"
+                        icon={<IconComponent className="h-4 w-4" />}
+                        themeIconClass={theme.iconBg}
+                      />
                     );
                   })}
                 </div>

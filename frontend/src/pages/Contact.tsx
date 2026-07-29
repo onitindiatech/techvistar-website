@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import { 
   Mail, Phone, MapPin, Clock, ShieldCheck, Sparkles, 
   Linkedin, ArrowRight, Send, HelpCircle, ArrowUpRight, 
@@ -16,11 +17,59 @@ import { submitContactForm } from '@/services/contact.service';
 import { LogoCloud } from '@/components/LogoCloud';
 import { FAQSection } from '@/components/faq';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { mergePagesCmsConfig, DEFAULT_CONTACT_CMS } from '@/types/pagesCms';
+import { seoFromItem } from '@/lib/seoAdmin';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
+import { AnimatedStat } from '@/components/ui/AnimatedStat';
 import contactBg from '../assets/contact-header.png';
+import { getActiveOffices } from '@/services/office.service';
+
+const renderContactHeroTitle = (title: string) => {
+  const highlight = 'Great';
+  if (!title.includes(highlight)) return title;
+  const [before, after] = title.split(highlight);
+  return (
+    <>
+      {before}
+      <span className="text-emerald-500">{highlight}</span>
+      {after}
+    </>
+  );
+};
+
+const OfficeImage = ({ src, alt }: { src: string; alt: string }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+  return (
+    <img
+      src={imgSrc}
+      alt={alt}
+      onError={() => setImgSrc("https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800")}
+      loading="lazy"
+      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+    />
+  );
+};
 
 export const Contact = () => {
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+    staleTime: 60_000,
+  });
+
+  const contact = mergePagesCmsConfig(pagesConfig).contact;
+  const contactSeo = seoFromItem(contact as unknown as Record<string, unknown>);
+  const heroBg = contact.hero.backgroundImage?.trim() || contactBg;
+  const phoneHref = `tel:${contact.contactInfo.phone.replace(/\s/g, '')}`;
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mapToggles, setMapToggles] = useState<Record<string, boolean>>({});
+  const { data: offices = [] } = useQuery({
+    queryKey: ['public-offices'],
+    queryFn: getActiveOffices,
+  });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -93,70 +142,66 @@ export const Contact = () => {
 
   return (
     <>
+      <PageSeo
+        seo={contactSeo}
+        defaults={{
+          title: contact.seoTitle || DEFAULT_CONTACT_CMS.seoTitle || 'Contact TechVistar | Start your project',
+          description: contact.seoDescription || DEFAULT_CONTACT_CMS.seoDescription || '',
+          url: buildCanonical('/contact'),
+        }}
+      />
       <Navbar />
       
       <main id="main-content" className="min-h-screen bg-slate-50 text-slate-900 pb-20 relative overflow-hidden animate-fade-in">
         
         {/* HERO HEADER SECTION - Matching Portfolio, Solutions and About */}
         <PageHeader 
-          title={<>Let's Build Something <span className="text-emerald-500">Great</span> Together</>}
-          subtitle="Let's Connect"
-          description="Have a project in mind or want to explore how we can help your business grow? We'd love to hear from you."
-          backgroundImage={contactBg}
+          title={renderContactHeroTitle(contact.hero.title)}
+          subtitle={contact.hero.eyebrow || "Let's Connect"}
+          description={contact.hero.description}
+          backgroundImage={heroBg}
           bgPosition="right bottom"
         />
 
         {/* HERO GRID SECTION - FORM AND INFO CARDS */}
-        <section className="container-custom max-w-7xl mx-auto px-6 py-16 relative z-10" id="contact-form-section">
+        <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16 relative z-10" id="contact-form-section">
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             
             {/* Left Side: Stats & Cards */}
             <div className="lg:col-span-5 space-y-8">
               {/* Trust Badge Grid */}
               <div className="grid grid-cols-2 gap-4 border-y border-slate-200/80 py-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900 leading-none">24 Hrs</div>
-                    <span className="text-[10px] text-slate-500 font-semibold uppercase">Response Time</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100">
-                    <Briefcase className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900 leading-none">100+</div>
-                    <span className="text-[10px] text-slate-500 font-semibold uppercase">Projects Delivered</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100">
-                    <ShieldCheck className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900 leading-none">98%</div>
-                    <span className="text-[10px] text-slate-500 font-semibold uppercase">Client Satisfaction</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100">
-                    <Building2 className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900 leading-none">10+</div>
-                    <span className="text-[10px] text-slate-500 font-semibold uppercase">Industries Served</span>
-                  </div>
-                </div>
+                <AnimatedStat
+                  value="24 Hrs"
+                  label="Response Time"
+                  variant="contact-badge"
+                  icon={<Clock className="w-4 h-4" />}
+                />
+                <AnimatedStat
+                  value="100+"
+                  label="Projects Delivered"
+                  variant="contact-badge"
+                  icon={<Briefcase className="w-4 h-4" />}
+                />
+                <AnimatedStat
+                  value="98%"
+                  label="Client Satisfaction"
+                  variant="contact-badge"
+                  icon={<ShieldCheck className="w-4 h-4" />}
+                />
+                <AnimatedStat
+                  value="10+"
+                  label="Industries Served"
+                  variant="contact-badge"
+                  icon={<Building2 className="w-4 h-4" />}
+                />
               </div>
 
               {/* Actionable Info Cards */}
               <div className="space-y-4">
                 {/* Call card */}
                 <motion.a 
-                  href="tel:+919573157982"
+                  href={phoneHref}
                   whileHover={{ y: -2, scale: 1.01 }}
                   className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
@@ -165,14 +210,14 @@ export const Contact = () => {
                   </div>
                   <div>
                     <div className="font-extrabold font-display text-slate-900 text-sm">Call Us</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">+91 9573157982</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">Mon - Sat, 9:00 AM - 7:00 PM IST</span>
+                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.contactInfo.phone}</p>
+                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.office.hours}</span>
                   </div>
                 </motion.a>
 
                 {/* Email card */}
                 <motion.a 
-                  href="mailto:hello@techvistar.com"
+                  href={`mailto:${contact.contactInfo.email}`}
                   whileHover={{ y: -2, scale: 1.01 }}
                   className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
@@ -181,8 +226,8 @@ export const Contact = () => {
                   </div>
                   <div>
                     <div className="font-extrabold font-display text-slate-900 text-sm">Email Us</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">hello@techvistar.com</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">We reply within 24 hours</span>
+                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.contactInfo.email}</p>
+                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.contactInfo.supportText}</span>
                   </div>
                 </motion.a>
 
@@ -195,9 +240,9 @@ export const Contact = () => {
                     <MapPin className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-extrabold font-display text-slate-900 text-sm">Visit Us</div>
+                    <div className="font-extrabold font-display text-slate-900 text-sm">{contact.office.heading}</div>
                     <p className="text-xs text-slate-600 font-bold mt-0.5">TechVistar HQ</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">Noida, Uttar Pradesh, India</span>
+                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.office.address}</span>
                   </div>
                 </motion.div>
 
@@ -211,8 +256,10 @@ export const Contact = () => {
                   </div>
                   <div>
                     <div className="font-extrabold font-display text-slate-900 text-sm">Working Hours</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">Monday - Saturday</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">09:00 AM - 07:00 PM IST</span>
+                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.office.hours.split(',')[0] || contact.office.hours}</p>
+                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">
+                      {contact.office.hours.includes(',') ? contact.office.hours.split(',').slice(1).join(',').trim() : ''}
+                    </span>
                   </div>
                 </motion.div>
               </div>
@@ -224,8 +271,8 @@ export const Contact = () => {
                 <div className="flex items-center gap-3 pb-3 mb-4 border-b border-slate-100">
                   <Mail className="w-5.5 h-5.5 text-emerald-600" />
                   <div>
-                    <h3 className="font-display text-lg font-bold text-slate-900">Send us a message</h3>
-                    <p className="text-[11px] text-slate-500 font-bold mt-0.5">Fill out the form and our team will get back to you shortly.</p>
+                    <h3 className="font-display text-lg font-bold text-slate-900">{contact.cta.title}</h3>
+                    <p className="text-[11px] text-slate-500 font-bold mt-0.5">{contact.cta.description}</p>
                   </div>
                 </div>
 
@@ -320,7 +367,7 @@ export const Contact = () => {
                     disabled={isSubmitting}
                     className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 mt-2 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]"
                   >
-                    <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                    <span>{isSubmitting ? 'Sending...' : contact.cta.buttonText}</span>
                     <Send className="w-4 h-4" />
                   </Button>
                 </form>
@@ -331,7 +378,7 @@ export const Contact = () => {
         </section>
 
         {/* HEADQUARTERS MAP & DIRECTIONS BANNER */}
-        <section className="container-custom max-w-7xl mx-auto px-6 mb-20 relative z-10">
+        <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
           <div className="group w-full rounded-[2rem] overflow-hidden border border-slate-200/60 bg-white shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-15px_rgba(16,185,129,0.2)] transition-all duration-700 flex flex-col md:flex-row relative">
             
             {/* Grayscale OSM Map representation */}
@@ -353,11 +400,11 @@ export const Contact = () => {
                 <div>
                   <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-3 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow-sm">
                     <MapPin className="w-3.5 h-3.5" />
-                    Global Headquarters
+                    {contact.office.heading}
                   </span>
-                  <h3 className="text-3xl md:text-4xl font-extrabold font-display text-slate-900 mb-3">TechVistar</h3>
+                  <h3 className="text-2xl md:text-4xl font-extrabold font-display text-slate-900 mb-3">TechVistar</h3>
                   <p className="text-sm md:text-base text-slate-500 font-semibold leading-relaxed">
-                    A-75, Sector 4, Noida, <br />Uttar Pradesh 201301, India
+                    {contact.office.address}
                   </p>
                 </div>
                 
@@ -378,157 +425,102 @@ export const Contact = () => {
         </section>
 
         {/* OUR OFFICES SECTION */}
-        <section className="container-custom max-w-7xl mx-auto px-6 mb-20 relative z-10">
+        <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
           <div className="mb-8">
             <h3 className="text-lg font-bold font-display text-slate-900">Our Offices</h3>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Noida office */}
-            <motion.div 
-              whileHover={{ y: -8, scale: 1.01 }}
-              className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
-            >
-              {/* Top Graphic Section */}
-              <div className="h-32 w-full bg-slate-50 relative flex items-center justify-center overflow-hidden border-b border-slate-100">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-emerald-400/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-slate-900">
-                  <svg width="100%" height="100%">
-                    <pattern id="grid-pattern-1" width="20" height="20" patternUnits="userSpaceOnUse">
-                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="1" />
-                    </pattern>
-                    <rect width="100%" height="100%" fill="url(#grid-pattern-1)" />
-                  </svg>
-                </div>
-                
-                <div className="relative z-10 w-16 h-16 bg-white border border-slate-200/80 rounded-2xl flex items-center justify-center shadow-sm group-hover:border-emerald-300 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-500">
-                  <Building2 className="w-7 h-7 text-slate-400 group-hover:text-emerald-500 transition-colors duration-500" />
-                </div>
-              </div>
-
-              {/* Content Section */}
-              <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-emerald-600 transition-colors duration-300">
-                    India - Noida
+          <div className="grid md:grid-cols-2 max-w-5xl mx-auto gap-8">
+            {offices.map((office) => {
+              const showMap = !!mapToggles[office.officeId];
+              return (
+                <motion.div 
+                  key={office._id}
+                  whileHover={{ y: -8, scale: 1.01 }}
+                  className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
+                >
+                  <div className="h-48 w-full bg-slate-100 relative overflow-hidden border-b border-slate-100">
+                    {showMap ? (
+                      <div className="absolute inset-0 z-20">
+                        <iframe
+                          src={office.googleMapsUrl}
+                          className="w-full h-full border-0"
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setMapToggles(prev => ({ ...prev, [office.officeId]: false }));
+                          }}
+                          className="absolute top-3 right-3 z-30 bg-slate-950/80 hover:bg-slate-950 text-white rounded-full p-1.5 transition-colors shadow-md text-xs font-semibold px-2.5 py-1"
+                        >
+                          Close Map
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <OfficeImage
+                          src={office.image}
+                          alt={office.imageAlt || office.name}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent z-10" />
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setMapToggles(prev => ({ ...prev, [office.officeId]: true }));
+                          }}
+                          className="absolute bottom-3 right-3 z-20 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center gap-1.5 hover:scale-105"
+                        >
+                          <MapPin className="w-3.5 h-3.5" />
+                          <span>Show Map</span>
+                        </button>
+                      </>
+                    )}
                   </div>
-                  <span className="shrink-0 text-[9px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-widest border border-emerald-200/60">
-                    HQ
-                  </span>
-                </div>
-                <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
-                  <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-emerald-400 transition-colors duration-300" />
-                  <p className="text-sm font-semibold leading-relaxed">
-                    A-75, Sector 4, Noida, UP 201301, India
-                  </p>
-                </div>
-                <div className="pt-2">
-                  <a href="https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 transition-colors group/link">
-                    View on map
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
 
-            {/* Dubai office */}
-            <motion.div 
-              whileHover={{ y: -8, scale: 1.01 }}
-              className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
-            >
-              {/* Top Graphic Section */}
-              <div className="h-32 w-full bg-slate-50 relative flex items-center justify-center overflow-hidden border-b border-slate-100">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-emerald-400/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-slate-900">
-                  <svg width="100%" height="100%">
-                    <pattern id="grid-pattern-2" width="20" height="20" patternUnits="userSpaceOnUse">
-                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="1" />
-                    </pattern>
-                    <rect width="100%" height="100%" fill="url(#grid-pattern-2)" />
-                  </svg>
-                </div>
-                
-                <div className="relative z-10 w-16 h-16 bg-white border border-slate-200/80 rounded-2xl flex items-center justify-center shadow-sm group-hover:border-emerald-300 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-500">
-                  <Building2 className="w-7 h-7 text-slate-400 group-hover:text-emerald-500 transition-colors duration-500" />
-                </div>
-              </div>
+                  <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20 flex-1 flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-emerald-600 transition-colors duration-300">
+                          {office.name}
+                        </div>
+                        <span className="shrink-0 text-[9px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider border border-emerald-200/60">
+                          {office.badge}
+                        </span>
+                      </div>
 
-              {/* Content Section */}
-              <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-emerald-600 transition-colors duration-300">
-                    UAE - Dubai
+                      <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
+                        <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-emerald-400 transition-colors duration-300" />
+                        <p className="text-sm font-semibold leading-relaxed whitespace-pre-line">
+                          {office.address}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-slate-100">
+                      <a 
+                        href={`https://maps.google.com/?q=${encodeURIComponent(office.name + ' ' + office.address)}`}
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 transition-colors group/link"
+                      >
+                        View on Maps
+                        <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />
+                      </a>
+                    </div>
                   </div>
-                  <span className="shrink-0 text-[9px] font-black text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full uppercase tracking-widest border border-slate-200">
-                    Regional
-                  </span>
-                </div>
-                <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
-                  <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-emerald-400 transition-colors duration-300" />
-                  <p className="text-sm font-semibold leading-relaxed">
-                    Business Bay, Dubai, UAE
-                  </p>
-                </div>
-                <div className="pt-2">
-                  <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 transition-colors group/link">
-                    View on map
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* USA office */}
-            <motion.div 
-              whileHover={{ y: -8, scale: 1.01 }}
-              className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
-            >
-              {/* Top Graphic Section */}
-              <div className="h-32 w-full bg-slate-50 relative flex items-center justify-center overflow-hidden border-b border-slate-100">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-emerald-400/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-slate-900">
-                  <svg width="100%" height="100%">
-                    <pattern id="grid-pattern-3" width="20" height="20" patternUnits="userSpaceOnUse">
-                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="1" />
-                    </pattern>
-                    <rect width="100%" height="100%" fill="url(#grid-pattern-3)" />
-                  </svg>
-                </div>
-                
-                <div className="relative z-10 w-16 h-16 bg-white border border-slate-200/80 rounded-2xl flex items-center justify-center shadow-sm group-hover:border-emerald-300 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-500">
-                  <Building2 className="w-7 h-7 text-slate-400 group-hover:text-emerald-500 transition-colors duration-500" />
-                </div>
-              </div>
-
-              {/* Content Section */}
-              <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-emerald-600 transition-colors duration-300">
-                    USA - New York
-                  </div>
-                  <span className="shrink-0 text-[9px] font-black text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full uppercase tracking-widest border border-slate-200">
-                    Regional
-                  </span>
-                </div>
-                <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
-                  <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-emerald-400 transition-colors duration-300" />
-                  <p className="text-sm font-semibold leading-relaxed">
-                    Manhattan, New York, NY 10001, USA
-                  </p>
-                </div>
-                <div className="pt-2">
-                  <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 transition-colors group/link">
-                    View on map
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
 
         {/* PILLARS BAR SECTION */}
-        <section className="container-custom max-w-7xl mx-auto px-6 mb-20 relative z-10">
+        <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
@@ -561,10 +553,10 @@ export const Contact = () => {
           </div>
         </section>
 
-        <FAQSection pageFilter="all" layout="split" limit={4} showViewAll={true} />
+        <FAQSection pageFilter="contact" layout="split" limit={4} showViewAll={true} />
 
         {/* TRUSTED BY CLIENT LOGOS SECTION */}
-        <section className="container-custom max-w-7xl mx-auto px-6 mt-10 relative z-10 border-t border-slate-200/60">
+        <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mt-8 md:mt-10 relative z-10 border-t border-slate-200/60">
           <LogoCloud />
         </section>
 

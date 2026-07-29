@@ -37,14 +37,15 @@ export default defineConfig(({ mode }) => ({
           }
 
           if (id.includes("@tiptap") || id.includes("prosemirror")) return "vendor-tiptap";
-          // Do NOT chunk recharts/d3 here — co-locating lodash (recharts dep) with the
-          // entry chunk's shared imports caused circular TDZ errors in production.
+          // Do NOT chunk recharts/d3/lodash here — previously caused circular TDZ errors in production.
           if (id.includes("three")) return "vendor-three";
           if (id.includes("gsap")) return "vendor-gsap";
           if (id.includes("framer-motion")) return "vendor-motion";
           if (id.includes("@radix-ui")) return "vendor-radix";
           if (id.includes("@tanstack/react-query")) return "vendor-query";
           if (id.includes("isomorphic-dompurify") || id.includes("dompurify")) return "vendor-sanitize";
+          if (id.includes("embla-carousel")) return "vendor-carousel";
+          if (id.includes("date-fns")) return "vendor-date";
         },
       },
     },

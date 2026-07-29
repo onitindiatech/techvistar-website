@@ -1,18 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { PageHeader } from '@/components/admin/common/PageHeader';
 import { getAdminServicesCmsConfig, updateServicesCmsConfig } from '@/services/servicesCmsConfig.service';
-import { DEFAULT_SERVICES_CMS_CONFIG, ServicesCmsConfig } from '@/types/servicesCms';
+import { DEFAULT_SERVICES_CMS_CONFIG, ServicesLandingConfig } from '@/types/servicesCms';
 import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Loader2, Save } from 'lucide-react';
+import { Loader2, LayoutTemplate, Layers, Star, LayoutGrid, Search } from 'lucide-react';
+import { SeoManager } from '@/components/admin/common/SeoManager';
 import { CmsImageField } from '@/components/admin/common/CmsImageField';
+import { CmsSectionCard, CmsTextFields } from '@/components/admin/common/CmsSettingsFields';
+import { CmsPageLayout, CmsSectionAnchor } from '@/components/admin/common/CmsPageLayout';
+import { seoFromItem } from '@/lib/seoAdmin';
+
+const NAV_SECTIONS = [
+  { id: 'hero',         label: 'Hero',               icon: LayoutTemplate },
+  { id: 'category-nav', label: 'Category Navigation', icon: Layers         },
+  { id: 'featured',     label: 'Featured Services',   icon: Star           },
+  { id: 'catalog',      label: 'Services Grid',       icon: LayoutGrid     },
+  { id: 'seo',          label: 'SEO',                 icon: Search         },
+];
 
 const ServicesSettings = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [form, setForm] = useState<ServicesCmsConfig>(DEFAULT_SERVICES_CMS_CONFIG);
+  const [form, setForm] = useState<ServicesLandingConfig>(DEFAULT_SERVICES_CMS_CONFIG.landing);
+  const [isDirty, setIsDirty] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ['admin', 'servicesCmsConfig'],
@@ -20,125 +31,125 @@ const ServicesSettings = () => {
   });
 
   useEffect(() => {
-    if (data) {
-      setForm({
-        landing: { ...DEFAULT_SERVICES_CMS_CONFIG.landing, ...(data.landing || {}) },
-        homeSection: { ...DEFAULT_SERVICES_CMS_CONFIG.homeSection, ...(data.homeSection || {}) },
-        sidebarDefaults: { ...DEFAULT_SERVICES_CMS_CONFIG.sidebarDefaults, ...(data.sidebarDefaults || {}) },
-        consultationDefaults: {
-          ...DEFAULT_SERVICES_CMS_CONFIG.consultationDefaults,
-          ...(data.consultationDefaults || {}),
-        },
-      });
+    if (data?.landing) {
+      setForm({ ...DEFAULT_SERVICES_CMS_CONFIG.landing, ...data.landing });
     }
   }, [data]);
 
   const saveMutation = useMutation({
-    mutationFn: updateServicesCmsConfig,
+    mutationFn: () => updateServicesCmsConfig({ landing: form }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'servicesCmsConfig'] });
       queryClient.invalidateQueries({ queryKey: ['servicesCmsConfig'] });
-      toast({ title: 'Saved', description: 'Services page settings updated.' });
+      toast({ title: 'Saved', description: 'Services landing settings updated.' });
+      setIsDirty(false);
+      setLastSaved(new Date());
     },
     onError: (err: Error) => {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
     },
   });
 
-  const patch = (section: keyof ServicesCmsConfig, key: string, value: string) => {
-    setForm((prev) => ({
-      ...prev,
-      [section]: { ...prev[section], [key]: value },
-    }));
+  const patch = (key: keyof ServicesLandingConfig, value: string) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    setIsDirty(true);
   };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[40vh] text-slate-500">
-        <Loader2 className="w-6 h-6 animate-spin mr-2" /> Loading settings...
+      <div className="flex min-h-[40vh] items-center justify-center text-slate-500">
+        <Loader2 className="mr-2 h-6 w-6 animate-spin" /> Loading settings...
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 max-w-4xl">
-      <PageHeader
-        title="Services Page Settings"
-        description="Manage the Services landing page, homepage section, and global sidebar / consultation defaults."
-      />
+    <CmsPageLayout
+      title="Services Landing CMS"
+      description="Manage every visible section on /services — hero, category navigation, featured services, catalog grid, and SEO."
+      sections={NAV_SECTIONS}
+      onSave={() => saveMutation.mutate()}
+      onDiscard={() => setIsDirty(false)}
+      isSaving={saveMutation.isPending}
+      isDirty={isDirty}
+      lastSaved={lastSaved}
+    >
+      <CmsSectionAnchor id="hero">
+        <CmsSectionCard title="Hero">
+          <CmsTextFields
+            fields={[
+              { key: 'subtitle', label: 'Badge' },
+              { key: 'title', label: 'Title' },
+              { key: 'description', label: 'Description', type: 'textarea' },
+              { key: 'ctaText', label: 'CTA text' },
+            ]}
+            values={form as unknown as Record<string, string>}
+            onChange={(k, v) => patch(k as keyof ServicesLandingConfig, v)}
+          />
+          <CmsImageField
+            label="Hero background"
+            value={form.backgroundImage}
+            onChange={(url) => patch('backgroundImage', url)}
+          />
+        </CmsSectionCard>
+      </CmsSectionAnchor>
 
-      <section className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-        <h2 className="text-sm font-bold text-slate-900">Services Landing Page (/services)</h2>
-        {(['title', 'subtitle', 'description', 'seoTitle', 'seoDescription', 'offeringsLabel', 'learnMoreLabel'] as const).map(
-          (key) => (
-            <div key={key}>
-              <label className="text-[10px] font-bold uppercase text-slate-500">{key}</label>
-              <Input
-                value={form.landing[key]}
-                onChange={(e) => patch('landing', key, e.target.value)}
-                className="mt-1"
-              />
-            </div>
-          )
-        )}
-        <CmsImageField
-          label="Hero Background Image"
-          value={form.landing.backgroundImage}
-          onChange={(url) => patch('landing', 'backgroundImage', url)}
-        />
-      </section>
+      <CmsSectionAnchor id="category-nav">
+        <CmsSectionCard title="Category Navigation" description="Label for the category filter bar. Tabs are generated from active services.">
+          <CmsTextFields
+            fields={[{ key: 'categoryEyebrow', label: 'Eyebrow' }]}
+            values={form as unknown as Record<string, string>}
+            onChange={(k, v) => patch(k as keyof ServicesLandingConfig, v)}
+          />
+        </CmsSectionCard>
+      </CmsSectionAnchor>
 
-      <section className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-        <h2 className="text-sm font-bold text-slate-900">Homepage Services Section</h2>
-        {(['tag', 'title', 'highlight', 'description', 'viewAllTitle', 'viewAllLinkText'] as const).map((key) => (
-          <div key={key}>
-            <label className="text-[10px] font-bold uppercase text-slate-500">{key}</label>
-            <Input
-              value={form.homeSection[key]}
-              onChange={(e) => patch('homeSection', key, e.target.value)}
-              className="mt-1"
-            />
-          </div>
-        ))}
-      </section>
+      <CmsSectionAnchor id="featured">
+        <CmsSectionCard title="Featured Services" description="Section presentation and service card labels. Featured flags are managed in Services CRUD.">
+          <CmsTextFields
+            fields={[
+              { key: 'featuredEyebrow', label: 'Eyebrow' },
+              { key: 'featuredTitle', label: 'Section title' },
+              { key: 'featuredDescription', label: 'Description', type: 'textarea' },
+              { key: 'offeringsLabel', label: 'Card offerings label' },
+              { key: 'learnMoreLabel', label: 'Card CTA label' },
+            ]}
+            values={form as unknown as Record<string, string>}
+            onChange={(k, v) => patch(k as keyof ServicesLandingConfig, v)}
+          />
+        </CmsSectionCard>
+      </CmsSectionAnchor>
 
-      <section className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-        <h2 className="text-sm font-bold text-slate-900">Global Sidebar Defaults</h2>
-        {(Object.keys(form.sidebarDefaults) as Array<keyof typeof form.sidebarDefaults>).map((key) => (
-          <div key={key}>
-            <label className="text-[10px] font-bold uppercase text-slate-500">{key}</label>
-            <Input
-              value={form.sidebarDefaults[key]}
-              onChange={(e) => patch('sidebarDefaults', key, e.target.value)}
-              className="mt-1"
-            />
-          </div>
-        ))}
-      </section>
+      <CmsSectionAnchor id="catalog">
+        <CmsSectionCard title="Services Grid">
+          <CmsTextFields
+            fields={[
+              { key: 'catalogEyebrow', label: 'Eyebrow' },
+              { key: 'catalogTitle', label: 'Section title' },
+              { key: 'catalogDescription', label: 'Description', type: 'textarea' },
+            ]}
+            values={form as unknown as Record<string, string>}
+            onChange={(k, v) => patch(k as keyof ServicesLandingConfig, v)}
+          />
+        </CmsSectionCard>
+      </CmsSectionAnchor>
 
-      <section className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-        <h2 className="text-sm font-bold text-slate-900">Global Consultation Form Defaults</h2>
-        {(Object.keys(form.consultationDefaults) as Array<keyof typeof form.consultationDefaults>).map((key) => (
-          <div key={key}>
-            <label className="text-[10px] font-bold uppercase text-slate-500">{key}</label>
-            <Input
-              value={form.consultationDefaults[key]}
-              onChange={(e) => patch('consultationDefaults', key, e.target.value)}
-              className="mt-1"
-            />
-          </div>
-        ))}
-      </section>
-
-      <Button
-        onClick={() => saveMutation.mutate(form)}
-        disabled={saveMutation.isPending}
-        className="gap-2"
-      >
-        {saveMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-        Save Settings
-      </Button>
-    </div>
+      <CmsSectionAnchor id="seo">
+        <CmsSectionCard title="SEO">
+          <SeoManager
+            value={seoFromItem(form as unknown as Record<string, unknown>)}
+            onChange={(seo) => {
+              setForm((prev) => ({ ...prev, ...seo }));
+              setIsDirty(true);
+            }}
+            pathPrefix="/services"
+            defaultTitle={form.seoTitle || ''}
+            defaultDescription={form.seoDescription || ''}
+            defaultImage={form.backgroundImage}
+          />
+        </CmsSectionCard>
+      </CmsSectionAnchor>
+    </CmsPageLayout>
   );
 };
 

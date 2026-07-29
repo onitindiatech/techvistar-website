@@ -63,6 +63,7 @@ function loadYouTubeIframeApi(): Promise<void> {
 
       if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
         const script = document.createElement('script');
+        // Use the standard iframe API endpoint (nocookie domain doesn't serve this)
         script.src = 'https://www.youtube.com/iframe_api';
         script.async = true;
         document.head.appendChild(script);
@@ -171,6 +172,11 @@ export const Video: React.FC<VideoProps> = ({
           fs: 0,
           iv_load_policy: 3,
           enablejsapi: 1,
+          // Declare the host origin so YouTube postMessage targets the correct window.
+          // This eliminates the "target origin does not match" console error.
+          origin: window.location.origin,
+          // Use privacy-enhanced mode to avoid third-party ad/tracking requests.
+          host: 'https://www.youtube-nocookie.com',
         },
         events: {
           onReady: (event) => {

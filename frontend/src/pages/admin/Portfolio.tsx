@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { motion } from "framer-motion";
+import { CmsFutureFeatureCallout } from "@/components/admin/common/CmsFutureFeatureCallout";
 
 const PORTFOLIO_CATEGORIES = [
   "Mobility & logistics",
@@ -1255,6 +1256,10 @@ const Portfolio = () => {
                     </div>
 
                     <div className="space-y-2">
+                      <CmsFutureFeatureCallout>
+                        Connected service slugs are saved and used on service detail case-study sections. They are not
+                        shown on public portfolio / project detail pages yet.
+                      </CmsFutureFeatureCallout>
                       <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Connected Services Slugs (Comma-separated)</label>
                       <Input value={serviceSlugsText} onChange={(e) => setServiceSlugsText(e.target.value)} placeholder="e.g. cloud-engineering, machine-learning" className="h-10 rounded-lg border-slate-200" />
                     </div>

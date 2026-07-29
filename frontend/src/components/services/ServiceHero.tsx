@@ -102,10 +102,7 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
               
               {/* Text Area */}
               <div className="md:col-span-7 space-y-5">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/50 text-xs font-semibold uppercase tracking-wider">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-                  {service.heroBadge?.trim() || `${service.title} Solutions`}
-                </div>
+
                 
                 <h1 className="text-[1.75rem] leading-[1.12] md:text-5xl font-extrabold font-display text-slate-900 md:leading-tight">
                   {service.title}

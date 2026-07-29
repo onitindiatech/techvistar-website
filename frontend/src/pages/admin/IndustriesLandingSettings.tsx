@@ -36,8 +36,34 @@ const CAPABILITY_COLORS = [
   'from-cyan-500 to-blue-600',
 ];
 
+const SIDEBAR_FIELDS: Array<{ key: keyof IndustriesLandingCmsConfig['sidebarDefaults']; label: string }> = [
+  { key: 'summaryTitle', label: 'Summary title' },
+  { key: 'responseTimeTitle', label: 'Response time title' },
+  { key: 'responseTime', label: 'Response time value' },
+  { key: 'businessHoursTitle', label: 'Business hours title' },
+  { key: 'businessHours', label: 'Business hours value' },
+  { key: 'secureTitle', label: 'Secure consultation title' },
+  { key: 'secureDescription', label: 'Secure consultation description' },
+  { key: 'buttonLabel', label: 'Primary button label' },
+  { key: 'directInquiriesTitle', label: 'Direct inquiries title' },
+  { key: 'directInquiriesBody', label: 'Direct inquiries body' },
+  { key: 'contactEmail', label: 'Contact email' },
+];
+
+const CONSULTATION_FIELDS: Array<{
+  key: keyof IndustriesLandingCmsConfig['consultationDefaults'];
+  label: string;
+}> = [
+  { key: 'title', label: 'Form title' },
+  { key: 'description', label: 'Form description' },
+  { key: 'submitLabel', label: 'Submit button label' },
+  { key: 'privacyText', label: 'Privacy / consent text' },
+  { key: 'successTitle', label: 'Success title' },
+  { key: 'successMessage', label: 'Success message' },
+];
+
 const IndustriesLandingSettings = () => {
-  const { form, setForm, isLoading, save, isSaving } = usePagesCmsSettings('industriesLanding');
+  const { form, setForm, isLoading, save, isSaving, discard } = usePagesCmsSettings('industriesLanding');
   const [isDirty, setIsDirty] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
@@ -67,22 +93,33 @@ const IndustriesLandingSettings = () => {
     setLastSaved(new Date());
   };
 
+  const handleDiscard = () => {
+    discard();
+    setIsDirty(false);
+  };
+
   const patchStat = (idx: number, key: keyof CmsStatItem, value: string) => {
-    const stats = [...(form.capabilities?.stats || [])];
-    stats[idx] = { ...stats[idx], [key]: value };
-    setForm((prev) => ({
-      ...prev,
-      capabilities: { ...prev.capabilities, stats },
-    }));
+    setForm((prev) => {
+      const stats = [...(prev.capabilities?.stats || [])];
+      stats[idx] = { ...stats[idx], [key]: value };
+      return {
+        ...prev,
+        capabilities: { ...prev.capabilities, stats },
+      };
+    });
+    setIsDirty(true);
   };
 
   const patchCapability = (idx: number, patchObj: Partial<IndustriesCapabilityItem>) => {
-    const cards = [...(form.capabilities?.cards || [])];
-    cards[idx] = { ...cards[idx], ...patchObj };
-    setForm((prev) => ({
-      ...prev,
-      capabilities: { ...prev.capabilities, cards },
-    }));
+    setForm((prev) => {
+      const cards = [...(prev.capabilities?.cards || [])];
+      cards[idx] = { ...cards[idx], ...patchObj };
+      return {
+        ...prev,
+        capabilities: { ...prev.capabilities, cards },
+      };
+    });
+    setIsDirty(true);
   };
 
   return (
@@ -91,7 +128,7 @@ const IndustriesLandingSettings = () => {
       description="Manage every visible section on /industries — hero, catalog, capabilities, CTA, global sidebar defaults, and SEO."
       sections={NAV_SECTIONS}
       onSave={handleSave}
-      onDiscard={() => setIsDirty(false)}
+      onDiscard={handleDiscard}
       isSaving={isSaving}
       isDirty={isDirty}
       lastSaved={lastSaved}
@@ -104,7 +141,11 @@ const IndustriesLandingSettings = () => {
             { key: 'title', label: 'Title' },
             { key: 'subtitle', label: 'Subtitle (gradient line)' },
             { key: 'description', label: 'Description', type: 'textarea' },
-            { key: 'ctaText', label: 'CTA text' },
+            {
+              key: 'ctaText',
+              label: 'CTA text',
+              helperText: 'Green Explore button on the industries hero.',
+            },
             { key: 'ctaLink', label: 'CTA link (#all-industries or /contact)' },
           ]}
           values={form.hero as unknown as Record<string, string>}
@@ -144,7 +185,6 @@ const IndustriesLandingSettings = () => {
             { key: 'title', label: 'Section title' },
             { key: 'subtitle', label: 'Section subtitle' },
             { key: 'description', label: 'Description', type: 'textarea' },
-            { key: 'learnMoreLabel', label: 'Card CTA label' },
           ]}
           values={form.catalog as unknown as Record<string, string>}
           onChange={(k, v) => patch('catalog', k, v)}
@@ -168,15 +208,16 @@ const IndustriesLandingSettings = () => {
               variant="outline"
               size="sm"
               className="h-8 text-xs"
-              onClick={() =>
+              onClick={() => {
                 setForm((prev) => ({
                   ...prev,
                   capabilities: {
                     ...prev.capabilities,
                     stats: [...(prev.capabilities?.stats || []), { value: '', label: '' }],
                   },
-                }))
-              }
+                }));
+                setIsDirty(true);
+              }}
             >
               <Plus className="mr-1 h-3.5 w-3.5" /> Add stat
             </Button>
@@ -185,15 +226,16 @@ const IndustriesLandingSettings = () => {
             <div key={idx} className="relative grid grid-cols-2 gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
               <button
                 type="button"
-                onClick={() =>
+                onClick={() => {
                   setForm((prev) => ({
                     ...prev,
                     capabilities: {
                       ...prev.capabilities,
                       stats: prev.capabilities.stats.filter((_, i) => i !== idx),
                     },
-                  }))
-                }
+                  }));
+                  setIsDirty(true);
+                }}
                 className="absolute right-2 top-2 text-slate-400 hover:text-red-500"
               >
                 <Trash className="h-4 w-4" />
@@ -212,7 +254,7 @@ const IndustriesLandingSettings = () => {
               variant="outline"
               size="sm"
               className="h-8 text-xs"
-              onClick={() =>
+              onClick={() => {
                 setForm((prev) => ({
                   ...prev,
                   capabilities: {
@@ -228,8 +270,9 @@ const IndustriesLandingSettings = () => {
                       },
                     ],
                   },
-                }))
-              }
+                }));
+                setIsDirty(true);
+              }}
             >
               <Plus className="mr-1 h-3.5 w-3.5" /> Add card
             </Button>
@@ -238,15 +281,16 @@ const IndustriesLandingSettings = () => {
             <div key={idx} className="relative space-y-3 rounded-xl border border-slate-200 bg-white p-4">
               <button
                 type="button"
-                onClick={() =>
+                onClick={() => {
                   setForm((prev) => ({
                     ...prev,
                     capabilities: {
                       ...prev.capabilities,
                       cards: prev.capabilities.cards.filter((_, i) => i !== idx),
                     },
-                  }))
-                }
+                  }));
+                  setIsDirty(true);
+                }}
                 className="absolute right-2 top-2 text-slate-400 hover:text-red-500"
               >
                 <Trash className="h-4 w-4" />
@@ -314,17 +358,18 @@ const IndustriesLandingSettings = () => {
 
       <CmsSectionAnchor id="sidebar">
       <CmsSectionCard title="Global Sidebar Defaults" description="Used on industry detail pages when per-industry sidebar fields are empty.">
-        {(Object.keys(form.sidebarDefaults) as Array<keyof typeof form.sidebarDefaults>).map((key) => (
+        {SIDEBAR_FIELDS.map(({ key, label }) => (
           <div key={key}>
-            <label className="text-[10px] font-bold uppercase text-slate-500">{key}</label>
+            <label className="text-[10px] font-bold uppercase text-slate-500">{label}</label>
             <Input
               value={form.sidebarDefaults[key]}
-              onChange={(e) =>
+              onChange={(e) => {
                 setForm((prev) => ({
                   ...prev,
                   sidebarDefaults: { ...prev.sidebarDefaults, [key]: e.target.value },
-                }))
-              }
+                }));
+                setIsDirty(true);
+              }}
               className="mt-1"
             />
           </div>
@@ -334,17 +379,18 @@ const IndustriesLandingSettings = () => {
 
       <CmsSectionAnchor id="consultation">
       <CmsSectionCard title="Global Consultation Form Defaults">
-        {(Object.keys(form.consultationDefaults) as Array<keyof typeof form.consultationDefaults>).map((key) => (
+        {CONSULTATION_FIELDS.map(({ key, label }) => (
           <div key={key}>
-            <label className="text-[10px] font-bold uppercase text-slate-500">{key}</label>
+            <label className="text-[10px] font-bold uppercase text-slate-500">{label}</label>
             <Input
               value={form.consultationDefaults[key]}
-              onChange={(e) =>
+              onChange={(e) => {
                 setForm((prev) => ({
                   ...prev,
                   consultationDefaults: { ...prev.consultationDefaults, [key]: e.target.value },
-                }))
-              }
+                }));
+                setIsDirty(true);
+              }}
               className="mt-1"
             />
           </div>
@@ -356,11 +402,26 @@ const IndustriesLandingSettings = () => {
       <CmsSectionCard title="SEO">
         <SeoManager
           value={seoFromItem(form as unknown as Record<string, unknown>)}
-          onChange={(seo) => setForm((prev) => ({ ...prev, ...seo }))}
+          onChange={(seo) => {
+            setForm((prev) => ({ ...prev, ...seo }));
+            setIsDirty(true);
+          }}
           pathPrefix="/industries"
           defaultTitle={form.seoTitle || ''}
           defaultDescription={form.seoDescription || ''}
           defaultImage={form.hero.backgroundImage}
+          scoreOptions={{
+            requireSlug: false,
+            pagePath: '/industries',
+            h1Text: [form.hero.title, form.hero.subtitle].filter(Boolean).join(' '),
+            hasStructuredData: true,
+            hasInternalLinks: Boolean(
+              form.hero.ctaLink?.trim() ||
+                form.cta.buttonLink?.trim() ||
+                form.cta.secondaryButtonLink?.trim()
+            ),
+            imageAltReady: true,
+          }}
         />
       </CmsSectionCard>
       </CmsSectionAnchor>

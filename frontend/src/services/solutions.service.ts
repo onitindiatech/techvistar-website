@@ -3,7 +3,7 @@
  * @description Client service for retrieving and managing Solutions CMS data.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+import { adminFetch, getApiBaseUrl, publicFetch, readApiError } from '@/lib/api';
 
 interface QueryParams {
   page?: number;
@@ -21,15 +21,14 @@ interface QueryParams {
  * Fetches all active solutions from the backend.
  */
 export async function getActiveSolutions(category?: string): Promise<any[]> {
-  const url = new URL(`${API_BASE_URL}/api/solutions`);
+  const url = new URL(`${getApiBaseUrl()}/api/solutions`);
   if (category && typeof category === 'string' && category !== 'All') {
     url.searchParams.append('category', category);
   }
 
-  const response = await fetch(url.toString(), { cache: 'no-store' });
+  const response = await publicFetch(url.toString());
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch solutions');
+    throw new Error(await readApiError(response, 'Failed to fetch solutions'));
   }
   const result = await response.json();
   return Array.isArray(result.data) ? result.data : [];
@@ -39,7 +38,7 @@ export async function getActiveSolutions(category?: string): Promise<any[]> {
  * Fetches all solutions (active + drafts) for admin panel with optional filters.
  */
 export async function getAllSolutions(params: QueryParams = {}): Promise<{ solutions: any[]; pagination: any }> {
-  const url = new URL(`${API_BASE_URL}/api/solutions/admin`);
+  const url = new URL(`${getApiBaseUrl()}/api/solutions/admin`);
 
   if (params.page) url.searchParams.append('page', String(params.page));
   if (params.limit) url.searchParams.append('limit', String(params.limit));
@@ -51,10 +50,9 @@ export async function getAllSolutions(params: QueryParams = {}): Promise<{ solut
   if (params.sortBy) url.searchParams.append('sortBy', params.sortBy);
   if (params.sortOrder) url.searchParams.append('sortOrder', params.sortOrder);
 
-  const response = await fetch(url.toString(), { credentials: 'include' });
+  const response = await adminFetch(url.toString());
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch all solutions');
+    throw new Error(await readApiError(response, 'Failed to fetch all solutions'));
   }
   const result = await response.json();
   return {
@@ -72,10 +70,9 @@ export async function getAllSolutions(params: QueryParams = {}): Promise<{ solut
  * Fetches details for a single active solution by its slug.
  */
 export async function getSolutionBySlug(slug: string): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/${slug}`, { cache: 'no-store' });
+  const response = await publicFetch(`${getApiBaseUrl()}/api/solutions/${slug}`);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch solution details');
+    throw new Error(await readApiError(response, 'Failed to fetch solution details'));
   }
   const result = await response.json();
   return result.data;
@@ -85,15 +82,12 @@ export async function getSolutionBySlug(slug: string): Promise<any> {
  * Creates a new solution listing (admin).
  */
 export async function createSolution(data: any): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/admin`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/solutions/admin`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to create solution');
+    throw new Error(await readApiError(response, 'Failed to create solution'));
   }
   const result = await response.json();
   return result.data;
@@ -103,15 +97,12 @@ export async function createSolution(data: any): Promise<any> {
  * Updates an existing solution listing (admin).
  */
 export async function updateSolution(id: string, data: any): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/admin/${id}`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/solutions/admin/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to update solution');
+    throw new Error(await readApiError(response, 'Failed to update solution'));
   }
   const result = await response.json();
   return result.data;
@@ -121,13 +112,11 @@ export async function updateSolution(id: string, data: any): Promise<any> {
  * Soft-deletes a solution listing (admin).
  */
 export async function deleteSolution(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/admin/${id}`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/solutions/admin/${id}`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to delete solution');
+    throw new Error(await readApiError(response, 'Failed to delete solution'));
   }
 }
 
@@ -135,13 +124,11 @@ export async function deleteSolution(id: string): Promise<void> {
  * Restores a soft-deleted solution (admin).
  */
 export async function restoreSolution(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/admin/${id}/restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/solutions/admin/${id}/restore`, {
     method: 'POST',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to restore solution');
+    throw new Error(await readApiError(response, 'Failed to restore solution'));
   }
 }
 
@@ -149,13 +136,11 @@ export async function restoreSolution(id: string): Promise<void> {
  * Permanently deletes a solution (admin).
  */
 export async function permanentlyDeleteSolution(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/admin/${id}/permanent`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/solutions/admin/${id}/permanent`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to permanently delete solution');
+    throw new Error(await readApiError(response, 'Failed to permanently delete solution'));
   }
 }
 
@@ -163,15 +148,12 @@ export async function permanentlyDeleteSolution(id: string): Promise<void> {
  * Bulk soft-deletes solutions (admin).
  */
 export async function bulkDeleteSolutions(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/admin/bulk-delete`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/solutions/admin/bulk-delete`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk delete solutions');
+    throw new Error(await readApiError(response, 'Failed to bulk delete solutions'));
   }
 }
 
@@ -179,15 +161,12 @@ export async function bulkDeleteSolutions(ids: string[]): Promise<void> {
  * Bulk restores soft-deleted solutions (admin).
  */
 export async function bulkRestoreSolutions(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/admin/bulk-restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/solutions/admin/bulk-restore`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk restore solutions');
+    throw new Error(await readApiError(response, 'Failed to bulk restore solutions'));
   }
 }
 
@@ -195,14 +174,11 @@ export async function bulkRestoreSolutions(ids: string[]): Promise<void> {
  * Bulk updates the publish status of solutions (admin).
  */
 export async function bulkUpdateStatus(ids: string[], status: 'draft' | 'active'): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/solutions/admin/bulk-status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/solutions/admin/bulk-status`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids, status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk update status');
+    throw new Error(await readApiError(response, 'Failed to bulk update status'));
   }
 }

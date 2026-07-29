@@ -50,10 +50,7 @@ export const IndustryHero = ({ industry }: IndustryHeroProps) => {
         <div className="relative z-10 flex w-full flex-col gap-12">
           <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
             <div className="space-y-5 md:col-span-7">
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/50 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-700">
-                <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-                {industry.heroBadge?.trim() || `${industry.title} Vertical`}
-              </div>
+
 
               <h1 className="font-display text-[1.75rem] leading-[1.12] font-extrabold text-slate-900 md:text-5xl md:leading-tight">
                 {industry.title}

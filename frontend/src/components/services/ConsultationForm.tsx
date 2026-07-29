@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Send, Loader2 } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -97,12 +97,7 @@ export const ConsultationForm = ({
         ? "text-left w-full" 
         : "bg-white border-2 border-emerald-500 transition-colors duration-500 rounded-2xl p-6 md:p-7 shadow-xl shadow-emerald-500/20 text-left min-h-[80vh] sm:min-h-0 flex flex-col justify-center sm:block"
     }>
-      <div className="flex items-center gap-2 mb-1.5">
-        <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100">
-          <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-        </div>
-        <h3 className="text-base font-bold text-slate-900">{formConfig.title}</h3>
-      </div>
+      <h3 className="mb-1.5 text-base font-bold text-slate-900">{formConfig.title}</h3>
       <p className="text-[11px] text-slate-500 mb-5 leading-relaxed">{formConfig.description}</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">

@@ -113,13 +113,7 @@ export const SolutionsSection = ({ service }: SectionProps) => {
       <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none z-0" />
       <div className="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-sky-500/5 blur-3xl pointer-events-none z-0" />
 
-      {/* Title */}
-      <div className="relative z-10 flex items-center gap-2 mb-6">
-        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
-        </div>
-        <h2 className="text-xl font-bold text-slate-900 font-display">Offerings</h2>
-      </div>
+      <h2 className="relative z-10 mb-6 font-display text-heading-sm text-slate-900">Offerings</h2>
 
       {hasDetailedOfferings ? (
         /* Premium redesigned offerings grid */

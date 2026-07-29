@@ -28,6 +28,10 @@ const MEDIA_SECTION_PATHS: Array<{ section: string; urlKey: string; publicIdKey:
   { section: 'industriesLanding', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
   { section: 'industriesLanding', urlKey: 'intro.icon', publicIdKey: 'intro.iconPublicId' },
   { section: 'industriesLanding', urlKey: 'cta.backgroundImage', publicIdKey: 'cta.backgroundImagePublicId' },
+  { section: 'portfolioLanding', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
+  { section: 'portfolioLanding', urlKey: 'hero.image', publicIdKey: 'hero.imagePublicId' },
+  { section: 'portfolioLanding', urlKey: 'cta.backgroundImage', publicIdKey: 'cta.backgroundImagePublicId' },
+  { section: 'portfolioLanding', urlKey: 'cta.image', publicIdKey: 'cta.imagePublicId' },
   { section: 'careers', urlKey: 'hero.backgroundImage', publicIdKey: 'hero.backgroundImagePublicId' },
   { section: 'websiteSettings', urlKey: 'logo', publicIdKey: 'logoPublicId' },
   { section: 'websiteSettings', urlKey: 'favicon', publicIdKey: 'faviconPublicId' },
@@ -119,6 +123,8 @@ export class PagesCmsConfigService {
   }
 
   async getPublicConfig(): Promise<IPagesCmsConfig> {
+    const config = await PagesCmsConfig.findOne({ configKey: CONFIG_KEY }).lean();
+    if (config) return config as IPagesCmsConfig;
     return this.ensureConfig();
   }
 

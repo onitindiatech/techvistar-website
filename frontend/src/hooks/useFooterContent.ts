@@ -7,6 +7,11 @@ import {
   type WebsiteFooterLink,
   type WebsiteSocialLinks,
 } from '@/types/websiteSettings';
+import {
+  resolvePrimaryEmail,
+  resolveSiteAddress,
+  resolveSitePhone,
+} from '@/lib/siteContact';
 import { getActiveServices } from '@/services/services.service';
 import { getActiveIndustries } from '@/services/industry.service';
 import defaultLogoUrl from '@/assets/logo.webp';
@@ -115,7 +120,6 @@ export function useFooterContent() {
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
@@ -124,13 +128,11 @@ export function useFooterContent() {
   const { data: services = [] } = useQuery({
     queryKey: ['activeServices'],
     queryFn: getActiveServices,
-    staleTime: 5 * 60 * 1000,
   });
 
   const { data: industries = [] } = useQuery({
     queryKey: ['activeIndustries'],
     queryFn: () => getActiveIndustries(),
-    staleTime: 5 * 60 * 1000,
   });
 
   return useMemo(() => {
@@ -144,9 +146,9 @@ export function useFooterContent() {
       websiteSettings.logo,
       defaultLogoUrl,
     );
-    const phone = websiteSettings.phone?.trim() || '';
-    const email = websiteSettings.email?.trim() || '';
-    const address = websiteSettings.address?.trim() || '';
+    const phone = resolveSitePhone(websiteSettings);
+    const email = resolvePrimaryEmail(websiteSettings);
+    const address = resolveSiteAddress(websiteSettings);
     const workingHours = websiteSettings.workingHours?.trim() || '';
     const newsletterHeading =
       wsFooter.newsletterHeading?.trim() || DEFAULT_WEBSITE_SETTINGS.footer.newsletterHeading;

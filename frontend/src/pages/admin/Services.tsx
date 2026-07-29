@@ -208,8 +208,9 @@ const Services = () => {
 
   const refreshServicesQueries = () => {
     queryClient.invalidateQueries({ queryKey: ["admin", "services"] });
-    queryClient.invalidateQueries({ queryKey: ["activeServices"] });
-    queryClient.invalidateQueries({ queryKey: ["serviceDetails"] });
+    // Drop cached public nav/landing data so deleted/draft items cannot linger.
+    queryClient.resetQueries({ queryKey: ["activeServices"] });
+    queryClient.removeQueries({ queryKey: ["serviceDetails"] });
   };
 
   // Mutators
@@ -1496,10 +1497,10 @@ const Services = () => {
                       helperText="Hero image on Service Detail. Also used on listing cards when Thumbnail is empty or still a seed placeholder."
                     />
                     <CmsImageField
-                      label="Thumbnail Image"
+                      label="Service Card Cover Image"
                       value={thumbnail}
                       onChange={setThumbnail}
-                      helperText="Preferred card image on Home / Services listing / Related. Leave empty to use Cover Image."
+                      helperText="Shown on Home Page services grid, Services listing, and Related cards. Upload via Cloudinary — changes appear on the live site instantly. Leave empty to fall back to the Cover Image above."
                     />
                     <CmsImageField
                       label="Dashboard Mock Image"

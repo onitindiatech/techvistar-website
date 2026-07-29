@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Service } from '@/data/services';
-import { ChevronDown, HelpCircle, Sparkles } from 'lucide-react';
+import { ChevronDown, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RichTextContent } from '@/components/common/RichTextContent';
 
@@ -26,13 +26,9 @@ export const FAQSection = ({ service }: SectionProps) => {
         </svg>
       </div>
 
-      {/* Header */}
-      <div className="relative z-10 flex items-center gap-2 mb-6">
-        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
-        </div>
-        <h2 className="text-xl font-bold text-slate-900 font-display">Frequently Asked Questions</h2>
-      </div>
+      <h2 className="relative z-10 mb-6 font-display text-heading-sm text-slate-900">
+        Frequently Asked Questions
+      </h2>
 
       {/* Accordion Wrapper */}
       <div className="relative z-10 space-y-3.5">

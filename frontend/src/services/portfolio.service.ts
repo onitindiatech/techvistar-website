@@ -3,7 +3,7 @@
  * @description Client service for retrieving and managing Portfolio CMS data.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+import { adminFetch, getApiBaseUrl, publicFetch, readApiError } from '@/lib/api';
 
 interface QueryParams {
   page?: number;
@@ -21,10 +21,9 @@ interface QueryParams {
  * Fetches all active portfolio projects from the backend.
  */
 export async function getActiveProjects(): Promise<any[]> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio`, { cache: 'no-store' });
+  const response = await publicFetch(`${getApiBaseUrl()}/api/portfolio`);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch portfolio projects');
+    throw new Error(await readApiError(response, 'Failed to fetch portfolio projects'));
   }
   const result = await response.json();
   return Array.isArray(result.data) ? result.data : [];
@@ -34,7 +33,7 @@ export async function getActiveProjects(): Promise<any[]> {
  * Fetches all portfolio projects for admin panel with pagination, search, and filtering.
  */
 export async function getAllProjects(params: QueryParams = {}): Promise<{ projects: any[]; pagination: any }> {
-  const url = new URL(`${API_BASE_URL}/api/portfolio/admin`);
+  const url = new URL(`${getApiBaseUrl()}/api/portfolio/admin`);
 
   if (params.page) url.searchParams.append('page', String(params.page));
   if (params.limit) url.searchParams.append('limit', String(params.limit));
@@ -46,12 +45,9 @@ export async function getAllProjects(params: QueryParams = {}): Promise<{ projec
   if (params.sortBy) url.searchParams.append('sortBy', params.sortBy);
   if (params.sortOrder) url.searchParams.append('sortOrder', params.sortOrder);
 
-  const response = await fetch(url.toString(), {
-    credentials: 'include',
-  });
+  const response = await adminFetch(url.toString());
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch all projects');
+    throw new Error(await readApiError(response, 'Failed to fetch all projects'));
   }
   const result = await response.json();
   return {
@@ -70,10 +66,9 @@ export async function getAllProjects(params: QueryParams = {}): Promise<{ projec
  * @param slug Project slug identifier
  */
 export async function getProjectBySlug(slug: string): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/${slug}`, { cache: 'no-store' });
+  const response = await publicFetch(`${getApiBaseUrl()}/api/portfolio/${slug}`);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch project details');
+    throw new Error(await readApiError(response, 'Failed to fetch project details'));
   }
   const result = await response.json();
   return result.data;
@@ -83,15 +78,12 @@ export async function getProjectBySlug(slug: string): Promise<any> {
  * Creates a new portfolio project (admin).
  */
 export async function createProject(data: any): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/admin`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/portfolio/admin`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to create project');
+    throw new Error(await readApiError(response, 'Failed to create project'));
   }
   const result = await response.json();
   return result.data;
@@ -101,15 +93,12 @@ export async function createProject(data: any): Promise<any> {
  * Updates an existing portfolio project (admin).
  */
 export async function updateProject(id: string, data: any): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/admin/${id}`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/portfolio/admin/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to update project');
+    throw new Error(await readApiError(response, 'Failed to update project'));
   }
   const result = await response.json();
   return result.data;
@@ -119,13 +108,11 @@ export async function updateProject(id: string, data: any): Promise<any> {
  * Soft-deletes a portfolio project (admin).
  */
 export async function deleteProject(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/admin/${id}`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/portfolio/admin/${id}`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to delete project');
+    throw new Error(await readApiError(response, 'Failed to delete project'));
   }
 }
 
@@ -133,13 +120,11 @@ export async function deleteProject(id: string): Promise<void> {
  * Restores a soft-deleted portfolio project (admin).
  */
 export async function restoreProject(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/admin/${id}/restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/portfolio/admin/${id}/restore`, {
     method: 'POST',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to restore project');
+    throw new Error(await readApiError(response, 'Failed to restore project'));
   }
 }
 
@@ -147,13 +132,11 @@ export async function restoreProject(id: string): Promise<void> {
  * Permanently deletes a portfolio project (admin).
  */
 export async function permanentlyDeleteProject(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/admin/${id}/permanent`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/portfolio/admin/${id}/permanent`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to permanently delete project');
+    throw new Error(await readApiError(response, 'Failed to permanently delete project'));
   }
 }
 
@@ -161,15 +144,12 @@ export async function permanentlyDeleteProject(id: string): Promise<void> {
  * Bulk soft-deletes portfolio projects (admin).
  */
 export async function bulkDeleteProjects(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/admin/bulk-delete`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/portfolio/admin/bulk-delete`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk delete projects');
+    throw new Error(await readApiError(response, 'Failed to bulk delete projects'));
   }
 }
 
@@ -177,15 +157,12 @@ export async function bulkDeleteProjects(ids: string[]): Promise<void> {
  * Bulk restores soft-deleted portfolio projects (admin).
  */
 export async function bulkRestoreProjects(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/admin/bulk-restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/portfolio/admin/bulk-restore`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk restore projects');
+    throw new Error(await readApiError(response, 'Failed to bulk restore projects'));
   }
 }
 
@@ -196,14 +173,11 @@ export async function bulkUpdateStatus(
   ids: string[],
   status: 'Completed' | 'In Progress' | 'Coming Soon'
 ): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/portfolio/admin/bulk-status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/portfolio/admin/bulk-status`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids, status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk update status');
+    throw new Error(await readApiError(response, 'Failed to bulk update status'));
   }
 }

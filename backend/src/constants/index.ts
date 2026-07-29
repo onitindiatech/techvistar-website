@@ -184,6 +184,11 @@ export const API_VERSION = 'v1' as const;
 
 // ─── CORS Origins ─────────────────────────────────────────────────────────────
 // Development origins — production origins come from env.clientUrls (CLIENT_URL)
+// plus PRODUCTION_CORS_FALLBACK_ORIGINS (legacy hardcoded Vercel production URL)
+export const PRODUCTION_CORS_FALLBACK_ORIGINS = [
+  'https://techvistar-website.vercel.app',
+] as const;
+
 export const DEV_ORIGINS = [
   'http://localhost:8080',   // Vite dev server (frontend)
   'http://localhost:8081',   // Vite dev server — fallback port when 8080 is occupied

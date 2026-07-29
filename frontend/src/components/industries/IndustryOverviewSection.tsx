@@ -90,7 +90,7 @@ export const IndustryOverviewSection = ({ industry }: IndustryOverviewSectionPro
 
             </div>
 
-            <h2 className="font-display text-xl font-bold text-slate-900">Overview</h2>
+            <h2 className="font-display text-heading-sm text-slate-900">Overview</h2>
 
           </div>
 

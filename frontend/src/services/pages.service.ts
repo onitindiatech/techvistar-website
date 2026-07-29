@@ -1,37 +1,31 @@
 import { PagesCmsConfig } from '@/types/pagesCms';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+import { adminFetch, getApiBaseUrl, publicFetch, readApiError } from '@/lib/api';
 
 export async function getPublicPagesConfig(): Promise<Partial<PagesCmsConfig>> {
-  const response = await fetch(`${API_BASE_URL}/api/pages/config`, { cache: 'no-store' });
+  const response = await publicFetch(`${getApiBaseUrl()}/api/pages/config`);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch page CMS config');
+    throw new Error(await readApiError(response, 'Failed to fetch page CMS config'));
   }
   const result = await response.json();
   return result.data;
 }
 
 export async function getAdminPagesConfig(): Promise<Partial<PagesCmsConfig>> {
-  const response = await fetch(`${API_BASE_URL}/api/pages/admin/config`, { credentials: 'include' });
+  const response = await adminFetch(`${getApiBaseUrl()}/api/pages/admin/config`);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch page CMS config');
+    throw new Error(await readApiError(response, 'Failed to fetch page CMS config'));
   }
   const result = await response.json();
   return result.data;
 }
 
 export async function updatePagesConfig(payload: Partial<PagesCmsConfig>): Promise<Partial<PagesCmsConfig>> {
-  const response = await fetch(`${API_BASE_URL}/api/pages/admin/config`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/pages/admin/config`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to update page CMS config');
+    throw new Error(await readApiError(response, 'Failed to update page CMS config'));
   }
   const result = await response.json();
   return result.data;

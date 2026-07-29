@@ -177,8 +177,9 @@ const Solutions = () => {
 
   const refreshSolutionsQueries = () => {
     queryClient.invalidateQueries({ queryKey: ["admin", "solutions"] });
-    queryClient.invalidateQueries({ queryKey: ["activeSolutions"] });
-    queryClient.invalidateQueries({ queryKey: ["solutionDetails"] });
+    // Drop cached public nav/landing data so deleted/draft items cannot linger.
+    queryClient.resetQueries({ queryKey: ["activeSolutions"] });
+    queryClient.removeQueries({ queryKey: ["solutionDetails"] });
   };
 
   const createMutation = useMutation({

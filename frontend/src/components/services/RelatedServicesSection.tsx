@@ -94,13 +94,7 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
   return (
     <section id="related" className="border-t border-slate-200/80 pt-12 scroll-mt-24">
       
-      {/* Header */}
-      <div className="flex items-center gap-2 mb-8">
-        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
-        </div>
-        <h2 className="text-2xl font-bold text-slate-900 font-display">Other Services</h2>
-      </div>
+      <h2 className="mb-8 font-display text-2xl font-bold text-slate-900">Other Services</h2>
 
       {/* Grid of related cards */}
       <motion.div 

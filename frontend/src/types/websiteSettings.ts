@@ -99,6 +99,7 @@ export interface WebsiteSettingsConfig {
   whatsappNumber: string;
   supportEmail: string;
   salesEmail: string;
+  careersEmail: string;
   googleMapsUrl: string;
   workingHours: string;
   emergencyContact: string;
@@ -168,8 +169,9 @@ export const DEFAULT_WEBSITE_SETTINGS: WebsiteSettingsConfig = {
   phone: '+91 9573157982',
   address: 'A-75, Sector 4, Noida, Uttar Pradesh 201301, India',
   whatsappNumber: '+91 9573157982',
-  supportEmail: 'hello@techvistar.com',
+  supportEmail: 'support@techvistar.com',
   salesEmail: 'hello@techvistar.com',
+  careersEmail: 'careers@techvistar.com',
   googleMapsUrl: MAPS_URL,
   workingHours: 'Monday - Saturday, 09:00 AM - 07:00 PM IST',
   emergencyContact: '',

@@ -25,12 +25,57 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
   ];
   const [activeId, setActiveId] = useState<string>('overview');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const subnavRef = useRef<HTMLElement>(null);
+  const [primaryHeight, setPrimaryHeight] = useState(() => {
+    return parseInt(
+      getComputedStyle(document.documentElement).getPropertyValue('--primary-nav-height') || '80',
+      10
+    );
+  });
 
   useEffect(() => {
+    const subnav = subnavRef.current;
+    if (!subnav) return;
+
+    const updateHeights = () => {
+      const primaryVal = parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue('--primary-nav-height') || '80',
+        10
+      );
+      setPrimaryHeight(primaryVal);
+      
+      const secondaryVal = subnav.offsetHeight;
+      document.documentElement.style.setProperty('--secondary-nav-height', `${secondaryVal}px`);
+    };
+
+    updateHeights();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateHeights();
+    });
+    resizeObserver.observe(subnav);
+
+    const handleHeightChange = (e: Event) => {
+      const customEvent = e as CustomEvent<number>;
+      setPrimaryHeight(customEvent.detail);
+    };
+
+    window.addEventListener('resize', updateHeights);
+    window.addEventListener('primary-nav-height-change', handleHeightChange);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateHeights);
+      window.removeEventListener('primary-nav-height-change', handleHeightChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const subnavH = subnavRef.current?.offsetHeight || 48;
     // Configure intersection observer to watch for sections entering/leaving view
     const observerOptions = {
       root: null, // viewport
-      rootMargin: '-140px 0px -60% 0px', // trigger active states when scrolled past the combined navbar height
+      rootMargin: `-${primaryHeight + subnavH + 12}px 0px -60% 0px`, // trigger active states when scrolled past the combined navbar height
       threshold: 0,
     };
 
@@ -55,7 +100,7 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
     return () => {
       observer.disconnect();
     };
-  }, [showFaq]);
+  }, [showFaq, primaryHeight]);
 
   // Smooth scroll center active tab on mobile horizontally
   useEffect(() => {
@@ -85,7 +130,8 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
     const element = document.getElementById(id);
     if (element) {
       // Calculate offset for smooth scroll to keep target visible below main and sub navbar
-      const offset = 140;
+      const subnavH = subnavRef.current?.offsetHeight || 48;
+      const offset = primaryHeight + subnavH + 16;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -99,7 +145,7 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
   };
 
   return (
-    <nav className="sticky top-12 sm:top-14 md:top-[4.25rem] z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm w-full transition-all duration-300">
+    <nav ref={subnavRef} className="sticky z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm w-full transition-all duration-300" style={{ top: 'var(--primary-nav-height, 80px)' }}>
       <div className="w-full mx-auto px-4 md:px-6 lg:px-12 xl:px-20 detail-page-gutter">
         <div 
           ref={scrollContainerRef}

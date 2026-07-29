@@ -7,7 +7,7 @@ const PREVIEWABLE_MIME_TYPES = new Set([
   'image/jpg',
 ]);
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+import { getApiBaseUrl } from '@/lib/api';
 
 export interface ResumeAssetFields {
   resumeUrl?: string | null;
@@ -136,7 +136,7 @@ export function getResumeDownloadUrl(asset: ResumeAssetFields): string | null {
     if (asset.originalFileName?.trim()) {
       params.set('filename', asset.originalFileName.trim());
     }
-    return `${API_BASE_URL}/api/upload/resume/file?${params.toString()}`;
+    return `${getApiBaseUrl()}/api/upload/resume/file?${params.toString()}`;
   }
 
   const parsed = parseCloudinaryDeliveryUrl(asset.resumeUrl);

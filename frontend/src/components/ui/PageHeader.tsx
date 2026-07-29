@@ -142,7 +142,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium mb-3">
+            <Badge variant="secondary" className="mb-3 border border-emerald-500/20 bg-emerald-500/10 text-caption text-emerald-400">
               {subtitle}
             </Badge>
           </motion.div>
@@ -151,7 +151,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-4xl md:text-5xl font-extrabold text-white mb-4 font-display"
+          className="mb-4 font-display text-heading-xl text-white md:text-display-xl"
         >
           {title}
         </motion.h1>
@@ -160,7 +160,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-base md:text-lg text-zinc-300 leading-relaxed max-w-2xl"
+            className="max-w-2xl text-body-md text-zinc-300 md:text-body-lg"
           >
             {description}
           </motion.p>

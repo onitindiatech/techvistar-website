@@ -13,7 +13,7 @@ export class FAQService {
    */
   async getActiveFAQs(): Promise<IFAQ[]> {
     logger.info('[FAQService] Retrieving all active FAQs');
-    return FAQModel.find({ status: 'active', isDeleted: { $ne: true } }).sort({ displayOrder: 1 });
+    return FAQModel.find({ status: 'active', isDeleted: { $ne: true } }).sort({ displayOrder: 1 }).lean() as Promise<IFAQ[]>;
   }
 
   /**
@@ -21,11 +21,11 @@ export class FAQService {
    */
   async getFAQById(faqId: string): Promise<IFAQ> {
     logger.info('[FAQService] Retrieving FAQ by ID', { faqId });
-    const faq = await FAQModel.findOne({ faqId, isDeleted: { $ne: true } });
+    const faq = await FAQModel.findOne({ faqId, isDeleted: { $ne: true } }).lean();
     if (!faq) {
       throw ApiError.notFound(`FAQ not found for ID "${faqId}"`);
     }
-    return faq;
+    return faq as IFAQ;
   }
 
   /**

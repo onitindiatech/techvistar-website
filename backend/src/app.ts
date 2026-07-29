@@ -25,8 +25,8 @@ import { requestLogger } from '@/middleware/requestLogger';
 import { notFound }      from '@/middleware/notFound';
 import { errorHandler }  from '@/middleware/errorHandler';
 import apiRouter         from '@/routes/index';
-import { env }           from '@/config/env';
-import { DEV_ORIGINS }   from '@/constants';
+import { env, normalizeOrigin } from '@/config/env';
+import { DEV_ORIGINS, PRODUCTION_CORS_FALLBACK_ORIGINS } from '@/constants';
 
 const app: Application = express();
 
@@ -44,18 +44,25 @@ app.use(helmet({
 // ── 2. CORS ───────────────────────────────────────────────────────────────────
 // Allowed origins:
 //   - In development: DEV_ORIGINS + any localhost/127.0.0.1 port (see callback)
-//   - In production:  env.clientUrls (comma-separated CLIENT_URL)
-const allowedOrigins = env.isDev ? [...DEV_ORIGINS] : env.clientUrls;
+//   - In production:  env.clientUrls (comma-separated CLIENT_URL) + fallback Vercel URL
+const allowedOrigins = [
+  ...new Set(
+    (env.isDev ? [...DEV_ORIGINS] : [...env.clientUrls, ...PRODUCTION_CORS_FALLBACK_ORIGINS]).map(
+      normalizeOrigin,
+    ),
+  ),
+];
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no Origin (Postman, server-to-server, mobile apps)
     if (!origin) return callback(null, true);
+    const normalizedOrigin = normalizeOrigin(origin);
     // In development, allow any local Vite port (8080, 8081, 8082, 5173, …)
-    if (env.isDev && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    if (env.isDev && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(normalizedOrigin)) {
       return callback(null, true);
     }
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(normalizedOrigin)) {
       return callback(null, true);
     }
     return callback(new Error(`CORS: Origin ${origin} not allowed`));

@@ -289,7 +289,13 @@ export function ServiceExtendedCmsFields({
     return (
       <div className="space-y-4">
         <p className="text-xs text-slate-500">Leave fields empty to use global defaults from Services Settings.</p>
-        {(Object.keys(state.sidebar) as Array<keyof typeof state.sidebar>).map((key) => (
+        <p className="rounded-lg border border-emerald-100 bg-emerald-50/60 px-3 py-2 text-[11px] text-emerald-800">
+          Direct Inquiries email is managed globally in{' '}
+          <span className="font-semibold">Website Settings → Global Contact Information</span> (Support email).
+        </p>
+        {(Object.keys(state.sidebar) as Array<keyof typeof state.sidebar>)
+          .filter((key) => key !== 'contactEmail')
+          .map((key) => (
           <div key={key}>
             <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{key}</label>
             <Input

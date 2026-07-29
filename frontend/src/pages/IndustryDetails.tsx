@@ -28,7 +28,6 @@ export const IndustryDetails = () => {
   const { data: pagesConfigApi } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
   const industriesLanding = mergePagesCmsConfig(pagesConfigApi).industriesLanding;
 
@@ -36,8 +35,6 @@ export const IndustryDetails = () => {
     queryKey: ['industryDetails', slug],
     queryFn: () => getIndustryBySlug(slug || ''),
     enabled: !!slug,
-    staleTime: 0,
-    refetchOnMount: 'always',
   });
 
   const industry = apiIndustry ? decorateIndustry(apiIndustry) : undefined;

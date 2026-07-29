@@ -41,7 +41,6 @@ const itemVariants = {
 
 const Login = () => {
   const navigate = useNavigate();
-  console.log("VITE_API_BASE_URL resolved to:", import.meta.env.VITE_API_BASE_URL || "http://localhost:5000");
   const queryClient = useQueryClient();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);

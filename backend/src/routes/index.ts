@@ -31,6 +31,7 @@ import industryRouter from './industry.routes';
 import uploadRouter   from './upload.routes';
 import pagesRouter    from './pages.routes';
 import officeRouter   from './office.routes';
+import adminRouter    from './admin.routes';
 
 const router = Router();
 
@@ -50,6 +51,7 @@ router.use('/industries', industryRouter);
 router.use('/upload',     uploadRouter);
 router.use('/pages',      pagesRouter);
 router.use('/offices',    officeRouter);
+router.use('/admin',      adminRouter);
 
 // ─── API root info ─────────────────────────────────────────────────────────────
 // GET /api → Basic API info (not a real endpoint, just useful for developers)

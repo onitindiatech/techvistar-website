@@ -33,7 +33,6 @@ export const Industries = () => {
   const { data: pagesConfigApi } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const landing = mergePagesCmsConfig(pagesConfigApi).industriesLanding;
@@ -43,8 +42,6 @@ export const Industries = () => {
   const { data: apiIndustries, isLoading, isError, error, isSuccess } = useQuery({
     queryKey: ['activeIndustries'],
     queryFn: () => getActiveIndustries(),
-    staleTime: 0,
-    refetchOnMount: 'always',
     retry: 2,
   });
 
@@ -122,17 +119,17 @@ export const Industries = () => {
                   <div className="flex items-center gap-2 text-emerald-600">
                     <Layers className="h-4 w-4" />
                     <span className="text-[10px] font-black uppercase tracking-widest">
-                      {catalog.eyebrow || 'Full catalog'}
+                      {catalog.eyebrow || DEFAULT_INDUSTRIES_LANDING_CMS.catalog.eyebrow}
                     </span>
                   </div>
                   <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-                    {catalog.title || 'All Industries'}
+                    {catalog.title || DEFAULT_INDUSTRIES_LANDING_CMS.catalog.title}
                   </h2>
                   {catalog.subtitle?.trim() && (
                     <p className="text-sm font-bold text-emerald-600">{catalog.subtitle}</p>
                   )}
                   <p className="text-sm font-semibold text-slate-500">
-                    {catalog.description}
+                    {catalog.description || DEFAULT_INDUSTRIES_LANDING_CMS.catalog.description}
                   </p>
                 </div>
 
@@ -143,7 +140,9 @@ export const Industries = () => {
                         key={industry.id}
                         industry={industry}
                         index={index}
-                        learnMoreLabel={catalog.learnMoreLabel || 'Explore industry'}
+                        learnMoreLabel={
+                          DEFAULT_INDUSTRIES_LANDING_CMS.catalog.learnMoreLabel
+                        }
                       />
                     ))}
                   </div>
@@ -194,15 +193,15 @@ export const Industries = () => {
             <div className="relative z-10 space-y-6">
               <div className="inline-flex select-none items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
                 <Sparkles className="h-3 w-3 animate-pulse text-emerald-100" />
-                <span>{bottomCta.badge || 'Industry Solutions'}</span>
+                <span>{bottomCta.badge || DEFAULT_INDUSTRIES_LANDING_CMS.cta.badge}</span>
               </div>
 
               <h2 className="mx-auto max-w-2xl font-display text-2xl font-black leading-tight tracking-tight text-white md:text-4xl">
-                {bottomCta.title}
+                {bottomCta.title || DEFAULT_INDUSTRIES_LANDING_CMS.cta.title}
               </h2>
 
               <p className="mx-auto max-w-xl text-xs font-medium leading-relaxed text-emerald-50/90 md:text-sm">
-                {bottomCta.description}
+                {bottomCta.description || DEFAULT_INDUSTRIES_LANDING_CMS.cta.description}
               </p>
 
               <div className="flex flex-wrap justify-center gap-4 pt-2">
@@ -211,7 +210,9 @@ export const Industries = () => {
                     asChild
                     className="inline-flex h-11 items-center gap-2 rounded-xl border-none bg-white px-7 py-3 text-xs font-bold text-emerald-700 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:bg-slate-50 hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] md:text-sm"
                   >
-                    <Link to={bottomCta.buttonLink || '/contact'}>{bottomCta.buttonText}</Link>
+                    <Link to={bottomCta.buttonLink || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonLink}>
+                      {bottomCta.buttonText || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonText}
+                    </Link>
                   </Button>
                 </motion.div>
 
@@ -221,9 +222,15 @@ export const Industries = () => {
                     className="inline-flex h-11 items-center gap-2 rounded-xl border-white/30 px-7 py-3 text-xs font-bold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm"
                     asChild
                   >
-                    <Link to={bottomCta.secondaryButtonLink || '/contact'}>
+                    <Link
+                      to={
+                        bottomCta.secondaryButtonLink ||
+                        DEFAULT_INDUSTRIES_LANDING_CMS.cta.secondaryButtonLink
+                      }
+                    >
                       <MessageSquare className="h-4 w-4" />
-                      {bottomCta.secondaryButtonText || 'Contact Us'}
+                      {bottomCta.secondaryButtonText ||
+                        DEFAULT_INDUSTRIES_LANDING_CMS.cta.secondaryButtonText}
                     </Link>
                   </Button>
                 </motion.div>

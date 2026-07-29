@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getActiveProjects } from '@/services/portfolio.service';
 import { decorateProject, Project } from '@/data/projects';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Briefcase, Sparkles } from 'lucide-react';
+import { ArrowRight, Briefcase } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -63,13 +63,9 @@ export const CaseStudiesSection = ({ service }: SectionProps) => {
         </svg>
       </div>
 
-      {/* Header */}
-      <div className="relative z-10 flex items-center gap-2 mb-6">
-        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
-        </div>
-        <h2 className="text-xl font-bold text-slate-900 font-display">Case Studies & Projects</h2>
-      </div>
+      <h2 className="relative z-10 mb-6 font-display text-heading-sm text-slate-900">
+        Case Studies &amp; Projects
+      </h2>
       
       {relatedProjects.length > 0 ? (
         <motion.div 

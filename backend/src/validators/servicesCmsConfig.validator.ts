@@ -72,7 +72,7 @@ function parseSidebarDefaultsBlock(sidebarDefaults: Record<string, unknown>): Re
       sidebarDefaults.directInquiriesBody,
       'Have an SOW ready or need instant escalation? Contact our lead architect directly at:'
     ),
-    contactEmail: trimStr(sidebarDefaults.contactEmail, 'architect@techvistar.com'),
+    contactEmail: trimStr(sidebarDefaults.contactEmail, 'hello@techvistar.com'),
   };
 }
 

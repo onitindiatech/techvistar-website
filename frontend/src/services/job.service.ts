@@ -1,4 +1,5 @@
 import { SeoMetadata } from '@/types/seo';
+import { adminFetch, getApiBaseUrl, publicFetch, readApiError } from '@/lib/api';
 
 export interface Job extends SeoMetadata {
   _id: string;
@@ -26,8 +27,6 @@ export interface Job extends SeoMetadata {
   updatedAt: string;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-
 interface QueryParams {
   page?: number;
   limit?: number;
@@ -44,11 +43,10 @@ interface QueryParams {
  * Fetches the list of active job postings from the backend.
  */
 export async function getActiveJobs(): Promise<Job[]> {
-  const url = `${API_BASE_URL}/api/careers/jobs`;
-  const response = await fetch(url, { cache: 'no-store' });
+  const url = `${getApiBaseUrl()}/api/careers/jobs`;
+  const response = await publicFetch(url);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch job postings');
+    throw new Error(await readApiError(response, 'Failed to fetch job postings'));
   }
   const result = await response.json();
   return result.data || [];
@@ -58,7 +56,7 @@ export async function getActiveJobs(): Promise<Job[]> {
  * Fetches all job postings for admin panel with pagination, search, and filtering.
  */
 export async function getAllJobs(params: QueryParams = {}): Promise<{ jobs: Job[]; pagination: any }> {
-  const url = new URL(`${API_BASE_URL}/api/careers/jobs/admin`);
+  const url = new URL(`${getApiBaseUrl()}/api/careers/jobs/admin`);
 
   if (params.page) url.searchParams.append('page', String(params.page));
   if (params.limit) url.searchParams.append('limit', String(params.limit));
@@ -70,12 +68,9 @@ export async function getAllJobs(params: QueryParams = {}): Promise<{ jobs: Job[
   if (params.sortBy) url.searchParams.append('sortBy', params.sortBy);
   if (params.sortOrder) url.searchParams.append('sortOrder', params.sortOrder);
 
-  const response = await fetch(url.toString(), {
-    credentials: 'include',
-  });
+  const response = await adminFetch(url.toString());
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch all job postings');
+    throw new Error(await readApiError(response, 'Failed to fetch all job postings'));
   }
   const result = await response.json();
   return {
@@ -94,11 +89,10 @@ export async function getAllJobs(params: QueryParams = {}): Promise<{ jobs: Job[
  * @param slug Job slug
  */
 export async function getJobBySlug(slug: string): Promise<Job> {
-  const url = `${API_BASE_URL}/api/careers/jobs/${slug}`;
-  const response = await fetch(url, { cache: 'no-store' });
+  const url = `${getApiBaseUrl()}/api/careers/jobs/${slug}`;
+  const response = await publicFetch(url);
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch job details');
+    throw new Error(await readApiError(response, 'Failed to fetch job details'));
   }
   const result = await response.json();
   return result.data;
@@ -108,16 +102,13 @@ export async function getJobBySlug(slug: string): Promise<Job> {
  * Creates a new job posting (admin).
  */
 export async function createJob(data: any): Promise<Job> {
-  const url = `${API_BASE_URL}/api/careers/jobs/admin`;
-  const response = await fetch(url, {
+  const url = `${getApiBaseUrl()}/api/careers/jobs/admin`;
+  const response = await adminFetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to create job');
+    throw new Error(await readApiError(response, 'Failed to create job'));
   }
   const result = await response.json();
   return result.data;
@@ -127,16 +118,13 @@ export async function createJob(data: any): Promise<Job> {
  * Updates an existing job posting (admin).
  */
 export async function updateJob(id: string, data: any): Promise<Job> {
-  const url = `${API_BASE_URL}/api/careers/jobs/admin/${id}`;
-  const response = await fetch(url, {
+  const url = `${getApiBaseUrl()}/api/careers/jobs/admin/${id}`;
+  const response = await adminFetch(url, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to update job');
+    throw new Error(await readApiError(response, 'Failed to update job'));
   }
   const result = await response.json();
   return result.data;
@@ -146,14 +134,12 @@ export async function updateJob(id: string, data: any): Promise<Job> {
  * Soft-deletes a job posting (admin).
  */
 export async function deleteJob(id: string): Promise<void> {
-  const url = `${API_BASE_URL}/api/careers/jobs/admin/${id}`;
-  const response = await fetch(url, {
+  const url = `${getApiBaseUrl()}/api/careers/jobs/admin/${id}`;
+  const response = await adminFetch(url, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to delete job');
+    throw new Error(await readApiError(response, 'Failed to delete job'));
   }
 }
 
@@ -161,13 +147,11 @@ export async function deleteJob(id: string): Promise<void> {
  * Restores a soft-deleted job posting (admin).
  */
 export async function restoreJob(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/jobs/admin/${id}/restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/jobs/admin/${id}/restore`, {
     method: 'POST',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to restore job');
+    throw new Error(await readApiError(response, 'Failed to restore job'));
   }
 }
 
@@ -175,13 +159,11 @@ export async function restoreJob(id: string): Promise<void> {
  * Permanently deletes a job posting (admin).
  */
 export async function permanentlyDeleteJob(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/jobs/admin/${id}/permanent`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/jobs/admin/${id}/permanent`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to permanently delete job');
+    throw new Error(await readApiError(response, 'Failed to permanently delete job'));
   }
 }
 
@@ -189,15 +171,12 @@ export async function permanentlyDeleteJob(id: string): Promise<void> {
  * Bulk soft-deletes job postings (admin).
  */
 export async function bulkDeleteJobs(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/jobs/admin/bulk-delete`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/jobs/admin/bulk-delete`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk delete jobs');
+    throw new Error(await readApiError(response, 'Failed to bulk delete jobs'));
   }
 }
 
@@ -205,15 +184,12 @@ export async function bulkDeleteJobs(ids: string[]): Promise<void> {
  * Bulk restores soft-deleted job postings (admin).
  */
 export async function bulkRestoreJobs(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/jobs/admin/bulk-restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/jobs/admin/bulk-restore`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk restore jobs');
+    throw new Error(await readApiError(response, 'Failed to bulk restore jobs'));
   }
 }
 
@@ -221,15 +197,12 @@ export async function bulkRestoreJobs(ids: string[]): Promise<void> {
  * Bulk updates job status (admin).
  */
 export async function bulkUpdateStatus(ids: string[], status: 'active' | 'closed' | 'draft'): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/jobs/admin/bulk-status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/jobs/admin/bulk-status`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids, status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk update job status');
+    throw new Error(await readApiError(response, 'Failed to bulk update job status'));
   }
 }
 
@@ -252,7 +225,7 @@ interface ApplicationQueryParams {
  * Fetches job applications with pagination (admin).
  */
 export async function getAllApplications(params: ApplicationQueryParams = {}): Promise<{ applications: any[]; pagination: any }> {
-  const url = new URL(`${API_BASE_URL}/api/careers/apply/admin`);
+  const url = new URL(`${getApiBaseUrl()}/api/careers/apply/admin`);
 
   if (params.page) url.searchParams.append('page', String(params.page));
   if (params.limit) url.searchParams.append('limit', String(params.limit));
@@ -263,10 +236,9 @@ export async function getAllApplications(params: ApplicationQueryParams = {}): P
   if (params.sortBy) url.searchParams.append('sortBy', params.sortBy);
   if (params.sortOrder) url.searchParams.append('sortOrder', params.sortOrder);
 
-  const response = await fetch(url.toString(), { credentials: 'include' });
+  const response = await adminFetch(url.toString());
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to fetch job applications');
+    throw new Error(await readApiError(response, 'Failed to fetch job applications'));
   }
   const result = await response.json();
   return {
@@ -279,15 +251,12 @@ export async function getAllApplications(params: ApplicationQueryParams = {}): P
  * Updates application status (admin).
  */
 export async function updateApplicationStatus(id: string, status: ApplicationStatus): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/apply/admin/${id}/status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/apply/admin/${id}/status`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to update application status');
+    throw new Error(await readApiError(response, 'Failed to update application status'));
   }
   const result = await response.json();
   return result.data;
@@ -297,74 +266,59 @@ export async function updateApplicationStatus(id: string, status: ApplicationSta
  * Soft-deletes an application (admin).
  */
 export async function deleteApplication(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/apply/admin/${id}`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/apply/admin/${id}`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to delete application');
+    throw new Error(await readApiError(response, 'Failed to delete application'));
   }
 }
 
 export async function restoreApplication(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/apply/admin/${id}/restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/apply/admin/${id}/restore`, {
     method: 'POST',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to restore application');
+    throw new Error(await readApiError(response, 'Failed to restore application'));
   }
 }
 
 export async function permanentlyDeleteApplication(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/apply/admin/${id}/permanent`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/apply/admin/${id}/permanent`, {
     method: 'DELETE',
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to permanently delete application');
+    throw new Error(await readApiError(response, 'Failed to permanently delete application'));
   }
 }
 
 export async function bulkDeleteApplications(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/apply/admin/bulk-delete`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/apply/admin/bulk-delete`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk delete applications');
+    throw new Error(await readApiError(response, 'Failed to bulk delete applications'));
   }
 }
 
 export async function bulkRestoreApplications(ids: string[]): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/apply/admin/bulk-restore`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/apply/admin/bulk-restore`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk restore applications');
+    throw new Error(await readApiError(response, 'Failed to bulk restore applications'));
   }
 }
 
 export async function bulkUpdateApplicationStatus(ids: string[], status: ApplicationStatus): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/careers/apply/admin/bulk-status`, {
+  const response = await adminFetch(`${getApiBaseUrl()}/api/careers/apply/admin/bulk-status`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ids, status }),
-    credentials: 'include',
   });
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to bulk update application status');
+    throw new Error(await readApiError(response, 'Failed to bulk update application status'));
   }
 }
 
@@ -389,12 +343,10 @@ export interface JobApplicationInput {
  * Submits a new job application (public).
  */
 export async function submitJobApplication(data: JobApplicationInput): Promise<any> {
-  const url = `${API_BASE_URL}/api/careers/apply`;
-  const response = await fetch(url, {
+  const url = `${getApiBaseUrl()}/api/careers/apply`;
+  const response = await publicFetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
   const responseBody = await response.json().catch(() => ({}));

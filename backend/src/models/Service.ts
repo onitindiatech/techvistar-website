@@ -301,7 +301,7 @@ const serviceSchema = new Schema<IService>(
       secondaryButtonHref: {
         type: String,
         trim: true,
-        default: 'mailto:architect@techvistar.com?subject=Consultation%20Escalation',
+        default: 'mailto:support@techvistar.com?subject=Consultation%20Escalation',
       },
     },
     sidebar: {

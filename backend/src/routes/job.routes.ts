@@ -20,6 +20,7 @@ import {
 import { authMiddleware } from '@/middleware/auth.middleware';
 import { adminGetApplicationsByJob } from '@/controllers/jobApplication.controller';
 import { adminLimiter, publicReadLimiter } from '@/middleware/rateLimit.middleware';
+import { publicCmsCache } from '@/middleware/publicCmsCache.middleware';
 
 const router = Router();
 
@@ -37,7 +38,7 @@ router.put('/admin/:id', authMiddleware, adminUpdateJob);
 router.delete('/admin/:id', authMiddleware, adminDeleteJob);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
-router.get('/', publicReadLimiter, listJobs);
-router.get('/:slug', publicReadLimiter, getJobBySlug);
+router.get('/', publicReadLimiter, publicCmsCache, listJobs);
+router.get('/:slug', publicReadLimiter, publicCmsCache, getJobBySlug);
 
 export default router;

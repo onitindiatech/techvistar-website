@@ -227,7 +227,7 @@ export class ServiceService {
     for (const fallbackService of FALLBACK_SERVICES) {
       if (!fallbackService.slug) continue;
 
-      const existing = await Service.findOne({ slug: fallbackService.slug });
+      const existing = await Service.findOne({ slug: fallbackService.slug }).lean();
       if (!existing) {
         await Service.create({
           ...fallbackService,
@@ -243,12 +243,18 @@ export class ServiceService {
   }
 
   /**
+   * Idempotent seed for fallback services — call once at process startup, not per request.
+   */
+  async seedFallbackServicesIfNeeded(): Promise<void> {
+    await this.ensureFallbackServices();
+  }
+
+  /**
    * Retrieves all active services ordered by displayOrder ascending.
    * Returns only safe, client-facing fields for public consumption.
    */
   async getActiveServices(category?: string): Promise<IService[]> {
     logger.info('[ServiceService] Retrieving all active services', { category });
-    await this.ensureFallbackServices();
 
     const query: any = { status: 'active', isDeleted: { $ne: true } };
     if (category && category !== 'All') {
@@ -256,7 +262,8 @@ export class ServiceService {
     }
     return Service.find(query)
       .select('title slug shortDescription fullDescription icon coverImage thumbnail dashboardImage features technologies benefits offerings displayOrder seoTitle seoDescription category featured')
-      .sort({ displayOrder: 1, createdAt: 1 });
+      .sort({ displayOrder: 1, createdAt: 1 })
+      .lean() as Promise<IService[]>;
   }
 
   /**
@@ -343,13 +350,12 @@ export class ServiceService {
    */
   async getServiceBySlug(slug: string): Promise<IService> {
     logger.info('[ServiceService] Retrieving active service by slug', { slug });
-    await this.ensureFallbackServices();
 
-    const service = await Service.findOne({ slug, status: 'active', isDeleted: { $ne: true } });
+    const service = await Service.findOne({ slug, status: 'active', isDeleted: { $ne: true } }).lean();
     if (!service) {
       throw ApiError.notFound(`Service not found for slug "${slug}"`);
     }
-    return service;
+    return service as IService;
   }
 }
 

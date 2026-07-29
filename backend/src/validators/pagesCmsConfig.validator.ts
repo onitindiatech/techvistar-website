@@ -11,6 +11,7 @@ const SECTION_KEYS = [
   'contact',
   'solutionsLanding',
   'industriesLanding',
+  'portfolioLanding',
   'careers',
   'websiteSettings',
 ] as const;
@@ -23,6 +24,7 @@ const SEO_SECTIONS: SectionKey[] = [
   'contact',
   'solutionsLanding',
   'industriesLanding',
+  'portfolioLanding',
   'careers',
 ];
 

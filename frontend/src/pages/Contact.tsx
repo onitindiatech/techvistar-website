@@ -23,6 +23,7 @@ import { seoFromItem } from '@/lib/seoAdmin';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import { AnimatedStat } from '@/components/ui/AnimatedStat';
+import { resolvePrimaryEmail, resolveSitePhone } from '@/lib/siteContact';
 import contactBg from '../assets/contact-header.png';
 import { getActiveOffices } from '@/services/office.service';
 
@@ -56,13 +57,15 @@ export const Contact = () => {
   const { data: pagesConfig } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const contact = mergePagesCmsConfig(pagesConfig).contact;
+  const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
+  const contactEmail = resolvePrimaryEmail(websiteSettings) || contact.contactInfo.email;
+  const contactPhone = resolveSitePhone(websiteSettings) || contact.contactInfo.phone;
   const contactSeo = seoFromItem(contact as unknown as Record<string, unknown>);
   const heroBg = contact.hero.backgroundImage?.trim() || contactBg;
-  const phoneHref = `tel:${contact.contactInfo.phone.replace(/\s/g, '')}`;
+  const phoneHref = `tel:${contactPhone.replace(/\s/g, '')}`;
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mapToggles, setMapToggles] = useState<Record<string, boolean>>({});
@@ -210,14 +213,14 @@ export const Contact = () => {
                   </div>
                   <div>
                     <div className="font-extrabold font-display text-slate-900 text-sm">Call Us</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.contactInfo.phone}</p>
+                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contactPhone}</p>
                     <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.office.hours}</span>
                   </div>
                 </motion.a>
 
                 {/* Email card */}
                 <motion.a 
-                  href={`mailto:${contact.contactInfo.email}`}
+                  href={`mailto:${contactEmail}`}
                   whileHover={{ y: -2, scale: 1.01 }}
                   className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
@@ -226,7 +229,7 @@ export const Contact = () => {
                   </div>
                   <div>
                     <div className="font-extrabold font-display text-slate-900 text-sm">Email Us</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.contactInfo.email}</p>
+                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contactEmail}</p>
                     <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.contactInfo.supportText}</span>
                   </div>
                 </motion.a>

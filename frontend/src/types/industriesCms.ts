@@ -24,7 +24,7 @@ export const DEFAULT_INDUSTRY_SIDEBAR: IndustrySidebarBlock = {
   directInquiriesTitle: 'Direct Inquiries',
   directInquiriesBody:
     'Have compliance requirements or an RFP ready? Contact our vertical specialists directly at:',
-  contactEmail: 'hello@techvistar.com',
+  contactEmail: '',
 };
 
 export const DEFAULT_INDUSTRY_CONSULTATION: IndustryConsultationBlock = {

@@ -14,6 +14,7 @@ import {
 export type { HomeCmsConfig } from '@/types/homeCms';
 
 export interface CmsStatItem {
+  icon?: string;
   value: string;
   label: string;
 }
@@ -45,12 +46,32 @@ export interface CmsCtaBlock {
   buttonLink: string;
 }
 
+/** Shared card shape for About focus areas + industries-we-serve blocks */
+export interface AboutContentCard {
+  icon: string;
+  title: string;
+  description: string;
+  /** Theme key: blue | emerald | violet | amber | cyan | rose | teal */
+  color: string;
+  image?: string;
+  imagePublicId?: string;
+  displayOrder: number;
+  active: boolean;
+}
+
+export interface AboutCardsSection {
+  heading: string;
+  description: string;
+  cards: AboutContentCard[];
+}
+
 export interface AboutCmsConfig extends SeoMetadata {
   hero: LandingHeroBlock;
   story: { title: string; body: string };
   mission: { title: string; text: string };
   vision: { title: string; text: string };
-  teamSection: { heading: string; description: string };
+  focusAreas: AboutCardsSection;
+  industriesServe: AboutCardsSection;
   cta: { text: string; buttonText: string; buttonLink: string };
 }
 
@@ -163,6 +184,83 @@ export interface IndustriesLandingCmsConfig extends SeoMetadata {
   consultationDefaults: IndustryConsultationBlock;
 }
 
+export interface PortfolioLandingHeroBlock extends LandingHeroBlock {
+  badge: string;
+  highlightedWords: string;
+  primaryButtonText: string;
+  primaryButtonLink: string;
+  secondaryButtonText: string;
+  secondaryButtonLink: string;
+  image?: string;
+  imagePublicId?: string;
+}
+
+export interface PortfolioLandingFiltersBlock {
+  enableSearch: boolean;
+  enableFilters: boolean;
+  searchPlaceholder: string;
+  allIndustriesLabel: string;
+  allServicesLabel: string;
+  allTechnologiesLabel: string;
+  allStatusesLabel: string;
+}
+
+export interface PortfolioLandingSectionBlock {
+  badge: string;
+  heading: string;
+  description: string;
+  primaryButtonLabel?: string;
+  secondaryButtonLabel?: string;
+  emptyStateTitle?: string;
+  emptyStateDescription?: string;
+}
+
+export interface PortfolioLandingStatisticsBlock {
+  heading: string;
+  description: string;
+  cards: CmsStatItem[];
+}
+
+export interface PortfolioLandingTestimonialBlock {
+  badge: string;
+  quote: string;
+  author: string;
+  role: string;
+  company: string;
+}
+
+export interface PortfolioLandingWorkflowStep {
+  title: string;
+  description: string;
+}
+
+export interface PortfolioLandingWorkflowBlock {
+  heading: string;
+  description: string;
+  steps: PortfolioLandingWorkflowStep[];
+}
+
+export interface PortfolioLandingCtaBlock extends CmsCtaBlock {
+  badge: string;
+  secondaryButtonText: string;
+  secondaryButtonLink: string;
+  backgroundImage?: string;
+  backgroundImagePublicId?: string;
+  image?: string;
+  imagePublicId?: string;
+}
+
+export interface PortfolioLandingCmsConfig extends SeoMetadata {
+  hero: PortfolioLandingHeroBlock;
+  filters: PortfolioLandingFiltersBlock;
+  featuredProjects: PortfolioLandingSectionBlock;
+  recentWork: PortfolioLandingSectionBlock;
+  statistics: PortfolioLandingStatisticsBlock;
+  testimonial: PortfolioLandingTestimonialBlock;
+  workflow: PortfolioLandingWorkflowBlock;
+  cta: PortfolioLandingCtaBlock;
+}
+
 export interface CareersLandingCmsConfig extends SeoMetadata {
   hero: LandingHeroBlock;
   culture: { title: string; description: string };
@@ -195,11 +293,33 @@ export interface PagesCmsConfig {
   contact: ContactCmsConfig;
   solutionsLanding: SolutionsLandingCmsConfig;
   industriesLanding: IndustriesLandingCmsConfig;
+  portfolioLanding: PortfolioLandingCmsConfig;
   careers: CareersLandingCmsConfig;
   websiteSettings: WebsiteSettingsConfig;
 }
 
 export { DEFAULT_HOME_CMS };
+
+const DEFAULT_FOCUS_THEMES = ['blue', 'emerald', 'violet', 'amber', 'cyan', 'rose'] as const;
+const DEFAULT_FOCUS_ICONS = [
+  'Smartphone',
+  'TrendingUp',
+  'Globe',
+  'Zap',
+  'Sparkles',
+  'GraduationCap',
+] as const;
+
+const DEFAULT_INDUSTRY_SERVE_CARDS: AboutContentCard[] = [
+  { icon: 'Heart', title: 'Healthcare', description: 'HIPAA-compliant telemedicine platforms and operational databases.', color: 'emerald', displayOrder: 0, active: true },
+  { icon: 'DollarSign', title: 'Finance', description: 'High-security transaction systems and digital banking analytics.', color: 'emerald', displayOrder: 1, active: true },
+  { icon: 'GraduationCap', title: 'Education', description: 'Custom LMS architectures and student tracking dashboards.', color: 'emerald', displayOrder: 2, active: true },
+  { icon: 'Truck', title: 'Logistics', description: 'Route optimization solvers, capacity scheduling, and GPS trackers.', color: 'emerald', displayOrder: 3, active: true },
+  { icon: 'Home', title: 'Real Estate', description: 'Multi-tenant property portals and CRM pipelines.', color: 'emerald', displayOrder: 4, active: true },
+  { icon: 'Factory', title: 'Manufacturing', description: 'IoT sensor telemetry platforms and predictive maintenance schedulers.', color: 'emerald', displayOrder: 5, active: true },
+  { icon: 'ShoppingCart', title: 'Retail', description: 'Scalable headless eCommerce backends and custom checkouts.', color: 'emerald', displayOrder: 6, active: true },
+  { icon: 'Landmark', title: 'Government', description: 'Secure civic portal databases and administrative dashboards.', color: 'emerald', displayOrder: 7, active: true },
+];
 
 export const DEFAULT_ABOUT_CMS: AboutCmsConfig = {
   hero: {
@@ -214,9 +334,24 @@ export const DEFAULT_ABOUT_CMS: AboutCmsConfig = {
   },
   mission: { title: ABOUT_COPY.mission.title, text: ABOUT_COPY.mission.text },
   vision: { title: ABOUT_COPY.vision.title, text: ABOUT_COPY.vision.text },
-  teamSection: {
-    heading: 'Our team',
-    description: ABOUT_COPY.closing,
+  focusAreas: {
+    heading: ABOUT_PAGE.focusAreasHeading,
+    description: ABOUT_PAGE.focusAreasDescription,
+    cards: ABOUT_PAGE.focusAreas.map((area, index) => ({
+      icon: DEFAULT_FOCUS_ICONS[index % DEFAULT_FOCUS_ICONS.length],
+      title: area.title,
+      description: area.description,
+      color: DEFAULT_FOCUS_THEMES[index % DEFAULT_FOCUS_THEMES.length],
+      image: '',
+      imagePublicId: '',
+      displayOrder: index,
+      active: true,
+    })),
+  },
+  industriesServe: {
+    heading: 'Industries We Serve',
+    description: 'Deploying tailored digital capabilities optimized for industry regulations.',
+    cards: DEFAULT_INDUSTRY_SERVE_CARDS,
   },
   cta: {
     text: ABOUT_PAGE.ctaText,
@@ -432,6 +567,100 @@ export const DEFAULT_INDUSTRIES_LANDING_CMS: IndustriesLandingCmsConfig = {
   robotsFollow: true,
 };
 
+export const DEFAULT_PORTFOLIO_LANDING_CMS: PortfolioLandingCmsConfig = {
+  hero: {
+    badge: 'Portfolio',
+    title: 'Our Work',
+    subtitle: '',
+    highlightedWords: 'Work',
+    description:
+      'Showcase production-ready digital products, enterprise platforms, AI solutions, SaaS applications and scalable software engineered for modern businesses.',
+    backgroundImage: '',
+    backgroundImagePublicId: '',
+    image: '',
+    imagePublicId: '',
+    primaryButtonText: 'View Projects',
+    primaryButtonLink: '#projects-grid',
+    secondaryButtonText: 'Contact Us',
+    secondaryButtonLink: '/contact',
+  },
+  filters: {
+    enableSearch: true,
+    enableFilters: true,
+    searchPlaceholder: 'Search case studies...',
+    allIndustriesLabel: 'All Industries',
+    allServicesLabel: 'All Services',
+    allTechnologiesLabel: 'All Technologies',
+    allStatusesLabel: 'All Statuses',
+  },
+  featuredProjects: {
+    badge: 'Recent Work',
+    heading: 'Featured Projects',
+    description: 'Innovative solutions that drive real business impact',
+    primaryButtonLabel: 'View Case Study',
+  },
+  recentWork: {
+    badge: 'Explore More',
+    heading: 'Explore More Projects',
+    description: 'Discover additional case studies and technical implementations across industries.',
+    primaryButtonLabel: 'View Project',
+    secondaryButtonLabel: 'Case Study',
+    emptyStateTitle: 'No case studies match.',
+    emptyStateDescription: 'Try modifying your text search query or filter tags.',
+  },
+  statistics: {
+    heading: 'Trusted by Businesses Across Industries',
+    description: 'Delivering high-performance architecture that drives product conversion.',
+    cards: [
+      { icon: 'Briefcase', value: '50+', label: 'Projects Delivered' },
+      { icon: 'Building2', value: '15+', label: 'Industries' },
+      { icon: 'Smile', value: '98%', label: 'Client Satisfaction' },
+      { icon: 'Award', value: '5+', label: 'Years Experience' },
+    ],
+  },
+  testimonial: {
+    badge: 'Client Success',
+    quote:
+      'TechVistar delivered our route optimization system ahead of schedule. The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag.',
+    author: 'Chief of Operations',
+    role: '',
+    company: 'Logistics Fleet Management Company',
+  },
+  workflow: {
+    heading: 'Development Process',
+    description: 'Our structural path from product constraints to production deployment.',
+    steps: [
+      { title: 'Discovery', description: 'Understanding your product requirements, constraints, and business metrics.' },
+      { title: 'Planning', description: 'Architecture mapping, database schema design, and milestone scheduling.' },
+      { title: 'Design', description: 'Interactive prototypes, UI/UX validation, and component design system setup.' },
+      { title: 'Development', description: 'Production-ready code execution, API mapping, and CI/CD pipelines.' },
+      { title: 'Testing', description: 'Comprehensive QA checks, load testing, and security code audits.' },
+      { title: 'Deployment', description: 'Secure cloud hosting, environment setups, and production release.' },
+      { title: 'Support', description: 'Continuous SLAs, telemetry monitoring, and feature iteration cycles.' },
+    ],
+  },
+  cta: {
+    badge: '',
+    title: 'Ready to Build Your Next Product?',
+    description:
+      "Let's discuss your idea. Connect with our engineering leads to outline timelines, compliance metrics, and technical requirements.",
+    buttonText: 'Start a Project',
+    buttonLink: '/contact',
+    secondaryButtonText: 'View Case Studies',
+    secondaryButtonLink: '#projects-grid',
+    backgroundImage: '',
+    backgroundImagePublicId: '',
+    image: '',
+    imagePublicId: '',
+  },
+  seoTitle: 'Our Work | TechVistar Portfolio',
+  seoDescription:
+    'Showcase production-ready digital products, enterprise platforms, AI solutions, SaaS applications and scalable software engineered for modern businesses.',
+  canonicalUrl: 'https://techvistar.com/work',
+  robotsIndex: true,
+  robotsFollow: true,
+};
+
 export const DEFAULT_CAREERS_LANDING_CMS: CareersLandingCmsConfig = {
   hero: {
     eyebrow: 'Careers at TechVistar',
@@ -485,6 +714,7 @@ export const DEFAULT_PAGES_CMS_CONFIG: PagesCmsConfig = {
   contact: DEFAULT_CONTACT_CMS,
   solutionsLanding: DEFAULT_SOLUTIONS_LANDING_CMS,
   industriesLanding: DEFAULT_INDUSTRIES_LANDING_CMS,
+  portfolioLanding: DEFAULT_PORTFOLIO_LANDING_CMS,
   careers: DEFAULT_CAREERS_LANDING_CMS,
   websiteSettings: DEFAULT_WEBSITE_SETTINGS,
 };
@@ -522,6 +752,7 @@ export function mergePagesCmsConfig(api?: Partial<PagesCmsConfig> | null): Pages
     contact: deepMergeSection(DEFAULT_CONTACT_CMS, api.contact),
     solutionsLanding: deepMergeSection(DEFAULT_SOLUTIONS_LANDING_CMS, api.solutionsLanding),
     industriesLanding: deepMergeSection(DEFAULT_INDUSTRIES_LANDING_CMS, api.industriesLanding),
+    portfolioLanding: deepMergeSection(DEFAULT_PORTFOLIO_LANDING_CMS, api.portfolioLanding),
     careers: deepMergeSection(DEFAULT_CAREERS_LANDING_CMS, api.careers as Partial<CareersLandingCmsConfig>),
     websiteSettings: mergeWebsiteSettingsConfig(
       api.websiteSettings,

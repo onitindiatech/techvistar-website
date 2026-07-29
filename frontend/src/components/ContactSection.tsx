@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Send, Clock, ShieldCheck, Award
-} from 'lucide-react';
+import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,28 +8,29 @@ import { useToast } from '@/hooks/use-toast';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
 import { CONTACT_FORM } from '@/data';
-import { cn } from '@/lib/utils';
 import { submitContactForm } from '@/services/contact.service';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
-import { getCmsIcon } from '@/lib/cmsIcons';
 import { DEFAULT_HOME_CMS } from '@/types/homeCms';
+import illustrationImg from '@/assets/images/consultation_illustration.png';
 
 interface FormData {
   category: string;
-  budget: string;
   name: string;
   email: string;
   phone: string;
+  company: string;
   message: string;
+  privacy: boolean;
 }
 
 const initialFormData: FormData = {
   category: '',
-  budget: '',
   name: '',
   email: '',
   phone: '',
+  company: '',
   message: '',
+  privacy: false,
 };
 
 export const ContactSection = () => {
@@ -45,43 +44,32 @@ export const ContactSection = () => {
 
   const categories = (contactCta.categories.length > 0 ? contactCta.categories : DEFAULT_HOME_CMS.contactCta.categories)
     .sort((a, b) => a.sortOrder - b.sortOrder);
-
-  const budgets = (contactCta.budgetOptions.length > 0 ? contactCta.budgetOptions : DEFAULT_HOME_CMS.contactCta.budgetOptions)
-    .sort((a, b) => a.sortOrder - b.sortOrder);
-
   const steps = (contactCta.steps.length > 0 ? contactCta.steps : DEFAULT_HOME_CMS.contactCta.steps)
     .sort((a, b) => a.sortOrder - b.sortOrder);
+  const primaryStep = steps[0];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.category) {
+    if (!formData.privacy) {
       toast({
-        title: 'Selection Required',
-        description: 'Please select a project category.',
+        title: 'Agreement Required',
+        description: 'Please agree to the privacy policy to continue.',
         variant: 'destructive',
       });
       return;
     }
-    if (!formData.budget) {
-      toast({
-        title: 'Selection Required',
-        description: 'Please select your estimated budget range.',
-        variant: 'destructive',
-      });
-      return;
-    }
-    
+
     setIsSubmitting(true);
 
     try {
       const serviceMapping: Record<string, string> = {
-        'web': 'web-development',
-        'mobile': 'mobile-development',
-        'design': 'ui-ux',
-        'ai': 'other',
-        'software': 'other',
-        'devops': 'other',
-        'other': 'other'
+        web: 'web-development',
+        mobile: 'mobile-development',
+        design: 'ui-ux',
+        ai: 'other',
+        software: 'other',
+        devops: 'other',
+        other: 'other',
       };
 
       const serviceInterested = serviceMapping[formData.category] || 'other';
@@ -90,7 +78,7 @@ export const ContactSection = () => {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        company: '', // Default to empty if not collected in this form
+        company: formData.company,
         serviceInterested,
         message: formData.message,
       });
@@ -111,9 +99,13 @@ export const ContactSection = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target as any;
+    if (type === 'checkbox') {
+      setFormData((prev) => ({ ...prev, [name]: (e.target as HTMLInputElement).checked }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   return (
@@ -135,10 +127,7 @@ export const ContactSection = () => {
           transition={{ duration: 0.45 }}
           className="text-center max-w-2xl mx-auto mb-8"
         >
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-100 px-3.5 py-1.5 rounded-full">
-            {contactCta.badge}
-          </span>
-          <h2 id="contact-heading" className="text-[1.65rem] leading-tight md:text-5xl font-extrabold font-display text-slate-900 mt-4 md:mt-5 tracking-tight">
+          <h2 id="contact-heading" className="font-display text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-900 mt-4 md:mt-5 tracking-tight">
             {contactCta.heading}
             {contactCta.highlight ? (
               <>
@@ -147,9 +136,11 @@ export const ContactSection = () => {
               </>
             ) : null}
           </h2>
-          <p className="text-slate-500 font-semibold text-sm sm:text-base mt-4 leading-relaxed">
-            {contactCta.description}
-          </p>
+          {contactCta.description ? (
+            <p className="text-slate-500 font-semibold text-sm sm:text-base mt-4 px-4 line-clamp-2">
+              {contactCta.description}
+            </p>
+          ) : null}
         </motion.div>
 
         {/* Lead Capture form card grid */}
@@ -158,166 +149,123 @@ export const ContactSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           whileHover={{ y: -4, boxShadow: '0 25px 50px -12px rgba(16,185,129,0.06)' }}
           transition={{ duration: 0.4 }}
-          className="grid lg:grid-cols-12 rounded-3xl border border-slate-200/80 overflow-hidden shadow-xl bg-white hover:border-emerald-500/20"
+          className="grid lg:grid-cols-12 rounded-3xl border border-slate-200/80 overflow-hidden shadow-xl bg-white hover:border-emerald-500/20 w-full mx-auto"
         >
-          {/* Left Block: "How It Works" list */}
-          <div className="lg:col-span-5 bg-slate-50/60 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-slate-200/60 p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-500/[0.02] rounded-full blur-[80px] pointer-events-none" />
+          {/* Left Block: Premium Illustration */}
+          <div className="lg:col-span-5 bg-slate-50/60 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-slate-200/60 p-6 md:p-8 flex flex-col justify-center items-center text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-[250px] h-[250px] bg-emerald-500/[0.03] rounded-full blur-[70px] pointer-events-none" />
 
-            <div className="space-y-10 relative z-10">
-              <div>
-                <h3 className="text-2xl font-bold font-display text-slate-900">How It Works</h3>
-                <div className="w-12 h-1 bg-emerald-500/50 mt-2.5 rounded-full" />
-              </div>
-
-              <div className="space-y-8">
-                {steps.map((step, index) => (
-                <div key={step.title} className="flex gap-4 items-start">
-                  <span className="text-2xl font-black font-display text-emerald-600/35 mt-0.5">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <div>
-                    <div className="font-bold text-slate-900 text-base">{step.title}</div>
-                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-semibold mt-1">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-8 border-t border-slate-200/60 mt-10 space-y-3.5 relative z-10 font-bold">
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
-                <Clock className="w-4.5 h-4.5 text-emerald-600" />
-                <span>Response within 24hrs</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
-                <ShieldCheck className="w-4.5 h-4.5 text-emerald-600" />
-                <span>100% Confidential</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
-                <Award className="w-4.5 h-4.5 text-emerald-600" />
-                <span>Free Consultation</span>
-              </div>
+            <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center">
+              <img src={illustrationImg} alt="Consultation Illustration" className="w-full max-w-[220px] object-contain drop-shadow-2xl mb-6 hover:scale-105 transition-transform duration-700" />
+              
+              <h3 className="text-xl md:text-2xl font-extrabold font-display text-slate-900 leading-tight mb-2">
+                {primaryStep?.title || contactCta.heading}
+              </h3>
+              <p className="text-[12px] text-slate-500 font-medium px-2 max-w-[260px]">
+                {primaryStep?.description || contactCta.description}
+              </p>
             </div>
           </div>
 
-          {/* Right Block: Redesigned Interactive Form */}
-          <div className="lg:col-span-7 bg-white p-8 md:p-10 flex flex-col justify-center">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Right Block: Interactive Form */}
+          <div className="lg:col-span-7 bg-white p-6 md:p-8 flex flex-col justify-center">
+            <form onSubmit={handleSubmit} className="space-y-4">
               
-              {/* Category Pills Selector */}
-              <div className="space-y-3">
-                <label className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-slate-400 block text-left">
-                  Project Category
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {categories.map((cat) => {
-                    const Icon = getCmsIcon(cat.icon);
-                    const isSelected = formData.category === cat.id;
-                    return (
-                      <button
-                        key={cat.id}
-                        type="button"
-                        onClick={() => setFormData(prev => ({ ...prev, category: cat.id }))}
-                        className={cn(
-                          "flex items-center gap-2.5 p-3 rounded-xl border text-left transition-all duration-300 cursor-pointer select-none",
-                          isSelected 
-                            ? "bg-emerald-50/70 border-emerald-500/35 text-emerald-700 shadow-sm" 
-                            : "bg-slate-50/50 hover:bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900"
-                        )}
-                      >
-                        <Icon className={cn("w-4 h-4 shrink-0", isSelected ? "text-emerald-600" : "text-slate-400")} />
-                        <span className="text-[11px] sm:text-xs font-bold leading-none">{cat.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Name & Email Fields Row */}
-              <div className="grid sm:grid-cols-2 gap-6">
+              {/* Name & Company Fields Row */}
+              <div className="grid sm:grid-cols-2 gap-4">
                 <Input
                   name="name"
                   type="text"
-                  placeholder="Full Name"
+                  placeholder="Full Name *"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm h-11 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-bold"
+                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm h-11 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-semibold"
                 />
                 <Input
-                  name="email"
-                  type="email"
-                  placeholder="Email Address"
-                  value={formData.email}
+                  name="company"
+                  type="text"
+                  placeholder="Company Name"
+                  value={formData.company}
                   onChange={handleChange}
-                  required
-                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm h-11 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-bold"
+                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm h-11 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-semibold"
                 />
               </div>
 
-              {/* Phone Field */}
-              <Input
-                name="phone"
-                type="tel"
-                placeholder="Phone Number"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm h-11 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-bold"
-              />
+              {/* Email & Phone Fields Row */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Input
+                  name="email"
+                  type="email"
+                  placeholder="Business Email *"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm h-11 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-semibold"
+                />
+                <Input
+                  name="phone"
+                  type="tel"
+                  placeholder="Phone Number *"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm h-11 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-semibold"
+                />
+              </div>
+
+              {categories.length > 0 ? (
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm h-11 rounded-xl px-3 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/30"
+                >
+                  <option value="">Project Category (optional)</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
+              ) : null}
 
               {/* Description Textarea */}
               <Textarea
                 name="message"
-                placeholder="Describe your project, goals, and timeline..."
+                placeholder="Project Description / Message"
                 value={formData.message}
                 onChange={handleChange}
                 required
                 rows={4}
-                className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 resize-none font-bold"
+                className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 resize-none font-semibold p-4"
               />
 
-              {/* Budget Range Pills Selector */}
-              <div className="space-y-3">
-                <label className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-slate-400 block text-left">
-                  Estimated Budget
+              {/* Privacy Checkbox */}
+              <div className="pt-1">
+                <label className="flex items-center gap-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    name="privacy"
+                    checked={formData.privacy}
+                    onChange={handleChange}
+                    className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500/20"
+                  />
+                  <span className="text-[11px] sm:text-xs font-semibold text-slate-600">
+                    I agree to be contacted by the TechVistar team and accept the <a href="/privacy" className="text-emerald-600 hover:underline">privacy policy</a>.
+                  </span>
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {budgets.map((bud) => {
-                    const isSelected = formData.budget === bud.id;
-                    return (
-                      <button
-                        key={bud.id}
-                        type="button"
-                        onClick={() => setFormData(prev => ({ ...prev, budget: bud.id }))}
-                        className={cn(
-                          "p-3 rounded-xl border text-center transition-all duration-300 cursor-pointer select-none text-xs font-bold",
-                          isSelected 
-                            ? "bg-emerald-50/70 border-emerald-500/35 text-emerald-700 shadow-sm" 
-                            : "bg-slate-50/50 hover:bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900"
-                        )}
-                      >
-                        {bud.label}
-                      </button>
-                    );
-                  })}
-                </div>
               </div>
 
               {/* Submit Button */}
-              <div className="flex justify-end pt-2">
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting}
-                  className="h-11 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] flex items-center gap-2 cursor-pointer"
-                >
-                  {isSubmitting ? 'Sending...' : contactCta.ctaText}
-                  <Send className="w-4 h-4" />
-                </Button>
-              </div>
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full h-11 bg-emerald-600 text-white font-extrabold text-sm rounded-xl shadow-[0_8px_16px_-6px_rgba(16,185,129,0.4)] transition-all hover:bg-emerald-700 hover:shadow-[0_12px_20px_-6px_rgba(16,185,129,0.5)] flex items-center justify-center gap-2 cursor-pointer mt-2"
+              >
+                <Send className="w-4 h-4" />
+                {isSubmitting ? 'Sending...' : (contactCta.ctaText || 'Send Message')}
+              </Button>
             </form>
           </div>
         </motion.div>

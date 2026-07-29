@@ -109,7 +109,7 @@ export const TechStackSection = () => {
         >
 
 
-          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-none">
+          <h2 className="font-display text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-900 tracking-tight">
             Trusted Technologies We Build With
           </h2>
 

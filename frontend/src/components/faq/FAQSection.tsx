@@ -91,7 +91,7 @@ export const FAQSection = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
             <div className="lg:col-span-5 flex flex-col justify-start text-left">
 
-              <h2 className="mb-4 font-display text-2xl font-extrabold leading-[1.15] tracking-tight md:text-4xl lg:text-[2.65rem] text-slate-950">
+              <h2 className="mb-4 font-display text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-950 tracking-tight">
                 Frequently Asked <span className="text-primary">Questions</span>
               </h2>
               <p className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold text-slate-500 mb-6 max-w-md">

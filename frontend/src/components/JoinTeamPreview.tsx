@@ -36,7 +36,7 @@ export const JoinTeamPreview = () => {
           <div className="lg:col-span-6 text-left space-y-6">
             <FadeIn direction="right" delay={0.1} duration={0.65}>
               
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-[1.15] mt-0">
+              <h2 className="font-display text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-900 tracking-tight mt-0">
                 Build Your Future <br />
                 <span className="gradient-text">With TechVistar</span>
               </h2>

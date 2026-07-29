@@ -40,7 +40,7 @@ const PORTFOLIO_CATEGORIES = [
 ];
 
 type ProjectStatus = "Completed" | "In Progress" | "Coming Soon";
-type TabName = "general" | "content" | "media" | "caseStudy" | "tech" | "seo" | "preview";
+type TabName = "general" | "content" | "media" | "caseStudy" | "tech" | "advanced" | "seo" | "preview";
 
 const Portfolio = () => {
   const { toast } = useToast();
@@ -96,6 +96,12 @@ const Portfolio = () => {
   const [challengesText, setChallengesText] = useState("");
   const [keyFeaturesText, setKeyFeaturesText] = useState("");
   const [galleryText, setGalleryText] = useState("");
+
+  // Advanced CMS Fields
+  const [stats, setStats] = useState<Array<{ value: string; label: string; iconType: string; colorTheme: string }>>([]);
+  const [detailedFeatures, setDetailedFeatures] = useState<Array<{ title: string; description: string; iconName: string; badge: string; color: string }>>([]);
+  const [processSteps, setProcessSteps] = useState<Array<{ step: number; title: string; description: string }>>([]);
+  const [ctaBlock, setCtaBlock] = useState<{ badge: string; title: string; description: string; buttonText: string; buttonLink: string; secondaryButtonText: string; secondaryButtonLink: string }>({ badge: '', title: '', description: '', buttonText: '', buttonLink: '', secondaryButtonText: '', secondaryButtonLink: '' });
 
   // SEO Fields
   const [seo, setSeo] = useState<SeoMetadata>(EMPTY_SEO);
@@ -374,7 +380,8 @@ const Portfolio = () => {
   const getCurrentStateString = () => {
     return JSON.stringify({
       title, slug, description, longDescription, thumbnail, category, client, role, industry, status, displayOrder, featured,
-      liveUrl, githubUrl, technologiesText, tagsText, serviceSlugsText, challengesText, keyFeaturesText, galleryText, seo
+      liveUrl, githubUrl, technologiesText, tagsText, serviceSlugsText, challengesText, keyFeaturesText, galleryText, seo,
+      stats, detailedFeatures, processSteps, ctaBlock
     });
   };
 
@@ -406,6 +413,10 @@ const Portfolio = () => {
     setChallengesText("High cloud costs\nInconsistent server scaling");
     setKeyFeaturesText("Auto-scaling node clusters\nLive analytics telemetry");
     setGalleryText("");
+    setStats([]);
+    setDetailedFeatures([]);
+    setProcessSteps([]);
+    setCtaBlock({ badge: '', title: '', description: '', buttonText: '', buttonLink: '', secondaryButtonText: '', secondaryButtonLink: '' });
     setSeo(EMPTY_SEO);
     
     setValidationErrors({});
@@ -442,6 +453,10 @@ const Portfolio = () => {
     setChallengesText((item.challenges || []).join("\n"));
     setKeyFeaturesText((item.keyFeatures || []).join("\n"));
     setGalleryText((item.gallery || []).join("\n"));
+    setStats(item.stats || []);
+    setDetailedFeatures(item.detailedFeatures || []);
+    setProcessSteps(item.process || []);
+    setCtaBlock(item.ctaBlock || { badge: '', title: '', description: '', buttonText: '', buttonLink: '', secondaryButtonText: '', secondaryButtonLink: '' });
     setSeo(seoFromItem(item));
 
     setValidationErrors({});
@@ -503,6 +518,10 @@ const Portfolio = () => {
       challenges: challengesText.split("\n").map(c => c.trim()).filter(Boolean),
       keyFeatures: keyFeaturesText.split("\n").map(k => k.trim()).filter(Boolean),
       gallery: galleryText.split("\n").map(g => g.trim()).filter(Boolean),
+      stats: stats.filter(s => s.value.trim() && s.label.trim()),
+      detailedFeatures: detailedFeatures.filter(f => f.title.trim()),
+      process: processSteps.filter(p => p.title.trim()),
+      ctaBlock: ctaBlock.title.trim() ? ctaBlock : null,
       ...seoToPayload(seo),
     };
 
@@ -960,6 +979,7 @@ const Portfolio = () => {
                 { name: "media", label: "Media Assets", icon: ImageIcon },
                 { name: "caseStudy", label: "Case Study Details", icon: Sparkles },
                 { name: "tech", label: "Tech Stack & Tags", icon: Tag },
+                { name: "advanced", label: "Advanced CMS", icon: BarChart3 },
                 { name: "seo", label: "SEO Config", icon: Globe },
                 { name: "preview", label: "Preview", icon: ShieldCheck }
               ] as { name: TabName, label: string, icon: any }[]).map((tab) => {
@@ -1266,7 +1286,134 @@ const Portfolio = () => {
                   </div>
                 )}
 
-                {/* Tab 6: SEO */}
+                {/* Tab 6: Advanced CMS */}
+                {activeTab === "advanced" && (
+                  <div className="space-y-8">
+                    {/* Hero Statistics */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">Hero Statistics</label>
+                        <Button type="button" variant="outline" size="sm" className="h-7 text-[10px] font-bold" onClick={() => setStats([...stats, { value: '', label: '', iconType: 'chart', colorTheme: 'green' }])}>
+                          <Plus className="w-3 h-3 mr-1" /> Add Stat
+                        </Button>
+                      </div>
+                      {stats.map((stat, idx) => (
+                        <div key={idx} className="grid grid-cols-5 gap-2 items-end p-3 bg-slate-50 rounded-xl border border-slate-200/50">
+                          <div className="space-y-1">
+                            <span className="text-[9px] font-bold text-slate-400 uppercase">Value</span>
+                            <Input value={stat.value} onChange={(e) => { const n = [...stats]; n[idx].value = e.target.value; setStats(n); }} placeholder="99.9%" className="h-8 text-xs rounded-lg" />
+                          </div>
+                          <div className="space-y-1">
+                            <span className="text-[9px] font-bold text-slate-400 uppercase">Label</span>
+                            <Input value={stat.label} onChange={(e) => { const n = [...stats]; n[idx].label = e.target.value; setStats(n); }} placeholder="Uptime" className="h-8 text-xs rounded-lg" />
+                          </div>
+                          <div className="space-y-1">
+                            <span className="text-[9px] font-bold text-slate-400 uppercase">Icon</span>
+                            <select value={stat.iconType} onChange={(e) => { const n = [...stats]; n[idx].iconType = e.target.value; setStats(n); }} className="h-8 w-full px-2 rounded-lg border border-slate-200 text-xs bg-white">
+                              <option value="rocket">Rocket</option>
+                              <option value="clock">Clock</option>
+                              <option value="dollar">Dollar</option>
+                              <option value="chart">Chart</option>
+                              <option value="shield">Shield</option>
+                              <option value="star">Star</option>
+                            </select>
+                          </div>
+                          <div className="space-y-1">
+                            <span className="text-[9px] font-bold text-slate-400 uppercase">Color</span>
+                            <select value={stat.colorTheme} onChange={(e) => { const n = [...stats]; n[idx].colorTheme = e.target.value; setStats(n); }} className="h-8 w-full px-2 rounded-lg border border-slate-200 text-xs bg-white">
+                              <option value="green">Green</option>
+                              <option value="purple">Purple</option>
+                              <option value="gold">Gold</option>
+                              <option value="blue">Blue</option>
+                            </select>
+                          </div>
+                          <Button type="button" variant="outline" size="sm" onClick={() => setStats(stats.filter((_, i) => i !== idx))} className="h-8 text-red-600 border-red-100 hover:bg-red-50">
+                            <Trash className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      ))}
+                      {stats.length === 0 && <p className="text-[10px] text-slate-400 italic">No statistics configured. Stats will not appear on the project hero.</p>}
+                    </div>
+
+                    {/* Rich Feature Cards */}
+                    <div className="space-y-4 border-t border-slate-100 pt-6">
+                      <div className="flex items-center justify-between">
+                        <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">Rich Feature Cards</label>
+                        <Button type="button" variant="outline" size="sm" className="h-7 text-[10px] font-bold" onClick={() => setDetailedFeatures([...detailedFeatures, { title: '', description: '', iconName: 'Sparkles', badge: '', color: '' }])}>
+                          <Plus className="w-3 h-3 mr-1" /> Add Feature
+                        </Button>
+                      </div>
+                      <p className="text-[10px] text-slate-400">When rich features are defined, they replace the plain key features list on the detail page.</p>
+                      {detailedFeatures.map((feat, idx) => (
+                        <div key={idx} className="p-3 bg-emerald-50/30 rounded-xl border border-emerald-100/50 space-y-2">
+                          <div className="grid grid-cols-3 gap-2">
+                            <Input value={feat.title} onChange={(e) => { const n = [...detailedFeatures]; n[idx].title = e.target.value; setDetailedFeatures(n); }} placeholder="Feature title" className="h-8 text-xs rounded-lg col-span-2" />
+                            <Input value={feat.badge} onChange={(e) => { const n = [...detailedFeatures]; n[idx].badge = e.target.value; setDetailedFeatures(n); }} placeholder="Badge (optional)" className="h-8 text-xs rounded-lg" />
+                          </div>
+                          <Input value={feat.description} onChange={(e) => { const n = [...detailedFeatures]; n[idx].description = e.target.value; setDetailedFeatures(n); }} placeholder="Feature description" className="h-8 text-xs rounded-lg" />
+                          <div className="flex gap-2">
+                            <Input value={feat.iconName} onChange={(e) => { const n = [...detailedFeatures]; n[idx].iconName = e.target.value; setDetailedFeatures(n); }} placeholder="Icon name" className="h-8 text-xs rounded-lg flex-1" />
+                            <Input value={feat.color} onChange={(e) => { const n = [...detailedFeatures]; n[idx].color = e.target.value; setDetailedFeatures(n); }} placeholder="Color gradient (optional)" className="h-8 text-xs rounded-lg flex-1" />
+                            <Button type="button" variant="outline" size="sm" onClick={() => setDetailedFeatures(detailedFeatures.filter((_, i) => i !== idx))} className="h-8 text-red-600 border-red-100 hover:bg-red-50">
+                              <Trash className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Process / Timeline */}
+                    <div className="space-y-4 border-t border-slate-100 pt-6">
+                      <div className="flex items-center justify-between">
+                        <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">Development Process / Timeline</label>
+                        <Button type="button" variant="outline" size="sm" className="h-7 text-[10px] font-bold" onClick={() => setProcessSteps([...processSteps, { step: processSteps.length + 1, title: '', description: '' }])}>
+                          <Plus className="w-3 h-3 mr-1" /> Add Step
+                        </Button>
+                      </div>
+                      {processSteps.map((ps, idx) => (
+                        <div key={idx} className="grid grid-cols-12 gap-2 items-end p-3 bg-slate-50 rounded-xl border border-slate-200/50">
+                          <div className="col-span-1 space-y-1">
+                            <span className="text-[9px] font-bold text-slate-400 uppercase">#</span>
+                            <Input type="number" value={ps.step} onChange={(e) => { const n = [...processSteps]; n[idx].step = Number(e.target.value); setProcessSteps(n); }} className="h-8 text-xs rounded-lg" />
+                          </div>
+                          <div className="col-span-4 space-y-1">
+                            <span className="text-[9px] font-bold text-slate-400 uppercase">Title</span>
+                            <Input value={ps.title} onChange={(e) => { const n = [...processSteps]; n[idx].title = e.target.value; setProcessSteps(n); }} placeholder="Step title" className="h-8 text-xs rounded-lg" />
+                          </div>
+                          <div className="col-span-6 space-y-1">
+                            <span className="text-[9px] font-bold text-slate-400 uppercase">Description</span>
+                            <Input value={ps.description} onChange={(e) => { const n = [...processSteps]; n[idx].description = e.target.value; setProcessSteps(n); }} placeholder="Step description" className="h-8 text-xs rounded-lg" />
+                          </div>
+                          <Button type="button" variant="outline" size="sm" onClick={() => setProcessSteps(processSteps.filter((_, i) => i !== idx))} className="h-8 col-span-1 text-red-600 border-red-100 hover:bg-red-50">
+                            <Trash className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      ))}
+                      {processSteps.length === 0 && <p className="text-[10px] text-slate-400 italic">No process steps. The timeline section will not appear.</p>}
+                    </div>
+
+                    {/* Per-Project CTA */}
+                    <div className="space-y-4 border-t border-slate-100 pt-6">
+                      <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">Per-Project CTA (Optional)</label>
+                      <p className="text-[10px] text-slate-400">If a title is provided, this CTA overrides the global portfolio CTA for this project.</p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Input value={ctaBlock.badge} onChange={(e) => setCtaBlock({ ...ctaBlock, badge: e.target.value })} placeholder="Badge text" className="h-8 text-xs rounded-lg" />
+                        <Input value={ctaBlock.title} onChange={(e) => setCtaBlock({ ...ctaBlock, title: e.target.value })} placeholder="CTA Heading *" className="h-8 text-xs rounded-lg" />
+                      </div>
+                      <Input value={ctaBlock.description} onChange={(e) => setCtaBlock({ ...ctaBlock, description: e.target.value })} placeholder="CTA Description" className="h-8 text-xs rounded-lg" />
+                      <div className="grid grid-cols-2 gap-3">
+                        <Input value={ctaBlock.buttonText} onChange={(e) => setCtaBlock({ ...ctaBlock, buttonText: e.target.value })} placeholder="Primary button text" className="h-8 text-xs rounded-lg" />
+                        <Input value={ctaBlock.buttonLink} onChange={(e) => setCtaBlock({ ...ctaBlock, buttonLink: e.target.value })} placeholder="Primary button link" className="h-8 text-xs rounded-lg" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Input value={ctaBlock.secondaryButtonText} onChange={(e) => setCtaBlock({ ...ctaBlock, secondaryButtonText: e.target.value })} placeholder="Secondary button text" className="h-8 text-xs rounded-lg" />
+                        <Input value={ctaBlock.secondaryButtonLink} onChange={(e) => setCtaBlock({ ...ctaBlock, secondaryButtonLink: e.target.value })} placeholder="Secondary button link" className="h-8 text-xs rounded-lg" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tab 7: SEO */}
                 {activeTab === "seo" && (
                   <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm">
                     <SeoManager

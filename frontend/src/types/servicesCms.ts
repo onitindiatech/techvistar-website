@@ -153,8 +153,8 @@ export function mergeSidebarBlock(
   const merged = { ...defaults };
   (Object.keys(merged) as Array<keyof ServiceSidebarBlock>).forEach((key) => {
     const val = overrides[key];
-    if (typeof val === 'string' && val.trim()) {
-      merged[key] = val.trim();
+    if (val !== undefined) {
+      merged[key] = val === null ? '' : String(val).trim();
     }
   });
   return merged;
@@ -168,11 +168,17 @@ export function mergeConsultationBlock(
   const merged = { ...defaults };
   (Object.keys(merged) as Array<keyof ServiceConsultationBlock>).forEach((key) => {
     const val = overrides[key];
-    if (typeof val === 'string' && val.trim()) {
-      merged[key] = val.trim();
+    if (val !== undefined) {
+      merged[key] = val === null ? '' : String(val).trim();
     }
   });
   return merged;
+}
+
+function pickCtaString(value: string | null | undefined, fallback: string): string {
+  if (value === undefined) return fallback;
+  if (value === null) return '';
+  return String(value).trim();
 }
 
 export function resolveServiceCtaBlock(
@@ -183,28 +189,31 @@ export function resolveServiceCtaBlock(
   defaults?: Partial<ServiceCtaBlock>
 ): ServiceCtaBlock {
   const base: ServiceCtaBlock = {
-    badge: "Let's collaborate",
-    headline: 'Ready to build your next digital product?',
-    body:
-      service.cta ||
-      "Let's collaborate on structuring and engineering your next web portal or AI integration.",
-    primaryButtonLabel: 'Book Free Consultation',
-    secondaryButtonLabel: 'Talk to an Expert',
-    secondaryButtonHref: siteMailto(
-      resolveSupportEmail(DEFAULT_WEBSITE_SETTINGS),
-      'Consultation Escalation',
+    badge: pickCtaString(defaults?.badge, "Let's collaborate"),
+    headline: pickCtaString(defaults?.headline, 'Ready to build your next digital product?'),
+    body: pickCtaString(
+      defaults?.body,
+      pickCtaString(
+        service.cta,
+        "Let's collaborate on structuring and engineering your next web portal or AI integration.",
+      ),
     ),
-    ...defaults,
+    primaryButtonLabel: pickCtaString(defaults?.primaryButtonLabel, 'Book Free Consultation'),
+    secondaryButtonLabel: pickCtaString(defaults?.secondaryButtonLabel, 'Talk to an Expert'),
+    secondaryButtonHref: pickCtaString(
+      defaults?.secondaryButtonHref,
+      siteMailto(resolveSupportEmail(DEFAULT_WEBSITE_SETTINGS), 'Consultation Escalation'),
+    ),
   };
 
   if (!service.ctaBlock) return base;
 
   return {
-    badge: service.ctaBlock.badge?.trim() || base.badge,
-    headline: service.ctaBlock.headline?.trim() || base.headline,
-    body: service.ctaBlock.body?.trim() || service.cta?.trim() || base.body,
-    primaryButtonLabel: service.ctaBlock.primaryButtonLabel?.trim() || base.primaryButtonLabel,
-    secondaryButtonLabel: service.ctaBlock.secondaryButtonLabel?.trim() || base.secondaryButtonLabel,
-    secondaryButtonHref: service.ctaBlock.secondaryButtonHref?.trim() || base.secondaryButtonHref,
+    badge: pickCtaString(service.ctaBlock.badge, base.badge),
+    headline: pickCtaString(service.ctaBlock.headline, base.headline),
+    body: pickCtaString(service.ctaBlock.body, pickCtaString(service.cta, base.body)),
+    primaryButtonLabel: pickCtaString(service.ctaBlock.primaryButtonLabel, base.primaryButtonLabel),
+    secondaryButtonLabel: pickCtaString(service.ctaBlock.secondaryButtonLabel, base.secondaryButtonLabel),
+    secondaryButtonHref: pickCtaString(service.ctaBlock.secondaryButtonHref, base.secondaryButtonHref),
   };
 }

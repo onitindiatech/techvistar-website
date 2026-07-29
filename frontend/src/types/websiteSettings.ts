@@ -236,10 +236,12 @@ function deepMergeSection<T extends Record<string, unknown>>(defaults: T, api?: 
   const out = { ...defaults };
   for (const key of Object.keys(defaults) as Array<keyof T>) {
     const val = api[key];
-    if (val === undefined || val === null) continue;
-    if (typeof val === 'string' && val.trim() === '') continue;
+    if (val === undefined) continue;
+    if (val === null) {
+      out[key] = val as T[keyof T];
+      continue;
+    }
     if (Array.isArray(val)) {
-      if (val.length === 0) continue;
       out[key] = val as T[keyof T];
     } else if (typeof val === 'object' && typeof defaults[key] === 'object' && !Array.isArray(defaults[key])) {
       out[key] = deepMergeSection(
@@ -289,10 +291,10 @@ function migrateLegacyHomeFooter(
   const bottomText = pickNonEmpty(footer.bottomText, legacy.bottomText);
   if (bottomText) footer.bottomText = bottomText;
 
-  if (!footer.companyLinks?.length && legacy.companyLinks?.length) {
+  if (footer.companyLinks === undefined && legacy.companyLinks?.length) {
     footer.companyLinks = legacy.companyLinks;
   }
-  if (!footer.legalLinks?.length && legacy.legalLinks?.length) {
+  if (footer.legalLinks === undefined && legacy.legalLinks?.length) {
     footer.legalLinks = legacy.legalLinks;
   }
 
@@ -328,19 +330,6 @@ export function mergeWebsiteSettingsConfig(
 ): WebsiteSettingsConfig {
   let merged = deepMergeSection(DEFAULT_WEBSITE_SETTINGS, api);
   merged = migrateLegacyHomeFooter(merged, legacyHomeFooter);
-
-  if (!merged.footer.description?.trim()) {
-    merged.footer.description = DEFAULT_WEBSITE_SETTINGS.footer.description;
-  }
-  if (!merged.footer.copyright?.trim()) {
-    merged.footer.copyright = DEFAULT_WEBSITE_SETTINGS.footer.copyright;
-  }
-  if (!merged.footer.companyLinks?.length) {
-    merged.footer.companyLinks = DEFAULT_WEBSITE_SETTINGS.footer.companyLinks;
-  }
-  if (!merged.footer.legalLinks?.length) {
-    merged.footer.legalLinks = DEFAULT_WEBSITE_SETTINGS.footer.legalLinks;
-  }
 
   return merged;
 }

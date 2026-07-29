@@ -1,22 +1,25 @@
 import { useParams, Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getProjectBySlug, getActiveProjects } from '@/services/portfolio.service';
-import { decorateProject, Project } from '@/data/projects';
-import { INDUSTRIES } from '@/data/industries';
+import { decorateProject } from '@/data/projects';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { ArrowLeft, ExternalLink, Github, Calendar, Briefcase, User, Building2, Lightbulb, Check } from 'lucide-react';
-import { RichTextContent } from '@/components/common/RichTextContent';
+import { ArrowLeft } from 'lucide-react';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
-import workBg from '../assets/work-bg-new.png';
-import '../components/ui/GlassIcons.css';
-import { MobileBackButton } from '@/components/ui/MobileBackButton';
+import { ProjectHero } from '@/components/portfolio/ProjectHero';
+import { ProjectSectionNavigation } from '@/components/portfolio/ProjectSectionNavigation';
+import { ProjectOverviewSection } from '@/components/portfolio/ProjectOverviewSection';
+import { ProjectFeaturesSection } from '@/components/portfolio/ProjectFeaturesSection';
+import { ProjectTechnologySection } from '@/components/portfolio/ProjectTechnologySection';
+import { ProjectGallerySection } from '@/components/portfolio/ProjectGallerySection';
+import { ProjectChallengesSection } from '@/components/portfolio/ProjectChallengesSection';
+import { ProjectProcessSection } from '@/components/portfolio/ProjectProcessSection';
+import { ProjectRelatedSection } from '@/components/portfolio/ProjectRelatedSection';
+import { ProjectSidebar } from '@/components/portfolio/ProjectSidebar';
+import { ProjectCTASection } from '@/components/portfolio/ProjectCTASection';
 
 const ProjectDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -37,14 +40,35 @@ const ProjectDetails = () => {
 
   const projectsData = (apiProjects || []).map(decorateProject);
 
-  // Find related industries dynamically
-  const matchingIndustries = project ? INDUSTRIES.filter(
-    (ind) => 
-      ind.caseStudies.includes(project.slug) || 
-      ind.title.toLowerCase() === project.industry.toLowerCase() || 
-      ind.id.toLowerCase() === project.industry.toLowerCase()
-  ) : [];
+  const relatedProjects = useMemo(() => {
+    if (!project) return [];
+    return projectsData
+      .filter((p) => p.id !== project.id)
+      .map((p) => {
+        let score = 0;
+        if (p.category === project.category) score += 3;
+        const sharedTags = p.tags.filter((t) => project.tags.includes(t)).length;
+        score += sharedTags;
+        return { project: p, score };
+      })
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map((item) => item.project);
+  }, [project, projectsData]);
 
+  const navItems = useMemo(() => {
+    if (!project) return [];
+    return [
+      { id: 'overview', label: 'Overview' },
+      ...(project.keyFeatures.length > 0 || project.detailedFeatures.length > 0 ? [{ id: 'features', label: 'Features' }] : []),
+      ...(project.technologies.length > 0 ? [{ id: 'technology', label: 'Tech Stack' }] : []),
+      ...(project.process.length > 0 ? [{ id: 'process', label: 'Process' }] : []),
+      ...(project.gallery.length > 0 ? [{ id: 'gallery', label: 'Gallery' }] : []),
+      ...(project.challenges.length > 0 ? [{ id: 'challenges', label: 'Challenges' }] : []),
+      { id: 'contact', label: 'Contact' },
+    ];
+  }, [project]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -86,7 +110,7 @@ const ProjectDetails = () => {
               Project Not Found
             </h1>
             <p className="text-slate-600 text-sm leading-relaxed mb-8">
-              We couldn't find the project you were looking for. It may have been moved or renamed.
+              We couldn&apos;t find the project you were looking for. It may have been moved or renamed.
             </p>
             <Button asChild className="w-full bg-primary text-white hover:bg-primary/95">
               <Link to="/work">
@@ -95,336 +119,41 @@ const ProjectDetails = () => {
               </Link>
             </Button>
           </div>
-          <Footer />
         </main>
+        <Footer />
       </>
     );
   }
-
-  // Get 2-3 related projects based on category or tags, excluding current
-  const relatedProjects = projectsData.filter((p) => p.id !== project.id)
-    .map((p) => {
-      // Calculate relevance score
-      let score = 0;
-      if (p.category === project.category) score += 3;
-      const sharedTags = p.tags.filter((t) => project.tags.includes(t)).length;
-      score += sharedTags;
-      return { project: p, score };
-    })
-    .filter((item) => item.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3)
-    .map((item) => item.project);
 
   return (
     <>
       {seoBlock}
       <Navbar />
-      <main className="min-h-screen bg-slate-50 pb-12 md:pb-16">
-        
-        {/* Project Hero Header */}
-        <section className="relative overflow-hidden bg-zinc-950 border-b border-zinc-900 pt-28 pb-10 md:pt-32 md:pb-16 mb-8 text-white">
-          <div className="absolute inset-0 z-0 opacity-60 pointer-events-none" style={{ backgroundImage: `url(${workBg})`, backgroundSize: 'auto 85%', backgroundPosition: 'right center', backgroundRepeat: 'no-repeat' }} />
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent z-0 pointer-events-none" />
-          
-          <div className="container mx-auto px-4 max-w-6xl relative z-10">
-            <MobileBackButton to="/work" label="All Projects" className="mb-6 md:mb-8" />
+      <main className="min-h-screen bg-slate-50 pt-0">
+        <ProjectHero project={project} />
+        <ProjectSectionNavigation navItems={navItems} />
 
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-              <div>
-                <div className="flex items-center gap-3 flex-wrap mb-4">
-                  <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
-                    {project.category}
-                  </Badge>
-                  <Badge variant="outline" className="border-zinc-700 text-zinc-300 bg-zinc-800/50">
-                    {project.status}
-                  </Badge>
-                </div>
-                <h1 className="text-3xl md:text-5xl font-bold font-display text-white leading-tight max-w-3xl">
-                  {project.title}
-                </h1>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full sm:w-auto">
-                <a
-                  href={project.liveUrl !== '#' ? project.liveUrl : undefined}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition-colors ${
-                    project.liveUrl === '#'
-                      ? 'border-zinc-700 text-zinc-500 cursor-not-allowed opacity-60'
-                      : 'border-emerald-500/30 bg-emerald-600 text-white hover:bg-emerald-500'
-                  }`}
-                  onClick={(e) => project.liveUrl === '#' && e.preventDefault()}
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Live Demo
-                </a>
-                <a
-                  href={project.githubUrl !== '#' ? project.githubUrl : undefined}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition-colors ${
-                    project.githubUrl === '#'
-                      ? 'border-zinc-700 text-zinc-500 cursor-not-allowed opacity-60'
-                      : 'border-zinc-600 bg-zinc-800/50 text-white hover:bg-zinc-800'
-                  }`}
-                  onClick={(e) => project.githubUrl === '#' && e.preventDefault()}
-                >
-                  <Github className="w-4 h-4" />
-                  GitHub Code
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Project Content Area */}
-        <section className="container mx-auto px-4 max-w-6xl">
+        <section className="w-full mx-auto px-4 md:px-6 lg:px-12 xl:px-20 mt-8 pb-16 detail-page-gutter">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* Left Column: Details & Deliverables */}
             <div className="lg:col-span-2 space-y-8">
-              
-              {/* Overview / Description */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-10 relative overflow-hidden">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-4">
-                      <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0">
-                        <Briefcase className="h-8 w-8 text-white" />
-                      </div>
-                      <h2 className="text-3xl font-bold text-slate-900 font-display tracking-tight">Overview</h2>
-                    </div>
-                    <div className="w-12 h-1 bg-emerald-500 rounded-full" />
-                    
-                    <RichTextContent
-                      content={project.longDescription}
-                      className="text-slate-600 text-base leading-relaxed"
-                    />
-
-                    {project.challenges && project.challenges.length > 0 && (
-                      <div className="bg-emerald-50/80 rounded-2xl p-6 border border-emerald-100">
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                            <Lightbulb className="h-4 w-4 text-emerald-700 font-bold" />
-                          </div>
-                          <span className="font-bold text-emerald-800">Key Insight</span>
-                        </div>
-                        <p className="text-emerald-700 font-medium leading-relaxed pl-11">
-                          {project.challenges[0]}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="relative rounded-2xl border border-slate-100 bg-slate-50/50 p-4 shadow-sm w-full">
-                    <img 
-                      src={project.gallery?.[0] || project.thumbnail} 
-                      alt={project.title}
-                      className="rounded-xl border border-slate-200 shadow-sm w-full h-auto object-cover"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Key Features */}
-              <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8">
-                <h2 className="text-xl font-bold text-slate-900 mb-4 font-display">Key Features</h2>
-                <div className="flex flex-col gap-4">
-                  {project.keyFeatures.map((feature, i) => {
-                    const gradientMapping = [
-                      'linear-gradient(hsl(223, 90%, 50%), hsl(208, 90%, 50%))',
-                      'linear-gradient(hsl(123, 90%, 40%), hsl(108, 90%, 40%))',
-                      'linear-gradient(hsl(283, 90%, 50%), hsl(268, 90%, 50%))',
-                      'linear-gradient(hsl(43, 90%, 50%), hsl(28, 90%, 50%))',
-                      'linear-gradient(hsl(3, 90%, 50%), hsl(348, 90%, 50%))',
-                      'linear-gradient(hsl(253, 90%, 50%), hsl(238, 90%, 50%))'
-                    ];
-                    const bgGradient = gradientMapping[i % gradientMapping.length];
-                    
-                    return (
-                      <div key={i} className="group flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(16,185,129,0.12)] transition-all duration-300">
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 relative">
-                          <div className="icon-btn pointer-events-none scale-[0.4] sm:scale-50 origin-top-left absolute top-0 left-0">
-                            <span className="icon-btn__back" style={{ background: bgGradient }}></span>
-                            <span className="icon-btn__front">
-                              <span className="icon-btn__icon">
-                                <Check className="w-6 h-6 text-white" />
-                              </span>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-base font-bold text-slate-900 mb-1 group-hover:text-emerald-700 transition-colors font-display">
-                            {feature}
-                          </h3>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Challenges & Solutions */}
-              <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8">
-                <h2 className="text-xl font-bold text-slate-900 mb-6 font-display">Challenges & Engineering Solutions</h2>
-                <div className="space-y-4">
-                  {project.challenges.map((challenge, i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ opacity: 0, y: 15 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className="group bg-slate-50 border border-slate-100 rounded-xl p-5 hover:bg-white hover:border-emerald-200 hover:shadow-md transition-all duration-300 flex items-start gap-4"
-                    >
-                      <div className="mt-0.5 h-8 w-8 rounded-full bg-white text-emerald-600 font-bold text-sm flex items-center justify-center shrink-0 border border-emerald-100 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300 shadow-sm">
-                        {i + 1}
-                      </div>
-                      <p className="leading-relaxed font-medium text-slate-700 text-sm md:text-base pt-0.5 group-hover:text-slate-900 transition-colors">
-                        {challenge}
-                      </p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
+              <ProjectOverviewSection project={project} />
+              <ProjectFeaturesSection project={project} />
+              <ProjectTechnologySection project={project} />
+              <ProjectProcessSection project={project} />
+              <ProjectGallerySection project={project} />
+              <ProjectChallengesSection project={project} />
+              <ProjectRelatedSection relatedProjects={relatedProjects} />
+              <ProjectCTASection projectCta={project.ctaBlock} />
             </div>
 
-            {/* Right Column: Meta Information Sidebar */}
-            <div className="space-y-6 lg:sticky lg:top-28 self-start">
-              <div className="bg-white border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 rounded-2xl p-5 md:p-6 space-y-5 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400" />
-                
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-[0.1em] text-slate-400 mb-2">Project Metadata</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-slate-600 text-sm">
-                      <Briefcase className="h-4 w-4 text-slate-400" />
-                      <div>
-                        <span className="font-semibold text-slate-800">Client:</span> {project.client}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 text-slate-600 text-sm">
-                      <User className="h-4 w-4 text-slate-400" />
-                      <div>
-                        <span className="font-semibold text-slate-800">Role:</span> {project.role}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 text-slate-600 text-sm">
-                      <Calendar className="h-4 w-4 text-slate-400" />
-                      <div>
-                        <span className="font-semibold text-slate-800">Completed:</span> {new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
-                      </div>
-                    </div>
-                    {matchingIndustries.length > 0 && (
-                      <div className="flex items-center gap-3 text-slate-600 text-sm">
-                        <Building2 className="h-4 w-4 text-slate-400" />
-                        <div>
-                          <span className="font-semibold text-slate-800">Industry:</span>{' '}
-                          {matchingIndustries.map((ind, idx) => (
-                            <span key={ind.id}>
-                              {idx > 0 && ', '}
-                              <Link to={`/industries/${ind.slug}`} className="text-primary hover:underline font-medium">
-                                {ind.title}
-                              </Link>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-
-                <hr className="border-slate-100" />
-
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-[0.1em] text-slate-400 mb-2">Technologies Used</h3>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.technologies.map((tech) => (
-                      <span key={tech} className="px-2.5 py-1 rounded bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <hr className="border-slate-100" />
-
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-[0.1em] text-slate-400 mb-2">Tags</h3>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="text-xs text-slate-500 font-medium">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
+            <div className="space-y-6">
+              <ProjectSidebar project={project} />
             </div>
-
           </div>
-
-          {/* Gallery Section */}
-          {project.gallery.length > 0 && (
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 font-display">Project Gallery</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {project.gallery.map((img, i) => (
-                  <div key={i} className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-                    <img
-                      src={img}
-                      alt={`${project.title} Screenshot ${i + 1}`}
-                      className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Related Projects Section */}
-          {relatedProjects.length > 0 && (
-            <div className="mt-16 border-t border-slate-200 pt-12">
-              <h2 className="text-2xl font-bold text-slate-900 mb-8 font-display">Related Projects</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedProjects.map((rp) => (
-                  <Card key={rp.id} className="border-slate-200 bg-white hover:shadow-md transition-shadow">
-                    <div className="h-32 bg-slate-100 overflow-hidden relative">
-                      <img src={rp.thumbnail} alt={rp.title} className="w-full h-full object-cover" />
-                    </div>
-                    <CardHeader className="p-4 pb-2">
-                      <Badge variant="secondary" className="w-fit text-[10px] bg-primary/10 text-primary mb-1">
-                        {rp.category}
-                      </Badge>
-                      <CardTitle className="text-sm font-bold text-slate-900 font-display line-clamp-1">
-                        <Link to={`/work/${rp.slug}`} className="hover:text-primary">
-                          {rp.title}
-                        </Link>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0">
-                      <p className="text-slate-600 text-xs line-clamp-2 mb-3">
-                        {rp.description}
-                      </p>
-                      <Link to={`/work/${rp.slug}`} className="text-xs font-semibold text-primary hover:underline">
-                        View details →
-                      </Link>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
-
         </section>
 
+        <Footer />
       </main>
-      <Footer />
     </>
   );
 };

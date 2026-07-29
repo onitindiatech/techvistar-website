@@ -452,6 +452,13 @@ export function extendedCmsFromIndustryItem(item: any): IndustryExtendedCmsState
 }
 
 export function extendedCmsToIndustryPayload(ext: IndustryExtendedCmsState, legacyCta: string) {
+  const cta =
+    ext.ctaBlock.body !== undefined
+      ? ext.ctaBlock.body === null
+        ? null
+        : String(ext.ctaBlock.body).trim()
+      : legacyCta;
+
   return {
     heroBadge: ext.heroBadge,
     heroTagline: ext.heroTagline,
@@ -460,7 +467,7 @@ export function extendedCmsToIndustryPayload(ext: IndustryExtendedCmsState, lega
     whyChooseUs: ext.whyChooseUsList.filter((w) => w.title.trim() && w.description.trim()),
     industries: ext.relatedServiceSlugs,
     relatedIndustrySlugs: ext.relatedIndustrySlugs,
-    cta: ext.ctaBlock.body?.trim() || legacyCta,
+    cta,
     ctaBlock: ext.ctaBlock,
     sidebar: ext.sidebar,
     consultationForm: ext.consultationForm,

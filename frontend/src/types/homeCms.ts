@@ -454,15 +454,15 @@ function mergeResponsiveHeroCopyConfig(
     const copyFields = ['badge', 'heading', 'headingLine2', 'mobileHighlightedHeading', 'description', 'maxWidth'] as const;
     for (const key of copyFields) {
       const val = partial[key];
-      if (typeof val === 'string' && val.trim() !== '') {
-        merged[key] = val.trim();
+      if (val !== undefined && val !== null) {
+        merged[key] = String(val).trim();
       }
     }
 
     const ctaFields = ['ctaPrimary', 'ctaSecondary', 'ctaPrimaryLink', 'ctaSecondaryLink'] as const;
     for (const key of ctaFields) {
-      if (partial[key] !== undefined && partial[key] !== null) {
-        merged[key] = String(partial[key]).trim();
+      if (partial[key] !== undefined) {
+        merged[key] = partial[key] === null ? null : String(partial[key]).trim();
       }
     }
 
@@ -474,8 +474,12 @@ function mergeResponsiveHeroCopyConfig(
   }
 
   if (hero) {
-    if (!merged.ctaPrimaryLink?.trim()) merged.ctaPrimaryLink = hero.ctaPrimaryLink;
-    if (!merged.ctaSecondaryLink?.trim()) merged.ctaSecondaryLink = hero.ctaSecondaryLink;
+    if (partial?.ctaPrimaryLink === undefined && !merged.ctaPrimaryLink?.trim()) {
+      merged.ctaPrimaryLink = hero.ctaPrimaryLink;
+    }
+    if (partial?.ctaSecondaryLink === undefined && !merged.ctaSecondaryLink?.trim()) {
+      merged.ctaSecondaryLink = hero.ctaSecondaryLink;
+    }
   }
 
   return merged;
@@ -512,9 +516,9 @@ function splitResponsiveHeroUnifiedPayload(
     layout.showHighlightPills = Boolean(showHighlightPills);
   }
   if (showClientStrip !== undefined && showClientStrip !== null) layout.showClientStrip = Boolean(showClientStrip);
-  if (metrics?.length) layout.metrics = metrics;
-  if (highlights?.length) layout.highlights = highlights;
-  if (featureCards?.length) layout.featureCards = featureCards;
+  if (metrics !== undefined) layout.metrics = metrics;
+  if (highlights !== undefined) layout.highlights = highlights;
+  if (featureCards !== undefined) layout.featureCards = featureCards;
 
   return {
     copy: copyFields,
@@ -551,7 +555,7 @@ function mergeResponsiveHeroLayoutConfig(
     merged.showClientStrip = Boolean(partial.showClientStrip);
   }
 
-  if (partial.metrics?.length) {
+  if (partial.metrics !== undefined) {
     merged.metrics = partial.metrics.map((m, i) => ({
       value: String(m.value ?? '').trim(),
       label: String(m.label ?? '').trim(),
@@ -559,13 +563,13 @@ function mergeResponsiveHeroLayoutConfig(
     }));
   }
 
-  if (partial.highlights?.length) {
+  if (partial.highlights !== undefined) {
     merged.highlights = partial.highlights
       .map((h) => String(h).trim())
       .filter(Boolean);
   }
 
-  if (partial.featureCards?.length) {
+  if (partial.featureCards !== undefined) {
     merged.featureCards = partial.featureCards.map((card, i) => ({
       icon: String(card.icon ?? 'Circle').trim() || 'Circle',
       label: String(card.label ?? '').trim(),
@@ -589,10 +593,12 @@ export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCms
     const out = { ...defaults };
     for (const key of Object.keys(defaults) as Array<keyof T>) {
       const val = partial[key];
-      if (val === undefined || val === null) continue;
-      if (typeof val === 'string' && val.trim() === '') continue;
+      if (val === undefined) continue;
+      if (val === null) {
+        out[key] = val as T[keyof T];
+        continue;
+      }
       if (Array.isArray(val)) {
-        if (val.length === 0) continue;
         out[key] = val as T[keyof T];
       } else if (typeof val === 'object' && typeof defaults[key] === 'object' && !Array.isArray(defaults[key])) {
         out[key] = mergeBlock(
@@ -607,26 +613,17 @@ export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCms
   };
 
   const legacyHero = api.hero as Partial<HomeHeroConfig> | undefined;
-  const hero = mergeBlock(DEFAULT_HOME_CMS.hero, {
-    ...legacyHero,
-    mediaType: legacyHero?.mediaType ?? (legacyHero?.backgroundImage ? 'image' : DEFAULT_HOME_CMS.hero.mediaType),
-    ctaPrimaryLink: legacyHero?.ctaPrimaryLink?.trim() || '/#services',
-    ctaSecondaryLink: legacyHero?.ctaSecondaryLink?.trim() || '/#contact',
-    youtubeUrl:
-      legacyHero?.youtubeUrl != null
-        ? String(legacyHero.youtubeUrl).trim()
-        : DEFAULT_HOME_CMS.hero.youtubeUrl,
-    youtubeStartTime: legacyHero?.youtubeStartTime ?? DEFAULT_HOME_CMS.hero.youtubeStartTime,
-    overlayOpacity: legacyHero?.overlayOpacity ?? DEFAULT_HOME_CMS.hero.overlayOpacity,
-    backgroundBlur: legacyHero?.backgroundBlur ?? DEFAULT_HOME_CMS.hero.backgroundBlur,
-    animationEnabled: legacyHero?.animationEnabled ?? DEFAULT_HOME_CMS.hero.animationEnabled,
-    showScrollIndicator: legacyHero?.showScrollIndicator ?? DEFAULT_HOME_CMS.hero.showScrollIndicator,
-    trustLogos: legacyHero?.trustLogos?.length ? legacyHero.trustLogos : DEFAULT_HOME_CMS.hero.trustLogos,
-  });
+  const heroPartial: Partial<HomeHeroConfig> = { ...legacyHero };
+  if (legacyHero?.mediaType === undefined) {
+    heroPartial.mediaType = legacyHero?.backgroundImage
+      ? 'image'
+      : DEFAULT_HOME_CMS.hero.mediaType;
+  }
+  const hero = mergeBlock(DEFAULT_HOME_CMS.hero, heroPartial);
 
   const legacyStats = api.stats;
   const stats =
-    legacyStats && legacyStats.length > 0
+    legacyStats !== undefined
       ? legacyStats.map((s, i) => {
           const item = s as HomeStatItem & { value?: string; label?: string };
           if ('sortOrder' in item && item.icon) return item as HomeStatItem;
@@ -642,22 +639,16 @@ export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCms
       : DEFAULT_HOME_CMS.stats;
 
   const featuredServices = mergeBlock(DEFAULT_HOME_CMS.featuredServices, api.featuredServices);
-  if (!featuredServices.ctaLink?.trim()) {
+  if (featuredServices.ctaLink === undefined) {
     featuredServices.ctaLink = '/services';
   }
-  if (!featuredServices.ctaText?.trim()) {
+  if (featuredServices.ctaText === undefined) {
     featuredServices.ctaText = 'View All Services';
   }
 
   const benefits = mergeBlock(DEFAULT_HOME_CMS.benefits, api.benefits);
-  if (benefits.visible !== false && !benefits.cards?.length) {
-    benefits.cards = DEFAULT_HOME_CMS.benefits.cards;
-  }
 
   const contactCta = mergeBlock(DEFAULT_HOME_CMS.contactCta, api.contactCta);
-  if (!contactCta.categories?.length) contactCta.categories = DEFAULT_HOME_CMS.contactCta.categories;
-  if (!contactCta.budgetOptions?.length) contactCta.budgetOptions = DEFAULT_HOME_CMS.contactCta.budgetOptions;
-  if (!contactCta.steps?.length) contactCta.steps = DEFAULT_HOME_CMS.contactCta.steps;
 
   const responsiveUnified = splitResponsiveHeroUnifiedPayload(
     (api as { responsiveHero?: HomeResponsiveHeroUnifiedPayload | null }).responsiveHero

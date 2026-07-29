@@ -390,6 +390,13 @@ export function extendedCmsFromItem(item: any): ServiceExtendedCmsState {
 }
 
 export function extendedCmsToPayload(ext: ServiceExtendedCmsState, legacyCta: string) {
+  const cta =
+    ext.ctaBlock.body !== undefined
+      ? ext.ctaBlock.body === null
+        ? null
+        : String(ext.ctaBlock.body).trim()
+      : legacyCta;
+
   return {
     heroBadge: ext.heroBadge,
     heroTagline: ext.heroTagline,
@@ -397,7 +404,7 @@ export function extendedCmsToPayload(ext: ServiceExtendedCmsState, legacyCta: st
     faqs: ext.faqsList.filter((f) => f.question.trim() && f.answer.trim()),
     relatedServiceSlugs: ext.relatedServiceSlugs,
     relatedIndustrySlugs: ext.relatedIndustrySlugs,
-    cta: ext.ctaBlock.body?.trim() || legacyCta,
+    cta,
     ctaBlock: ext.ctaBlock,
     sidebar: ext.sidebar,
     consultationForm: ext.consultationForm,

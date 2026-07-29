@@ -11,6 +11,37 @@ import financeImg from '../assets/finance_reporting_analytics.png';
 import { SeoMetadata } from '@/types/seo';
 import { seoFromApi } from '@/lib/seoResolve';
 
+export interface ProjectStat {
+  value: string;
+  label: string;
+  iconType: string;
+  colorTheme: string;
+}
+
+export interface ProjectDetailedFeature {
+  title: string;
+  description: string;
+  iconName: string;
+  badge?: string;
+  color?: string;
+}
+
+export interface ProjectProcessStep {
+  step: number;
+  title: string;
+  description: string;
+}
+
+export interface ProjectCtaBlock {
+  badge?: string;
+  title?: string;
+  description?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  secondaryButtonText?: string;
+  secondaryButtonLink?: string;
+}
+
 export interface Project extends SeoMetadata {
   id: number;
   title: string;
@@ -22,7 +53,7 @@ export interface Project extends SeoMetadata {
   liveUrl: string;
   githubUrl: string;
   featured: boolean;
-  date: string; // ISO 8601 Date String (YYYY-MM-DD)
+  date: string;
   client: string;
   role: string;
   longDescription: string;
@@ -33,7 +64,11 @@ export interface Project extends SeoMetadata {
   status: 'Completed' | 'In Progress' | 'Coming Soon';
   serviceSlugs: string[];
   industry: string;
-  updatedDate: string; // ISO 8601 Date String (YYYY-MM-DD)
+  updatedDate: string;
+  stats: ProjectStat[];
+  detailedFeatures: ProjectDetailedFeature[];
+  process: ProjectProcessStep[];
+  ctaBlock?: ProjectCtaBlock;
 }
 
 export const IMAGE_MAP: Record<string, string> = {
@@ -72,6 +107,10 @@ export function decorateProject(apiProject: any): Project {
     serviceSlugs: apiProject.serviceSlugs || [],
     industry: apiProject.industry || '',
     updatedDate: apiProject.updatedDate || '',
+    stats: apiProject.stats || [],
+    detailedFeatures: apiProject.detailedFeatures || [],
+    process: apiProject.process || [],
+    ctaBlock: apiProject.ctaBlock || undefined,
     ...seoFromApi(apiProject),
   };
 }
@@ -110,6 +149,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['web-development', 'custom-software-development', 'automation', 'product-platform-engineering'],
     industry: 'Logistics',
     updatedDate: '2025-11-20',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
   {
     id: 2,
@@ -144,6 +186,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['web-development', 'custom-software-development', 'digital-marketing', 'cloud', 'cloud-infrastructure'],
     industry: 'SaaS',
     updatedDate: '2025-10-01',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
   {
     id: 3,
@@ -178,6 +223,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['ai-automation', 'mobile-app-development', 'automation', 'ai'],
     industry: 'Agriculture',
     updatedDate: '2025-05-25',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
   {
     id: 4,
@@ -212,6 +260,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['ai-automation', 'custom-software-development', 'ai', 'enterprise-ai-integration'],
     industry: 'SaaS',
     updatedDate: '2025-03-15',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
   {
     id: 5,
@@ -246,6 +297,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['ai-automation', 'ai', 'enterprise-ai-integration', 'documentation-research', 'ui-ux-design'],
     industry: 'HRTech',
     updatedDate: '2025-02-10',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
   {
     id: 6,
@@ -280,6 +334,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['web-development', 'ai-automation', 'ai', 'enterprise-ai-integration', 'documentation-research'],
     industry: 'Healthcare',
     updatedDate: '2024-12-05',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
   {
     id: 7,
@@ -314,6 +371,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['ai-automation', 'custom-software-development', 'ai', 'saas-platforms'],
     industry: 'SaaS',
     updatedDate: '2024-09-01',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
   {
     id: 8,
@@ -348,6 +408,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['devops', 'cloud', 'ai-automation', 'custom-software-development', 'saas-platforms', 'cloud-infrastructure', 'product-platform-engineering'],
     industry: 'SaaS',
     updatedDate: '2024-07-02',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
   {
     id: 9,
@@ -382,6 +445,9 @@ export const PROJECTS: readonly Project[] = [
     serviceSlugs: ['web-development', 'custom-software-development', 'revenue-web-conversion-systems', 'saas-platforms', 'ui-ux-design', 'branding', 'creative-design', 'product-design'],
     industry: 'Finance',
     updatedDate: '2024-04-10',
+    stats: [],
+    detailedFeatures: [],
+    process: [],
   },
 ] as const;
 

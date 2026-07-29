@@ -7,6 +7,37 @@ import mongoose, { Schema } from 'mongoose';
 import { BaseDocument } from '@/types/common';
 import { ISeoFields, seoMongooseFields } from '@/utils/seoFields';
 
+export interface IProjectStat {
+  value: string;
+  label: string;
+  iconType: string;
+  colorTheme: string;
+}
+
+export interface IProjectDetailedFeature {
+  title: string;
+  description: string;
+  iconName: string;
+  badge?: string;
+  color?: string;
+}
+
+export interface IProjectProcessStep {
+  step: number;
+  title: string;
+  description: string;
+}
+
+export interface IProjectCtaBlock {
+  badge?: string;
+  title?: string;
+  description?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  secondaryButtonText?: string;
+  secondaryButtonLink?: string;
+}
+
 export interface IProject extends BaseDocument, ISeoFields {
   title: string;
   slug: string;
@@ -32,6 +63,11 @@ export interface IProject extends BaseDocument, ISeoFields {
   industry: string;
   updatedDate: string;
   displayOrder: number;
+
+  stats: IProjectStat[];
+  detailedFeatures: IProjectDetailedFeature[];
+  process: IProjectProcessStep[];
+  ctaBlock?: IProjectCtaBlock;
 
   isDeleted?: boolean;
   deletedAt?: Date | null;
@@ -154,6 +190,51 @@ const projectSchema = new Schema<IProject>(
     displayOrder: {
       type: Number,
       default: 0,
+    },
+    stats: {
+      type: [
+        {
+          value: { type: String, trim: true },
+          label: { type: String, trim: true },
+          iconType: { type: String, trim: true, default: 'chart' },
+          colorTheme: { type: String, trim: true, default: 'green' },
+        },
+      ],
+      default: [],
+    },
+    detailedFeatures: {
+      type: [
+        {
+          title: { type: String, trim: true },
+          description: { type: String, trim: true },
+          iconName: { type: String, trim: true, default: 'Sparkles' },
+          badge: { type: String, trim: true, default: '' },
+          color: { type: String, trim: true, default: '' },
+        },
+      ],
+      default: [],
+    },
+    process: {
+      type: [
+        {
+          step: { type: Number },
+          title: { type: String, trim: true },
+          description: { type: String, trim: true },
+        },
+      ],
+      default: [],
+    },
+    ctaBlock: {
+      type: {
+        badge: { type: String, trim: true, default: '' },
+        title: { type: String, trim: true, default: '' },
+        description: { type: String, trim: true, default: '' },
+        buttonText: { type: String, trim: true, default: '' },
+        buttonLink: { type: String, trim: true, default: '' },
+        secondaryButtonText: { type: String, trim: true, default: '' },
+        secondaryButtonLink: { type: String, trim: true, default: '' },
+      },
+      default: undefined,
     },
     ...seoMongooseFields,
     isDeleted: {

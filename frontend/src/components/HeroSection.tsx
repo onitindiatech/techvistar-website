@@ -120,22 +120,25 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
   const showClientLogoStrip = showIpadProEnrichment && ipadProHero.showClientStrip;
   const ipadProMetrics = useMemo(
     () =>
-      (ipadProHero.metrics?.length ? ipadProHero.metrics : DEFAULT_HOME_CMS.ipadProHero.metrics)
+      (ipadProHero.metrics !== undefined
+        ? ipadProHero.metrics
+        : DEFAULT_HOME_CMS.ipadProHero.metrics)
         .slice()
         .sort((a, b) => a.sortOrder - b.sortOrder),
     [ipadProHero.metrics]
   );
   const ipadProHighlights = useMemo(
     () =>
-      (ipadProHero.highlights?.length ? ipadProHero.highlights : DEFAULT_HOME_CMS.ipadProHero.highlights).filter(
-        Boolean
-      ),
+      (ipadProHero.highlights !== undefined
+        ? ipadProHero.highlights
+        : DEFAULT_HOME_CMS.ipadProHero.highlights).filter(Boolean),
     [ipadProHero.highlights]
   );
   const featureCardsForGrid = useMemo(() => {
-    const cards = ipadProHero.featureCards?.length
-      ? ipadProHero.featureCards
-      : DEFAULT_HOME_CMS.ipadProHero.featureCards;
+    const cards =
+      ipadProHero.featureCards !== undefined
+        ? ipadProHero.featureCards
+        : DEFAULT_HOME_CMS.ipadProHero.featureCards;
     return cards
       .slice()
       .sort((a, b) => a.sortOrder - b.sortOrder)

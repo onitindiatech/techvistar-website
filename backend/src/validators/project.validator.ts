@@ -31,6 +31,10 @@ interface ProjectInput {
   displayOrder?: unknown;
   seoTitle?: unknown;
   seoDescription?: unknown;
+  stats?: unknown;
+  detailedFeatures?: unknown;
+  process?: unknown;
+  ctaBlock?: unknown;
 }
 
 export function validateProjectInput(input: ProjectInput, isUpdate = false): any {
@@ -185,6 +189,10 @@ export function validateProjectInput(input: ProjectInput, isUpdate = false): any
     if (input.status !== undefined && input.status !== null) {
       updatePayload.status = String(input.status).trim();
     }
+    if (input.stats !== undefined) updatePayload.stats = Array.isArray(input.stats) ? input.stats : [];
+    if (input.detailedFeatures !== undefined) updatePayload.detailedFeatures = Array.isArray(input.detailedFeatures) ? input.detailedFeatures : [];
+    if (input.process !== undefined) updatePayload.process = Array.isArray(input.process) ? input.process : [];
+    if (input.ctaBlock !== undefined) updatePayload.ctaBlock = input.ctaBlock;
     return updatePayload;
   }
 
@@ -214,6 +222,10 @@ export function validateProjectInput(input: ProjectInput, isUpdate = false): any
   if (parsedTags) result.tags = parsedTags;
   if (parsedServiceSlugs) result.serviceSlugs = parsedServiceSlugs;
   if (input.status) result.status = String(input.status).trim();
+  if (input.stats !== undefined) result.stats = Array.isArray(input.stats) ? input.stats : [];
+  if (input.detailedFeatures !== undefined) result.detailedFeatures = Array.isArray(input.detailedFeatures) ? input.detailedFeatures : [];
+  if (input.process !== undefined) result.process = Array.isArray(input.process) ? input.process : [];
+  if (input.ctaBlock !== undefined) result.ctaBlock = input.ctaBlock;
 
   return result;
 }

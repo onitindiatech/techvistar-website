@@ -1,12 +1,16 @@
 import { useEffect, useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import type { SolutionNavItem } from '@/lib/solutionDetailDefaults';
 
-interface SolutionSectionNavigationProps {
-  navItems: SolutionNavItem[];
+interface NavItem {
+  id: string;
+  label: string;
 }
 
-export const SolutionSectionNavigation = ({ navItems }: SolutionSectionNavigationProps) => {
+interface ProjectSectionNavigationProps {
+  navItems: NavItem[];
+}
+
+export const ProjectSectionNavigation = ({ navItems }: ProjectSectionNavigationProps) => {
   const [activeId, setActiveId] = useState<string>(navItems[0]?.id || 'overview');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const subnavRef = useRef<HTMLElement>(null);
@@ -156,4 +160,4 @@ export const SolutionSectionNavigation = ({ navItems }: SolutionSectionNavigatio
   );
 };
 
-export default SolutionSectionNavigation;
+export default ProjectSectionNavigation;

@@ -32,7 +32,11 @@ const SEO_SECTIONS: SectionKey[] = [
 function trimRecord(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(obj)) {
-    if (value === undefined || value === null) continue;
+    if (value === undefined) continue;
+    if (value === null) {
+      result[key] = null;
+      continue;
+    }
     if (typeof value === 'string') {
       result[key] = value.trim();
     } else if (Array.isArray(value)) {

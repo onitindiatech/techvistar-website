@@ -725,10 +725,12 @@ function deepMergeSection<T extends Record<string, unknown>>(defaults: T, api?: 
     const out = { ...def };
     for (const key of Object.keys(def) as Array<keyof U>) {
       const val = partial[key];
-      if (val === undefined || val === null) continue;
-      if (typeof val === 'string' && val.trim() === '') continue;
+      if (val === undefined) continue;
+      if (val === null) {
+        out[key] = val as U[keyof U];
+        continue;
+      }
       if (Array.isArray(val)) {
-        if (val.length === 0) continue;
         out[key] = val as U[keyof U];
       } else if (typeof val === 'object' && typeof def[key] === 'object' && !Array.isArray(def[key])) {
         out[key] = mergeBlock(

@@ -4,7 +4,7 @@
  */
 
 import { ApiError } from '@/utils/ApiError';
-import { pickSeoForCreate } from '@/utils/seoFields';
+import { pickSeoForCreate, pickSeoForUpdate } from '@/utils/seoFields';
 
 interface ServiceInput {
   title?: unknown;
@@ -99,8 +99,8 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
   }
 
   // Arrays validation helpers
-  const parseStringArray = (field: string, val: unknown) => {
-    if (val === undefined) return [];
+  const parseStringArray = (field: string, val: unknown): string[] | undefined => {
+    if (val === undefined) return undefined;
     if (!Array.isArray(val)) {
       errors.push({ field, message: `${field} must be an array of strings` });
       return [];
@@ -239,7 +239,8 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
   const parsedRelatedIndustrySlugs = parseStringArray('relatedIndustrySlugs', input.relatedIndustrySlugs);
 
   const parseCtaBlock = (val: unknown) => {
-    if (val === undefined || val === null) return undefined;
+    if (val === undefined) return undefined;
+    if (val === null) return null;
     if (typeof val !== 'object') {
       errors.push({ field: 'ctaBlock', message: 'CTA block must be an object' });
       return undefined;
@@ -256,7 +257,8 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
   };
 
   const parseSidebarBlock = (val: unknown) => {
-    if (val === undefined || val === null) return undefined;
+    if (val === undefined) return undefined;
+    if (val === null) return null;
     if (typeof val !== 'object') {
       errors.push({ field: 'sidebar', message: 'Sidebar must be an object' });
       return undefined;
@@ -278,7 +280,8 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
   };
 
   const parseConsultationBlock = (val: unknown) => {
-    if (val === undefined || val === null) return undefined;
+    if (val === undefined) return undefined;
+    if (val === null) return null;
     if (typeof val !== 'object') {
       errors.push({ field: 'consultationForm', message: 'Consultation form config must be an object' });
       return undefined;
@@ -321,6 +324,50 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
     throw ApiError.validationError('Validation failed', errors);
   }
 
+  if (isUpdate) {
+    const updatePayload: Record<string, unknown> = {};
+    if (input.title !== undefined) updatePayload.title = String(input.title).trim();
+    if (input.slug !== undefined) updatePayload.slug = String(input.slug).trim().toLowerCase();
+    if (input.shortDescription !== undefined) updatePayload.shortDescription = String(input.shortDescription).trim();
+    if (input.fullDescription !== undefined) updatePayload.fullDescription = String(input.fullDescription).trim();
+    if (input.icon !== undefined) updatePayload.icon = String(input.icon).trim();
+    if (input.coverImage !== undefined) updatePayload.coverImage = String(input.coverImage).trim();
+    if (input.features !== undefined) updatePayload.features = parsedFeatures ?? [];
+    if (input.technologies !== undefined) updatePayload.technologies = parsedTechnologies ?? [];
+    if (input.benefits !== undefined) updatePayload.benefits = parsedBenefits ?? [];
+    if (input.displayOrder !== undefined && input.displayOrder !== null) {
+      updatePayload.displayOrder = parsedDisplayOrder;
+    }
+    if (input.status !== undefined && input.status !== null) {
+      updatePayload.status = String(input.status).trim();
+    }
+    Object.assign(updatePayload, pickSeoForUpdate(input));
+    if (input.category !== undefined) updatePayload.category = String(input.category).trim();
+    if (input.thumbnail !== undefined) updatePayload.thumbnail = String(input.thumbnail).trim();
+    if (input.overview !== undefined) updatePayload.overview = String(input.overview).trim();
+    if (input.offerings !== undefined) updatePayload.offerings = parsedOfferings ?? [];
+    if (input.process !== undefined) updatePayload.process = parsedProcess;
+    if (input.caseStudies !== undefined) updatePayload.caseStudies = parsedCaseStudies;
+    if (input.cta !== undefined) updatePayload.cta = input.cta === null ? null : String(input.cta).trim();
+    if (input.featured !== undefined) {
+      updatePayload.featured = input.featured === true || input.featured === 'true';
+    }
+    if (input.industries !== undefined) updatePayload.industries = parsedIndustries ?? [];
+    if (input.whyChooseUs !== undefined) updatePayload.whyChooseUs = parsedWhyChooseUs;
+    if (input.stats !== undefined) updatePayload.stats = parsedStats;
+    if (input.detailedOfferings !== undefined) updatePayload.detailedOfferings = parsedDetailedOfferings;
+    if (input.faqs !== undefined) updatePayload.faqs = parsedFaqs;
+    if (input.relatedServiceSlugs !== undefined) updatePayload.relatedServiceSlugs = parsedRelatedServiceSlugs ?? [];
+    if (input.relatedIndustrySlugs !== undefined) updatePayload.relatedIndustrySlugs = parsedRelatedIndustrySlugs ?? [];
+    if (input.heroBadge !== undefined) updatePayload.heroBadge = String(input.heroBadge).trim();
+    if (input.heroTagline !== undefined) updatePayload.heroTagline = String(input.heroTagline).trim();
+    if (input.ctaBlock !== undefined) updatePayload.ctaBlock = parsedCtaBlock;
+    if (input.sidebar !== undefined) updatePayload.sidebar = parsedSidebar;
+    if (input.consultationForm !== undefined) updatePayload.consultationForm = parsedConsultationForm;
+    if (input.dashboardImage !== undefined) updatePayload.dashboardImage = String(input.dashboardImage).trim();
+    return updatePayload;
+  }
+
   return {
     title: input.title ? String(input.title).trim() : '',
     ...(input.slug !== undefined && { slug: String(input.slug).trim().toLowerCase() }),
@@ -328,9 +375,9 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
     fullDescription: input.fullDescription ? String(input.fullDescription).trim() : '',
     icon: input.icon ? String(input.icon).trim() : '',
     coverImage: input.coverImage ? String(input.coverImage).trim() : '',
-    features: parsedFeatures,
-    technologies: parsedTechnologies,
-    benefits: parsedBenefits,
+    features: parsedFeatures ?? [],
+    technologies: parsedTechnologies ?? [],
+    benefits: parsedBenefits ?? [],
     displayOrder: parsedDisplayOrder,
     status: (input.status ? String(input.status).trim() : 'draft') as 'draft' | 'active',
     ...pickSeoForCreate(input),
@@ -338,12 +385,12 @@ export function validateServiceInput(input: ServiceInput, isUpdate = false): any
     category: input.category ? String(input.category).trim() : '',
     thumbnail: input.thumbnail ? String(input.thumbnail).trim() : '',
     overview: input.overview ? String(input.overview).trim() : '',
-    offerings: parsedOfferings,
+    offerings: parsedOfferings ?? [],
     ...(input.process !== undefined && { process: parsedProcess }),
     ...(input.caseStudies !== undefined && { caseStudies: parsedCaseStudies }),
     cta: input.cta ? String(input.cta).trim() : '',
     featured: input.featured === true || input.featured === 'true',
-    industries: parsedIndustries,
+    industries: parsedIndustries ?? [],
     ...(input.whyChooseUs !== undefined && { whyChooseUs: parsedWhyChooseUs }),
     ...(input.stats !== undefined && { stats: parsedStats }),
     ...(input.detailedOfferings !== undefined && { detailedOfferings: parsedDetailedOfferings }),

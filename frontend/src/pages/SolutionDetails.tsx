@@ -26,6 +26,8 @@ export const SolutionDetails = () => {
     queryKey: ['solutionDetails', slug],
     queryFn: () => getSolutionBySlug(slug || ''),
     enabled: !!slug,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 
   const solution = apiSolution ? decorateSolution(apiSolution) : undefined;
@@ -101,9 +103,9 @@ export const SolutionDetails = () => {
         <SolutionHero solution={solution} />
         <SolutionSectionNavigation navItems={solution.sectionCopy.navItems} />
 
-        <section className="mx-auto mt-12 w-full max-w-7xl px-4 pb-8 md:px-6 lg:px-12 xl:px-20 detail-page-gutter">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <div className="flex flex-col space-y-12 lg:col-span-2">
+        <section className="w-full mx-auto px-4 md:px-6 lg:px-12 xl:px-20 mt-8 pb-16 detail-page-gutter">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
               <SolutionOverviewSection solution={solution} />
               <SolutionFeaturesSection solution={solution} />
               <SolutionProcessSection solution={solution} />
@@ -111,6 +113,7 @@ export const SolutionDetails = () => {
               <SolutionTechStackSection solution={solution} />
               <SolutionRelatedSection solution={solution} />
             </div>
+
             <div className="space-y-6">
               <SolutionSidebar solution={solution} />
             </div>

@@ -1,5 +1,6 @@
-import { SolutionDetail } from '@/data/solutions';
 import { motion, useReducedMotion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
+import { SolutionDetail } from '@/data/solutions';
 
 interface SectionProps {
   solution: SolutionDetail;
@@ -7,90 +8,80 @@ interface SectionProps {
 
 export const SolutionProcessSection = ({ solution }: SectionProps) => {
   const prefersReducedMotion = useReducedMotion();
-  const steps = solution.howItWorks ?? [];
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: prefersReducedMotion ? 0 : 0.12 },
+      transition: { staggerChildren: 0.15 },
     },
   };
 
   const stepVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 12 },
+    hidden: { opacity: 0, x: -20 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: { type: 'spring', stiffness: 120, damping: 18 },
+      x: 0,
+      transition: { type: 'spring', stiffness: 100, damping: 15 },
     },
   };
 
-  if (steps.length === 0) return null;
-
   return (
-    <section
-      id="process"
-      className="relative w-full scroll-mt-24 overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm md:p-6"
-    >
-      <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-50/50 blur-3xl" />
+    <section id="process" className="relative overflow-hidden bg-white border border-slate-200/80 rounded-3xl p-6 md:p-10 scroll-mt-24 shadow-sm">
+      <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-emerald-500/[0.02] blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-sky-500/[0.02] blur-3xl pointer-events-none z-0" />
 
-      <div className="relative z-10 mb-8">
-        <h2 className="font-display text-heading-md text-slate-900">
-          {solution.sectionCopy?.processTitle || 'Implementation Process'}
+      <div className="relative z-10 flex items-center gap-2 mb-8">
+        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
+          <Sparkles className="h-3 w-3 text-emerald-600" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900 font-display">
+          {solution.sectionCopy?.processTitle || 'Development Process'}
         </h2>
-        <p className="mt-1 text-sm font-medium text-slate-500">
-          {solution.sectionCopy?.processSubtitle || 'How we deliver results'}
-        </p>
       </div>
 
-      <div className="relative z-10">
-        {steps.length > 1 ? (
-          <div
-            aria-hidden
-            className="absolute left-5 top-5 bottom-5 w-0.5 -translate-x-1/2 rounded-full bg-gradient-to-b from-emerald-500 via-emerald-400/60 to-emerald-200/40"
-          />
-        ) : null}
+      <div className="relative z-10 pl-2 md:pl-4">
+        <div className="absolute left-[19px] md:left-[23px] top-3 bottom-3 w-[3px] bg-gradient-to-b from-emerald-500 via-emerald-400/50 to-slate-100 rounded-full" />
 
-        <motion.ol
+        <motion.div
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
-          className="m-0 flex list-none flex-col p-0"
+          animate="visible"
+          className="space-y-6"
         >
-          {steps.map((step, idx) => {
-            const isLast = idx === steps.length - 1;
-            return (
-              <motion.li
-                key={`${step.step}-${step.title}-${idx}`}
-                variants={stepVariants}
-                className={`group relative flex items-start gap-4 md:gap-5 ${isLast ? '' : 'pb-7 md:pb-8'}`}
-              >
-                <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center">
-                  <span className="absolute inset-0 rounded-full bg-emerald-500/10 opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-100" />
-                  <span className="relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-emerald-500 bg-white text-sm font-bold text-emerald-700 shadow-[0_0_0_4px_rgba(16,185,129,0.08)] transition-all duration-300 group-hover:border-emerald-600 group-hover:bg-emerald-500 group-hover:text-white group-hover:shadow-[0_0_0_6px_rgba(16,185,129,0.15)]">
-                    {step.step}
+          {solution.howItWorks.map((step, idx) => (
+            <motion.div
+              key={`${step.step}-${idx}`}
+              variants={stepVariants}
+              className="flex gap-5 md:gap-6 relative group"
+            >
+              <div className="relative z-10 flex items-center justify-center shrink-0">
+                <div className="absolute -inset-1.5 rounded-full bg-emerald-500/15 opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
+                <div className="h-9 w-9 md:h-10 md:w-10 rounded-full bg-white border-2 border-emerald-500 shadow-sm flex items-center justify-center text-xs font-bold text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                  <span className="relative z-10">{step.step}</span>
+                </div>
+              </div>
+
+              <div className="flex-1 p-4 md:p-5 rounded-2xl border border-slate-100 bg-slate-50/50 group-hover:bg-white group-hover:border-emerald-500/20 group-hover:shadow-[0_12px_30px_-10px_rgba(16,185,129,0.08)] transition-all duration-300">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-600/80">
+                    Phase {step.step}
                   </span>
+                  <span className="h-1 w-1 rounded-full bg-slate-300" />
+                  <h3 className="text-xs font-semibold text-slate-400">Step {idx + 1}</h3>
                 </div>
 
-                <div className="min-w-0 flex-1 rounded-2xl border border-slate-100 bg-slate-50/60 p-4 transition-all duration-300 group-hover:border-emerald-500/25 group-hover:bg-white group-hover:shadow-[0_12px_30px_-12px_rgba(16,185,129,0.12)] md:p-5">
-                  <div className="mb-1.5 flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600/90">
-                      Phase {step.step}
-                    </span>
-                    <span className="h-1 w-1 rounded-full bg-slate-300" aria-hidden />
-                    <span className="text-xs font-semibold text-slate-400">Step {idx + 1}</span>
-                  </div>
-                  <h3 className="mb-1 font-display text-sm font-bold text-slate-800 transition-colors group-hover:text-emerald-700 md:text-base">
-                    {step.title}
-                  </h3>
-                  <p className="text-xs leading-relaxed text-slate-500 md:text-sm">{step.desc}</p>
+                <div className="text-sm font-bold text-slate-800 group-hover:text-emerald-700 transition-colors mb-1 font-display">
+                  {step.title}
                 </div>
-              </motion.li>
-            );
-          })}
-        </motion.ol>
+
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

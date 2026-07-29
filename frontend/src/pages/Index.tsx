@@ -22,10 +22,7 @@ const ProjectsSection = lazySection(
   () => import('@/components/ProjectsSection'),
   'ProjectsSection',
 );
-const BenefitsSection = lazySection(
-  () => import('@/components/BenefitsSection'),
-  'BenefitsSection',
-);
+
 const DomeGallerySection = lazySection(
   () => import('@/components/DomeGallerySection'),
   'DomeGallerySection',
@@ -55,7 +52,7 @@ const Index = () => {
         <ServicesSection minHeight="320px" />
         <TechStackSection minHeight="280px" />
         <ProjectsSection minHeight="480px" />
-        <BenefitsSection minHeight="360px" />
+
         <DomeGallerySection minHeight="520px" />
 
         {/* Eager mount so hero "Get in touch" can resolve #contact immediately */}

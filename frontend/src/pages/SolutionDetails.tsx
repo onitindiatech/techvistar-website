@@ -15,7 +15,6 @@ import { SolutionOverviewSection } from '@/components/solutions/SolutionOverview
 import { SolutionFeaturesSection } from '@/components/solutions/SolutionFeaturesSection';
 import { SolutionProcessSection } from '@/components/solutions/SolutionProcessSection';
 import { SolutionBenefitsSection } from '@/components/solutions/SolutionBenefitsSection';
-import { SolutionTechStackSection } from '@/components/solutions/SolutionTechStackSection';
 import { SolutionRelatedSection } from '@/components/solutions/SolutionRelatedSection';
 import { SolutionSidebar } from '@/components/solutions/SolutionSidebar';
 
@@ -110,7 +109,6 @@ export const SolutionDetails = () => {
               <SolutionFeaturesSection solution={solution} />
               <SolutionProcessSection solution={solution} />
               <SolutionBenefitsSection solution={solution} />
-              <SolutionTechStackSection solution={solution} />
               <SolutionRelatedSection solution={solution} />
             </div>
 

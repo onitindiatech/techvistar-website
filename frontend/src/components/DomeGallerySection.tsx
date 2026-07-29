@@ -88,7 +88,7 @@ export const DomeGallerySection = () => {
     <SiteSection 
       ref={ref} 
       id="dome-gallery-section" 
-      className="relative overflow-hidden bg-white border-y border-slate-100/80 !pt-16 !pb-16 md:!pt-24 md:!pb-24"
+      className="relative overflow-hidden bg-white border-y border-slate-100/80 !py-6 md:!py-8"
       style={sectionStyle}
     >
       {/* Light Grid Pattern */}
@@ -135,7 +135,7 @@ export const DomeGallerySection = () => {
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[2.5rem] font-black text-slate-900 leading-[1.12] tracking-tight">
+            <h2 className="font-display text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-900 tracking-tight">
               {portfolio.heading}{' '}
               {portfolio.highlight ? (
                 <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 bg-clip-text text-transparent">

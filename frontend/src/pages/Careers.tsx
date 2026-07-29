@@ -160,12 +160,7 @@ const Careers = () => {
             <Button onClick={handleScrollToPositions} size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 px-6 rounded-xl shadow-lg shadow-emerald-500/20">
               View Open Positions
             </Button>
-            <Button onClick={() => {
-              const element = document.getElementById('life-at-techvistar');
-              if (element) element.scrollIntoView({ behavior: 'smooth' });
-            }} variant="outline" size="lg" className="border-white/20 hover:bg-white/10 text-white font-bold h-12 px-6 rounded-xl">
-              Life at TechVistar
-            </Button>
+
           </div>
         </PageHeader>
 
@@ -397,30 +392,6 @@ const Careers = () => {
           </div>
         </section>
 
-        {/* 5. Life at TechVistar */}
-        <section id="life-at-techvistar" className="py-10 md:py-12 bg-slate-50">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl space-y-10">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
-              <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">{careers.culture.title}</h2>
-              <p className="text-slate-500 text-xs sm:text-sm font-semibold">{careers.culture.description}</p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {LIFE_GALLERY.map((img, idx) => (
-                <div key={idx} className="relative group rounded-3xl overflow-hidden shadow-md aspect-[4/3] border border-slate-200 bg-slate-200">
-                  <img 
-                    src={img.url} 
-                    alt={img.title} 
-                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-all duration-300 flex items-center justify-center">
-                    <span className="px-4 py-2 bg-white/95 text-slate-900 font-extrabold text-[10px] uppercase rounded-full shadow-lg border border-slate-100">{img.title}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* 6. Bottom CTA Block */}
         <section className="py-16 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white border-t border-slate-900">

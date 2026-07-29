@@ -80,10 +80,10 @@ export const SolutionSectionNavigation = ({ navItems }: SolutionSectionNavigatio
 
   return (
     <nav className="sticky top-12 sm:top-14 md:top-[4.25rem] z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm w-full transition-all duration-300">
-      <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-12 xl:px-20 detail-page-gutter">
-        <div 
+      <div className="w-full mx-auto px-4 md:px-6 lg:px-12 xl:px-20 detail-page-gutter">
+        <div
           ref={scrollContainerRef}
-          className="flex overflow-x-auto scrollbar-none items-center py-3 gap-6 md:gap-8 whitespace-nowrap scroll-smooth"
+          className="flex overflow-x-auto scrollbar-none items-center py-2.5 md:py-3 gap-4 md:gap-8 whitespace-nowrap scroll-smooth -mx-1 px-1"
         >
           {navItems.map((item) => (
             <button
@@ -91,7 +91,7 @@ export const SolutionSectionNavigation = ({ navItems }: SolutionSectionNavigatio
               onClick={handleNavClick(item.id)}
               data-active={activeId === item.id}
               className={cn(
-                'text-xs font-semibold uppercase tracking-wider pb-1 transition-all border-b-2 focus:outline-none',
+                'text-xs font-semibold uppercase tracking-wider pb-1 px-2 transition-all border-b-2 focus:outline-none mobile-touch-target shrink-0',
                 activeId === item.id
                   ? 'border-primary text-primary font-bold animate-pulse-subtle'
                   : 'border-transparent text-slate-500 hover:text-slate-900'

@@ -341,14 +341,15 @@ export const SolutionTechStackSection = ({ solution }: SectionProps) => {
   };
 
   return (
-    <section id="tech-stack" className="bg-white border border-slate-200/80 rounded-3xl p-5 md:p-6 scroll-mt-24 shadow-sm w-full h-fit">
-      <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-slate-900 font-display">{solution.sectionCopy?.techStackTitle || 'Core Technology Stack'}</h2>
-        <p className="text-slate-500 text-sm leading-relaxed max-w-sm">
-          {solution.sectionCopy?.techStackSubtitle || 'Built with enterprise-grade tools'}
-        </p>
+    <section id="tech-stack" className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 scroll-mt-24 shadow-sm w-full overflow-hidden h-fit">
+      <h2 className="text-xl font-bold text-slate-900 mb-4 font-display">
+        {solution.sectionCopy?.techStackTitle || 'Technology Stack'}
+      </h2>
+      <p className="text-xs text-slate-500 mb-4">
+        {solution.sectionCopy?.techStackSubtitle || 'Our core execution stacks and tools mapped to this solution:'}
+      </p>
 
-        <motion.div 
+      <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -382,7 +383,6 @@ export const SolutionTechStackSection = ({ solution }: SectionProps) => {
             );
           })}
         </motion.div>
-      </div>
     </section>
   );
 };

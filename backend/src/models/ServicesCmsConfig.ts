@@ -81,7 +81,7 @@ const sidebarBlockSchema = {
     trim: true,
     default: 'Have an SOW ready or need instant escalation? Contact our lead architect directly at:',
   },
-  contactEmail: { type: String, trim: true, default: 'architect@techvistar.com' },
+  contactEmail: { type: String, trim: true, default: 'hello@techvistar.com' },
 };
 
 const consultationBlockSchema = {

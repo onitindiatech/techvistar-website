@@ -14,7 +14,6 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
   const { data: apiSolutions } = useQuery({
     queryKey: ['activeSolutions'],
     queryFn: getActiveSolutions,
-    staleTime: 60_000,
   });
 
   const activeSolutions = useMemo(
@@ -40,7 +39,7 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
     <section id="related-solutions" className="pt-10 border-t border-slate-200">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 font-display">Related Solutions</h2>
+          <h2 className="font-display text-heading-md text-slate-900 md:text-heading-lg">Related Solutions</h2>
           <p className="text-slate-500 mt-2">Explore other enterprise solutions that pair well with this offering.</p>
         </div>
         <Link

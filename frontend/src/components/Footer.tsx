@@ -126,7 +126,7 @@ export const Footer = () => {
           <motion.div variants={itemFadeUp} className="lg:col-span-4 md:col-span-2 space-y-4 md:space-y-6">
             <Link to="/" className="inline-flex items-center gap-2.5 md:gap-3 min-w-0">
               <img src={footer.logo || logo} alt={footer.heading} className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover ring-2 ring-emerald-500/10 shrink-0" />
-              <span className="text-lg md:text-xl font-bold font-display text-white tracking-tight truncate">{footer.heading}</span>
+              <span className="truncate font-display text-heading-xs text-white md:text-heading-sm">{footer.heading}</span>
             </Link>
             
             <p className="text-xs sm:text-sm leading-relaxed text-slate-200 font-bold max-w-sm">
@@ -185,7 +185,7 @@ export const Footer = () => {
                 </div>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="text-white text-xs font-bold">4.9 / 5</span>
-                  <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Trusted by businesses</span>
+                  <span className="text-label uppercase text-emerald-400">Trusted by businesses</span>
                 </div>
               </div>
             </motion.a>
@@ -195,7 +195,7 @@ export const Footer = () => {
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:contents">
           {/* Column 2: Services List */}
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-3 md:space-y-5">
-            <div className="font-extrabold font-display text-white text-[10px] md:text-xs uppercase tracking-widest border-b border-white/5 pb-1.5 md:pb-2">Services</div>
+            <div className="border-b border-white/5 pb-1.5 font-display text-label font-extrabold uppercase text-white md:pb-2 md:text-caption">Services</div>
             <ul className="space-y-2 md:space-y-3 font-bold text-[11px] sm:text-sm">
               {footer.serviceLinks.map((link) => (
                 <li key={link.label}>
@@ -213,7 +213,7 @@ export const Footer = () => {
 
           {/* Column 3: Industries Serve List */}
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-3 md:space-y-5">
-            <div className="font-extrabold font-display text-white text-[10px] md:text-xs uppercase tracking-widest border-b border-white/5 pb-1.5 md:pb-2">Industries</div>
+            <div className="border-b border-white/5 pb-1.5 font-display text-label font-extrabold uppercase text-white md:pb-2 md:text-caption">Industries</div>
             <ul className="space-y-2 md:space-y-3 font-bold text-[11px] sm:text-sm">
               {footer.industryLinks.map((link) => (
                 <li key={link.label}>
@@ -231,7 +231,7 @@ export const Footer = () => {
 
           {/* Column 4: Company Links */}
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-3 md:space-y-5">
-            <div className="font-extrabold font-display text-white text-[10px] md:text-xs uppercase tracking-widest border-b border-white/5 pb-1.5 md:pb-2">Company</div>
+            <div className="border-b border-white/5 pb-1.5 font-display text-label font-extrabold uppercase text-white md:pb-2 md:text-caption">Company</div>
             <ul className="space-y-2 md:space-y-3 font-bold text-[11px] sm:text-sm">
               {footer.companyLinks.map((link) => (
                 <li key={link.label}>
@@ -249,7 +249,7 @@ export const Footer = () => {
 
           {/* Column 5: Premium Newsletter Card */}
           <motion.div variants={itemFadeUp} className="col-span-2 lg:col-span-2 md:col-span-1 space-y-3 md:space-y-5">
-            <div className="font-extrabold font-display text-white text-[10px] md:text-xs uppercase tracking-widest border-b border-white/5 pb-1.5 md:pb-2">Newsletter</div>
+            <div className="border-b border-white/5 pb-1.5 font-display text-label font-extrabold uppercase text-white md:pb-2 md:text-caption">Newsletter</div>
             
             <div className="space-y-3">
               <div className="text-white text-xs font-bold leading-snug">{footer.newsletterHeading}</div>

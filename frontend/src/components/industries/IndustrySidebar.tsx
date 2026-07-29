@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Industry } from '@/data/industries';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Clock, ShieldCheck, Headphones, Mail } from 'lucide-react';
+import { Clock, Calendar, ShieldCheck, Headphones, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { ConsultationForm } from '@/components/services/ConsultationForm';
@@ -10,11 +10,15 @@ import { AnimatedStat } from '@/components/ui/AnimatedStat';
 import {
   IndustriesLandingCmsConfig,
   DEFAULT_INDUSTRIES_LANDING_CMS,
+  mergePagesCmsConfig,
 } from '@/types/pagesCms';
 import {
   mergeConsultationBlock,
   mergeSidebarBlock,
 } from '@/types/industriesCms';
+import { useQuery } from '@tanstack/react-query';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { resolveSupportEmail, siteMailto } from '@/lib/siteContact';
 
 interface IndustrySidebarProps {
   industry: Industry;
@@ -22,6 +26,13 @@ interface IndustrySidebarProps {
 }
 
 export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) => {
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+  });
+  const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
+  const inquiryEmail = resolveSupportEmail(websiteSettings);
+
   const globals = landingCms || DEFAULT_INDUSTRIES_LANDING_CMS;
   const sidebar = mergeSidebarBlock(globals.sidebarDefaults, industry.sidebar);
   const consultation = mergeConsultationBlock(
@@ -37,19 +48,19 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
       }))
     : [];
 
-  const mailtoHref = `mailto:${sidebar.contactEmail}?subject=${encodeURIComponent(
-    `Industry Consultation — ${industry.title}`
-  )}`;
-
+  const mailtoHref = siteMailto(
+    inquiryEmail,
+    `Industry Consultation — ${industry.title}`,
+  );
   return (
-    <div className="space-y-6 lg:sticky lg:top-36">
+    <div className="space-y-6 lg:sticky" style={{ top: 'calc(var(--primary-nav-height, 80px) + var(--secondary-nav-height, 48px) + 16px)' }}>
       <Card className="overflow-hidden rounded-3xl border-slate-200/80 bg-white shadow-lg">
         <div className="border-b border-emerald-600/50 bg-gradient-to-r from-emerald-600 to-emerald-500 p-6 text-center text-white">
           <h3 className="mb-1 font-display text-base font-extrabold tracking-tight">
             {sidebar.summaryTitle}
           </h3>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-emerald-50">
-            Talk to our vertical specialists
+            {sidebar.secureTitle}
           </p>
         </div>
         <CardContent className="space-y-4 p-6">
@@ -59,6 +70,37 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
               <span className="font-bold text-slate-800">{industry.category}</span>
             </div>
           )}
+
+          <div className="space-y-4 border-b border-slate-100 pb-4">
+            <div className="flex items-start gap-3 text-xs">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+                <Clock className="h-4 w-4" />
+              </div>
+              <div>
+                <p className="font-bold text-slate-800">{sidebar.responseTimeTitle}</p>
+                <p className="mt-0.5 text-slate-500">{sidebar.responseTime}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 text-xs">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+                <Calendar className="h-4 w-4" />
+              </div>
+              <div>
+                <p className="font-bold text-slate-800">{sidebar.businessHoursTitle}</p>
+                <p className="mt-0.5 text-slate-500">{sidebar.businessHours}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 text-xs">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+                <ShieldCheck className="h-4 w-4" />
+              </div>
+              <div>
+                <p className="font-bold text-slate-800">{sidebar.secureTitle}</p>
+                <p className="mt-0.5 text-slate-500">{sidebar.secureDescription}</p>
+              </div>
+            </div>
+          </div>
+
           {industry.statistics?.slice(0, 3).map((stat, idx) => (
             <AnimatedStat
               key={idx}
@@ -89,7 +131,7 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
           <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-emerald-500/[0.03] blur-xl" />
 
           <h3 className="border-b border-slate-100 pb-3 font-display text-xs font-black uppercase tracking-wider text-slate-900">
-            Why Choose TechVistar
+            {sidebar.summaryTitle}
           </h3>
 
           <div className="space-y-5">
@@ -111,7 +153,7 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
 
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button asChild className="h-10 w-full rounded-xl bg-emerald-600 text-xs font-bold text-white shadow-sm hover:bg-emerald-700">
-              <Link to="/contact">Request a consultation</Link>
+              <Link to="/contact">{sidebar.buttonLabel}</Link>
             </Button>
           </motion.div>
         </div>
@@ -139,7 +181,7 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
               href={mailtoHref}
               className="text-xs font-bold text-emerald-400 underline decoration-dotted underline-offset-4 transition-colors hover:text-emerald-300"
             >
-              {sidebar.contactEmail}
+              {inquiryEmail}
             </a>
           </div>
         </div>

@@ -35,7 +35,7 @@ export const SectionHeader = ({
       <div className="mb-4 flex flex-col items-center gap-2">
         <span
           className={cn(
-            'text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em]',
+            'text-label uppercase sm:text-caption sm:tracking-widest-label',
             light ? 'text-primary' : 'text-emerald-300'
           )}
         >
@@ -54,7 +54,7 @@ export const SectionHeader = ({
       <h2
         id={headingId}
         className={cn(
-          'mb-5 font-display text-3xl font-extrabold leading-[1.15] tracking-tight md:text-4xl lg:text-[2.75rem]',
+          'mb-5 font-display text-heading-lg md:text-heading-xl lg:text-display-lg',
           light ? 'text-slate-950' : 'text-white'
         )}
       >
@@ -67,7 +67,7 @@ export const SectionHeader = ({
       </h2>
       <p
         className={cn(
-          'mx-auto max-w-2xl text-base leading-relaxed md:text-lg font-medium',
+          'mx-auto max-w-2xl text-body-md font-medium md:text-body-lg',
           light ? 'text-slate-600' : 'text-slate-300'
         )}
       >

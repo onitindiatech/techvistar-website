@@ -284,7 +284,7 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
     backgroundVideoPublicId: '',
     heroPosterImage: '',
     heroPosterImagePublicId: '',
-    youtubeUrl: 'https://youtu.be/CfjNMLgax2s?si=Pri2z-IYXELhd6CS',
+    youtubeUrl: '',
     youtubeStartTime: 3,
     overlayOpacity: 40,
     backgroundBlur: false,
@@ -377,7 +377,7 @@ export const DEFAULT_HOME_CMS: HomeCmsConfig = {
     layout: 'featured-grid',
     featuredOnly: true,
     manualSelection: [],
-    limit: 6,
+    limit: 8,
     visible: true,
   },
   featuredIndustries: {
@@ -612,7 +612,10 @@ export function mergeHomeCmsConfig(api?: Partial<HomeCmsConfig> | null): HomeCms
     mediaType: legacyHero?.mediaType ?? (legacyHero?.backgroundImage ? 'image' : DEFAULT_HOME_CMS.hero.mediaType),
     ctaPrimaryLink: legacyHero?.ctaPrimaryLink?.trim() || '/#services',
     ctaSecondaryLink: legacyHero?.ctaSecondaryLink?.trim() || '/#contact',
-    youtubeUrl: legacyHero?.youtubeUrl?.trim() || DEFAULT_HOME_CMS.hero.youtubeUrl,
+    youtubeUrl:
+      legacyHero?.youtubeUrl != null
+        ? String(legacyHero.youtubeUrl).trim()
+        : DEFAULT_HOME_CMS.hero.youtubeUrl,
     youtubeStartTime: legacyHero?.youtubeStartTime ?? DEFAULT_HOME_CMS.hero.youtubeStartTime,
     overlayOpacity: legacyHero?.overlayOpacity ?? DEFAULT_HOME_CMS.hero.overlayOpacity,
     backgroundBlur: legacyHero?.backgroundBlur ?? DEFAULT_HOME_CMS.hero.backgroundBlur,

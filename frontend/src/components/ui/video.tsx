@@ -234,7 +234,7 @@ export const Video: React.FC<VideoProps> = ({
             fadePosterOnReady && playerReady ? 'opacity-0' : 'opacity-100',
           )}
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
           decoding="async"
         />
       ) : null}

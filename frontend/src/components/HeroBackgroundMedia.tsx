@@ -145,7 +145,7 @@ export function HeroBackgroundMedia({ hero }: HeroBackgroundMediaProps) {
       return <HeroNativeVideo hero={hero} overlayOpacity={overlayOpacity} />;
     }
 
-    if (hero.youtubeUrl) {
+    if (hero.youtubeUrl?.trim()) {
       return (
         <Video
           youtubeUrl={hero.youtubeUrl}
@@ -158,6 +158,29 @@ export function HeroBackgroundMedia({ hero }: HeroBackgroundMediaProps) {
         />
       );
     }
+
+    if (heroPoster) {
+      return (
+        <>
+          <img
+            src={heroPoster}
+            alt=""
+            className={cn(HERO_MEDIA_CLASS, hero.backgroundBlur && 'scale-105 blur-sm')}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            sizes="100vw"
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{ backgroundColor: `rgba(0,0,0,${overlayOpacity})` }}
+          />
+        </>
+      );
+    }
+
+    return null;
   }
 
   if (hero.backgroundImage) {
@@ -183,7 +206,7 @@ export function HeroBackgroundMedia({ hero }: HeroBackgroundMediaProps) {
     );
   }
 
-  if (hero.youtubeUrl) {
+  if (hero.youtubeUrl?.trim()) {
     return (
       <Video
         youtubeUrl={hero.youtubeUrl}

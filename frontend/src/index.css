@@ -1468,6 +1468,81 @@
   }
 }
 
+/* Hero brand trust marquee */
+.hero-brand-marquee-track {
+  animation: hero-brand-marquee 55s linear infinite;
+}
+
+.hero-brand-marquee-scroller:hover .hero-brand-marquee-track,
+.hero-brand-marquee-scroller[data-paused='true'] .hero-brand-marquee-track {
+  animation-play-state: paused;
+}
+
+.hero-brand-logo {
+  opacity: 0.58;
+}
+
+.hero-brand-logo:hover {
+  opacity: 1;
+}
+
+.hero-particle {
+  animation-name: hero-particle-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hero-brand-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes hero-particle-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate3d(6px, -14px, 0);
+    opacity: 0.7;
+  }
+}
+
+#services-heading.hero-target-highlight {
+  animation: hero-section-pulse 1.5s ease-out;
+}
+
+@keyframes hero-section-pulse {
+  0% {
+    text-shadow: 0 0 0 transparent;
+  }
+  35% {
+    text-shadow: 0 0 28px rgba(16, 185, 129, 0.45);
+    color: rgb(5, 150, 105);
+  }
+  100% {
+    text-shadow: 0 0 0 transparent;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-brand-marquee-scroller {
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-brand-marquee-track,
+  .hero-particle {
+    animation: none !important;
+  }
+}
+
 @keyframes hero-highlight-shimmer {
   0%,
   100% {
@@ -1505,6 +1580,20 @@
   75% {
     transform: translateY(-6px) rotate(-0.5deg);
     filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.13));
+  }
+}
+
+/* Rotating conic beam for premium card borders (hover) */
+@keyframes service-border-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Traveling edge highlight */
+@keyframes service-border-dash {
+  to {
+    stroke-dashoffset: -240;
   }
 }
 
@@ -1735,42 +1824,229 @@
   }
 }
 
-/* Premium Back Button styling for all detail pages */
+/* Premium Back Button — compact pill for detail pages */
 .back-btn-premium {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  height: 38px !important;
-  padding: 0 16px !important;
-  border-radius: 9999px !important;
-  background: rgba(16, 185, 129, 0.05) !important;
-  border: 1.5px solid rgba(16, 185, 129, 0.25) !important;
+  gap: 6px !important;
+  height: 28px !important;
+  padding: 0 10px 0 8px !important;
+  border-radius: 8px !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
   font-weight: 500 !important;
   color: #34d399 !important;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.04) !important;
-  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: none !important;
+  transition: background 200ms ease, border-color 200ms ease, color 200ms ease !important;
   text-transform: none !important;
-  letter-spacing: normal !important;
+  letter-spacing: 0.01em !important;
   cursor: pointer !important;
   width: fit-content !important;
+  max-width: max-content !important;
 }
 
 .back-btn-premium svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
   color: #34d399 !important;
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 200ms ease !important;
 }
 
 .back-btn-premium:hover {
-  transform: translateY(-1.5px) !important;
-  background: rgba(16, 185, 129, 0.12) !important;
-  border-color: rgba(16, 185, 129, 0.5) !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
 }
 
 .back-btn-premium:hover svg {
-  transform: translateX(-2px) !important;
+  transform: translateX(-1.5px) !important;
 }
 
 .back-btn-premium:active {
-  transform: translateY(0.5px) scale(0.975) !important;
-  transition: all 50ms !important;
+  background: rgba(16, 185, 129, 0.18) !important;
+  transition: background 50ms !important;
+}
+
+/* ========================================================
+   PREMIUM MICRO INTERACTIONS (STRIPE / VERCEL STYLE)
+   ======================================================== */
+
+/* 1. Global Card Animations */
+div.rounded-2xl.border.bg-white,
+a.rounded-2xl.border.bg-white,
+.premium-card {
+  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+div.rounded-2xl.border.bg-white:hover,
+a.rounded-2xl.border.bg-white:hover,
+.premium-card:hover {
+  transform: translateY(-4px) scale(1.015) !important;
+  box-shadow: 0 20px 40px -8px rgba(16, 185, 129, 0.1), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(20, 184, 166, 0.3) !important; /* brand teal border glow */
+}
+
+/* 2. Global Button Animations */
+button,
+.btn,
+a.btn {
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+button:hover,
+.btn:hover,
+a.btn:hover {
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+button:active,
+.btn:active,
+a.btn:active {
+  transform: translateY(0.5px) scale(0.98) !important;
+}
+
+/* Translate right-pointing icons inside buttons on hover */
+button:hover svg.lucide-chevron-right,
+button:hover svg.lucide-arrow-right,
+button:hover svg.lucide-arrow-up-right,
+.btn:hover svg.lucide-chevron-right,
+.btn:hover svg.lucide-arrow-right,
+.btn:hover svg.lucide-arrow-up-right {
+  transform: translate(2px, -0.5px) !important;
+}
+
+/* 3. Sidebar Items Active indicator and backgrounds */
+.group.relative.flex.items-center.gap-3.rounded-lg.px-3.py-2 {
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 4. Table Row highlight and actions fade-in */
+tr {
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+tr:hover {
+  background-color: rgba(20, 184, 166, 0.03) !important; /* smooth highlight with teal tint */
+}
+
+tr .table-actions,
+tr td button,
+tr td a {
+  opacity: 0.7;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+tr:hover .table-actions,
+tr:hover td button,
+tr:hover td a {
+  opacity: 1 !important;
+}
+
+/* 5. Inputs subtle glow and border transition */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+textarea,
+select {
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #14b8a6 !important; /* brand teal */
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15) !important; /* subtle teal glow */
+  outline: none !important;
+}
+
+/* 6. Quick Action Cards (Elevate, teal border, icon scale) */
+button.group.rounded-xl.border-slate-100 {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+button.group.rounded-xl.border-slate-100:hover {
+  transform: translateY(-2px) scale(1.01) !important;
+  border-color: rgba(20, 184, 166, 0.3) !important; /* teal border */
+  box-shadow: 0 10px 20px -8px rgba(15, 23, 42, 0.05) !important;
+}
+
+button.group.rounded-xl.border-slate-100:hover svg {
+  transform: scale(1.08) !important; /* icon scale */
+}
+
+/* 7. Charts smooth animations */
+.recharts-tooltip-wrapper {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.recharts-active-dot {
+  transform: scale(1.2);
+  transition: transform 0.2s ease !important;
+}
+
+/* 8. Image Zoom */
+.group:hover img.object-cover,
+a.group:hover img,
+div.group:hover img {
+  transform: scale(1.035) !important;
+}
+
+img.object-cover,
+img.transition-all {
+  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 9. Navigation links scale-X underline and color transition */
+header nav a.relative {
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+header nav a.relative::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 12%;
+  width: 76%;
+  height: 2px;
+  background-color: #14b8a6;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: transform;
+}
+
+header nav a.relative:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* 10. Sticky Sub-navigation Scroll Margin Top Adjustment */
+.detail-page-gutter section[id],
+.detail-page-gutter [id] {
+  scroll-margin-top: calc(var(--primary-nav-height, 80px) + var(--secondary-nav-height, 48px) + 16px) !important;
 }

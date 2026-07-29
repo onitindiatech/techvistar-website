@@ -3,7 +3,10 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { IndustriesLandingCmsConfig } from '@/types/pagesCms';
+import {
+  DEFAULT_INDUSTRIES_LANDING_CMS,
+  IndustriesLandingCmsConfig,
+} from '@/types/pagesCms';
 
 interface IndustriesLandingHeroProps {
   landing: IndustriesLandingCmsConfig;
@@ -17,8 +20,10 @@ export const IndustriesLandingHero = ({
   onExplore,
 }: IndustriesLandingHeroProps) => {
   const hero = landing.hero;
-  const ctaText = hero.ctaText?.trim() || 'Explore Industries';
-  const ctaLink = hero.ctaLink?.trim() || '#all-industries';
+  const ctaText =
+    hero.ctaText?.trim() || DEFAULT_INDUSTRIES_LANDING_CMS.hero.ctaText;
+  const ctaLink =
+    hero.ctaLink?.trim() || DEFAULT_INDUSTRIES_LANDING_CMS.hero.ctaLink;
 
   const title = hero.subtitle?.trim() ? (
     <>
@@ -31,7 +36,7 @@ export const IndustriesLandingHero = ({
     hero.title
   );
 
-  const ctaButton =
+  const ctaButton = ctaText ? (
     ctaLink.startsWith('#') ? (
       <Button
         onClick={onExplore}
@@ -52,7 +57,8 @@ export const IndustriesLandingHero = ({
           <ArrowRight className="ml-2 h-4 w-4" />
         </Link>
       </Button>
-    );
+    )
+  ) : null;
 
   return (
     <PageHeader
@@ -61,14 +67,16 @@ export const IndustriesLandingHero = ({
       description={hero.description}
       backgroundImage={backgroundImage}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.25 }}
-        className="flex flex-wrap items-center gap-4"
-      >
-        {ctaButton}
-      </motion.div>
+      {ctaButton ? (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="flex flex-wrap items-center gap-4"
+        >
+          {ctaButton}
+        </motion.div>
+      ) : null}
     </PageHeader>
   );
 };

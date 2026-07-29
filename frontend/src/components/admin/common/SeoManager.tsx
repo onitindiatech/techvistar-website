@@ -7,10 +7,10 @@ import { useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { CmsImageField } from '@/components/admin/common/CmsImageField';
-import { calculateSeoScore } from '@/lib/seoScore';
+import { calculateSeoScore, type SeoScoreOptions } from '@/lib/seoScore';
 import { buildCanonical, resolveCanonical, resolveSeo } from '@/lib/seoResolve';
 import { SeoMetadata, SITE_DEFAULTS } from '@/types/seo';
-import { Globe, Facebook, Twitter } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Globe, Facebook, Twitter, AlertTriangle } from 'lucide-react';
 
 export interface SeoManagerProps {
   value: SeoMetadata;
@@ -22,6 +22,8 @@ export interface SeoManagerProps {
   defaultImage?: string;
   showSlug?: boolean;
   onSlugChange?: (slug: string) => void;
+  /** Extra context for Lighthouse-style weighted scoring */
+  scoreOptions?: Omit<SeoScoreOptions, 'slug'>;
 }
 
 function field(
@@ -43,6 +45,7 @@ export function SeoManager({
   defaultImage = '',
   showSlug = false,
   onSlugChange,
+  scoreOptions,
 }: SeoManagerProps) {
   const pageUrl = useMemo(() => {
     const normalizedPrefix = pathPrefix.endsWith('/') ? pathPrefix : `${pathPrefix}/`;
@@ -50,6 +53,11 @@ export function SeoManager({
     const routeCanonical = buildCanonical(path);
     return resolveCanonical(value.canonicalUrl, routeCanonical);
   }, [value.canonicalUrl, pathPrefix, slug]);
+
+  const pagePath = useMemo(() => {
+    const normalizedPrefix = pathPrefix.endsWith('/') ? pathPrefix.slice(0, -1) : pathPrefix;
+    return slug ? `${normalizedPrefix}/${slug}` : normalizedPrefix || '/';
+  }, [pathPrefix, slug]);
 
   const previewDefaults = useMemo(
     () => ({
@@ -63,7 +71,23 @@ export function SeoManager({
   );
 
   const resolved = useMemo(() => resolveSeo(value, previewDefaults), [value, previewDefaults]);
-  const { score, suggestions } = useMemo(() => calculateSeoScore(value, slug), [value, slug]);
+  const scoreResult = useMemo(
+    () =>
+      calculateSeoScore(value, {
+        slug,
+        requireSlug: showSlug,
+        pagePath: scoreOptions?.pagePath || pagePath,
+        h1Text: scoreOptions?.h1Text,
+        hasStructuredData: scoreOptions?.hasStructuredData,
+        hasInternalLinks: scoreOptions?.hasInternalLinks,
+        imageAltReady: scoreOptions?.imageAltReady,
+        existingTitles: scoreOptions?.existingTitles,
+        existingDescriptions: scoreOptions?.existingDescriptions,
+      }),
+    [value, slug, showSlug, pagePath, scoreOptions]
+  );
+
+  const { score, critical, warnings, passed, recommendations } = scoreResult;
 
   const scoreColor =
     score >= 80 ? 'bg-emerald-500' : score >= 50 ? 'bg-amber-500' : 'bg-rose-500';
@@ -71,24 +95,70 @@ export function SeoManager({
   return (
     <div className="space-y-8">
       {/* Score */}
-      <div className="p-5 rounded-xl border border-slate-200 bg-white space-y-3">
+      <div className="p-5 rounded-xl border border-slate-200 bg-white space-y-4">
         <div className="flex items-center justify-between">
-          <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">SEO Score</h4>
+          <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Overall Score</h4>
           <span className="text-sm font-black text-slate-800">{score}%</span>
         </div>
         <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
           <div className={`h-full rounded-full transition-all duration-300 ${scoreColor}`} style={{ width: `${score}%` }} />
         </div>
-        {suggestions.length > 0 && (
-          <ul className="space-y-1.5 pt-1">
-            {suggestions.map((s) => (
-              <li key={s} className="text-xs text-amber-700 flex items-start gap-2">
-                <span className="mt-1 w-1 h-1 rounded-full bg-amber-500 shrink-0" />
-                {s}
+        <p className="text-[11px] text-slate-500">
+          Weighted Lighthouse-style audit — indexability and document signals weigh more than ideal string lengths.
+        </p>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="rounded-lg border border-rose-100 bg-rose-50/60 p-3">
+            <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-rose-700">
+              <AlertCircle className="h-3.5 w-3.5" /> Critical Issues
+            </div>
+            <p className="text-lg font-black text-rose-800">{critical.length}</p>
+          </div>
+          <div className="rounded-lg border border-amber-100 bg-amber-50/60 p-3">
+            <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+              <AlertTriangle className="h-3.5 w-3.5" /> Warnings
+            </div>
+            <p className="text-lg font-black text-amber-800">{warnings.length}</p>
+          </div>
+          <div className="rounded-lg border border-emerald-100 bg-emerald-50/60 p-3">
+            <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700">
+              <CheckCircle2 className="h-3.5 w-3.5" /> Passed Checks
+            </div>
+            <p className="text-lg font-black text-emerald-800">{passed.length}</p>
+          </div>
+        </div>
+
+        {recommendations.length > 0 && (
+          <div className="space-y-2 border-t border-slate-100 pt-3">
+            <h5 className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Recommendations</h5>
+            <ul className="space-y-1.5">
+              {recommendations.map((s) => (
+                <li key={s} className="flex items-start gap-2 text-xs text-amber-800">
+                  <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-amber-500" />
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <details className="rounded-lg border border-slate-100 bg-slate-50/80 p-3">
+          <summary className="cursor-pointer text-[10px] font-bold uppercase tracking-wider text-slate-500">
+            All checks ({scoreResult.checks.length})
+          </summary>
+          <ul className="mt-2 space-y-1.5">
+            {scoreResult.checks.map((check) => (
+              <li key={check.id} className="flex items-start justify-between gap-3 text-xs">
+                <span className="text-slate-700">
+                  {check.status === 'pass' ? '✓' : check.status === 'warning' ? '!' : '×'} {check.label}
+                </span>
+                <span className="shrink-0 font-mono text-[10px] text-slate-400">
+                  {check.earned}/{check.weight}
+                </span>
               </li>
             ))}
           </ul>
-        )}
+        </details>
       </div>
 
       {/* Fields */}

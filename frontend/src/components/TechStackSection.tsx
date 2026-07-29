@@ -107,10 +107,7 @@ export const TechStackSection = () => {
           transition={{ duration: 0.7 }}
           className="space-y-4"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/40 text-xs font-semibold uppercase tracking-wider mx-auto">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-            Technology Stack
-          </div>
+
 
           <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-none">
             Trusted Technologies We Build With

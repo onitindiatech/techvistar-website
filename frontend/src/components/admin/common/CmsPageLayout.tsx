@@ -128,10 +128,10 @@ export const CmsPageLayout = ({
         <div className="flex items-center justify-between gap-4 max-w-screen-xl mx-auto">
           {/* Left: title + description */}
           <div className="min-w-0">
-            <h1 className="text-xl font-extrabold text-slate-900 tracking-tight leading-tight truncate">
+            <h1 className="truncate font-display text-heading-sm text-slate-900">
               {title}
             </h1>
-            <p className="text-xs font-medium text-slate-400 mt-0.5 truncate hidden sm:block">
+            <p className="mt-0.5 hidden truncate text-caption text-slate-400 sm:block">
               {description}
             </p>
           </div>
@@ -140,14 +140,14 @@ export const CmsPageLayout = ({
           <div className="flex items-center gap-3 shrink-0">
             {/* Last saved label */}
             {savedLabel && !isDirty && (
-              <span className="hidden md:flex items-center gap-1.5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              <span className="hidden items-center gap-1.5 text-label uppercase text-slate-400 md:flex">
                 <CheckCircle2 className="w-3 h-3 text-emerald-500" />
                 {savedLabel}
               </span>
             )}
 
             {isDirty && (
-              <span className="hidden md:flex items-center gap-1.5 text-[10px] font-bold text-amber-600 uppercase tracking-wider">
+              <span className="hidden items-center gap-1.5 text-label uppercase text-amber-600 md:flex">
                 <AlertCircle className="w-3 h-3" />
                 Unsaved changes
               </span>

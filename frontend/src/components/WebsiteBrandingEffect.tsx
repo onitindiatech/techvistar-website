@@ -8,7 +8,6 @@ export function WebsiteBrandingEffect() {
   const { data } = useQuery({
     queryKey: ['pages-config'],
     queryFn: getPublicPagesConfig,
-    staleTime: 60_000,
   });
 
   const settings = mergePagesCmsConfig(data).websiteSettings;

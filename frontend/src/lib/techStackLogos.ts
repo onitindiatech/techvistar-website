@@ -138,6 +138,9 @@ export const TECH_LOGO_MAP: Record<string, TechLogoSource> = {
   huggingface: { provider: 'simpleicons', id: 'huggingface', color: 'FFD21E' },
   n8n: { provider: 'simpleicons', id: 'n8n', color: 'EA4B71' },
   vllm: { provider: 'simpleiconsnpm', id: 'openai', color: '412991' },
+  opencv: { provider: 'simpleicons', id: 'opencv', color: '5C3EE8' },
+  cloudinary: { provider: 'simpleicons', id: 'cloudinary', color: '3448C5' },
+  twilio: { provider: 'simpleicons', id: 'twilio', color: 'F22F46' },
 
   // CMS / Commerce
   wordpress: { provider: 'simpleicons', id: 'wordpress', color: '21759B' },

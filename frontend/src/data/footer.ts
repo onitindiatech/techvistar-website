@@ -1,9 +1,11 @@
 import { Linkedin, Instagram, Mail } from 'lucide-react';
+import { DEFAULT_WEBSITE_SETTINGS } from '@/types/websiteSettings';
+import { resolvePrimaryEmail, siteMailto } from '@/lib/siteContact';
 
 export const SOCIAL_LINKS = [
   { icon: Linkedin, href: 'https://www.linkedin.com/company/techvistar', label: 'LinkedIn' },
   { icon: Instagram, href: 'https://www.instagram.com/tech_vistar?igsh=MThpMTJnZ2ZlcWVvcw==', label: 'Instagram' },
-  { icon: Mail, href: 'mailto:support@techvistar.com', label: 'Email' },
+  { icon: Mail, href: siteMailto(resolvePrimaryEmail(DEFAULT_WEBSITE_SETTINGS)), label: 'Email' },
 ] as const;
 
 export const FOOTER_DESCRIPTION =

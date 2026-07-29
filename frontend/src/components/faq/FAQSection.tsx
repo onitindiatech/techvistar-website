@@ -90,11 +90,7 @@ export const FAQSection = ({
         {layout === 'split' ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
             <div className="lg:col-span-5 flex flex-col justify-start text-left">
-              <div className="mb-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/40 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                  FAQs
-                </span>
-              </div>
+
               <h2 className="mb-4 font-display text-2xl font-extrabold leading-[1.15] tracking-tight md:text-4xl lg:text-[2.65rem] text-slate-950">
                 Frequently Asked <span className="text-primary">Questions</span>
               </h2>

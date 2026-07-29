@@ -17,6 +17,7 @@ import { SolutionProcessSection } from '@/components/solutions/SolutionProcessSe
 import { SolutionBenefitsSection } from '@/components/solutions/SolutionBenefitsSection';
 import { SolutionTechStackSection } from '@/components/solutions/SolutionTechStackSection';
 import { SolutionRelatedSection } from '@/components/solutions/SolutionRelatedSection';
+import { SolutionSidebar } from '@/components/solutions/SolutionSidebar';
 
 export const SolutionDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -25,8 +26,6 @@ export const SolutionDetails = () => {
     queryKey: ['solutionDetails', slug],
     queryFn: () => getSolutionBySlug(slug || ''),
     enabled: !!slug,
-    staleTime: 0,
-    refetchOnMount: 'always',
   });
 
   const solution = apiSolution ? decorateSolution(apiSolution) : undefined;
@@ -102,14 +101,19 @@ export const SolutionDetails = () => {
         <SolutionHero solution={solution} />
         <SolutionSectionNavigation navItems={solution.sectionCopy.navItems} />
 
-        <section className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-12 xl:px-20 mt-12 pb-8 detail-page-gutter">
-          <div className="flex flex-col space-y-12">
-            <SolutionOverviewSection solution={solution} />
-            <SolutionFeaturesSection solution={solution} />
-            <SolutionProcessSection solution={solution} />
-            <SolutionBenefitsSection solution={solution} />
-            <SolutionTechStackSection solution={solution} />
-            <SolutionRelatedSection solution={solution} />
+        <section className="mx-auto mt-12 w-full max-w-7xl px-4 pb-8 md:px-6 lg:px-12 xl:px-20 detail-page-gutter">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div className="flex flex-col space-y-12 lg:col-span-2">
+              <SolutionOverviewSection solution={solution} />
+              <SolutionFeaturesSection solution={solution} />
+              <SolutionProcessSection solution={solution} />
+              <SolutionBenefitsSection solution={solution} />
+              <SolutionTechStackSection solution={solution} />
+              <SolutionRelatedSection solution={solution} />
+            </div>
+            <div className="space-y-6">
+              <SolutionSidebar solution={solution} />
+            </div>
           </div>
         </section>
 

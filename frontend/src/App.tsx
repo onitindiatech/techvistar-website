@@ -1,13 +1,16 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Suspense, lazy, useEffect, useState, type ReactNode } from "react";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import { HomeCmsProvider } from "@/contexts/HomeCmsContext";
 import { WebsiteBrandingEffect } from "@/components/WebsiteBrandingEffect";
 import { RouteFallback } from "@/components/common/RouteFallback";
+import { Analytics } from "@/components/Analytics";
+import { ClickSpark } from "@/components/ui/ClickSpark";
+import { queryClient } from "@/lib/queryClient";
 
 // Public pages — code-split per route
 const Index = lazy(() => import("./pages/Index"));
@@ -38,6 +41,7 @@ const AdminAboutSettings = lazy(() => import("./pages/admin/AboutSettings"));
 const AdminContactSettings = lazy(() => import("./pages/admin/ContactSettings"));
 const AdminSolutionsLandingSettings = lazy(() => import("./pages/admin/SolutionsLandingSettings"));
 const AdminIndustriesLandingSettings = lazy(() => import("./pages/admin/IndustriesLandingSettings"));
+const AdminPortfolioLandingSettings = lazy(() => import("./pages/admin/PortfolioLandingSettings"));
 const AdminCareersLandingSettings = lazy(() => import("./pages/admin/CareersLandingSettings"));
 const AdminWebsiteSettings = lazy(() => import("./pages/admin/WebsiteSettings"));
 const AdminIndustries = lazy(() => import("./pages/admin/Industries"));
@@ -48,8 +52,6 @@ const AdminJobs = lazy(() => import("./pages/admin/Jobs"));
 const AdminApplications = lazy(() => import("./pages/admin/Applications"));
 const AdminContacts = lazy(() => import("./pages/admin/Contacts"));
 const AdminNewsletter = lazy(() => import("./pages/admin/Newsletter"));
-
-const queryClient = new QueryClient();
 
 const withSuspense = (element: ReactNode) => (
   <Suspense fallback={<RouteFallback />}>{element}</Suspense>
@@ -112,17 +114,55 @@ const ScrollToHashElement = () => {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (hash) {
-      const element = document.getElementById(hash.replace("#", ""));
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const section = hash.replace("#", "").toLowerCase();
+    if (section === "contact") {
+      let cancelled = false;
+      const timer = setTimeout(() => {
+        void import("@/lib/heroScroll").then(({ scrollToContactSection }) => {
+          if (!cancelled) void scrollToContactSection();
+        });
+      }, 120);
+      return () => {
+        cancelled = true;
+        clearTimeout(timer);
+      };
+    }
+
+    if (section !== "services") {
+      const element = document.getElementById(section);
       if (element) {
         const timer = setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 100);
         return () => clearTimeout(timer);
       }
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
     }
+
+    let cancelled = false;
+    const run = async () => {
+      for (let attempt = 0; attempt < 20 && !cancelled; attempt += 1) {
+        if (document.getElementById(section)) break;
+        await new Promise((resolve) => setTimeout(resolve, 80));
+      }
+      if (cancelled) return;
+      const { scrollToHomeSection } = await import("@/lib/heroScroll");
+      await scrollToHomeSection(section as "contact" | "services");
+    };
+
+    const timer = setTimeout(() => {
+      void run();
+    }, 120);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [pathname, hash]);
 
   return null;
@@ -133,9 +173,19 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <ClickSpark
+        sparkColor="#14B8A6"
+        sparkSize={8}
+        sparkRadius={18}
+        sparkCount={8}
+        duration={420}
+        extraScale={1}
+        easing="ease-out"
+      />
       <HomeCmsProvider>
       <WebsiteBrandingEffect />
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <Analytics />
         <PageTransitionLoader />
         <ScrollToHashElement />
         <Routes>
@@ -167,6 +217,7 @@ const App = () => (
               <Route path="contact-settings" element={withSuspense(<AdminContactSettings />)} />
               <Route path="solutions-landing" element={withSuspense(<AdminSolutionsLandingSettings />)} />
               <Route path="industries-landing" element={withSuspense(<AdminIndustriesLandingSettings />)} />
+              <Route path="portfolio-landing" element={withSuspense(<AdminPortfolioLandingSettings />)} />
               <Route path="careers-landing" element={withSuspense(<AdminCareersLandingSettings />)} />
               <Route path="website-settings" element={withSuspense(<AdminWebsiteSettings />)} />
               <Route path="page-seo" element={withSuspense(<AdminPageSeoSettings />)} />

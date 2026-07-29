@@ -5,7 +5,7 @@ import { logger } from '@/utils/logger';
 export class OfficeService {
   async getActiveOffices(): Promise<IOffice[]> {
     logger.info('[OfficeService] Retrieving active offices');
-    return Office.find({ isActive: true, isDeleted: { $ne: true } }).sort({ displayOrder: 1 });
+    return Office.find({ isActive: true, isDeleted: { $ne: true } }).sort({ displayOrder: 1 }).lean() as Promise<IOffice[]>;
   }
 
   async getAllOffices(options: { search?: string } = {}): Promise<IOffice[]> {

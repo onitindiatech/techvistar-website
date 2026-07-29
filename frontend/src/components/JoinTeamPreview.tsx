@@ -35,11 +35,8 @@ export const JoinTeamPreview = () => {
           {/* Left Column: Heading and CTAs */}
           <div className="lg:col-span-6 text-left space-y-6">
             <FadeIn direction="right" delay={0.1} duration={0.65}>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                Careers at TechVistar
-              </span>
               
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-[1.15] mt-4">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-[1.15] mt-0">
                 Build Your Future <br />
                 <span className="gradient-text">With TechVistar</span>
               </h2>

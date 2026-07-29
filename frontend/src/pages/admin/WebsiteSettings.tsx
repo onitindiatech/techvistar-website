@@ -16,7 +16,7 @@ import { Palette, Navigation, Phone, AlignJustify, Share2, Search, BarChart2, Wr
 const NAV_SECTIONS = [
   { id: 'branding',    label: 'Branding',        icon: Palette     },
   { id: 'navigation',  label: 'Navigation',      icon: Navigation  },
-  { id: 'contact',     label: 'Contact Details', icon: Phone       },
+  { id: 'contact',     label: 'Global Contact',  icon: Phone       },
   { id: 'footer',      label: 'Footer',          icon: AlignJustify },
   { id: 'social',      label: 'Social Links',    icon: Share2      },
   { id: 'seo',         label: 'SEO Defaults',    icon: Search      },
@@ -147,21 +147,37 @@ const WebsiteSettings = () => {
       </CmsSectionAnchor>
 
       <CmsSectionAnchor id="contact">
-        <CmsSectionCard title="Contact Details" description="Global contact channels shown across the site." icon={Phone}>
+        <CmsSectionCard
+          title="Global Contact Information"
+          description="Single source of truth for emails and contact details used across the public site (footer, Direct Inquiries, contact page, and more)."
+          icon={Phone}
+        >
           <CmsTextFields
             twoColumn
             fields={[
               { key: 'email', label: 'Primary email' },
-              { key: 'phone', label: 'Phone' },
-              { key: 'whatsappNumber', label: 'WhatsApp number' },
               { key: 'supportEmail', label: 'Support email' },
-              { key: 'salesEmail', label: 'Sales email' },
-              { key: 'workingHours', label: 'Working hours' },
-              { key: 'emergencyContact', label: 'Emergency contact' },
-              { key: 'googleMapsUrl', label: 'Google Maps URL' },
-              { key: 'address', label: 'Address', type: 'textarea', fullWidth: true },
+              { key: 'salesEmail', label: 'Sales email (optional)' },
+              { key: 'careersEmail', label: 'Careers email (optional)' },
+              { key: 'phone', label: 'Phone (optional)' },
+              { key: 'whatsappNumber', label: 'WhatsApp number (optional)' },
+              { key: 'workingHours', label: 'Working hours (optional)' },
+              { key: 'emergencyContact', label: 'Emergency contact (optional)' },
+              { key: 'googleMapsUrl', label: 'Google Maps URL (optional)' },
+              { key: 'address', label: 'Address (optional)', type: 'textarea', fullWidth: true },
             ]}
-            values={{ email: form.email, phone: form.phone, address: form.address, whatsappNumber: form.whatsappNumber, supportEmail: form.supportEmail, salesEmail: form.salesEmail, googleMapsUrl: form.googleMapsUrl, workingHours: form.workingHours, emergencyContact: form.emergencyContact }}
+            values={{
+              email: form.email,
+              phone: form.phone,
+              address: form.address,
+              whatsappNumber: form.whatsappNumber,
+              supportEmail: form.supportEmail,
+              salesEmail: form.salesEmail,
+              careersEmail: form.careersEmail,
+              googleMapsUrl: form.googleMapsUrl,
+              workingHours: form.workingHours,
+              emergencyContact: form.emergencyContact,
+            }}
             onChange={(key, value) => patchRoot(key as keyof WebsiteSettingsConfig, value)}
           />
         </CmsSectionCard>
@@ -170,7 +186,7 @@ const WebsiteSettings = () => {
       <CmsSectionAnchor id="footer">
         <CmsSectionCard
           title="Footer"
-          description="Global footer used on every page — branding, newsletter, links, and background styling. Contact details come from Contact Details above."
+          description="Global footer used on every page — branding, newsletter, links, and background styling. Contact details come from Global Contact Information above."
           icon={AlignJustify}
         >
           <CmsTextFields

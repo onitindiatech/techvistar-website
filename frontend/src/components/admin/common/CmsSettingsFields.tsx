@@ -30,13 +30,13 @@ export const CmsTextFields = ({ fields, values, onChange, twoColumn = false }: C
     const { key, label, type = 'text', rows = 3, placeholder, helperText } = field;
     return (
       <div key={key} className="space-y-1.5">
-        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{label}</label>
+        <label className="text-label uppercase text-slate-400">{label}</label>
         {type === 'textarea' ? (
           <Textarea
             value={values[key] ?? ''}
             onChange={(e) => onChange(key, e.target.value)}
             placeholder={placeholder}
-            className="mt-1 min-h-[90px] rounded-xl border-slate-200 bg-slate-50/50 hover:bg-slate-50/80 focus-visible:bg-white focus-visible:border-emerald-500/40 focus-visible:ring-emerald-500/10 transition-all text-slate-800 text-sm placeholder:text-slate-400"
+            className="mt-1 min-h-[90px] rounded-xl border-slate-200 bg-slate-50/50 hover:bg-slate-50/80 focus-visible:bg-white focus-visible:border-emerald-500/40 focus-visible:ring-emerald-500/10 transition-all text-slate-800 text-body-sm placeholder:text-slate-400"
             rows={rows}
           />
         ) : (
@@ -44,11 +44,11 @@ export const CmsTextFields = ({ fields, values, onChange, twoColumn = false }: C
             value={values[key] ?? ''}
             onChange={(e) => onChange(key, e.target.value)}
             placeholder={placeholder}
-            className="mt-1 h-10 rounded-xl border-slate-200 bg-slate-50/50 hover:bg-slate-50/80 focus-visible:bg-white focus-visible:border-emerald-500/40 focus-visible:ring-emerald-500/10 transition-all text-slate-800 text-sm placeholder:text-slate-400"
+            className="mt-1 h-10 rounded-xl border-slate-200 bg-slate-50/50 hover:bg-slate-50/80 focus-visible:bg-white focus-visible:border-emerald-500/40 focus-visible:ring-emerald-500/10 transition-all text-slate-800 text-body-sm placeholder:text-slate-400"
           />
         )}
         {helperText && (
-          <p className="text-[10px] text-slate-400 mt-1">{helperText}</p>
+          <p className="mt-1 text-label normal-case tracking-normal text-slate-400">{helperText}</p>
         )}
       </div>
     );
@@ -128,17 +128,17 @@ export const CmsSectionCard = ({
         )}
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider font-display">
+            <h2 className="font-display text-body-sm font-black uppercase tracking-wider text-slate-900">
               {title}
             </h2>
             {badge && (
-              <span className="text-[9px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
+              <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2 py-0.5 text-label font-black uppercase text-emerald-700">
                 {badge}
               </span>
             )}
           </div>
           {description && (
-            <p className="mt-0.5 text-xs font-medium text-slate-400 leading-relaxed">{description}</p>
+            <p className="mt-0.5 text-caption text-slate-400">{description}</p>
           )}
         </div>
       </div>
@@ -158,7 +158,7 @@ export const CmsSaveBar = ({ onSave, isSaving }: CmsSaveBarProps) => (
   <Button
     onClick={onSave}
     disabled={isSaving}
-    className="gap-2 h-10 px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-sm hover:shadow transition-all font-bold text-xs"
+    className="gap-2 h-10 px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-sm hover:shadow transition-all text-button font-bold"
   >
     {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
     Save Settings
@@ -176,9 +176,9 @@ interface CmsFieldRowProps {
 
 export const CmsFieldRow = ({ label, helperText, children, className }: CmsFieldRowProps) => (
   <div className={cn('space-y-1.5', className)}>
-    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{label}</label>
+    <label className="text-label uppercase text-slate-400">{label}</label>
     {children}
-    {helperText && <p className="text-[10px] text-slate-400">{helperText}</p>}
+    {helperText && <p className="text-label normal-case tracking-normal text-slate-400">{helperText}</p>}
   </div>
 );
 

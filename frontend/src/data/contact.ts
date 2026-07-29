@@ -1,20 +1,27 @@
 import { MapPin, Mail, Phone } from 'lucide-react';
+import { DEFAULT_WEBSITE_SETTINGS } from '@/types/websiteSettings';
+import {
+  resolvePrimaryEmail,
+  resolveSiteAddress,
+  resolveSitePhone,
+} from '@/lib/siteContact';
 
+/** Static fallbacks aligned with Website Settings defaults (prefer live CMS at runtime). */
 export const CONTACT_INFO = [
   {
     icon: MapPin,
     title: 'Office',
-    details: 'Hyderabad, Telangana, India',
+    details: resolveSiteAddress(DEFAULT_WEBSITE_SETTINGS),
   },
   {
     icon: Mail,
     title: 'Business inquiries',
-    details: 'support@techvistar.com',
+    details: resolvePrimaryEmail(DEFAULT_WEBSITE_SETTINGS),
   },
   {
     icon: Phone,
     title: 'Phone',
-    details: '+91 9573157982',
+    details: resolveSitePhone(DEFAULT_WEBSITE_SETTINGS),
   },
 ] as const;
 

@@ -163,7 +163,7 @@ export class SolutionService {
     if (category && category !== 'All') {
       query.category = { $regex: new RegExp('^' + category + '$', 'i') };
     }
-    return Solution.find(query).sort({ displayOrder: 1, createdAt: 1 });
+    return Solution.find(query).sort({ displayOrder: 1, createdAt: 1 }).lean() as Promise<ISolution[]>;
   }
 
   /**
@@ -240,11 +240,11 @@ export class SolutionService {
    */
   async getSolutionBySlug(slug: string): Promise<ISolution> {
     logger.info('[SolutionService] Retrieving active solution by slug', { slug });
-    const solution = await Solution.findOne({ slug, status: 'active', isDeleted: { $ne: true } });
+    const solution = await Solution.findOne({ slug, status: 'active', isDeleted: { $ne: true } }).lean();
     if (!solution) {
       throw ApiError.notFound(`Solution not found for slug "${slug}"`);
     }
-    return solution;
+    return solution as ISolution;
   }
 }
 

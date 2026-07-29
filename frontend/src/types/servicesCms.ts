@@ -1,4 +1,6 @@
 import { SeoMetadata } from '@/types/seo';
+import { DEFAULT_WEBSITE_SETTINGS } from '@/types/websiteSettings';
+import { resolveSupportEmail, siteMailto } from '@/lib/siteContact';
 
 export interface ServiceFaq {
   question: string;
@@ -115,7 +117,7 @@ export const DEFAULT_SERVICES_CMS_CONFIG: ServicesCmsConfig = {
     directInquiriesTitle: 'Direct Inquiries',
     directInquiriesBody:
       'Have an SOW ready or need instant escalation? Contact our lead architect directly at:',
-    contactEmail: 'architect@techvistar.com',
+    contactEmail: '',
   },
   consultationDefaults: {
     title: 'Request Free Consultation',
@@ -188,7 +190,10 @@ export function resolveServiceCtaBlock(
       "Let's collaborate on structuring and engineering your next web portal or AI integration.",
     primaryButtonLabel: 'Book Free Consultation',
     secondaryButtonLabel: 'Talk to an Expert',
-    secondaryButtonHref: 'mailto:architect@techvistar.com?subject=Consultation%20Escalation',
+    secondaryButtonHref: siteMailto(
+      resolveSupportEmail(DEFAULT_WEBSITE_SETTINGS),
+      'Consultation Escalation',
+    ),
     ...defaults,
   };
 

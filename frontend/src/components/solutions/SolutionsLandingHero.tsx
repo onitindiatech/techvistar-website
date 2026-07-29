@@ -89,12 +89,7 @@ export const SolutionsLandingHero = ({
           transition={{ duration: 0.7 }}
           className="space-y-5"
         >
-          {eyebrow && (
-            <Badge className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">
-              <Sparkles className="mr-1.5 inline h-3 w-3" />
-              {eyebrow}
-            </Badge>
-          )}
+
 
           <h1 className="mb-4 font-display text-4xl font-extrabold text-white md:text-5xl">{title}</h1>
 

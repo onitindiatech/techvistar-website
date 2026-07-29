@@ -17,17 +17,29 @@ export const IndustriesCapabilitiesSection = ({
   const capabilities = landing.capabilities || DEFAULT_INDUSTRIES_LANDING_CMS.capabilities;
   const intro = landing.intro || DEFAULT_INDUSTRIES_LANDING_CMS.intro;
 
-  const title = intro.title?.trim() || 'Industries We Serve';
-  const description =
-    intro.description?.trim() ||
-    'Enterprise-grade platforms and delivery patterns across regulated and high-growth verticals.';
-  const eyebrow = capabilities.eyebrow?.trim() || 'Industry expertise';
+  const title = intro.title?.trim() || DEFAULT_INDUSTRIES_LANDING_CMS.intro.title;
+  const description = intro.description?.trim() || DEFAULT_INDUSTRIES_LANDING_CMS.intro.description;
+  const eyebrow = capabilities.eyebrow?.trim() || DEFAULT_INDUSTRIES_LANDING_CMS.capabilities.eyebrow;
 
-  const defaultStats = DEFAULT_INDUSTRIES_LANDING_CMS.capabilities.stats.map((stat, idx) =>
-    idx === 0 ? { ...stat, value: `${industryCount || 10}+` } : stat
-  );
-  const stats = capabilities.stats?.length ? capabilities.stats : defaultStats;
-  const cards = capabilities.cards?.length ? capabilities.cards : DEFAULT_INDUSTRIES_LANDING_CMS.capabilities.cards;
+  // Prefer CMS stats; only enrich the first default slot with live catalog count when CMS still uses defaults.
+  const cmsStats = capabilities.stats?.length
+    ? capabilities.stats
+    : DEFAULT_INDUSTRIES_LANDING_CMS.capabilities.stats;
+  const stats = cmsStats.map((stat, idx) => {
+    const isDefaultFirst =
+      idx === 0 &&
+      (!capabilities.stats?.length ||
+        (stat.label === DEFAULT_INDUSTRIES_LANDING_CMS.capabilities.stats[0]?.label &&
+          (stat.value === DEFAULT_INDUSTRIES_LANDING_CMS.capabilities.stats[0]?.value ||
+            /^\d+\+$/.test(stat.value))));
+    if (isDefaultFirst && industryCount > 0) {
+      return { ...stat, value: `${industryCount}+` };
+    }
+    return stat;
+  });
+  const cards = capabilities.cards?.length
+    ? capabilities.cards
+    : DEFAULT_INDUSTRIES_LANDING_CMS.capabilities.cards;
 
   return (
     <section id="industries-we-serve" className="border-t border-slate-100 bg-white py-16 md:py-20">
@@ -41,7 +53,7 @@ export const IndustriesCapabilitiesSection = ({
             )}
             <span className="text-[10px] font-black uppercase tracking-widest">{eyebrow}</span>
           </div>
-          <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+          <h2 className="font-display text-heading-md text-slate-900 md:text-heading-xl">
             {title}
           </h2>
           <p className="text-sm font-semibold leading-relaxed text-slate-500">{description}</p>

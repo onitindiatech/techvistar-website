@@ -70,6 +70,24 @@ const industryCapabilityCardSchema = {
   imagePublicId: { type: String, trim: true, default: '' },
 };
 
+/** About page focus / industries-serve cards (includes order + active) */
+const aboutContentCardSchema = {
+  icon: { type: String, trim: true, default: 'Globe' },
+  title: { type: String, trim: true, default: '' },
+  description: { type: String, trim: true, default: '' },
+  color: { type: String, trim: true, default: 'emerald' },
+  image: { type: String, trim: true, default: '' },
+  imagePublicId: { type: String, trim: true, default: '' },
+  displayOrder: { type: Number, default: 0 },
+  active: { type: Boolean, default: true },
+};
+
+const aboutCardsSectionSchema = {
+  heading: { type: String, trim: true, default: '' },
+  description: { type: String, trim: true, default: '' },
+  cards: { type: [aboutContentCardSchema], default: [] },
+};
+
 const sidebarDefaultsSchema = {
   summaryTitle: { type: String, trim: true, default: '' },
   responseTimeTitle: { type: String, trim: true, default: '' },
@@ -130,6 +148,7 @@ export interface IPagesCmsConfig extends BaseDocument {
   contact: ISeoFields & Record<string, unknown>;
   solutionsLanding: ISeoFields & Record<string, unknown>;
   industriesLanding: ISeoFields & Record<string, unknown>;
+  portfolioLanding: ISeoFields & Record<string, unknown>;
   careers: ISeoFields & Record<string, unknown>;
   websiteSettings: Record<string, unknown>;
   updatedBy?: string;
@@ -294,10 +313,8 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
         title: { type: String, trim: true, default: 'Vision' },
         text: { type: String, trim: true, default: '' },
       },
-      teamSection: {
-        heading: { type: String, trim: true, default: 'Our team' },
-        description: { type: String, trim: true, default: '' },
-      },
+      focusAreas: aboutCardsSectionSchema,
+      industriesServe: aboutCardsSectionSchema,
       cta: {
         text: { type: String, trim: true, default: '' },
         buttonText: { type: String, trim: true, default: 'Contact us' },
@@ -401,6 +418,121 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
       seoTitle: { type: String, trim: true, default: 'Industries | TechVistar' },
       canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/industries' },
     },
+    portfolioLanding: {
+      hero: {
+        badge: { type: String, trim: true, default: '' },
+        title: { type: String, trim: true, default: 'Our Work' },
+        highlightedWords: { type: String, trim: true, default: 'Work' },
+        description: {
+          type: String,
+          trim: true,
+          default:
+            'Showcase production-ready digital products, enterprise platforms, AI solutions, SaaS applications and scalable software engineered for modern businesses.',
+        },
+        backgroundImage: { type: String, trim: true, default: '' },
+        backgroundImagePublicId: { type: String, trim: true, default: '' },
+        image: { type: String, trim: true, default: '' },
+        imagePublicId: { type: String, trim: true, default: '' },
+        primaryButtonText: { type: String, trim: true, default: 'View Projects' },
+        primaryButtonLink: { type: String, trim: true, default: '#projects-grid' },
+        secondaryButtonText: { type: String, trim: true, default: 'Contact Us' },
+        secondaryButtonLink: { type: String, trim: true, default: '/contact' },
+      },
+      filters: {
+        enableSearch: { type: Boolean, default: true },
+        enableFilters: { type: Boolean, default: true },
+        searchPlaceholder: { type: String, trim: true, default: 'Search case studies...' },
+        allIndustriesLabel: { type: String, trim: true, default: 'All Industries' },
+        allServicesLabel: { type: String, trim: true, default: 'All Services' },
+        allTechnologiesLabel: { type: String, trim: true, default: 'All Technologies' },
+        allStatusesLabel: { type: String, trim: true, default: 'All Statuses' },
+      },
+      featuredProjects: {
+        badge: { type: String, trim: true, default: 'Recent Work' },
+        heading: { type: String, trim: true, default: 'Featured Projects' },
+        description: {
+          type: String,
+          trim: true,
+          default: 'Innovative solutions that drive real business impact',
+        },
+        primaryButtonLabel: { type: String, trim: true, default: 'View Case Study' },
+      },
+      recentWork: {
+        badge: { type: String, trim: true, default: 'Explore More' },
+        heading: { type: String, trim: true, default: 'Explore More Projects' },
+        description: {
+          type: String,
+          trim: true,
+          default: 'Discover additional case studies and technical implementations across industries.',
+        },
+        primaryButtonLabel: { type: String, trim: true, default: 'View Project' },
+        secondaryButtonLabel: { type: String, trim: true, default: 'Case Study' },
+        emptyStateTitle: { type: String, trim: true, default: 'No case studies match.' },
+        emptyStateDescription: {
+          type: String,
+          trim: true,
+          default: 'Try modifying your text search query or filter tags.',
+        },
+      },
+      statistics: {
+        heading: {
+          type: String,
+          trim: true,
+          default: 'Trusted by Businesses Across Industries',
+        },
+        description: {
+          type: String,
+          trim: true,
+          default: 'Delivering high-performance architecture that drives product conversion.',
+        },
+        cards: { type: [statItemSchema], default: [] },
+      },
+      testimonial: {
+        badge: { type: String, trim: true, default: 'Client Success' },
+        quote: {
+          type: String,
+          trim: true,
+          default:
+            'TechVistar delivered our route optimization system ahead of schedule. The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag.',
+        },
+        author: { type: String, trim: true, default: 'Chief of Operations' },
+        role: { type: String, trim: true, default: '' },
+        company: { type: String, trim: true, default: 'Logistics Fleet Management Company' },
+      },
+      workflow: {
+        heading: { type: String, trim: true, default: 'Development Process' },
+        description: {
+          type: String,
+          trim: true,
+          default: 'Our structural path from product constraints to production deployment.',
+        },
+        steps: {
+          type: [{ title: String, description: String, sortOrder: Number }],
+          default: [],
+        },
+      },
+      cta: {
+        title: { type: String, trim: true, default: 'Ready to Build Your Next Product?' },
+        description: {
+          type: String,
+          trim: true,
+          default:
+            "Let's discuss your idea. Connect with our engineering leads to outline timelines, compliance metrics, and technical requirements.",
+        },
+        buttonText: { type: String, trim: true, default: 'Start a Project' },
+        buttonLink: { type: String, trim: true, default: '/contact' },
+        badge: { type: String, trim: true, default: '' },
+        secondaryButtonText: { type: String, trim: true, default: 'View Case Studies' },
+        secondaryButtonLink: { type: String, trim: true, default: '#projects-grid' },
+        backgroundImage: { type: String, trim: true, default: '' },
+        backgroundImagePublicId: { type: String, trim: true, default: '' },
+        image: { type: String, trim: true, default: '' },
+        imagePublicId: { type: String, trim: true, default: '' },
+      },
+      ...seoMongooseFields,
+      seoTitle: { type: String, trim: true, default: 'Our Work | TechVistar Portfolio' },
+      canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/work' },
+    },
     careers: {
       hero: landingHeroSchema,
       culture: {
@@ -454,8 +586,9 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
         default: 'A-75, Sector 4, Noida, Uttar Pradesh 201301, India',
       },
       whatsappNumber: { type: String, trim: true, default: '+91 9573157982' },
-      supportEmail: { type: String, trim: true, default: 'hello@techvistar.com' },
+      supportEmail: { type: String, trim: true, default: 'support@techvistar.com' },
       salesEmail: { type: String, trim: true, default: 'hello@techvistar.com' },
+      careersEmail: { type: String, trim: true, default: 'careers@techvistar.com' },
       googleMapsUrl: {
         type: String,
         trim: true,

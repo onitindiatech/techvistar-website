@@ -33,7 +33,7 @@ export const SolutionOverviewSection = ({ solution }: SectionProps) => {
               </span>
             </span>
           </div>
-          <h2 className="text-xl font-bold text-slate-900 font-display">{solution.sectionCopy?.overviewTitle || 'Overview'}</h2>
+          <h2 className="font-display text-heading-sm text-slate-900">{solution.sectionCopy?.overviewTitle || 'Overview'}</h2>
         </div>
 
         <div className="max-w-4xl pt-2">

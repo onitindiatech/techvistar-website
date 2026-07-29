@@ -14,7 +14,7 @@ export const MobileBackButton = ({ to, label, className }: MobileBackButtonProps
       to={to}
       className={cn('back-btn-premium', className)}
     >
-      <ArrowLeft className="h-4 w-4" />
+      <ArrowLeft aria-hidden />
       <span>{label}</span>
     </Link>
   );

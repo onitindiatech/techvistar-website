@@ -1,15 +1,16 @@
 import { Button } from '@/components/ui/button';
-import { Clock, Calendar, ShieldCheck, Mail, Sparkles } from 'lucide-react';
+import { Clock, Calendar, ShieldCheck, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { useQuery } from '@tanstack/react-query';
 import { Service } from '@/data/services';
-import { ConsultationForm } from './ConsultationForm';
 import {
   ServicesCmsConfig,
   mergeSidebarBlock,
-  mergeConsultationBlock,
 } from '@/types/servicesCms';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { mergePagesCmsConfig } from '@/types/pagesCms';
+import { resolveSupportEmail, siteMailto } from '@/lib/siteContact';
 
 interface ServiceSidebarProps {
   service: Service;
@@ -17,18 +18,19 @@ interface ServiceSidebarProps {
 }
 
 export const ServiceSidebar = ({ service, cmsConfig }: ServiceSidebarProps) => {
-  const sidebar = mergeSidebarBlock(cmsConfig.sidebarDefaults, service.sidebar);
-  const consultation = mergeConsultationBlock(
-    cmsConfig.consultationDefaults,
-    service.consultationForm
-  );
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+  });
+  const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
+  const inquiryEmail = resolveSupportEmail(websiteSettings);
 
-  const mailtoHref = `mailto:${sidebar.contactEmail}?subject=${encodeURIComponent(
-    `Consultation — ${service.title}`
-  )}`;
+  const sidebar = mergeSidebarBlock(cmsConfig.sidebarDefaults, service.sidebar);
+
+  const mailtoHref = siteMailto(inquiryEmail, `Consultation — ${service.title}`);
 
   return (
-    <div className="lg:sticky lg:top-36 space-y-6">
+    <div className="lg:sticky space-y-6" style={{ top: 'calc(var(--primary-nav-height, 80px) + var(--secondary-nav-height, 48px) + 16px)' }}>
       <div
         id="inquiry-form-card"
         className="bg-white border-2 border-emerald-500/20 rounded-3xl p-6 shadow-sm space-y-6 relative overflow-hidden"
@@ -100,7 +102,7 @@ export const ServiceSidebar = ({ service, cmsConfig }: ServiceSidebarProps) => {
               href={mailtoHref}
               className="text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors underline decoration-dotted underline-offset-4"
             >
-              {sidebar.contactEmail}
+              {inquiryEmail}
             </a>
           </div>
         </div>

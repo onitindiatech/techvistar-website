@@ -4,6 +4,7 @@ import { Navbar } from '@/components/Navbar';
 import { HeroSection } from '@/components/HeroSection';
 import { Footer } from '@/components/Footer';
 import { lazySection } from '@/components/common/LazySection';
+import { ContactSection } from '@/components/ContactSection';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
 import { buildCanonical } from '@/lib/seoResolve';
 import { seoFromItem } from '@/lib/seoAdmin';
@@ -28,10 +29,6 @@ const BenefitsSection = lazySection(
 const DomeGallerySection = lazySection(
   () => import('@/components/DomeGallerySection'),
   'DomeGallerySection',
-);
-const ContactSection = lazySection(
-  () => import('@/components/ContactSection'),
-  'ContactSection',
 );
 
 const Index = () => {
@@ -61,7 +58,8 @@ const Index = () => {
         <BenefitsSection minHeight="360px" />
         <DomeGallerySection minHeight="520px" />
 
-        <ContactSection minHeight="400px" />
+        {/* Eager mount so hero "Get in touch" can resolve #contact immediately */}
+        <ContactSection />
         <Footer />
       </main>
     </>

@@ -22,7 +22,8 @@ interface QueryParams {
  */
 export async function getActiveIndustries(category?: string): Promise<any[]> {
   const url = new URL(`${getApiBaseUrl()}/api/industries`);
-  if (category && category !== 'All') {
+  // Guard: React Query may pass QueryFunctionContext as the first arg if queryFn is unbound.
+  if (typeof category === 'string' && category && category !== 'All') {
     url.searchParams.append('category', category);
   }
 

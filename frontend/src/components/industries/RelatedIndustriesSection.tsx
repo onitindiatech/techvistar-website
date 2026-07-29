@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
 import { Industry } from '@/data/industries';
 import { getActiveIndustries } from '@/services/industry.service';
 import { decorateIndustry, getIndustryCardImage } from '@/data/industry.adapter';
@@ -14,7 +13,8 @@ interface RelatedIndustriesSectionProps {
 export const RelatedIndustriesSection = ({ industry }: RelatedIndustriesSectionProps) => {
   const { data: apiIndustries } = useQuery({
     queryKey: ['activeIndustries'],
-    queryFn: getActiveIndustries,
+    queryFn: () => getActiveIndustries(),
+    staleTime: 5 * 60 * 1000,
   });
 
   const allIndustries = (apiIndustries || [])
@@ -34,10 +34,7 @@ export const RelatedIndustriesSection = ({ industry }: RelatedIndustriesSectionP
 
   return (
     <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm md:p-8">
-      <div className="mb-8 flex items-center gap-2">
-        <Sparkles className="h-4 w-4 text-emerald-600" />
-        <h2 className="font-display text-xl font-bold text-slate-900">Related Industries</h2>
-      </div>
+      <h2 className="mb-8 font-display text-heading-sm text-slate-900">Related Industries</h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {related.map((item, index) => {

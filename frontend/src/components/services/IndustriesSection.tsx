@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Service } from '@/data/services';
 import { getActiveIndustries } from '@/services/industry.service';
 import { decorateIndustry } from '@/data/industry.adapter';
-import { ShieldCheck, Sparkles } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import '../ui/GlassIcons.css';
 
@@ -94,12 +94,9 @@ export const IndustriesSection = ({ service }: SectionProps) => {
         </svg>
       </div>
 
-      <div className="relative z-10 flex items-center gap-2 mb-4">
-        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
-        </div>
-        <h2 className="text-xl font-bold text-slate-900 font-display">Industries We Serve</h2>
-      </div>
+      <h2 className="relative z-10 mb-4 font-display text-heading-sm text-slate-900">
+        Industries We Serve
+      </h2>
 
       <p className="relative z-10 text-xs text-slate-500 mb-6">
         Adapting our delivery frameworks to the specific requirements of target sectors:

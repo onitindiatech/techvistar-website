@@ -39,7 +39,7 @@ export const OverviewSection = ({ service }: SectionProps) => {
                 </span>
               </span>
             </div>
-            <h2 className="text-xl font-bold text-slate-900 font-display">Overview</h2>
+            <h2 className="font-display text-heading-sm text-slate-900">Overview</h2>
           </div>
 
           {/* Decorative bar */}

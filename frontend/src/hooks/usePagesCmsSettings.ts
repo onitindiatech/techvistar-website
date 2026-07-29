@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAdminPagesConfig, updatePagesConfig } from '@/services/pages.service';
 import {
@@ -40,11 +40,20 @@ export function usePagesCmsSettings<K extends SectionKey>(section: K) {
     },
   });
 
+  const discard = useCallback(() => {
+    if (data) {
+      setForm(mergePagesCmsConfig(data)[section]);
+    } else {
+      setForm(DEFAULT_PAGES_CMS_CONFIG[section]);
+    }
+  }, [data, section]);
+
   return {
     form,
     setForm,
     isLoading,
     save: () => saveMutation.mutateAsync(form),
     isSaving: saveMutation.isPending,
+    discard,
   };
 }

@@ -17,6 +17,7 @@ import {
   Info,
   Phone,
   SlidersHorizontal,
+  Settings2,
 } from "lucide-react";
 import logo from "../../../assets/logo.webp";
 import { motion } from "framer-motion";
@@ -60,7 +61,10 @@ const navGroups: { title: string; items: NavItem[] }[] = [
   },
   {
     title: "Portfolio",
-    items: [{ label: "Portfolio", path: "/admin/portfolio", icon: Package }],
+    items: [
+      { label: "Portfolio", path: "/admin/portfolio", icon: Package },
+      { label: "Portfolio Landing", path: "/admin/portfolio-landing", icon: Settings2 },
+    ],
   },
   {
     title: "Careers",

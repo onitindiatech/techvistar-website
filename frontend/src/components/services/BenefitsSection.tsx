@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, Sparkles, Zap } from 'lucide-react';
+import { Check, Zap } from 'lucide-react';
 import { Service } from '@/data/services';
 
 interface SectionProps {
@@ -19,12 +19,9 @@ export const BenefitsSection = ({ service }: SectionProps) => {
     >
       <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-emerald-500/[0.04] blur-3xl" />
 
-      <div className="relative z-10 mb-8 flex items-center gap-2">
-        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
-        </div>
-        <h2 className="font-display text-xl font-bold text-slate-900">Benefits &amp; Features</h2>
-      </div>
+      <h2 className="relative z-10 mb-8 font-display text-heading-sm text-slate-900">
+        Benefits &amp; Features
+      </h2>
 
       {benefits.length > 0 && (
         <div className="relative z-10 mb-8 grid grid-cols-1 gap-3 sm:grid-cols-2">

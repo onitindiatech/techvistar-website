@@ -53,15 +53,7 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
           
           <div className="lg:col-span-6 xl:col-span-5 flex flex-col items-start text-left">
             
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-xs font-bold uppercase tracking-wider mb-6"
-            >
-              <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-              {badgeText}
-            </motion.div>
+
             
             <motion.div
               initial={{ opacity: 0, y: 10 }}

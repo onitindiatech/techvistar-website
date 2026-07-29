@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getJobBySlug, Job, submitJobApplication } from '@/services/job.service';
+import { uploadResumeFile, validateResumeFile } from '@/services/upload.service';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,8 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import careersBg from '../assets/careers-bg-new.png';
+import { PageSeo } from '@/components/common/PageSeo';
+import { buildCanonical } from '@/lib/seoResolve';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { MobileBackButton } from '@/components/ui/MobileBackButton';
 
@@ -69,8 +72,9 @@ export const JobApplication = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('Resume file size must be less than 5MB.');
+      const validationError = validateResumeFile(file);
+      if (validationError) {
+        toast.error(validationError);
         return;
       }
       setSelectedFile(file);
@@ -90,6 +94,7 @@ export const JobApplication = () => {
 
     setIsSubmitting(true);
     try {
+      const uploadedResume = await uploadResumeFile(selectedFile);
       await submitJobApplication({
         jobId: job._id,
         fullName: values.fullName,
@@ -101,7 +106,10 @@ export const JobApplication = () => {
         portfolio: values.portfolioUrl,
         coverLetter: values.coverLetter,
         whyJoinTechVistar: values.whyJoinTechVistar || '',
-        resumeUrl: 'http://localhost:5000/resumes/placeholder.pdf', // Mock placeholder URL
+        resumeUrl: uploadedResume.resumeUrl,
+        resumePublicId: uploadedResume.publicId,
+        resumeMimeType: uploadedResume.mimeType,
+        originalFileName: uploadedResume.originalFileName,
       });
 
       toast.success('Application submitted successfully! Our talent acquisition team will review your application soon.');
@@ -114,8 +122,23 @@ export const JobApplication = () => {
     }
   };
 
+  const seoBlock = (
+    <PageSeo
+      seo={{ robotsIndex: false, robotsFollow: true }}
+      defaults={{
+        title: job ? `Apply: ${job.title} | TechVistar Careers` : 'Job Application | TechVistar',
+        description: job
+          ? `Submit your application for the ${job.title} role at TechVistar.`
+          : 'Submit your job application to TechVistar.',
+        url: job ? buildCanonical(`/careers/apply/${job.slug}`) : buildCanonical('/careers'),
+      }}
+    />
+  );
+
   if (isLoading) {
     return (
+      <>
+        {seoBlock}
       <main className="min-h-screen bg-slate-50 flex flex-col">
         <Navbar />
         <div className="flex-grow container mx-auto px-4 py-20 flex items-center justify-center">
@@ -127,11 +150,14 @@ export const JobApplication = () => {
         </div>
         <Footer />
       </main>
+      </>
     );
   }
 
   if (error || !job) {
     return (
+      <>
+        {seoBlock}
       <main className="min-h-screen bg-slate-50 flex flex-col">
         <Navbar />
         <div className="flex-grow container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
@@ -145,10 +171,13 @@ export const JobApplication = () => {
         </div>
         <Footer />
       </main>
+      </>
     );
   }
 
   return (
+    <>
+      {seoBlock}
     <main className="min-h-screen bg-slate-50">
       <Navbar />
 
@@ -309,7 +338,7 @@ export const JobApplication = () => {
                     <div className="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center hover:border-emerald-500 transition-colors relative cursor-pointer bg-slate-50/50">
                       <input
                         type="file"
-                        accept=".pdf,.doc,.docx"
+                        accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                         onChange={handleFileChange}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       />
@@ -326,7 +355,7 @@ export const JobApplication = () => {
                           <>
                             <Upload className="h-10 w-10 text-slate-400" />
                             <p className="text-sm font-bold text-slate-700">Click or drag your CV here</p>
-                            <p className="text-[10px] text-slate-400">Supports PDF, DOC, DOCX up to 5MB</p>
+                            <p className="text-[10px] text-slate-400">Supports PDF, DOC, DOCX, PNG, JPG up to 5MB</p>
                           </>
                         )}
                       </div>
@@ -384,6 +413,7 @@ export const JobApplication = () => {
 
       <Footer />
     </main>
+    </>
   );
 };
 

@@ -8,18 +8,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Upload, FileText, CheckCircle2, AlertCircle } from 'lucide-react';
+import {
+  ArrowLeft,
+  Upload,
+  FileText,
+  AlertCircle,
+  Briefcase,
+  MapPin,
+  Clock,
+  DollarSign,
+} from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import careersBg from '../assets/careers-bg-new.png';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
-import { PageHeader } from '@/components/ui/PageHeader';
 import { MobileBackButton } from '@/components/ui/MobileBackButton';
 
 const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;
@@ -37,6 +43,9 @@ const applicationSchema = z.object({
 });
 
 type ApplicationFormValues = z.infer<typeof applicationSchema>;
+
+const MODULE_SHELL =
+  'relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm md:p-8';
 
 export const JobApplication = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -112,7 +121,9 @@ export const JobApplication = () => {
         originalFileName: uploadedResume.originalFileName,
       });
 
-      toast.success('Application submitted successfully! Our talent acquisition team will review your application soon.');
+      toast.success(
+        'Application submitted successfully! Our talent acquisition team will review your application soon.'
+      );
       reset();
       setSelectedFile(null);
     } catch (err: any) {
@@ -139,17 +150,11 @@ export const JobApplication = () => {
     return (
       <>
         {seoBlock}
-      <main className="min-h-screen bg-slate-50 flex flex-col">
         <Navbar />
-        <div className="flex-grow container mx-auto px-4 py-20 flex items-center justify-center">
-          <div className="animate-pulse space-y-4 w-full max-w-xl">
-            <div className="h-6 w-1/4 bg-slate-200 rounded" />
-            <div className="h-10 w-full bg-slate-200 rounded" />
-            <div className="h-40 w-full bg-slate-200 rounded" />
-          </div>
-        </div>
+        <main className="flex min-h-screen items-center justify-center bg-slate-50 pt-20">
+          <div className="font-display text-slate-500">Loading application form...</div>
+        </main>
         <Footer />
-      </main>
       </>
     );
   }
@@ -158,19 +163,24 @@ export const JobApplication = () => {
     return (
       <>
         {seoBlock}
-      <main className="min-h-screen bg-slate-50 flex flex-col">
         <Navbar />
-        <div className="flex-grow container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Job Opening Not Found</h2>
-          <p className="text-sm text-slate-500 mb-6 max-w-sm">
-            The job you are trying to apply for does not exist or has been closed.
-          </p>
-          <Button asChild className="bg-slate-900 text-white hover:bg-slate-800">
-            <Link to="/careers">Back to Careers</Link>
-          </Button>
-        </div>
-        <Footer />
-      </main>
+        <main className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 pt-20">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm md:p-10">
+            <h1 className="mb-3 font-display text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
+              Job Opening Not Found
+            </h1>
+            <p className="mb-8 text-sm leading-relaxed text-slate-600">
+              The job you are trying to apply for does not exist or has been closed.
+            </p>
+            <Button asChild className="w-full bg-primary text-white hover:bg-primary/95">
+              <Link to="/careers">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Careers
+              </Link>
+            </Button>
+          </div>
+          <Footer />
+        </main>
       </>
     );
   }
@@ -178,241 +188,335 @@ export const JobApplication = () => {
   return (
     <>
       {seoBlock}
-    <main className="min-h-screen bg-slate-50">
       <Navbar />
+      <main className="min-h-screen bg-slate-50 pt-0">
+        {/* Hero — Services Detail architecture */}
+        <section className="mb-6 border-b border-slate-200 bg-white pb-8 pt-[4.5rem] md:mb-8 md:pb-14 md:pt-28">
+          <div className="detail-page-gutter mx-auto w-full px-4 md:px-6 lg:px-12 xl:px-20">
+            <MobileBackButton to={`/careers/${job.slug}`} label="Role Details" className="mb-6" />
 
-      {/* Hero Banner */}
-      <PageHeader
-        title={
-          <>
-            <div className="mb-6">
-              <MobileBackButton to={`/careers/${job.slug}`} label="Role Details" />
+            <div className="space-y-5">
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/50 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-700">
+                {job.department}
+              </div>
+
+              <h1 className="font-display text-[1.75rem] font-extrabold leading-[1.12] text-slate-900 md:text-5xl md:leading-tight">
+                Apply for {job.title}
+              </h1>
+
+              <p className="text-base font-bold leading-snug text-emerald-600 md:text-lg">
+                {job.department}
+              </p>
+
+              <div className="flex flex-wrap gap-x-5 gap-y-2.5 pt-1 text-xs font-medium text-slate-700">
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 text-emerald-600" /> {job.location}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5 text-emerald-600" /> {job.employmentType}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Briefcase className="h-3.5 w-3.5 text-emerald-600" /> {job.experience}
+                </span>
+              </div>
             </div>
-            {`Apply for ${job.title}`}
-          </>
-        }
-        backgroundImage={careersBg}
-      >
-        <div className="space-y-4 mt-2">
-          <p className="text-zinc-400 text-xs md:text-sm font-bold uppercase tracking-wider">
-            {job.department} &bull; {job.location} &bull; {job.employmentType}
-          </p>
-        </div>
-      </PageHeader>
+          </div>
+        </section>
 
-      {/* Main Application Form Container */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="border-slate-200 shadow-sm bg-white overflow-hidden">
-              <CardHeader className="bg-slate-50 border-b border-slate-100 p-6">
-                <CardTitle className="text-lg font-bold text-slate-900">Personal Details & Career History</CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
+        <section className="detail-page-gutter mx-auto mt-8 w-full px-4 pb-16 md:px-6 lg:px-12 xl:px-20">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="lg:col-span-2"
+            >
+              <div className={MODULE_SHELL}>
+                <h2 className="mb-6 border-b border-slate-100 pb-4 font-display text-heading-sm text-slate-900">
+                  Personal Details & Career History
+                </h2>
+
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  {/* Full Name */}
                   <div className="space-y-2">
-                    <Label htmlFor="fullName" className="text-xs font-bold text-slate-700">Full Name *</Label>
+                    <Label htmlFor="fullName" className="text-xs font-bold text-slate-700">
+                      Full Name *
+                    </Label>
                     <Input
                       id="fullName"
                       placeholder="John Doe"
-                      className="border-slate-200 focus-visible:ring-emerald-500"
+                      className="rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                       {...register('fullName')}
                     />
                     {errors.fullName && (
-                      <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                      <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
                         <AlertCircle className="h-3.5 w-3.5" /> {errors.fullName.message}
                       </p>
                     )}
                   </div>
 
-                  {/* Email & Phone Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-xs font-bold text-slate-700">Email Address *</Label>
+                      <Label htmlFor="email" className="text-xs font-bold text-slate-700">
+                        Email Address *
+                      </Label>
                       <Input
                         id="email"
                         type="email"
                         placeholder="john.doe@example.com"
-                        className="border-slate-200 focus-visible:ring-emerald-500"
+                        className="rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                         {...register('email')}
                       />
                       {errors.email && (
-                        <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                        <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
                           <AlertCircle className="h-3.5 w-3.5" /> {errors.email.message}
                         </p>
                       )}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-xs font-bold text-slate-700">Phone Number *</Label>
+                      <Label htmlFor="phone" className="text-xs font-bold text-slate-700">
+                        Phone Number *
+                      </Label>
                       <Input
                         id="phone"
                         placeholder="+91 98765 43210"
-                        className="border-slate-200 focus-visible:ring-emerald-500"
+                        className="rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                         {...register('phone')}
                       />
                       {errors.phone && (
-                        <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                        <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
                           <AlertCircle className="h-3.5 w-3.5" /> {errors.phone.message}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* Current Location & Years of Experience Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="currentLocation" className="text-xs font-bold text-slate-700">Current Location *</Label>
+                      <Label htmlFor="currentLocation" className="text-xs font-bold text-slate-700">
+                        Current Location *
+                      </Label>
                       <Input
                         id="currentLocation"
                         placeholder="e.g. Hyderabad, India"
-                        className="border-slate-200 focus-visible:ring-emerald-500"
+                        className="rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                         {...register('currentLocation')}
                       />
                       {errors.currentLocation && (
-                        <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                        <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
                           <AlertCircle className="h-3.5 w-3.5" /> {errors.currentLocation.message}
                         </p>
                       )}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="yearsOfExperience" className="text-xs font-bold text-slate-700">Years of Experience *</Label>
+                      <Label htmlFor="yearsOfExperience" className="text-xs font-bold text-slate-700">
+                        Years of Experience *
+                      </Label>
                       <Input
                         id="yearsOfExperience"
                         type="number"
                         step="0.1"
                         placeholder="e.g. 2.5"
-                        className="border-slate-200 focus-visible:ring-emerald-500"
+                        className="rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                         {...register('yearsOfExperience')}
                       />
                       {errors.yearsOfExperience && (
-                        <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
-                          <AlertCircle className="h-3.5 w-3.5" /> {errors.yearsOfExperience.message}
+                        <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
+                          <AlertCircle className="h-3.5 w-3.5" />{' '}
+                          {errors.yearsOfExperience.message}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* LinkedIn & Portfolio Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="linkedinUrl" className="text-xs font-bold text-slate-700">LinkedIn Profile URL</Label>
+                      <Label htmlFor="linkedinUrl" className="text-xs font-bold text-slate-700">
+                        LinkedIn Profile URL
+                      </Label>
                       <Input
                         id="linkedinUrl"
                         placeholder="https://linkedin.com/in/username"
-                        className="border-slate-200 focus-visible:ring-emerald-500"
+                        className="rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                         {...register('linkedinUrl')}
                       />
                       {errors.linkedinUrl && (
-                        <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                        <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
                           <AlertCircle className="h-3.5 w-3.5" /> {errors.linkedinUrl.message}
                         </p>
                       )}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="portfolioUrl" className="text-xs font-bold text-slate-700">Portfolio / GitHub URL</Label>
+                      <Label htmlFor="portfolioUrl" className="text-xs font-bold text-slate-700">
+                        Portfolio / GitHub URL
+                      </Label>
                       <Input
                         id="portfolioUrl"
                         placeholder="https://github.com/username"
-                        className="border-slate-200 focus-visible:ring-emerald-500"
+                        className="rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                         {...register('portfolioUrl')}
                       />
                       {errors.portfolioUrl && (
-                        <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                        <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
                           <AlertCircle className="h-3.5 w-3.5" /> {errors.portfolioUrl.message}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* Resume Upload UI */}
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold text-slate-700">Resume / CV *</Label>
-                    <div className="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center hover:border-emerald-500 transition-colors relative cursor-pointer bg-slate-50/50">
+                    <Label htmlFor="resume-upload" className="text-xs font-bold text-slate-700">
+                      Resume / CV *
+                    </Label>
+                    <div className="relative cursor-pointer rounded-xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-6 text-center transition-colors hover:border-emerald-500">
                       <input
+                        id="resume-upload"
                         type="file"
                         accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                         onChange={handleFileChange}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
                       />
                       <div className="flex flex-col items-center justify-center space-y-2">
                         {selectedFile ? (
                           <>
-                            <FileText className="h-10 w-10 text-emerald-600 animate-bounce" />
+                            <FileText className="h-10 w-10 text-emerald-600" />
                             <p className="text-sm font-bold text-slate-800">{selectedFile.name}</p>
                             <p className="text-[10px] text-slate-400">
-                              {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB &bull; Click or drag to change
+                              {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB &bull; Click or
+                              drag to change
                             </p>
                           </>
                         ) : (
                           <>
                             <Upload className="h-10 w-10 text-slate-400" />
-                            <p className="text-sm font-bold text-slate-700">Click or drag your CV here</p>
-                            <p className="text-[10px] text-slate-400">Supports PDF, DOC, DOCX, PNG, JPG up to 5MB</p>
+                            <p className="text-sm font-bold text-slate-700">
+                              Click or drag your CV here
+                            </p>
+                            <p className="text-[10px] text-slate-400">
+                              Supports PDF, DOC, DOCX, PNG, JPG up to 5MB
+                            </p>
                           </>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Cover Letter */}
                   <div className="space-y-2">
-                    <Label htmlFor="coverLetter" className="text-xs font-bold text-slate-700">Cover Letter *</Label>
+                    <Label htmlFor="coverLetter" className="text-xs font-bold text-slate-700">
+                      Cover Letter *
+                    </Label>
                     <Textarea
                       id="coverLetter"
                       rows={6}
                       placeholder="Describe why you are a great fit for this position..."
-                      className="border-slate-200 focus-visible:ring-emerald-500 resize-none"
+                      className="resize-none rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                       {...register('coverLetter')}
                     />
                     {errors.coverLetter && (
-                      <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                      <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
                         <AlertCircle className="h-3.5 w-3.5" /> {errors.coverLetter.message}
                       </p>
                     )}
                   </div>
 
-                  {/* Why Join TechVistar */}
                   <div className="space-y-2">
-                    <Label htmlFor="whyJoinTechVistar" className="text-xs font-bold text-slate-700">Why do you want to join TechVistar?</Label>
+                    <Label htmlFor="whyJoinTechVistar" className="text-xs font-bold text-slate-700">
+                      Why do you want to join TechVistar?
+                    </Label>
                     <Textarea
                       id="whyJoinTechVistar"
                       rows={3}
                       placeholder="Share your motivation..."
-                      className="border-slate-200 focus-visible:ring-emerald-500 resize-none"
+                      className="resize-none rounded-xl border-slate-200 focus-visible:ring-emerald-500"
                       {...register('whyJoinTechVistar')}
                     />
                     {errors.whyJoinTechVistar && (
-                      <p className="text-red-500 text-xs flex items-center gap-1 mt-1 font-medium">
+                      <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
                         <AlertCircle className="h-3.5 w-3.5" /> {errors.whyJoinTechVistar.message}
                       </p>
                     )}
                   </div>
 
-                  {/* Submit Button */}
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-slate-900 text-white hover:bg-slate-800 font-bold py-3 transition-colors h-11"
+                    className="h-10 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-emerald-700"
                   >
                     {isSubmitting ? 'Submitting Application...' : 'Submit Application'}
                   </Button>
                 </form>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
+              </div>
+            </motion.div>
 
-      <Footer />
-    </main>
+            {/* Sidebar — Service Sidebar visual language */}
+            <div
+              className="space-y-6 lg:sticky"
+              style={{
+                top: 'calc(var(--primary-nav-height, 80px) + 16px)',
+              }}
+            >
+              <div className="relative space-y-6 overflow-hidden rounded-3xl border-2 border-emerald-500/20 bg-white p-6 shadow-sm">
+                <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-emerald-500/[0.03] blur-xl" />
+
+                <h3 className="border-b border-slate-100 pb-3 font-display text-xs font-black uppercase tracking-wider text-slate-900">
+                  Applying For
+                </h3>
+
+                <div className="space-y-5">
+                  <div className="flex items-start gap-4 text-xs">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+                      <Briefcase className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-800">Role</p>
+                      <p className="mt-0.5 text-slate-500">{job.title}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4 text-xs">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+                      <MapPin className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-800">Location</p>
+                      <p className="mt-0.5 text-slate-500">{job.location}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4 text-xs">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+                      <Clock className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-800">Employment Type</p>
+                      <p className="mt-0.5 text-slate-500">{job.employmentType}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4 text-xs">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+                      <DollarSign className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-800">Salary</p>
+                      <p className="mt-0.5 text-slate-500">{job.salary}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-10 w-full rounded-xl border-slate-200 text-xs font-bold"
+                >
+                  <Link to={`/careers/${job.slug}`}>View Role Details</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </main>
     </>
   );
 };

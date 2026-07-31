@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { CmsHref } from '@/components/common/CmsHref';
 import { motion } from 'framer-motion';
 import { Sparkles, MessageSquare, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -54,10 +54,10 @@ export const IndustryCTASection = ({ industry }: IndustryCTASectionProps) => {
               asChild
               className="inline-flex h-11 items-center gap-2 rounded-xl border-none bg-white px-7 py-3 text-xs font-bold text-emerald-700 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:bg-slate-50 hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] md:text-sm"
             >
-              <Link to="/contact">
+              <CmsHref href="/contact">
                 {cta.primaryButtonLabel}
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </CmsHref>
             </Button>
           </motion.div>
 
@@ -67,17 +67,10 @@ export const IndustryCTASection = ({ industry }: IndustryCTASectionProps) => {
               className="inline-flex h-11 items-center gap-2 rounded-xl border-white/30 px-7 py-3 text-xs font-bold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm"
               asChild
             >
-              {cta.secondaryButtonHref.startsWith('mailto:') ? (
-                <a href={cta.secondaryButtonHref}>
-                  <MessageSquare className="h-4 w-4" />
-                  {cta.secondaryButtonLabel}
-                </a>
-              ) : (
-                <Link to={cta.secondaryButtonHref}>
-                  <MessageSquare className="h-4 w-4" />
-                  {cta.secondaryButtonLabel}
-                </Link>
-              )}
+              <CmsHref href={cta.secondaryButtonHref}>
+                <MessageSquare className="h-4 w-4" />
+                {cta.secondaryButtonLabel}
+              </CmsHref>
             </Button>
           </motion.div>
         </div>

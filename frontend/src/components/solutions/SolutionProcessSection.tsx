@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { SolutionDetail } from '@/data/solutions';
 
@@ -7,7 +7,9 @@ interface SectionProps {
 }
 
 export const SolutionProcessSection = ({ solution }: SectionProps) => {
-  const prefersReducedMotion = useReducedMotion();
+  const steps = solution.howItWorks ?? [];
+
+  if (steps.length === 0) return null;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -31,13 +33,20 @@ export const SolutionProcessSection = ({ solution }: SectionProps) => {
       <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-emerald-500/[0.02] blur-3xl pointer-events-none z-0" />
       <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-sky-500/[0.02] blur-3xl pointer-events-none z-0" />
 
-      <div className="relative z-10 flex items-center gap-2 mb-8">
-        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
+      <div className="relative z-10 mb-8 space-y-1">
+        <div className="flex items-center gap-2">
+          <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
+            <Sparkles className="h-3 w-3 text-emerald-600" />
+          </div>
+          <h2 className="font-display text-heading-sm text-slate-900">
+            {solution.sectionCopy?.processTitle || 'Development Process'}
+          </h2>
         </div>
-        <h2 className="text-xl font-bold text-slate-900 font-display">
-          {solution.sectionCopy?.processTitle || 'Development Process'}
-        </h2>
+        {solution.sectionCopy?.processSubtitle?.trim() && (
+          <p className="pl-7 text-xs font-medium text-slate-500">
+            {solution.sectionCopy.processSubtitle}
+          </p>
+        )}
       </div>
 
       <div className="relative z-10 pl-2 md:pl-4">
@@ -46,10 +55,11 @@ export const SolutionProcessSection = ({ solution }: SectionProps) => {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true }}
           className="space-y-6"
         >
-          {solution.howItWorks.map((step, idx) => (
+          {steps.map((step, idx) => (
             <motion.div
               key={`${step.step}-${idx}`}
               variants={stepVariants}

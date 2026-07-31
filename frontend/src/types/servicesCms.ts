@@ -153,8 +153,9 @@ export function mergeSidebarBlock(
   const merged = { ...defaults };
   (Object.keys(merged) as Array<keyof ServiceSidebarBlock>).forEach((key) => {
     const val = overrides[key];
-    if (val !== undefined) {
-      merged[key] = val === null ? '' : String(val).trim();
+    // Empty/whitespace service overrides are schema defaults — keep CMS defaults.
+    if (typeof val === 'string' && val.trim()) {
+      merged[key] = val.trim();
     }
   });
   return merged;
@@ -168,17 +169,19 @@ export function mergeConsultationBlock(
   const merged = { ...defaults };
   (Object.keys(merged) as Array<keyof ServiceConsultationBlock>).forEach((key) => {
     const val = overrides[key];
-    if (val !== undefined) {
-      merged[key] = val === null ? '' : String(val).trim();
+    // Empty/whitespace service overrides are schema defaults — keep CMS defaults.
+    if (typeof val === 'string' && val.trim()) {
+      merged[key] = val.trim();
     }
   });
   return merged;
 }
 
 function pickCtaString(value: string | null | undefined, fallback: string): string {
-  if (value === undefined) return fallback;
-  if (value === null) return '';
-  return String(value).trim();
+  // Empty/null schema defaults must not wipe CMS/base CTA copy on the public page.
+  if (value === undefined || value === null) return fallback;
+  const trimmed = String(value).trim();
+  return trimmed || fallback;
 }
 
 export function resolveServiceCtaBlock(

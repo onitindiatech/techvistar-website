@@ -1,5 +1,6 @@
 import { SolutionDetail } from '@/data/solutions';
 import { Brain } from 'lucide-react';
+import { RichTextContent } from '@/components/common/RichTextContent';
 import '../ui/GlassIcons.css';
 
 interface SectionProps {
@@ -31,16 +32,17 @@ export const SolutionOverviewSection = ({ solution }: SectionProps) => {
                 </span>
               </span>
             </div>
-            <h2 className="text-xl font-bold text-slate-900 font-display">
+            <h2 className="font-display text-heading-sm text-slate-900">
               {solution.sectionCopy?.overviewTitle || 'Overview'}
             </h2>
           </div>
 
           <div className="w-12 h-1 bg-emerald-500 rounded-full" />
 
-          <p className="text-slate-600 text-sm md:text-sm leading-relaxed">
-            {solution.ourSolution.overview}
-          </p>
+          <RichTextContent
+            content={solution.ourSolution.overview}
+            className="text-slate-600 text-sm md:text-sm leading-relaxed"
+          />
         </div>
 
         <div className="md:col-span-5 flex justify-center items-center">

@@ -143,12 +143,15 @@ const ProjectDetails = () => {
               <ProjectGallerySection project={project} />
               <ProjectChallengesSection project={project} />
               <ProjectRelatedSection relatedProjects={relatedProjects} />
-              <ProjectCTASection projectCta={project.ctaBlock} />
             </div>
 
             <div className="space-y-6">
               <ProjectSidebar project={project} />
             </div>
+          </div>
+
+          <div className="mt-16">
+            <ProjectCTASection projectCta={project.ctaBlock} />
           </div>
         </section>
 

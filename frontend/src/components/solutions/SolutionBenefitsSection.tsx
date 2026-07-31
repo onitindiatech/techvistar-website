@@ -37,13 +37,20 @@ export const SolutionBenefitsSection = ({ solution }: SectionProps) => {
     >
       <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-emerald-500/[0.04] blur-3xl" />
 
-      <div className="relative z-10 mb-8 flex items-center gap-2">
-        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
+      <div className="relative z-10 mb-8 space-y-1">
+        <div className="flex items-center gap-2">
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10">
+            <Sparkles className="h-3 w-3 text-emerald-600" />
+          </div>
+          <h2 className="font-display text-heading-sm text-slate-900">
+            {solution.sectionCopy?.benefitsTitle || 'Benefits & Features'}
+          </h2>
         </div>
-        <h2 className="font-display text-xl font-bold text-slate-900">
-          {solution.sectionCopy?.benefitsTitle || 'Benefits & Features'}
-        </h2>
+        {solution.sectionCopy?.benefitsSubtitle?.trim() && (
+          <p className="pl-7 text-xs font-medium text-slate-500">
+            {solution.sectionCopy.benefitsSubtitle}
+          </p>
+        )}
       </div>
 
       <div className="relative z-10 grid grid-cols-1 gap-4 md:grid-cols-2">

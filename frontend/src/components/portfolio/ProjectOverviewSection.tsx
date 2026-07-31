@@ -39,7 +39,7 @@ export const ProjectOverviewSection = ({ project }: SectionProps) => {
                 </span>
               </span>
             </div>
-            <h2 className="text-xl font-bold text-slate-900 font-display">Overview</h2>
+            <h2 className="font-display text-heading-sm text-slate-900">Overview</h2>
           </div>
 
           <div className="w-12 h-1 bg-emerald-500 rounded-full" />

@@ -28,11 +28,15 @@ interface CmsTextFieldsProps {
 export const CmsTextFields = ({ fields, values, onChange, twoColumn = false }: CmsTextFieldsProps) => {
   const renderField = (field: FieldConfig) => {
     const { key, label, type = 'text', rows = 3, placeholder, helperText } = field;
+    const fieldId = `cms-field-${key}`;
     return (
       <div key={key} className="space-y-1.5">
-        <label className="text-label uppercase text-slate-400">{label}</label>
+        <label htmlFor={fieldId} className="text-label uppercase text-slate-400">
+          {label}
+        </label>
         {type === 'textarea' ? (
           <Textarea
+            id={fieldId}
             value={values[key] ?? ''}
             onChange={(e) => onChange(key, e.target.value)}
             placeholder={placeholder}
@@ -41,6 +45,7 @@ export const CmsTextFields = ({ fields, values, onChange, twoColumn = false }: C
           />
         ) : (
           <Input
+            id={fieldId}
             value={values[key] ?? ''}
             onChange={(e) => onChange(key, e.target.value)}
             placeholder={placeholder}
@@ -169,14 +174,17 @@ export const CmsSaveBar = ({ onSave, isSaving }: CmsSaveBarProps) => (
 /** Labelled wrapper for any arbitrary input component */
 interface CmsFieldRowProps {
   label: string;
+  htmlFor?: string;
   helperText?: string;
   children: React.ReactNode;
   className?: string;
 }
 
-export const CmsFieldRow = ({ label, helperText, children, className }: CmsFieldRowProps) => (
+export const CmsFieldRow = ({ label, htmlFor, helperText, children, className }: CmsFieldRowProps) => (
   <div className={cn('space-y-1.5', className)}>
-    <label className="text-label uppercase text-slate-400">{label}</label>
+    <label htmlFor={htmlFor} className="text-label uppercase text-slate-400">
+      {label}
+    </label>
     {children}
     {helperText && <p className="text-label normal-case tracking-normal text-slate-400">{helperText}</p>}
   </div>

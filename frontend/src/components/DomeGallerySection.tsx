@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, type CSSProperties } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SiteSection } from '@/components/SiteSection';
 import { Button } from '@/components/ui/button';
+import { CmsHref } from '@/components/common/CmsHref';
 import DomeGallery from '@/components/ui/DomeGallery';
 import { Check, ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
@@ -163,14 +163,14 @@ export const DomeGallerySection = () => {
 
             <div className="flex flex-wrap gap-4 pt-3">
               <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl px-6 py-5 shadow-lg shadow-emerald-500/10 transition-all duration-300">
-                <Link to={portfolio.primaryButtonLink || '/work'}>
+                <CmsHref href={portfolio.primaryButtonLink || '/work'}>
                   {portfolio.primaryButtonText} <ArrowRight className="w-4 h-4 ml-1" />
-                </Link>
+                </CmsHref>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-slate-200 hover:border-emerald-500/30 hover:bg-emerald-50/20 text-slate-700 font-semibold rounded-xl px-6 py-5 transition-all duration-300">
-                <Link to={portfolio.secondaryButtonLink || '/work'}>
+                <CmsHref href={portfolio.secondaryButtonLink || '/work'}>
                   {portfolio.secondaryButtonText}
-                </Link>
+                </CmsHref>
               </Button>
             </div>
           </motion.div>

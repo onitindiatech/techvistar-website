@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { CmsHref } from '@/components/common/CmsHref';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -42,10 +42,10 @@ export const SolutionsLandingHero = ({
         size="lg"
         className="h-12 rounded-xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500"
       >
-        <Link to={ctaLink}>
+        <CmsHref href={ctaLink}>
           {ctaText}
           <ArrowRight className="ml-2 h-4 w-4" />
-        </Link>
+        </CmsHref>
       </Button>
     );
 

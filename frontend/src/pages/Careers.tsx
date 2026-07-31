@@ -13,6 +13,7 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { CmsHref } from '@/components/common/CmsHref';
 import DEFAULT_CAREERS_HERO_BG from '../assets/careers-bg-new.png';
 import { 
   Briefcase, MapPin, Clock, Search, Users,
@@ -171,7 +172,9 @@ const Careers = () => {
               <div className="relative w-full md:flex-1">
                 <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                 <input
-                  type="text"
+                  type="search"
+                  id="careers-job-search"
+                  aria-label="Search open positions"
                   placeholder="Search by job title, department, or keyword..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -393,7 +396,7 @@ const Careers = () => {
             </p>
             <div className="pt-2">
               <Button asChild className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-11 px-6 rounded-full shadow-lg shadow-emerald-500/10">
-                <Link to={careers.cta.buttonLink || '/contact'}>{careers.cta.buttonText}</Link>
+                <CmsHref href={careers.cta.buttonLink || '/contact'}>{careers.cta.buttonText}</CmsHref>
               </Button>
             </div>
           </div>

@@ -8,6 +8,7 @@ import { IMAGE_MAP } from '@/data/services';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import { CmsHref } from '@/components/common/CmsHref';
 import { getActiveIndustries } from '@/services/industry.service';
 import { getPublicPagesConfig } from '@/services/pages.service';
 import { decorateIndustry } from '@/data/industry.adapter';
@@ -210,9 +211,9 @@ export const Industries = () => {
                     asChild
                     className="inline-flex h-11 items-center gap-2 rounded-xl border-none bg-white px-7 py-3 text-xs font-bold text-emerald-700 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:bg-slate-50 hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] md:text-sm"
                   >
-                    <Link to={bottomCta.buttonLink || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonLink}>
+                    <CmsHref href={bottomCta.buttonLink || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonLink}>
                       {bottomCta.buttonText || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonText}
-                    </Link>
+                    </CmsHref>
                   </Button>
                 </motion.div>
 
@@ -222,8 +223,8 @@ export const Industries = () => {
                     className="inline-flex h-11 items-center gap-2 rounded-xl border-white/30 px-7 py-3 text-xs font-bold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm"
                     asChild
                   >
-                    <Link
-                      to={
+                    <CmsHref
+                      href={
                         bottomCta.secondaryButtonLink ||
                         DEFAULT_INDUSTRIES_LANDING_CMS.cta.secondaryButtonLink
                       }
@@ -231,7 +232,7 @@ export const Industries = () => {
                       <MessageSquare className="h-4 w-4" />
                       {bottomCta.secondaryButtonText ||
                         DEFAULT_INDUSTRIES_LANDING_CMS.cta.secondaryButtonText}
-                    </Link>
+                    </CmsHref>
                   </Button>
                 </motion.div>
               </div>

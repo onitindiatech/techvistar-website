@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { decorateSolution, type SolutionDetail } from '@/data/solutions';
 import { getActiveSolutions } from '@/services/solutions.service';
@@ -78,11 +78,20 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
 
   return (
     <section id="related-solutions" className="border-t border-slate-200/80 pt-12 scroll-mt-24">
-      <div className="flex items-center gap-2 mb-8">
-        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex items-center gap-2">
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10">
+            <Sparkles className="h-3 w-3 text-emerald-600" />
+          </div>
+          <h2 className="font-display text-heading-sm text-slate-900">Related Solutions</h2>
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 font-display">Related Solutions</h2>
+        <Link
+          to="/solutions"
+          className="group flex items-center gap-1 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
+        >
+          View all solutions
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </Link>
       </div>
 
       <motion.div

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ArrowLeft, Loader2 } from 'lucide-react';
@@ -18,6 +18,7 @@ import { SolutionBenefitsSection } from '@/components/solutions/SolutionBenefits
 import { SolutionTechStackSection } from '@/components/solutions/SolutionTechStackSection';
 import { SolutionRelatedSection } from '@/components/solutions/SolutionRelatedSection';
 import { SolutionSidebar } from '@/components/solutions/SolutionSidebar';
+import { SolutionCTASection } from '@/components/solutions/SolutionCTASection';
 
 export const SolutionDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -31,6 +32,13 @@ export const SolutionDetails = () => {
   });
 
   const solution = apiSolution ? decorateSolution(apiSolution) : undefined;
+
+  const navItems = useMemo(() => {
+    if (!solution) return [];
+    const items = solution.sectionCopy.navItems;
+    if (items.some((item) => item.id === 'contact')) return items;
+    return [...items, { id: 'contact', label: 'Contact' }];
+  }, [solution]);
 
   const solutionSeo = apiSolution
     ? seoFromApi(apiSolution as Record<string, unknown>)
@@ -101,7 +109,7 @@ export const SolutionDetails = () => {
       <Navbar />
       <main className="min-h-screen bg-slate-50 pt-0">
         <SolutionHero solution={solution} />
-        <SolutionSectionNavigation navItems={solution.sectionCopy.navItems} />
+        <SolutionSectionNavigation navItems={navItems} />
 
         <section className="w-full mx-auto px-4 md:px-6 lg:px-12 xl:px-20 mt-8 pb-16 detail-page-gutter">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -117,6 +125,10 @@ export const SolutionDetails = () => {
             <div className="space-y-6">
               <SolutionSidebar solution={solution} />
             </div>
+          </div>
+
+          <div className="mt-16">
+            <SolutionCTASection />
           </div>
         </section>
 

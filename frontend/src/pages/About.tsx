@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import { CmsHref } from '@/components/common/CmsHref';
 import { getPublicPagesConfig } from '@/services/pages.service';
 import { seoFromItem } from '@/lib/seoAdmin';
 import { PageSeo } from '@/components/common/PageSeo';
@@ -426,13 +427,13 @@ const About = () => {
                   className="shrink-0 border-0 bg-white px-5 py-2.5 text-xs font-bold text-emerald-700 shadow-sm transition-all hover:bg-slate-50 hover:text-emerald-800"
                   asChild
                 >
-                  <Link
-                    to={about.cta.buttonLink || '/#contact'}
+                  <CmsHref
+                    href={about.cta.buttonLink || '/#contact'}
                     className="inline-flex items-center gap-2 uppercase tracking-wider"
                   >
                     {about.cta.buttonText}
                     <ArrowRight className="h-4 w-4 stroke-[2.5]" aria-hidden />
-                  </Link>
+                  </CmsHref>
                 </Button>
               </div>
             </section>

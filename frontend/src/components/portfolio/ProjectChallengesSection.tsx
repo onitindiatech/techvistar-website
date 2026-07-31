@@ -38,7 +38,7 @@ export const ProjectChallengesSection = ({ project }: SectionProps) => {
         <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-emerald-600" />
         </div>
-        <h2 className="text-xl font-bold text-slate-900 font-display">Challenges &amp; Solutions</h2>
+        <h2 className="font-display text-heading-sm text-slate-900">Challenges &amp; Solutions</h2>
       </div>
 
       <div className="relative z-10 pl-2 md:pl-4">

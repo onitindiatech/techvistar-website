@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { CmsHref } from '@/components/common/CmsHref';
 import { motion } from 'framer-motion';
 import { MessageSquare, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -62,7 +62,7 @@ export const SolutionsLandingCta = ({ cta }: SolutionsLandingCtaProps) => {
                 asChild
                 className="inline-flex h-11 items-center gap-2 rounded-xl border-none bg-white px-7 py-3 text-xs font-bold text-emerald-700 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:bg-slate-50 hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] md:text-sm"
               >
-                <Link to={cta.buttonLink || '/contact'}>{cta.buttonText}</Link>
+                <CmsHref href={cta.buttonLink || '/contact'}>{cta.buttonText}</CmsHref>
               </Button>
             </motion.div>
 
@@ -72,10 +72,10 @@ export const SolutionsLandingCta = ({ cta }: SolutionsLandingCtaProps) => {
                 className="inline-flex h-11 items-center gap-2 rounded-xl border-white/30 px-7 py-3 text-xs font-bold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm"
                 asChild
               >
-                <Link to={secondaryButtonLink}>
+                <CmsHref href={secondaryButtonLink}>
                   <MessageSquare className="h-4 w-4" />
                   {secondaryButtonText}
-                </Link>
+                </CmsHref>
               </Button>
             </motion.div>
           </div>

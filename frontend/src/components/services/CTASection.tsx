@@ -4,6 +4,7 @@ import { MessageSquare, Calendar, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
 import { ConsultationForm } from './ConsultationForm';
+import { CmsHref } from '@/components/common/CmsHref';
 import {
   ServicesCmsConfig,
   mergeConsultationBlock,
@@ -81,10 +82,10 @@ export const CTASection = ({ service, cmsConfig }: SectionProps) => {
               className="border-white/30 hover:border-white text-white hover:bg-white/10 font-bold px-7 py-3 rounded-xl inline-flex items-center gap-2 h-11 text-xs md:text-sm transition-all"
               asChild
             >
-              <a href={cta.secondaryButtonHref}>
+              <CmsHref href={cta.secondaryButtonHref}>
                 <MessageSquare className="h-4.5 w-4.5" />
                 {cta.secondaryButtonLabel}
-              </a>
+              </CmsHref>
             </Button>
           </motion.div>
         </div>

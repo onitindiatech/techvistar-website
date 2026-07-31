@@ -1,6 +1,5 @@
 import {
   Check,
-  Sparkles,
   Rocket,
   Clock,
   DollarSign,
@@ -13,6 +12,7 @@ import {
 import { SolutionDetail, resolveSolutionIcon } from '@/data/solutions';
 import { MobileBackButton } from '@/components/ui/MobileBackButton';
 import { AnimatedStat } from '@/components/ui/AnimatedStat';
+import { RichTextContent } from '@/components/common/RichTextContent';
 
 interface SolutionHeroProps {
   solution: SolutionDetail;
@@ -57,7 +57,6 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
               <div className="md:col-span-7 space-y-5">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/50 text-xs font-semibold uppercase tracking-wider">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
                   {badgeText}
                 </div>
 
@@ -69,9 +68,10 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
                   {solution.subtitle}
                 </p>
 
-                <p className="text-slate-600 text-sm leading-relaxed">
-                  {solution.heroDescription}
-                </p>
+                <RichTextContent
+                  content={solution.heroDescription}
+                  className="text-slate-600 text-sm leading-relaxed"
+                />
 
                 {heroHighlights.length > 0 && (
                   <div className="space-y-3 pt-2">

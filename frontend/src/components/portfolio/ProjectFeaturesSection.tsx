@@ -62,7 +62,7 @@ export const ProjectFeaturesSection = ({ project }: SectionProps) => {
         <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-emerald-600" />
         </div>
-        <h2 className="text-xl font-bold text-slate-900 font-display">Features Implemented</h2>
+        <h2 className="font-display text-heading-sm text-slate-900">Features Implemented</h2>
       </div>
 
       <motion.div

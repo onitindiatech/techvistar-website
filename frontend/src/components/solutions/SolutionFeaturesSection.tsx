@@ -59,13 +59,20 @@ export const SolutionFeaturesSection = ({ solution }: SectionProps) => {
       <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none z-0" />
       <div className="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-sky-500/5 blur-3xl pointer-events-none z-0" />
 
-      <div className="relative z-10 flex items-center gap-2 mb-6">
-        <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-emerald-600" />
+      <div className="relative z-10 mb-6 space-y-1">
+        <div className="flex items-center gap-2">
+          <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
+            <Sparkles className="h-3 w-3 text-emerald-600" />
+          </div>
+          <h2 className="font-display text-heading-sm text-slate-900">
+            {solution.sectionCopy?.featuresTitle || 'Key Features'}
+          </h2>
         </div>
-        <h2 className="text-xl font-bold text-slate-900 font-display">
-          {solution.sectionCopy?.featuresTitle || 'Key Features'}
-        </h2>
+        {solution.sectionCopy?.featuresSubtitle?.trim() && (
+          <p className="pl-7 text-xs font-medium text-slate-500">
+            {solution.sectionCopy.featuresSubtitle}
+          </p>
+        )}
       </div>
 
       <motion.div

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { CmsHref } from '@/components/common/CmsHref';
 import { motion } from 'framer-motion';
 import { MessageSquare, Sparkles } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -91,20 +91,23 @@ export const ProjectCTASection = ({ projectCta }: ProjectCTASectionProps) => {
 
         <div className="flex flex-wrap gap-4 justify-center pt-2">
           {cta.buttonText?.trim() && (
-            <Button asChild className="bg-white text-emerald-700 hover:bg-emerald-50 font-bold shadow-lg">
-              <Link to={cta.buttonLink || '/contact'}>{cta.buttonText}</Link>
+            <Button
+              asChild
+              className="bg-white text-emerald-700 hover:bg-slate-50 font-bold border-none shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] px-7 py-3 rounded-xl inline-flex items-center gap-2 transition-all h-11 text-xs md:text-sm"
+            >
+              <CmsHref href={cta.buttonLink || '/contact'}>{cta.buttonText}</CmsHref>
             </Button>
           )}
           {cta.secondaryButtonText?.trim() && (
             <Button
               asChild
               variant="outline"
-              className="border-white/30 bg-white/10 text-white hover:bg-white/20 font-bold backdrop-blur-sm"
+              className="border-white/30 hover:border-white text-white hover:bg-white/10 font-bold px-7 py-3 rounded-xl inline-flex items-center gap-2 h-11 text-xs md:text-sm transition-all"
             >
-              <Link to={cta.secondaryButtonLink || '/work'}>
-                <MessageSquare className="mr-2 h-4 w-4" />
+              <CmsHref href={cta.secondaryButtonLink || '/work'}>
+                <MessageSquare className="h-4.5 w-4.5 mr-2" />
                 {cta.secondaryButtonText}
-              </Link>
+              </CmsHref>
             </Button>
           )}
         </div>

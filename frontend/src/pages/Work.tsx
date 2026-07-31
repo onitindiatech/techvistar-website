@@ -10,6 +10,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 
 import { Button } from '@/components/ui/button';
+import { CmsHref } from '@/components/common/CmsHref';
 import { Input } from '@/components/ui/input';
 import {
   AlertCircle,
@@ -223,15 +224,15 @@ export const Work = () => {
             <div className="space-y-6">
               <div className="flex flex-wrap gap-4">
                 <Button asChild className="h-11 rounded-xl bg-emerald-600 px-6 text-sm font-bold text-white hover:bg-emerald-500">
-                  <Link to={landing.hero.primaryButtonLink || '#projects-grid'}>
+                  <CmsHref href={landing.hero.primaryButtonLink || '#projects-grid'}>
                     {landing.hero.primaryButtonText}
                     <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
+                  </CmsHref>
                 </Button>
                 <Button asChild variant="outline" className="h-11 rounded-xl border-white/20 bg-white/5 px-6 text-sm font-bold text-white hover:bg-white/10">
-                  <Link to={landing.hero.secondaryButtonLink || '/contact'}>
+                  <CmsHref href={landing.hero.secondaryButtonLink || '/contact'}>
                     {landing.hero.secondaryButtonText}
-                  </Link>
+                  </CmsHref>
                 </Button>
               </div>
 
@@ -648,17 +649,17 @@ export const Work = () => {
                 </p>
                 <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
                   <Button asChild className="h-auto rounded-xl bg-white px-8 py-3.5 text-sm font-bold text-emerald-700 shadow-lg shadow-emerald-950/10 transition-all hover:bg-emerald-50">
-                    <Link to={landing.cta.buttonLink || '/contact'}>{landing.cta.buttonText}</Link>
+                    <CmsHref href={landing.cta.buttonLink || '/contact'}>{landing.cta.buttonText}</CmsHref>
                   </Button>
                   <Button
                     asChild
                     variant="outline"
                     className="h-auto rounded-xl border-white/20 bg-transparent px-8 py-3.5 text-sm font-bold text-white backdrop-blur-sm hover:bg-white/10"
                   >
-                    <Link to={landing.cta.secondaryButtonLink || '#projects-grid'}>
+                    <CmsHref href={landing.cta.secondaryButtonLink || '#projects-grid'}>
                       <MessageSquare className="mr-2 h-4 w-4" />
                       {landing.cta.secondaryButtonText}
-                    </Link>
+                    </CmsHref>
                   </Button>
                 </div>
               </div>

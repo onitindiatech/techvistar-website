@@ -11,6 +11,7 @@ import { getActiveSolutions } from '@/services/solutions.service';
 import { buildServiceNavColumns, buildSolutionNavColumns } from '@/lib/navMegaMenu';
 import { mergePagesCmsConfig } from '@/types/pagesCms';
 import { AnnouncementBar } from '@/components/AnnouncementBar';
+import { CmsHref } from '@/components/common/CmsHref';
 import logo from '../assets/logo.webp';
 
 export const Navbar = () => {
@@ -367,7 +368,7 @@ export const Navbar = () => {
 
         {/* Right: Premium Contact CTA */}
         <div className="hidden lg:flex items-center gap-4 shrink-0">
-          <Link to={ctaLink}>
+          <CmsHref href={ctaLink}>
             <motion.button
               whileHover={{ y: -1 }}
               whileTap={{ y: 0, scale: 0.98 }}
@@ -377,7 +378,7 @@ export const Navbar = () => {
               <span>{ctaText}</span>
               <ArrowRight className="w-3.5 h-3.5 opacity-90 group-hover:translate-x-0.5 transition-transform duration-200" />
             </motion.button>
-          </Link>
+          </CmsHref>
         </div>
 
         {/* Mobile hamburger menu toggle */}
@@ -641,12 +642,12 @@ export const Navbar = () => {
               </div>
 
               <div className="pt-4">
-                <Link to={ctaLink} onClick={() => setIsMobileMenuOpen(false)}>
+                <CmsHref href={ctaLink} onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="inline-flex items-center justify-center gap-2 w-full h-11 px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-semibold tracking-tight shadow-[0_1px_2px_rgba(16,185,129,0.2),0_4px_12px_-2px_rgba(16,185,129,0.35)] transition-colors duration-200">
                     <span>{ctaText}</span>
                     <ArrowRight className="w-3.5 h-3.5 opacity-90" />
                   </button>
-                </Link>
+                </CmsHref>
               </div>
             </div>
           </motion.div>

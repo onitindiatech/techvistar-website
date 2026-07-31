@@ -1,19 +1,20 @@
 import type { ElementType } from 'react';
-import { Check, ExternalLink, Github, Sparkles, Rocket, Clock, DollarSign, BarChart3, Shield, Star } from 'lucide-react';
+import { Check, ExternalLink, Github, Rocket, Clock, DollarSign, BarChart3, Shield, Star } from 'lucide-react';
 import { Project } from '@/data/projects';
 import { MobileBackButton } from '@/components/ui/MobileBackButton';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { RichTextContent } from '@/components/common/RichTextContent';
+import { AnimatedStat } from '@/components/ui/AnimatedStat';
 
 const STAT_ICON_MAP: Record<string, ElementType> = {
   rocket: Rocket, clock: Clock, dollar: DollarSign, chart: BarChart3, shield: Shield, star: Star,
 };
 const STAT_THEME_CLASSES: Record<string, string> = {
-  green: 'bg-emerald-50 border-emerald-100 text-emerald-700',
-  purple: 'bg-purple-50 border-purple-100 text-purple-700',
-  gold: 'bg-amber-50 border-amber-100 text-amber-700',
-  blue: 'bg-blue-50 border-blue-100 text-blue-700',
+  green: 'bg-emerald-100 text-emerald-600',
+  purple: 'bg-purple-100 text-purple-600',
+  gold: 'bg-amber-100 text-amber-600',
+  blue: 'bg-blue-100 text-blue-600',
 };
 
 interface ProjectHeroProps {
@@ -40,7 +41,6 @@ export const ProjectHero = ({ project }: ProjectHeroProps) => {
               <div className="md:col-span-7 space-y-5">
                 <div className="flex items-center gap-2 flex-wrap">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/50 text-xs font-semibold uppercase tracking-wider">
-                    <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
                     {project.category}
                   </div>
                   <Badge
@@ -102,22 +102,6 @@ export const ProjectHero = ({ project }: ProjectHeroProps) => {
                     )}
                   </div>
                 )}
-
-                {project.stats.length > 0 && (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
-                    {project.stats.map((stat, idx) => {
-                      const Icon = STAT_ICON_MAP[stat.iconType] || BarChart3;
-                      const themeClass = STAT_THEME_CLASSES[stat.colorTheme] || STAT_THEME_CLASSES.green;
-                      return (
-                        <div key={idx} className={`rounded-xl border p-3 text-center ${themeClass}`}>
-                          <Icon className="h-4 w-4 mx-auto mb-1 opacity-70" />
-                          <div className="text-lg font-extrabold leading-tight">{stat.value}</div>
-                          <div className="text-[10px] font-semibold uppercase tracking-wider opacity-75 mt-0.5">{stat.label}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
               </div>
 
               <div className="md:col-span-5 flex items-center justify-center py-4 md:py-0">
@@ -128,6 +112,27 @@ export const ProjectHero = ({ project }: ProjectHeroProps) => {
                 />
               </div>
             </div>
+
+            {project.stats.length > 0 && (
+              <div className="space-y-6 pt-6 border-t border-slate-200/60">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {project.stats.map((stat, idx) => {
+                    const Icon = STAT_ICON_MAP[stat.iconType] || BarChart3;
+                    const themeIconClass = STAT_THEME_CLASSES[stat.colorTheme] || STAT_THEME_CLASSES.green;
+                    return (
+                      <AnimatedStat
+                        key={idx}
+                        value={stat.value}
+                        label={stat.label}
+                        variant="hero-card"
+                        icon={<Icon className="h-4 w-4" />}
+                        themeIconClass={themeIconClass}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

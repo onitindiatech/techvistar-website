@@ -33,7 +33,7 @@ export const TechnologySection = ({ service }: SectionProps) => {
   return (
     <section
       id="technology"
-      className="h-fit w-full scroll-mt-24 overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm md:p-8"
+      className="relative h-fit w-full scroll-mt-24 overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm md:p-8"
     >
       <h2 className="mb-4 font-display text-heading-sm text-slate-900">Technology Stack</h2>
       <p className="mb-4 text-xs text-slate-500">

@@ -39,7 +39,7 @@ const HOME_NAV_SECTIONS = [
 ];
 
 const HomeSettings = () => {
-  const { form, setForm, isLoading, save, isSaving } = usePagesCmsSettings('home');
+  const { form, setForm, isLoading, save, isSaving, discard } = usePagesCmsSettings('home');
   const [isDirty, setIsDirty] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
@@ -116,40 +116,62 @@ const HomeSettings = () => {
             mediaType={form.hero.mediaType}
             onMediaTypeChange={(type) => patchHero('mediaType', type)}
             imageUrl={form.hero.backgroundImage}
-            onImageChange={(url, publicId) =>
+            onImageChange={(url, publicId) => {
+              const nextUrl = url?.trim() || '';
               setForm((prev) => ({
                 ...prev,
                 hero: {
                   ...prev.hero,
-                  backgroundImage: url,
-                  backgroundImagePublicId: publicId ?? prev.hero.backgroundImagePublicId,
+                  backgroundImage: nextUrl,
+                  backgroundImagePublicId: nextUrl
+                    ? (publicId ?? prev.hero.backgroundImagePublicId)
+                    : '',
                 },
-              }))
-            }
+              }));
+              setIsDirty(true);
+            }}
             videoMp4={form.hero.backgroundVideoMp4}
             videoWebm={form.hero.backgroundVideoWebm}
             videoUrl={form.hero.backgroundVideoUrl}
-            onVideoMp4Change={(url, publicId) =>
+            onVideoMp4Change={(url, publicId) => {
+              const nextUrl = url?.trim() || '';
               setForm((prev) => ({
                 ...prev,
                 hero: {
                   ...prev.hero,
-                  backgroundVideoMp4: url,
-                  backgroundVideoPublicId: publicId ?? prev.hero.backgroundVideoPublicId,
+                  // Persist on the dedicated MP4 field AND the legacy/synced video URL field
+                  // so Save + backend media pairing cannot drop the uploaded asset.
+                  backgroundVideoMp4: nextUrl,
+                  backgroundVideoUrl: nextUrl,
+                  backgroundVideoPublicId: nextUrl
+                    ? (publicId ?? prev.hero.backgroundVideoPublicId)
+                    : '',
                 },
-              }))
-            }
-            onVideoWebmChange={(url) => patchHero('backgroundVideoWebm', url)}
-            onVideoUrlChange={(url, publicId) =>
-              setForm((prev) => ({
-                ...prev,
-                hero: {
-                  ...prev.hero,
-                  backgroundVideoUrl: url,
-                  backgroundVideoPublicId: publicId ?? prev.hero.backgroundVideoPublicId,
-                },
-              }))
-            }
+              }));
+              setIsDirty(true);
+            }}
+            onVideoWebmChange={(url) => {
+              patchHero('backgroundVideoWebm', url?.trim() || '');
+            }}
+            onVideoUrlChange={(url, publicId) => {
+              const nextUrl = url?.trim() || '';
+              setForm((prev) => {
+                const mp4 = prev.hero.backgroundVideoMp4?.trim() || '';
+                return {
+                  ...prev,
+                  hero: {
+                    ...prev.hero,
+                    backgroundVideoUrl: nextUrl,
+                    // Keep MP4 as source of truth when it already has a value.
+                    backgroundVideoMp4: mp4 || nextUrl,
+                    backgroundVideoPublicId: nextUrl
+                      ? (publicId ?? prev.hero.backgroundVideoPublicId)
+                      : (mp4 ? prev.hero.backgroundVideoPublicId : ''),
+                  },
+                };
+              });
+              setIsDirty(true);
+            }}
             youtubeUrl={form.hero.youtubeUrl}
             onYoutubeUrlChange={(url) => patchHero('youtubeUrl', url)}
           />
@@ -939,7 +961,10 @@ const HomeSettings = () => {
       description="Manage every homepage section — hero, responsive hero, stats, benefits, featured content, portfolio, contact, and SEO."
       sections={HOME_NAV_SECTIONS}
       onSave={handleSave}
-      onDiscard={() => setIsDirty(false)}
+      onDiscard={() => {
+        discard();
+        setIsDirty(false);
+      }}
       isSaving={isSaving}
       isDirty={isDirty}
       lastSaved={lastSaved}

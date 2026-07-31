@@ -198,7 +198,7 @@ export const Navbar = () => {
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
-          'w-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] h-[56px] md:h-20 flex items-center',
+          'w-full transition-all duration-500 ease-out-expo h-[56px] md:h-20 flex items-center',
           isScrolled
             ? 'bg-white shadow-md shadow-slate-100/45 border-b border-slate-200/50'
             : 'bg-white border-b border-slate-100'

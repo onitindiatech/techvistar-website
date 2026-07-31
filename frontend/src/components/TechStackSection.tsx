@@ -154,7 +154,7 @@ export const TechStackSection = () => {
             {fullRow1.map((tech, idx) => (
               <div
                 key={`row1-${idx}`}
-                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:border-emerald-500/30 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(16,185,129,0.1)] transition-all duration-[350ms] ease-out group cursor-pointer"
+                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:border-emerald-500/30 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(16,185,129,0.1)] transition-all duration-350 ease-out group cursor-pointer"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-100/50 bg-white/80 p-1.5 shadow-sm transition-transform duration-300 group-hover:scale-105">
                   <TechStackLogo
@@ -179,7 +179,7 @@ export const TechStackSection = () => {
             {fullRow2.map((tech, idx) => (
               <div
                 key={`row2-${idx}`}
-                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:border-emerald-500/30 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(16,185,129,0.1)] transition-all duration-[350ms] ease-out group cursor-pointer"
+                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:border-emerald-500/30 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(16,185,129,0.1)] transition-all duration-350 ease-out group cursor-pointer"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-100/50 bg-white/80 p-1.5 shadow-sm transition-transform duration-300 group-hover:scale-105">
                   <TechStackLogo

@@ -132,7 +132,7 @@ export const ServicesSection = () => {
                 >
                   <SpotlightCard
                     borderBeam
-                    className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_4px_16px_-4px_rgba(15,23,42,0.07)] transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:-translate-y-[7px] hover:border-emerald-400/30 hover:shadow-[0_4px_8px_rgba(15,23,42,0.05),0_16px_40px_-8px_rgba(15,23,42,0.12),0_32px_56px_-16px_rgba(16,185,129,0.18)]"
+                    className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_4px_16px_-4px_rgba(15,23,42,0.07)] transition-all duration-300 ease-out-quad hover:-translate-y-[7px] hover:border-emerald-400/30 hover:shadow-[0_4px_8px_rgba(15,23,42,0.05),0_16px_40px_-8px_rgba(15,23,42,0.12),0_32px_56px_-16px_rgba(16,185,129,0.18)]"
                     spotlightColor="rgba(34, 197, 94, 0.06)"
                     borderColor="rgba(34, 197, 94, 0.40)"
                   >

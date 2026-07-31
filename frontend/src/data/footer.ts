@@ -2,9 +2,14 @@ import { Linkedin, Instagram, Mail } from 'lucide-react';
 import { DEFAULT_WEBSITE_SETTINGS } from '@/types/websiteSettings';
 import { resolvePrimaryEmail, siteMailto } from '@/lib/siteContact';
 
+/** Derived from Website Settings defaults — not used by the live Footer (CMS-driven). */
 export const SOCIAL_LINKS = [
-  { icon: Linkedin, href: 'https://www.linkedin.com/company/techvistar', label: 'LinkedIn' },
-  { icon: Instagram, href: 'https://www.instagram.com/tech_vistar?igsh=MThpMTJnZ2ZlcWVvcw==', label: 'Instagram' },
+  ...(DEFAULT_WEBSITE_SETTINGS.socialLinks.linkedin.trim()
+    ? [{ icon: Linkedin, href: DEFAULT_WEBSITE_SETTINGS.socialLinks.linkedin, label: 'LinkedIn' }]
+    : []),
+  ...(DEFAULT_WEBSITE_SETTINGS.socialLinks.instagram.trim()
+    ? [{ icon: Instagram, href: DEFAULT_WEBSITE_SETTINGS.socialLinks.instagram, label: 'Instagram' }]
+    : []),
   { icon: Mail, href: siteMailto(resolvePrimaryEmail(DEFAULT_WEBSITE_SETTINGS)), label: 'Email' },
 ] as const;
 

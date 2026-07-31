@@ -100,9 +100,27 @@ const WebsiteSettings = () => {
       lastSaved={lastSaved}
     >
       <CmsSectionAnchor id="branding">
-        <CmsSectionCard title="Branding" description="Logo, favicon, company identity, browser chrome, and default OG image." icon={Palette}>
-          <CmsImageField label="Logo" value={form.logo} onChange={(url, publicId) => setForm((prev) => ({ ...prev, logo: url, logoPublicId: publicId ?? prev.logoPublicId }))} />
-          <CmsImageField label="Favicon" value={form.favicon} onChange={(url, publicId) => setForm((prev) => ({ ...prev, favicon: url, faviconPublicId: publicId ?? prev.faviconPublicId }))} />
+        <CmsSectionCard
+          title="Branding"
+          description="One master logo drives the navbar, footer, browser favicon, and admin previews. Company identity, browser chrome, and default OG image."
+          icon={Palette}
+        >
+          <CmsImageField
+            label="Logo"
+            value={form.logo}
+            onChange={(url, publicId) =>
+              setForm((prev) => ({
+                ...prev,
+                logo: url,
+                logoPublicId: publicId ?? prev.logoPublicId,
+                favicon: url,
+                faviconPublicId: publicId ?? prev.logoPublicId,
+              }))
+            }
+          />
+          <p className="text-[11px] text-slate-500 -mt-2">
+            Used everywhere: navbar, footer, mobile header, and browser tab icon.
+          </p>
           <CmsTextFields
             twoColumn
             fields={[
@@ -186,7 +204,7 @@ const WebsiteSettings = () => {
       <CmsSectionAnchor id="footer">
         <CmsSectionCard
           title="Footer"
-          description="Global footer used on every page — branding, newsletter, links, and background styling. Contact details come from Global Contact Information above."
+          description="Global footer used on every page — copy, newsletter, links, and background styling. Logo comes from Branding. Contact details come from Global Contact Information above."
           icon={AlignJustify}
         >
           <CmsTextFields
@@ -203,7 +221,6 @@ const WebsiteSettings = () => {
             values={form.footer as unknown as Record<string, string>}
             onChange={(key, value) => patchFooter(key as keyof WebsiteSettingsConfig['footer'], value)}
           />
-          <CmsImageField label="Footer logo" value={form.footer.logo} onChange={(url, publicId) => setForm((prev) => ({ ...prev, footer: { ...prev.footer, logo: url, logoPublicId: publicId ?? prev.footer.logoPublicId } }))} />
           <CmsImageField label="Footer background image (optional)" value={form.footer.backgroundImage} onChange={(url, publicId) => setForm((prev) => ({ ...prev, footer: { ...prev.footer, backgroundImage: url, backgroundImagePublicId: publicId ?? prev.footer.backgroundImagePublicId } }))} />
 
           <div className="space-y-3 border-t border-slate-100 pt-4">

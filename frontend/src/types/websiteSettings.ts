@@ -146,6 +146,24 @@ const META_KEYWORDS =
 const MAPS_URL =
   'https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372';
 
+/** Canonical Website Settings social URLs (defaults + soft upgrade of older seeds). */
+export const DEFAULT_SOCIAL_LINKEDIN =
+  'https://www.linkedin.com/in/g-aneesh?utm_source=share_via&utm_content=profile&utm_medium=member_android';
+export const DEFAULT_SOCIAL_INSTAGRAM =
+  'https://www.instagram.com/tech_vistar?igsh=MXFmZnc1enNkaWd0';
+
+const LEGACY_SOCIAL_URLS: Partial<Record<keyof WebsiteSocialLinks, string[]>> = {
+  linkedin: [
+    'https://www.linkedin.com/company/techvistar',
+    'https://www.linkedin.com/company/techvistar/',
+  ],
+  instagram: [
+    'https://www.instagram.com/tech_vistar',
+    'https://www.instagram.com/tech_vistar/',
+    'https://www.instagram.com/tech_vistar?igsh=MThpMTJnZ2ZlcWVvcw==',
+  ],
+};
+
 export const DEFAULT_WEBSITE_SETTINGS: WebsiteSettingsConfig = {
   logo: defaultLogoUrl,
   favicon: defaultLogoUrl,
@@ -190,8 +208,8 @@ export const DEFAULT_WEBSITE_SETTINGS: WebsiteSettingsConfig = {
     legalLinks: [],
   },
   socialLinks: {
-    linkedin: SITE.socials[0] || 'https://www.linkedin.com/company/techvistar',
-    instagram: SITE.socials[1] || 'https://www.instagram.com/tech_vistar',
+    linkedin: DEFAULT_SOCIAL_LINKEDIN,
+    instagram: DEFAULT_SOCIAL_INSTAGRAM,
     twitter: '',
     facebook: '',
     github: '',
@@ -331,5 +349,29 @@ export function mergeWebsiteSettingsConfig(
   let merged = deepMergeSection(DEFAULT_WEBSITE_SETTINGS, api);
   merged = migrateLegacyHomeFooter(merged, legacyHomeFooter);
 
-  return merged;
+  // One master Logo: keep favicon/footer.logo fields for API shape, but sync display source.
+  if (merged.logo?.trim()) {
+    merged = {
+      ...merged,
+      favicon: merged.logo,
+      faviconPublicId: merged.logoPublicId ?? merged.faviconPublicId,
+      footer: {
+        ...merged.footer,
+        logo: '',
+        logoPublicId: undefined,
+      },
+    };
+  }
+
+  const socialLinks = { ...merged.socialLinks };
+  const linkedin = socialLinks.linkedin?.trim() || '';
+  if (linkedin && LEGACY_SOCIAL_URLS.linkedin?.includes(linkedin)) {
+    socialLinks.linkedin = DEFAULT_SOCIAL_LINKEDIN;
+  }
+  const instagram = socialLinks.instagram?.trim() || '';
+  if (instagram && LEGACY_SOCIAL_URLS.instagram?.includes(instagram)) {
+    socialLinks.instagram = DEFAULT_SOCIAL_INSTAGRAM;
+  }
+
+  return { ...merged, socialLinks };
 }

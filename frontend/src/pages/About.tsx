@@ -26,7 +26,7 @@ import {
 } from '@/types/pagesCms';
 import { resolveLucideIcon } from '@/lib/resolveLucideIcon';
 import aboutBg from '../assets/about-header.png';
-import logoImg from '@/assets/logo.webp';
+import fallbackLogo from '@/assets/logo.webp';
 import { PageHeader } from '@/components/ui/PageHeader';
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
@@ -101,6 +101,8 @@ const About = () => {
   });
 
   const about = mergePagesCmsConfig(pagesConfig).about;
+  const websiteSettings = mergePagesCmsConfig(pagesConfig).websiteSettings;
+  const siteLogo = websiteSettings.logo?.trim() || fallbackLogo;
   const aboutSeo = seoFromItem(about as unknown as Record<string, unknown>);
   const heroBg = about.hero.backgroundImage?.trim() || aboutBg;
   const storyParagraphs = about.story.body.split('\n\n').filter(Boolean);
@@ -195,7 +197,7 @@ const About = () => {
                 </div>
                 <div className="flex flex-col items-center justify-center p-4">
                   <div className="relative flex h-auto w-[160px] items-center justify-center rounded-xl border-2 border-emerald-500/10 bg-white/50 p-4 shadow-lg backdrop-blur-sm">
-                    <img src={logoImg} alt="TechVistar Logo" className="h-auto w-full object-contain" />
+                    <img src={siteLogo} alt="TechVistar Logo" className="h-auto w-full object-contain" />
                   </div>
                 </div>
               </div>

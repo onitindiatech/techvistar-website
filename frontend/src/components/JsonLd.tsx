@@ -1,10 +1,23 @@
+import { useQuery } from '@tanstack/react-query';
 import { SITE, SERVICES } from '@/data';
+import { getPublicPagesConfig } from '@/services/pages.service';
+import { mergePagesCmsConfig } from '@/types/pagesCms';
 
 /**
  * Schema.org JSON-LD for Organization + ProfessionalService + service catalog.
- * Improves discoverability for technology services queries.
+ * Organization sameAs is driven by Website Settings social links (non-empty only).
  */
 export const JsonLd = () => {
+  const { data: pagesConfig } = useQuery({
+    queryKey: ['pages-config'],
+    queryFn: getPublicPagesConfig,
+  });
+
+  const socialLinks = mergePagesCmsConfig(pagesConfig).websiteSettings.socialLinks;
+  const sameAs = Object.values(socialLinks)
+    .map((url) => url?.trim() || '')
+    .filter(Boolean);
+
   const orgId = `${SITE.url}#organization`;
   const serviceId = `${SITE.url}#services`;
 
@@ -27,7 +40,7 @@ export const JsonLd = () => {
           '@type': 'Country',
           name: SITE.address.countryName,
         },
-        sameAs: [...SITE.socials],
+        sameAs,
       },
       {
         '@type': 'ProfessionalService',

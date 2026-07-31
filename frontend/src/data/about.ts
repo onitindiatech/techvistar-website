@@ -10,10 +10,6 @@ export const SITE = {
     countryCode: 'IN',
     countryName: 'India',
   },
-  socials: [
-    'https://www.linkedin.com/company/techvistar',
-    'https://www.instagram.com/tech_vistar',
-  ],
 } as const;
 
 export const SEO = {

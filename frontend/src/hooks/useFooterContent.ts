@@ -15,11 +15,7 @@ import {
 import { getActiveServices } from '@/services/services.service';
 import { getActiveIndustries } from '@/services/industry.service';
 import defaultLogoUrl from '@/assets/logo.webp';
-import {
-  cloudinaryUrlFromPublicId,
-  isBundledAssetUrl,
-  preferCmsImage,
-} from '@/lib/mediaFallbacks';
+import { preferCmsImage } from '@/lib/mediaFallbacks';
 
 const INVALID_FOOTER_PATHS = new Set(['/privacy', '/terms', '/cookies', '/sitemap']);
 const FOOTER_SERVICES_MAX = 10;
@@ -77,23 +73,9 @@ function normalizeCompanyHref(href: string, label: string): string {
   return href;
 }
 
-function resolveFooterLogo(
-  footerLogo: string | undefined,
-  footerLogoPublicId: string | undefined,
-  brandingLogo: string | undefined,
-  fallback: string,
-): string {
-  const footerUrl = footerLogo?.trim() || '';
-  if (footerUrl && !isBundledAssetUrl(footerUrl)) {
-    return footerUrl;
-  }
-
-  const fromPublicId = cloudinaryUrlFromPublicId(footerLogoPublicId, brandingLogo);
-  if (fromPublicId) {
-    return fromPublicId;
-  }
-
-  return preferCmsImage(brandingLogo, footerUrl, fallback);
+/** Footer uses the single Website Settings master Logo — no separate footer logo field. */
+function resolveSiteLogo(brandingLogo: string | undefined, fallback: string): string {
+  return preferCmsImage(brandingLogo, fallback);
 }
 
 function websiteSocialToArray(social: WebsiteSocialLinks): FooterSocialLink[] {
@@ -140,12 +122,7 @@ export function useFooterContent() {
       wsFooter.heading?.trim() || websiteSettings.companyName?.trim() || 'TechVistar';
     const companyDescription =
       wsFooter.description?.trim() || DEFAULT_WEBSITE_SETTINGS.footer.description;
-    const logo = resolveFooterLogo(
-      wsFooter.logo,
-      wsFooter.logoPublicId,
-      websiteSettings.logo,
-      defaultLogoUrl,
-    );
+    const logo = resolveSiteLogo(websiteSettings.logo, defaultLogoUrl);
     const phone = resolveSitePhone(websiteSettings);
     const email = resolvePrimaryEmail(websiteSettings);
     const address = resolveSiteAddress(websiteSettings);

@@ -157,16 +157,21 @@ const HomeSettings = () => {
             <CmsImageField
               label="Hero poster image (optional)"
               value={form.hero.heroPosterImage}
-              onChange={(url, publicId) =>
+              onChange={(url, publicId) => {
+                const nextUrl = url?.trim() || '';
                 setForm((prev) => ({
                   ...prev,
                   hero: {
                     ...prev.hero,
-                    heroPosterImage: url,
-                    heroPosterImagePublicId: publicId ?? prev.hero.heroPosterImagePublicId,
+                    heroPosterImage: nextUrl,
+                    // Clear companion publicId on remove so Save persists empty (no revive).
+                    heroPosterImagePublicId: nextUrl
+                      ? (publicId ?? prev.hero.heroPosterImagePublicId)
+                      : '',
                   },
-                }))
-              }
+                }));
+                setIsDirty(true);
+              }}
               helperText="Shown instantly while the hero video loads. JPG, PNG, or WEBP — max 5 MB"
             />
           ) : null}

@@ -94,7 +94,7 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
   return (
     <section id="related" className="border-t border-slate-200/80 pt-12 scroll-mt-24">
       
-      <h2 className="mb-8 font-display text-2xl font-bold text-slate-900">Other Services</h2>
+      <h2 className="mb-8 font-display text-heading-sm text-slate-900">Other Services</h2>
 
       {/* Grid of related cards */}
       <motion.div 
@@ -116,7 +116,7 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
             >
               <Link 
                 to={`/services/${rs.slug}`}
-                className="flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.12)] transition-all duration-300 h-full overflow-hidden"
+                className="flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.12)] transition-all duration-300 h-full overflow-hidden"
               >
                 <div>
                   {/* Thumbnail Image Header */}

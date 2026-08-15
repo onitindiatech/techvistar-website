@@ -33,11 +33,11 @@ export const SolutionCTASection = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       id="contact"
-      className="relative overflow-hidden bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-700 border border-emerald-500/30 rounded-3xl p-8 md:p-12 text-white shadow-[0_20px_50px_rgba(16,185,129,0.15)] scroll-mt-24 text-center w-full"
+      className="relative overflow-hidden bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-700 border border-emerald-500/30 rounded-3xl p-8 md:p-12 text-white shadow-[0_20px_50px_rgba(14,165,233,0.15)] scroll-mt-24 text-center w-full"
       style={
         cta.backgroundImage
           ? {
-              backgroundImage: `linear-gradient(rgba(5, 150, 105, 0.88), rgba(5, 150, 105, 0.92)), url(${cta.backgroundImage})`,
+              backgroundImage: `linear-gradient(rgba(11, 53, 91, 0.88), rgba(11, 53, 91, 0.92)), url(${cta.backgroundImage})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }

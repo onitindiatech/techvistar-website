@@ -93,7 +93,7 @@ export const AnimatedStat: React.FC<AnimatedStatProps> = ({
   // Premium hover and fade-up variables
   const hoverClasses =
     variant !== 'sidebar-row' && variant !== 'hero-tall'
-      ? 'transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-emerald-500/40 hover:shadow-[0_8px_20px_rgba(16,185,129,0.12)]'
+      ? 'transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-emerald-500/40 hover:shadow-[0_8px_20px_rgba(14,165,233,0.12)]'
       : '';
 
   // Return specific markup based on variant to preserve the UI structure exactly
@@ -167,7 +167,7 @@ export const AnimatedStat: React.FC<AnimatedStatProps> = ({
         >
           <div className="flex gap-4 items-start">
             {icon && (
-              <div className="h-10 w-10 rounded-[12px] bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0">
+              <div className="h-10 w-10 rounded-[12px] bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
                 {icon}
               </div>
             )}

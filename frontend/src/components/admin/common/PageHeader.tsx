@@ -19,7 +19,7 @@ export const PageHeader = ({ title, description, actionLabel, onAction }: PageHe
 
       {actionLabel ? (
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Button onClick={onAction} className="h-10 px-5 gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-button font-bold rounded-xl shadow-[0_4px_12px_rgba(16,185,129,0.2)] hover:shadow-[0_6px_16px_rgba(16,185,129,0.3)] transition-all">
+          <Button onClick={onAction} className="h-10 px-5 gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-button font-bold rounded-xl shadow-[0_4px_12px_rgba(14,165,233,0.2)] hover:shadow-[0_6px_16px_rgba(14,165,233,0.3)] transition-all">
             <Plus className="w-4 h-4" />
             {actionLabel}
           </Button>

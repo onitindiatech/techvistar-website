@@ -16,9 +16,9 @@ export const EmptyState = ({ title, description, actionLabel, onAction }: EmptyS
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300/80 bg-slate-50/50 px-6 py-20 text-center relative overflow-hidden"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.03)_0%,transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,165,233,0.03)_0%,transparent_50%)] pointer-events-none" />
       
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-[0_4px_20px_rgba(16,185,129,0.08)] border border-emerald-50/50 mb-5 relative z-10">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-[0_4px_20px_rgba(14,165,233,0.08)] border border-emerald-50/50 mb-5 relative z-10">
         <Inbox className="h-7 w-7" />
       </div>
       

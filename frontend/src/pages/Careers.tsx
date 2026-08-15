@@ -327,7 +327,7 @@ const Careers = () => {
                   <motion.div 
                     key={idx} 
                     whileHover={{ y: -6 }}
-                    className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-[0_10px_30px_rgba(16,185,129,0.12)] hover:border-emerald-500/20 transition-all duration-300 flex flex-col group h-full text-left"
+                    className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-[0_10px_30px_rgba(14,165,233,0.12)] hover:border-emerald-500/20 transition-all duration-300 flex flex-col group h-full text-left"
                   >
                     {/* Landscape image */}
                     <div className="aspect-[16/9] w-full overflow-hidden bg-slate-100 relative">
@@ -377,7 +377,7 @@ const Careers = () => {
                       <Icon className="h-5 w-5" />
                     </motion.div>
 
-                    <h4 className="text-[11px] font-bold text-slate-900 uppercase tracking-wider">{step.phase}</h4>
+                    <h3 className="text-[11px] font-bold text-slate-900 uppercase tracking-wider">{step.phase}</h3>
                     <p className="text-[9px] text-slate-400 font-semibold leading-relaxed max-w-[130px]">{step.desc}</p>
                   </div>
                 );

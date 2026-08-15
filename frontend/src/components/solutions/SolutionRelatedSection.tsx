@@ -113,7 +113,7 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
             >
               <Link
                 to={`/solutions/${item.slug}`}
-                className="flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.12)] transition-all duration-300 h-full overflow-hidden"
+                className="flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.12)] transition-all duration-300 h-full overflow-hidden"
               >
                 <div>
                   <div className="relative aspect-video w-full overflow-hidden bg-transparent border-b border-slate-100/50">

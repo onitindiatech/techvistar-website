@@ -78,7 +78,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
       <motion.div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
-          backgroundImage: `linear-gradient(to right, rgba(16, 185, 129, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(16, 185, 129, 0.04) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(to right, rgba(14, 165, 233, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(14, 165, 233, 0.04) 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}
         animate={{

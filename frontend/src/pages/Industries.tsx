@@ -168,11 +168,11 @@ export const Industries = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="relative mx-auto w-full max-w-none overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-700 p-8 text-center text-white shadow-[0_20px_50px_rgba(16,185,129,0.15)] md:p-12"
+            className="relative mx-auto w-full max-w-none overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-700 p-8 text-center text-white shadow-[0_20px_50px_rgba(14,165,233,0.15)] md:p-12"
             style={
               bottomCta.backgroundImage
                 ? {
-                    backgroundImage: `linear-gradient(rgba(5, 150, 105, 0.88), rgba(5, 150, 105, 0.92)), url(${bottomCta.backgroundImage})`,
+                    backgroundImage: `linear-gradient(rgba(11, 53, 91, 0.88), rgba(11, 53, 91, 0.92)), url(${bottomCta.backgroundImage})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }

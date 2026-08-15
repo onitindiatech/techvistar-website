@@ -99,7 +99,7 @@ export const ServicesSection = () => {
     <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative pt-8 pb-4 md:pt-14 md:pb-8">
       {/* Soft ambient depth — emerald wash so the field feels less flat */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-        <div className="absolute left-1/2 top-[40%] h-[min(560px,75vw)] w-[min(780px,95vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.07)_0%,rgba(148,163,184,0.04)_40%,transparent_68%)]" />
+        <div className="absolute left-1/2 top-[40%] h-[min(560px,75vw)] w-[min(780px,95vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(14,165,233,0.07)_0%,rgba(148,163,184,0.04)_40%,transparent_68%)]" />
         <div className="absolute left-[18%] top-[55%] h-[280px] w-[280px] rounded-full bg-emerald-400/[0.04] blur-[90px]" />
         <div className="absolute right-[12%] top-[30%] h-[240px] w-[240px] rounded-full bg-teal-500/[0.035] blur-[80px]" />
       </div>
@@ -132,9 +132,9 @@ export const ServicesSection = () => {
                 >
                   <SpotlightCard
                     borderBeam
-                    className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_4px_16px_-4px_rgba(15,23,42,0.07)] transition-all duration-300 ease-out-quad hover:-translate-y-[7px] hover:border-emerald-400/30 hover:shadow-[0_4px_8px_rgba(15,23,42,0.05),0_16px_40px_-8px_rgba(15,23,42,0.12),0_32px_56px_-16px_rgba(16,185,129,0.18)]"
-                    spotlightColor="rgba(34, 197, 94, 0.06)"
-                    borderColor="rgba(34, 197, 94, 0.40)"
+                    className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_4px_16px_-4px_rgba(15,23,42,0.07)] transition-all duration-300 ease-out-quad hover:-translate-y-[7px] hover:border-emerald-400/30 hover:shadow-[0_4px_8px_rgba(15,23,42,0.05),0_16px_40px_-8px_rgba(15,23,42,0.12),0_32px_56px_-16px_rgba(14,165,233,0.18)]"
+                    spotlightColor="rgba(14, 165, 233, 0.06)"
+                    borderColor="rgba(14, 165, 233, 0.40)"
                   >
                     {/* ── Cover Image ─────────────────────────────── */}
                     <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16 / 9' }}>
@@ -199,10 +199,10 @@ export const ServicesSection = () => {
           transition={{ duration: 0.55, ease, delay: 0.35 }}
           className="mt-10 flex justify-center md:mt-12"
         >
-          <Button asChild variant="hero" size="lg" className="rounded-xl px-8">
-            <Link to={viewAllHref} aria-label={viewAllLabel}>
+          <Button asChild variant="hero" size="lg" className="rounded-xl px-8 text-white hover:text-white">
+            <Link to={viewAllHref} aria-label={viewAllLabel} className="text-white hover:text-white flex items-center gap-2">
               {viewAllLabel}
-              <ArrowRight className="h-4 w-4" aria-hidden />
+              <ArrowRight className="h-4 w-4 text-white" aria-hidden />
             </Link>
           </Button>
         </motion.div>

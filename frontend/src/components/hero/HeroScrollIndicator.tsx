@@ -22,7 +22,7 @@ export function HeroScrollIndicator({ onScrollNext, className }: HeroScrollIndic
       aria-label="Scroll to next section"
     >
       <span className="transition-colors group-hover:text-zinc-200">Explore TechVistar</span>
-      <span className="relative flex h-10 w-6 items-center justify-center rounded-full border-2 border-zinc-500/60 bg-zinc-950/40 shadow-[0_0_12px_rgba(16,185,129,0.15)] transition-[border-color,box-shadow] group-hover:border-emerald-400/50">
+      <span className="relative flex h-10 w-6 items-center justify-center rounded-full border-2 border-zinc-500/60 bg-zinc-950/40 shadow-[0_0_12px_rgba(14,165,233,0.15)] transition-[border-color,box-shadow] group-hover:border-emerald-400/50">
         <motion.span
           className="absolute top-2 h-1.5 w-1 rounded-full bg-emerald-400"
           animate={

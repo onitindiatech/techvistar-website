@@ -63,7 +63,7 @@ export const SolutionBenefitsSection = ({ solution }: SectionProps) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.06 }}
-              className="rounded-2xl border border-slate-100 bg-gradient-to-br from-white to-slate-50/80 p-5 transition-all duration-300 hover:border-emerald-500/20 hover:shadow-[0_12px_30px_-12px_rgba(16,185,129,0.1)]"
+              className="rounded-2xl border border-slate-100 bg-gradient-to-br from-white to-slate-50/80 p-5 transition-all duration-300 hover:border-emerald-500/20 hover:shadow-[0_12px_30px_-12px_rgba(14,165,233,0.1)]"
             >
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600">
                 <Icon className="h-4 w-4" />

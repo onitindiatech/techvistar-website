@@ -362,9 +362,9 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
                     className={cn(
                       'hero-cta-primary group h-11 sm:h-12 w-full lg:w-auto min-w-0 lg:min-w-[11.5rem] rounded-lg border-0',
                       'bg-primary px-6 sm:px-8 text-[0.9375rem] sm:text-base font-semibold text-primary-foreground',
-                      'shadow-[0_12px_40px_-12px_rgba(34,197,94,0.45)]',
+                      'shadow-[0_12px_40px_-12px_rgba(14,165,233,0.45)]',
                       'transition-[background-color,box-shadow,transform] duration-300',
-                      'hover:bg-emerald-400 hover:shadow-[0_18px_44px_-10px_rgba(34,197,94,0.55)]',
+                      'hover:bg-emerald-400 hover:shadow-[0_18px_44px_-10px_rgba(14,165,233,0.55)]',
                       'focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
                     )}
                     asChild
@@ -394,7 +394,7 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
                       'border-white/20 bg-white/[0.06] px-6 sm:px-8 text-[0.9375rem] sm:text-base font-semibold text-white',
                       'shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] backdrop-blur-sm',
                       'transition-[border-color,background-color,box-shadow] duration-300',
-                      'hover:border-emerald-400/45 hover:bg-white/[0.1] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]',
+                      'hover:border-emerald-400/45 hover:bg-white/[0.1] hover:shadow-[0_0_20px_rgba(14,165,233,0.15)]',
                       'focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
                     )}
                     asChild

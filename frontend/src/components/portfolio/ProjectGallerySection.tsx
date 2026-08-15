@@ -24,7 +24,7 @@ export const ProjectGallerySection = ({ project }: SectionProps) => {
         {project.gallery.map((img, i) => (
           <div
             key={`${img}-${i}`}
-            className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:border-emerald-500/20 hover:shadow-[0_15px_35px_-8px_rgba(16,185,129,0.12)]"
+            className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:border-emerald-500/20 hover:shadow-[0_15px_35px_-8px_rgba(14,165,233,0.12)]"
           >
             <div className="relative aspect-video overflow-hidden bg-slate-50">
               <img

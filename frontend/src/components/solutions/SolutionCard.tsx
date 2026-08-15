@@ -43,7 +43,7 @@ export const SolutionCard = ({
         className={cn(
           'group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-all duration-300',
           featured
-            ? 'border-emerald-500/35 shadow-[0_8px_40px_-12px_rgba(16,185,129,0.35)] hover:border-emerald-500/55 hover:shadow-[0_20px_50px_-12px_rgba(16,185,129,0.45)]'
+            ? 'border-emerald-500/35 shadow-[0_8px_40px_-12px_rgba(14,165,233,0.35)] hover:border-emerald-500/55 hover:shadow-[0_20px_50px_-12px_rgba(14,165,233,0.45)]'
             : 'border-slate-200/80 shadow-sm hover:border-emerald-500/25 hover:shadow-xl'
         )}
       >

@@ -276,8 +276,8 @@ const About = () => {
                       whileHover={{
                         y: -4,
                         scale: 1.03,
-                        boxShadow: '0 10px 25px -5px rgba(16,185,129,0.15)',
-                        borderColor: 'rgba(16,185,129,0.3)',
+                        boxShadow: '0 10px 25px -5px rgba(14,165,233,0.15)',
+                        borderColor: 'rgba(14,165,233,0.3)',
                       }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                       className={`group/ind cursor-pointer rounded-xl border p-4 shadow-sm ${styles.bg} ${styles.border}`}
@@ -386,7 +386,7 @@ const About = () => {
                   whileTap={{ scale: 0.995 }}
                   className="flex gap-4 rounded-2xl border-2 border-emerald-500/20 bg-white/80 p-5 shadow-sm backdrop-blur-sm"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-[0_4px_12px_-2px_rgba(16,185,129,0.2)]">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-[0_4px_12px_-2px_rgba(14,165,233,0.2)]">
                     <MapPin className="h-6 w-6" strokeWidth={1.75} aria-hidden />
                   </div>
                   <div className="min-w-0 flex-1">

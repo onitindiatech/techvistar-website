@@ -147,7 +147,7 @@ export const ContactSection = () => {
         <motion.div 
           initial={{ opacity: 0, y: 25 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          whileHover={{ y: -4, boxShadow: '0 25px 50px -12px rgba(16,185,129,0.06)' }}
+          whileHover={{ y: -4, boxShadow: '0 25px 50px -12px rgba(14,165,233,0.06)' }}
           transition={{ duration: 0.4 }}
           className="grid lg:grid-cols-12 rounded-3xl border border-slate-200/80 overflow-hidden shadow-xl bg-white hover:border-emerald-500/20 w-full mx-auto"
         >
@@ -261,7 +261,7 @@ export const ContactSection = () => {
               <Button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full h-11 bg-emerald-600 text-white font-extrabold text-sm rounded-xl shadow-[0_8px_16px_-6px_rgba(16,185,129,0.4)] transition-all hover:bg-emerald-700 hover:shadow-[0_12px_20px_-6px_rgba(16,185,129,0.5)] flex items-center justify-center gap-2 cursor-pointer mt-2"
+                className="w-full h-11 bg-emerald-600 text-white font-extrabold text-sm rounded-xl shadow-[0_8px_16px_-6px_rgba(14,165,233,0.4)] transition-all hover:bg-emerald-700 hover:shadow-[0_12px_20px_-6px_rgba(14,165,233,0.5)] flex items-center justify-center gap-2 cursor-pointer mt-2"
               >
                 <Send className="w-4 h-4" />
                 {isSubmitting ? 'Sending...' : (contactCta.ctaText || 'Send Message')}

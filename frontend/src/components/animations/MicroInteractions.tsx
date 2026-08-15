@@ -64,7 +64,7 @@ export const ShineEffect = ({
 // 3. Hover Glow Shadow Effect
 export const GlowHover = ({
   children,
-  glowColor = 'rgba(16, 185, 129, 0.15)',
+  glowColor = 'rgba(14, 165, 233, 0.15)',
   className = '',
 }: {
   children: React.ReactNode;

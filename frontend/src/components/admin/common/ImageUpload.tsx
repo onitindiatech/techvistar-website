@@ -212,7 +212,7 @@ export const ImageUpload = ({
             (disabled || isUploading) && "opacity-60 cursor-not-allowed pointer-events-none"
           )}
         >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.03)_0%,transparent_60%)] pointer-events-none rounded-2xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,165,233,0.03)_0%,transparent_60%)] pointer-events-none rounded-2xl" />
 
           {isUploading ? (
             <div className="relative z-10 flex flex-col items-center gap-3">
@@ -228,7 +228,7 @@ export const ImageUpload = ({
             </div>
           ) : (
             <div className="relative z-10 flex flex-col items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-[0_4px_16px_rgba(16,185,129,0.06)] border border-slate-100">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-[0_4px_16px_rgba(14,165,233,0.06)] border border-slate-100">
                 <CloudUpload className="w-6 h-6" />
               </div>
               <div>

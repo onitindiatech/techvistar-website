@@ -23,7 +23,7 @@ export const FAQCategoryTabs = ({
           className={cn(
             "flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all border shadow-sm",
             activeCategory === category
-              ? "bg-primary text-primary-foreground border-primary shadow-[0_4px_12px_rgba(16,185,129,0.2)]"
+              ? "bg-primary text-primary-foreground border-primary shadow-[0_4px_12px_rgba(14,165,233,0.2)]"
               : "bg-white text-slate-600 border-slate-200/80 hover:bg-slate-50 hover:text-slate-900"
           )}
         >

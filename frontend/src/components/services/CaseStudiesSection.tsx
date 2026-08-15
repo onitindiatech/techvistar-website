@@ -79,7 +79,7 @@ export const CaseStudiesSection = ({ service }: SectionProps) => {
               key={project.id}
               variants={itemVariants}
               whileHover={prefersReducedMotion ? {} : { y: -6 }}
-              className="group/card flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100/80 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.12)] transition-all duration-300 overflow-hidden h-full"
+              className="group/card flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100/80 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.12)] transition-all duration-300 overflow-hidden h-full"
             >
               <div>
               <div className="relative h-44 overflow-hidden bg-white border-b border-slate-100/50 flex items-center justify-center">

@@ -96,7 +96,7 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
           <div className="space-y-3 border-t border-slate-100 pt-5">
             <div className="flex items-center gap-2">
               <Tag className="h-3.5 w-3.5 text-slate-400" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Tags</h4>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Tags</h3>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {project.tags.map((tag) => (

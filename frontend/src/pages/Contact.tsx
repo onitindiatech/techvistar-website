@@ -206,7 +206,7 @@ export const Contact = () => {
                 <motion.a 
                   href={phoneHref}
                   whileHover={{ y: -2, scale: 1.01 }}
-                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
+                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(14,165,233,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                     <Phone className="h-4.5 w-4.5" />
@@ -222,7 +222,7 @@ export const Contact = () => {
                 <motion.a 
                   href={`mailto:${contactEmail}`}
                   whileHover={{ y: -2, scale: 1.01 }}
-                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
+                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(14,165,233,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                     <Mail className="h-4.5 w-4.5" />
@@ -237,7 +237,7 @@ export const Contact = () => {
                 {/* Office address */}
                 <motion.div 
                   whileHover={{ y: -2, scale: 1.01 }}
-                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
+                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(14,165,233,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                     <MapPin className="h-4.5 w-4.5" />
@@ -252,7 +252,7 @@ export const Contact = () => {
                 {/* Working hours */}
                 <motion.div 
                   whileHover={{ y: -2, scale: 1.01 }}
-                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
+                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(14,165,233,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                     <Clock className="h-4.5 w-4.5" />
@@ -368,7 +368,7 @@ export const Contact = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 mt-2 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]"
+                    className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 mt-2 hover:shadow-[0_0_20px_rgba(14,165,233,0.25)]"
                   >
                     <span>{isSubmitting ? 'Sending...' : contact.cta.buttonText}</span>
                     <Send className="w-4 h-4" />
@@ -382,7 +382,7 @@ export const Contact = () => {
 
         {/* HEADQUARTERS MAP & DIRECTIONS BANNER */}
         <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
-          <div className="group w-full rounded-[2rem] overflow-hidden border border-slate-200/60 bg-white shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-15px_rgba(16,185,129,0.2)] transition-all duration-700 flex flex-col md:flex-row relative">
+          <div className="group w-full rounded-[2rem] overflow-hidden border border-slate-200/60 bg-white shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-15px_rgba(14,165,233,0.2)] transition-all duration-700 flex flex-col md:flex-row relative">
             
             {/* Grayscale OSM Map representation */}
             <div className="w-full md:w-[55%] h-80 md:h-auto min-h-[400px] relative overflow-hidden bg-slate-100">
@@ -416,7 +416,7 @@ export const Contact = () => {
                     href="https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 h-12 px-7 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-[0_8px_20px_-6px_rgba(16,185,129,0.3)] hover:shadow-[0_12px_25px_-4px_rgba(16,185,129,0.4)] group/btn"
+                    className="inline-flex items-center justify-center gap-2 h-12 px-7 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-[0_8px_20px_-6px_rgba(14,165,233,0.3)] hover:shadow-[0_12px_25px_-4px_rgba(14,165,233,0.4)] group/btn"
                   >
                     <span>Get Directions</span>
                     <ArrowUpRight className="w-4 h-4 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -440,7 +440,7 @@ export const Contact = () => {
                 <motion.div 
                   key={office._id}
                   whileHover={{ y: -8, scale: 1.01 }}
-                  className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
+                  className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(14,165,233,0.15)] transition-all duration-500 flex flex-col justify-between"
                 >
                   <div className="h-48 w-full bg-slate-100 relative overflow-hidden border-b border-slate-100">
                     {showMap ? (

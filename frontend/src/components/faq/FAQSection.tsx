@@ -103,8 +103,8 @@ export const FAQSection = ({
                 {/* Orbit lines background */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <svg className="w-full h-full opacity-60" viewBox="0 0 280 220" fill="none">
-                    <path d="M30,150 C60,190 220,190 250,150" stroke="rgba(16, 185, 129, 0.15)" strokeWidth="1.5" strokeDasharray="4,4" />
-                    <path d="M15,110 C30,70 250,70 265,110" stroke="rgba(16, 185, 129, 0.15)" strokeWidth="1.5" strokeDasharray="4,4" />
+                    <path d="M30,150 C60,190 220,190 250,150" stroke="rgba(14, 165, 233, 0.15)" strokeWidth="1.5" strokeDasharray="4,4" />
+                    <path d="M15,110 C30,70 250,70 265,110" stroke="rgba(14, 165, 233, 0.15)" strokeWidth="1.5" strokeDasharray="4,4" />
                   </svg>
                 </div>
 
@@ -120,7 +120,7 @@ export const FAQSection = ({
                 </div>
 
                 {/* Floating 3D Question Mark (Positioned absolutely above the podium so it is never cut off) */}
-                <div className="absolute bottom-[24%] text-primary text-[4.5rem] font-black leading-none drop-shadow-[0_10px_15px_rgba(16,185,129,0.25)] animate-bounce select-none z-20" style={{ animationDuration: '6s' }}>
+                <div className="absolute bottom-[24%] text-primary text-[4.5rem] font-black leading-none drop-shadow-[0_10px_15px_rgba(14,165,233,0.25)] animate-bounce select-none z-20" style={{ animationDuration: '6s' }}>
                   ?
                 </div>
 
@@ -133,7 +133,7 @@ export const FAQSection = ({
                 </div>
 
                 {/* Right green speech bubble */}
-                <div className="absolute top-[28%] right-[10%] bg-emerald-500 text-white rounded-2xl px-3 py-2 shadow-[0_8px_20px_rgba(16,185,129,0.2)] flex items-center justify-center gap-1 transform hover:scale-105 transition-transform duration-300">
+                <div className="absolute top-[28%] right-[10%] bg-emerald-500 text-white rounded-2xl px-3 py-2 shadow-[0_8px_20px_rgba(14,165,233,0.2)] flex items-center justify-center gap-1 transform hover:scale-105 transition-transform duration-300">
                   <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
                   <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
                   <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.5s' }} />

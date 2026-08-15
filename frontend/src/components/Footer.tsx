@@ -198,7 +198,7 @@ export const Footer = () => {
               rel="noopener noreferrer"
               whileHover={{ y: -3, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-2.5 md:gap-3.5 bg-emerald-950/20 hover:bg-emerald-900/40 border border-emerald-500/20 hover:border-emerald-500/50 rounded-xl p-2.5 md:p-3 px-3 md:px-4 shadow-[0_0_15px_rgba(16,185,129,0.03)] hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-300 cursor-pointer"
+              className="inline-flex items-center gap-2.5 md:gap-3.5 bg-emerald-950/20 hover:bg-emerald-900/40 border border-emerald-500/20 hover:border-emerald-500/50 rounded-xl p-2.5 md:p-3 px-3 md:px-4 shadow-[0_0_15px_rgba(14,165,233,0.03)] hover:shadow-[0_0_20px_rgba(14,165,233,0.2)] transition-all duration-300 cursor-pointer"
             >
               {/* Google G icon */}
               <div className="h-7 w-7 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
@@ -320,7 +320,7 @@ export const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.platform}
-                  whileHover={{ y: -3, scale: 1.05, rotate: 3, boxShadow: '0 0 15px rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.3)' }}
+                  whileHover={{ y: -3, scale: 1.05, rotate: 3, boxShadow: '0 0 15px rgba(14,165,233,0.15)', borderColor: 'rgba(14,165,233,0.3)' }}
                   className="w-9 h-9 rounded-full bg-white/[0.02] border border-white/5 flex items-center justify-center text-slate-400 hover:text-emerald-400 transition-colors"
                 >
                   <Icon className="w-4 h-4" />
@@ -365,7 +365,7 @@ export const Footer = () => {
 
             <motion.button
               onClick={scrollToTop}
-              whileHover={{ y: -2, backgroundColor: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.3)' }}
+              whileHover={{ y: -2, backgroundColor: 'rgba(14,165,233,0.15)', borderColor: 'rgba(14,165,233,0.3)' }}
               className="p-2 rounded-xl bg-white/[0.02] border border-white/5 text-emerald-400 flex items-center justify-center transition-colors"
               title="Back to top"
             >

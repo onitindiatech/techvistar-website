@@ -18,7 +18,7 @@ export const IndustryCTASection = ({ industry }: IndustryCTASectionProps) => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="relative w-full scroll-mt-24 overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-700 p-8 text-center text-white shadow-[0_20px_50px_rgba(16,185,129,0.15)] md:p-12"
+      className="relative w-full scroll-mt-24 overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-700 p-8 text-center text-white shadow-[0_20px_50px_rgba(14,165,233,0.15)] md:p-12"
     >
       <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
       <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-emerald-300/20 blur-2xl" />

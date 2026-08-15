@@ -171,7 +171,7 @@ export const DEFAULT_WEBSITE_SETTINGS: WebsiteSettingsConfig = {
   companyTagline: 'Technology-first growth partner',
   defaultOgImage: defaultLogoUrl,
   browserTitle: BROWSER_TITLE,
-  browserThemeColor: '#16a34a',
+  browserThemeColor: '#0B355B',
   navbar: {
     ctaButtonText: 'Contact Us',
     ctaButtonLink: '/contact',

@@ -40,7 +40,7 @@ export const ServiceCard = ({
       >
         <Link
           to={`/services/${service.slug}`}
-          className="group flex h-[220px] overflow-hidden rounded-[24px] border border-white/60 bg-white/80 shadow-[0_8px_32px_-12px_rgba(15,23,42,0.08)] backdrop-blur-md transition-all duration-300 hover:border-emerald-500/25 hover:shadow-[0_20px_48px_-16px_rgba(16,185,129,0.18)] md:h-[240px]"
+          className="group flex h-[220px] overflow-hidden rounded-[24px] border border-white/60 bg-white/80 shadow-[0_8px_32px_-12px_rgba(15,23,42,0.08)] backdrop-blur-md transition-all duration-300 hover:border-emerald-500/25 hover:shadow-[0_20px_48px_-16px_rgba(14,165,233,0.18)] md:h-[240px]"
         >
           <div className="relative w-[38%] shrink-0 overflow-hidden">
             <img
@@ -96,7 +96,7 @@ export const ServiceCard = ({
       >
         <Link
           to={`/services/${service.slug}`}
-          className="group flex h-[170px] flex-col justify-between overflow-hidden rounded-[22px] border border-slate-200/70 bg-white/90 p-5 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.06)] backdrop-blur-sm transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_16px_40px_-12px_rgba(16,185,129,0.14)] md:h-[180px]"
+          className="group flex h-[170px] flex-col justify-between overflow-hidden rounded-[22px] border border-slate-200/70 bg-white/90 p-5 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.06)] backdrop-blur-sm transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_16px_40px_-12px_rgba(14,165,233,0.14)] md:h-[180px]"
         >
           <div className="flex min-h-0 flex-1 gap-4">
             <div className="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-slate-100 bg-slate-50 shadow-sm">
@@ -142,7 +142,7 @@ export const ServiceCard = ({
         className={cn(
           'group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-all duration-300',
           featured
-            ? 'border-emerald-500/35 shadow-[0_8px_40px_-12px_rgba(16,185,129,0.35)] hover:border-emerald-500/55 hover:shadow-[0_20px_50px_-12px_rgba(16,185,129,0.45)]'
+            ? 'border-emerald-500/35 shadow-[0_8px_40px_-12px_rgba(14,165,233,0.35)] hover:border-emerald-500/55 hover:shadow-[0_20px_50px_-12px_rgba(14,165,233,0.45)]'
             : 'border-slate-200/80 shadow-sm hover:border-emerald-500/25 hover:shadow-xl'
         )}
       >

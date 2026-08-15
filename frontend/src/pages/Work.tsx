@@ -341,7 +341,7 @@ export const Work = () => {
                 <motion.div
                   key={project.id}
                   whileHover={{ y: -6 }}
-                  className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/60 bg-white text-slate-900 shadow-md transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.15)]"
+                  className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/60 bg-white text-slate-900 shadow-md transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.15)]"
                 >
                   <div className="space-y-4">
                     <div className="relative flex h-44 items-center justify-center overflow-hidden border-b border-slate-100 bg-slate-50">
@@ -396,7 +396,7 @@ export const Work = () => {
                   <motion.div
                     key={project.id}
                     whileHover={{ y: -6 }}
-                    className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/60 bg-white text-slate-900 shadow-md transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.15)]"
+                    className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/60 bg-white text-slate-900 shadow-md transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.15)]"
                   >
                     <div className="space-y-4">
                       <div className="relative flex h-48 items-center justify-center overflow-hidden border-b border-slate-100 bg-white">
@@ -477,7 +477,7 @@ export const Work = () => {
 
             <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-12">
               <div className="space-y-6 md:col-span-8">
-                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-xl transition-all duration-300 hover:shadow-[0_20px_50px_rgba(16,185,129,0.08)]">
+                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-xl transition-all duration-300 hover:shadow-[0_20px_50px_rgba(14,165,233,0.08)]">
                   <div className="flex w-fit gap-1 rounded-full border border-slate-200/80 bg-amber-50/30 px-3 py-1 text-amber-400">
                     <Star className="h-4 w-4 fill-current" />
                     <Star className="h-4 w-4 fill-current" />
@@ -602,11 +602,11 @@ export const Work = () => {
           <section className="container-custom mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-12">
             <motion.div
               whileHover={{ y: -2 }}
-              className="relative overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-700 p-8 text-center text-white shadow-[0_20px_50px_rgba(16,185,129,0.15)] sm:p-12"
+              className="relative overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-700 p-8 text-center text-white shadow-[0_20px_50px_rgba(14,165,233,0.15)] sm:p-12"
               style={
                 landing.cta.backgroundImage
                   ? {
-                      backgroundImage: `linear-gradient(rgba(5, 150, 105, 0.88), rgba(5, 150, 105, 0.92)), url(${resolveLandingBackground(landing.cta.backgroundImage)})`,
+                      backgroundImage: `linear-gradient(rgba(11, 53, 91, 0.88), rgba(11, 53, 91, 0.92)), url(${resolveLandingBackground(landing.cta.backgroundImage)})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                     }

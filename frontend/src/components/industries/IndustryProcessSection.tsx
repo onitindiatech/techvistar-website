@@ -1,6 +1,5 @@
 import { Industry } from '@/data/industries';
-import { Service } from '@/data/services';
-import { ProcessSection } from '@/components/services/ProcessSection';
+import { ProcessTimeline, TimelineStep } from '@/components/common/ProcessTimeline';
 
 interface IndustryProcessSectionProps {
   industry: Industry;
@@ -11,11 +10,18 @@ export const IndustryProcessSection = ({ industry }: IndustryProcessSectionProps
     return null;
   }
 
-  const serviceShape = {
-    process: industry.process,
-  } as Service;
+  const steps: TimelineStep[] = industry.process.map((step) => ({
+    title: step.title,
+    description: step.description,
+  }));
 
-  return <ProcessSection service={serviceShape} />;
+  return (
+    <ProcessTimeline
+      steps={steps}
+      title="Development Process"
+      showSparkles={true}
+    />
+  );
 };
 
 export default IndustryProcessSection;

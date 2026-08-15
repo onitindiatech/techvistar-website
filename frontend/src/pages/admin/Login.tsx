@@ -106,14 +106,14 @@ const Login = () => {
     <div className="relative min-h-screen min-h-[100dvh] w-full overflow-x-hidden bg-[#fafcfb] font-sans">
       {/* Page background */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.12),transparent_60%)] lg:bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.08),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(14,165,233,0.12),transparent_60%)] lg:bg-[radial-gradient(ellipse_at_top_right,rgba(14,165,233,0.08),transparent_55%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(20,184,166,0.06),transparent_50%)]" />
         <div
           className="absolute inset-0 opacity-[0.4]"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(16, 185, 129, 0.04) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(16, 185, 129, 0.04) 1px, transparent 1px)
+              linear-gradient(rgba(14, 165, 233, 0.04) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(14, 165, 233, 0.04) 1px, transparent 1px)
             `,
             backgroundSize: "48px 48px",
           }}
@@ -302,10 +302,10 @@ const Login = () => {
                         type="submit"
                         disabled={isDisabled}
                         onClick={handleRipple}
-                        className={`relative h-12 w-full overflow-hidden rounded-xl border-0 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(16,185,129,0.35)] transition-shadow duration-300 ${
+                        className={`relative h-12 w-full overflow-hidden rounded-xl border-0 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(14,165,233,0.35)] transition-shadow duration-300 ${
                           isSuccess
                             ? "bg-emerald-600"
-                            : "bg-gradient-to-r from-emerald-600 to-emerald-500 hover:shadow-[0_6px_20px_rgba(16,185,129,0.45)]"
+                            : "bg-gradient-to-r from-emerald-600 to-emerald-500 hover:shadow-[0_6px_20px_rgba(14,165,233,0.45)]"
                         }`}
                       >
                         {ripples.map((ripple) => (

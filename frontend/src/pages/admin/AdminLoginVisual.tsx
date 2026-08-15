@@ -47,7 +47,7 @@ export const AdminLoginVisual = () => {
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_25%_30%,rgba(254,249,195,0.35),transparent_55%)]" />
         <motion.div
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(16,185,129,0.08),transparent_50%)]"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(14,165,233,0.08),transparent_50%)]"
           animate={{ opacity: [0.6, 0.9, 0.7] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />

@@ -137,7 +137,7 @@
 
   /* 🎯 STRICT 3-LEVEL SCREENSHOT TYPOGRAPHY SYSTEM (PROTECTED HEADER EXCLUDED) 🎯 */
 
-  /* LEVEL 1: Hero Main Page Titles ("Custom Software Development" & "We Build Intelligent Digital Solutions") */
+  /* LEVEL 1: Hero Main Page Titles ("Custom Software Development") */
   main h1,
   .hero-headline,
   .page-title,
@@ -148,10 +148,10 @@
   .text-7xl,
   .text-6xl,
   .text-5xl {
-    font-size: clamp(2.5rem, 4.5vw + 0.5rem, 4.25rem) !important;
-    line-height: 1.08 !important;
+    font-size: clamp(2.25rem, 4vw + 0.5rem, 3.25rem) !important;
+    line-height: 1.15 !important;
     font-weight: 800 !important;
-    letter-spacing: -0.03em !important;
+    letter-spacing: -0.025em !important;
   }
 
   /* LEVEL 2: Section Titles & Major Subtitles ("Accelerate your digital footprint...") */

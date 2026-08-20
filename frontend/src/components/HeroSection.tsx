@@ -301,9 +301,7 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
                 className={cn(
                   'hero-headline font-display font-extrabold text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)]',
                   'w-full min-w-0 flex flex-col items-start gap-0',
-                  'max-md:text-[clamp(1.1rem,4.4vw+0.28rem,1.55rem)] max-md:leading-[1.26]',
-                  'md:text-[clamp(1.85rem,3.2vw+0.65rem,3.5rem)] md:leading-[1.11]',
-                  'lg:text-[clamp(2.1rem,2.8vw+0.75rem,4rem)] lg:leading-[1.08]',
+                  'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5rem] leading-[1.05]',
                   'tracking-[-0.026em] md:tracking-[-0.032em] lg:tracking-[-0.035em]'
                 )}
               >
@@ -335,7 +333,7 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
               <motion.p
                 variants={fadeUp}
                 style={{ transform: 'translateZ(8px)' }}
-                className="hero-tagline mt-1.5 md:mt-5 max-w-[34ch] md:max-w-xl text-zinc-200 font-medium text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] text-pretty text-[0.875rem] md:text-base"
+                className="hero-tagline mt-2 md:mt-6 max-w-[38ch] md:max-w-2xl text-slate-200 font-bold text-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] text-pretty text-lg sm:text-xl md:text-2xl lg:text-3xl leading-snug"
               >
                 {display.tagline}
               </motion.p>

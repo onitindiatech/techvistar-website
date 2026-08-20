@@ -37,7 +37,7 @@ interface IllustrationProps {
 export const OverviewIllustration = ({ slug }: IllustrationProps) => {
   // Common container with 3D perspective rotation
   const containerClass = "relative w-full max-w-[280px] h-[220px] mx-auto flex items-center justify-center [perspective:800px] select-none";
-  const glassPanelClass = "absolute bg-white/60 backdrop-blur-md border border-emerald-500/20 rounded-xl p-3 shadow-[0_8px_32px_0_rgba(16,185,129,0.08)] flex flex-col justify-between transition-all duration-300 hover:border-emerald-500/40 hover:-translate-y-1";
+  const glassPanelClass = "absolute bg-white/70 backdrop-blur-md border border-[#0b2859]/20 rounded-xl p-3 shadow-[0_12px_32px_0_rgba(11,40,89,0.22)] flex flex-col justify-between transition-all duration-300 hover:border-[#0b2859]/40 hover:-translate-y-1";
 
   // Dynamic content based on service slug
   switch (slug) {
@@ -45,7 +45,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Grid Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#10b98110_1px,transparent_1px),linear-gradient(to_bottom,#10b98110_1px,transparent_1px)] bg-[size:16px_16px] rounded-2xl [transform:rotateX(40deg)_rotateY(-15deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e910_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e910_1px,transparent_1px)] bg-[size:16px_16px] rounded-2xl [transform:rotateX(40deg)_rotateY(-15deg)] opacity-60" />
           
           {/* Main Browser Panel */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(40deg)_rotateY(-15deg)_translateZ(20px)] left-4 top-8`}>
@@ -86,7 +86,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Grid Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#10b98110_1px,transparent_1px),linear-gradient(to_bottom,#10b98110_1px,transparent_1px)] bg-[size:16px_16px] rounded-2xl [transform:rotateX(25deg)_rotateY(-25deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e910_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e910_1px,transparent_1px)] bg-[size:16px_16px] rounded-2xl [transform:rotateX(25deg)_rotateY(-25deg)] opacity-60" />
           
           {/* Base Phone Frame */}
           <div className={`${glassPanelClass} w-32 h-44 [transform:rotateX(25deg)_rotateY(-25deg)_translateZ(20px)]`}>
@@ -120,7 +120,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Grid Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#10b98110_1px,transparent_1px),linear-gradient(to_bottom,#10b98110_1px,transparent_1px)] bg-[size:16px_16px] rounded-2xl [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e910_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e910_1px,transparent_1px)] bg-[size:16px_16px] rounded-2xl [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
           
           {/* Figma Board Layer 1 */}
           <div className={`${glassPanelClass} w-40 h-28 [transform:rotateX(30deg)_rotateY(-20deg)_translateZ(10px)] left-2 top-4 opacity-70`}>
@@ -150,7 +150,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
             </div>
             {/* Interactive Cursor */}
             <div className="absolute -left-2 top-10 flex flex-col items-start [transform:translateZ(20px)]">
-              <MousePointer className="w-4 h-4 text-emerald-500 fill-emerald-500 drop-shadow-[0_2px_8px_rgba(16,185,129,0.4)]" />
+              <MousePointer className="w-4 h-4 text-emerald-500 fill-emerald-500 drop-shadow-[0_2px_8px_rgba(14,165,233,0.4)]" />
               <span className="text-[7px] bg-emerald-500 text-white px-1 py-0.5 rounded ml-3 -mt-1 font-bold">DESIGNER</span>
             </div>
           </div>
@@ -161,7 +161,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Construction Grid Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:12px_12px] rounded-2xl [transform:rotateX(35deg)_rotateY(-15deg)] opacity-75" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:12px_12px] rounded-2xl [transform:rotateX(35deg)_rotateY(-15deg)] opacity-75" />
           
           {/* Alignment Vectors Sheet */}
           <div className={`${glassPanelClass} w-44 h-36 [transform:rotateX(35deg)_rotateY(-15deg)_translateZ(20px)]`}>
@@ -196,7 +196,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Background mesh */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:10px_10px] rounded-2xl [transform:rotateX(25deg)_rotateY(-25deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:10px_10px] rounded-2xl [transform:rotateX(25deg)_rotateY(-25deg)] opacity-60" />
           
           {/* Creative Stage */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(25deg)_rotateY(-25deg)_translateZ(20px)] left-2`}>
@@ -239,7 +239,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Construction Grid Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#10b98108_1px,transparent_1px),linear-gradient(to_bottom,#10b98108_1px,transparent_1px)] bg-[size:14px_14px] rounded-2xl [transform:rotateX(30deg)_rotateY(-15deg)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e908_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e908_1px,transparent_1px)] bg-[size:14px_14px] rounded-2xl [transform:rotateX(30deg)_rotateY(-15deg)]" />
           
           {/* User Flow Board */}
           <div className={`${glassPanelClass} w-44 h-36 [transform:rotateX(30deg)_rotateY(-15deg)_translateZ(20px)] left-2 top-2`}>
@@ -269,7 +269,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Code lines background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:16px_16px] rounded-2xl [transform:rotateX(35deg)_rotateY(-20deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:16px_16px] rounded-2xl [transform:rotateX(35deg)_rotateY(-20deg)] opacity-60" />
           
           {/* Main API Dashboard Panel */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(35deg)_rotateY(-20deg)_translateZ(20px)] left-4`}>
@@ -305,7 +305,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Grid Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
           
           {/* Main Tenant Dashboard */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(30deg)_rotateY(-20deg)_translateZ(20px)] left-2 top-4`}>
@@ -338,12 +338,12 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Network grid background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:18px_18px] [transform:rotateX(35deg)_rotateY(-15deg)] opacity-70" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:18px_18px] [transform:rotateX(35deg)_rotateY(-15deg)] opacity-70" />
           
           {/* Cloud Core Panel */}
           <div className={`${glassPanelClass} w-44 h-32 [transform:rotateX(35deg)_rotateY(-15deg)_translateZ(20px)]`}>
             <div className="flex-1 flex flex-col items-center justify-center gap-2">
-              <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-[0_4px_16px_rgba(16,185,129,0.15)]">
+              <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-[0_4px_16px_rgba(14,165,233,0.15)]">
                 <Cloud className="w-6 h-6 text-emerald-500 animate-bounce" />
               </div>
               <span className="text-[10px] font-bold text-emerald-700/80">AWS Cloud Stack</span>
@@ -365,7 +365,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Background nodes */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
           
           {/* CI/CD pipeline loop */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(30deg)_rotateY(-20deg)_translateZ(20px)] left-2`}>
@@ -398,7 +398,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Neural net nodes background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:15px_15px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-70" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:15px_15px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-70" />
           
           {/* Core AI Neural Panel */}
           <div className={`${glassPanelClass} w-44 h-32 [transform:rotateX(30deg)_rotateY(-15deg)_translateZ(20px)]`}>
@@ -430,7 +430,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Workflow background grid */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(25deg)_rotateY(-25deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(25deg)_rotateY(-25deg)] opacity-60" />
           
           {/* Automation board */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(25deg)_rotateY(-25deg)_translateZ(20px)] left-2`}>
@@ -461,7 +461,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Background grid */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:16px_16px] [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:16px_16px] [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
           
           {/* AI adapter board */}
           <div className={`${glassPanelClass} w-44 h-36 [transform:rotateX(30deg)_rotateY(-20deg)_translateZ(20px)]`}>
@@ -487,7 +487,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Dynamic workflows */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:12px_12px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:12px_12px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-60" />
           
           {/* Logic workflow panel */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(30deg)_rotateY(-15deg)_translateZ(20px)] left-2`}>
@@ -513,7 +513,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Microservices graph */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:16px_16px] [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:16px_16px] [transform:rotateX(30deg)_rotateY(-20deg)] opacity-60" />
           
           {/* API gateway board */}
           <div className={`${glassPanelClass} w-44 h-36 [transform:rotateX(30deg)_rotateY(-20deg)_translateZ(20px)]`}>
@@ -540,7 +540,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Conversion funnel background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-60" />
           
           {/* Funnel conversion dashboard */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(30deg)_rotateY(-15deg)_translateZ(20px)] left-2`}>
@@ -561,7 +561,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Background grid */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:16px_16px] [transform:rotateX(25deg)_rotateY(-25deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:16px_16px] [transform:rotateX(25deg)_rotateY(-25deg)] opacity-60" />
           
           {/* Documentation file board */}
           <div className={`${glassPanelClass} w-44 h-36 [transform:rotateX(25deg)_rotateY(-25deg)_translateZ(20px)]`}>
@@ -590,7 +590,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Analytics background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-60" />
           
           {/* Marketing dashboard */}
           <div className={`${glassPanelClass} w-48 h-32 [transform:rotateX(30deg)_rotateY(-15deg)_translateZ(20px)] left-2`}>
@@ -618,7 +618,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Topology mesh */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:18px_18px] [transform:rotateX(35deg)_rotateY(-15deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:18px_18px] [transform:rotateX(35deg)_rotateY(-15deg)] opacity-60" />
           
           {/* Cloud infra boundary */}
           <div className={`${glassPanelClass} w-44 h-36 [transform:rotateX(35deg)_rotateY(-15deg)_translateZ(20px)]`}>
@@ -643,11 +643,11 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
       return (
         <div className={containerClass}>
           {/* Default fallback line art */}
-          <div className="absolute inset-0 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(#0ea5e915_1px,transparent_1px)] bg-[size:14px_14px] [transform:rotateX(30deg)_rotateY(-15deg)] opacity-60" />
           <div className={`${glassPanelClass} w-44 h-32 [transform:rotateX(30deg)_rotateY(-15deg)_translateZ(20px)]`}>
             <div className="flex-1 flex flex-col items-center justify-center gap-2">
               <Briefcase className="w-8 h-8 text-emerald-500" />
-              <span className="text-[10px] font-bold text-emerald-700/80">TechVistar Service</span>
+              <span className="text-[10px] font-bold text-emerald-700/80">Veenero Service</span>
             </div>
           </div>
         </div>

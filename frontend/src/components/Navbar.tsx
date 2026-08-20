@@ -198,7 +198,7 @@ export const Navbar = () => {
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
-          'w-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] h-[56px] md:h-20 flex items-center',
+          'w-full transition-all duration-500 ease-out-expo h-[56px] md:h-20 flex items-center',
           isScrolled
             ? 'bg-white shadow-md shadow-slate-100/45 border-b border-slate-200/50'
             : 'bg-white border-b border-slate-100'
@@ -373,7 +373,7 @@ export const Navbar = () => {
               whileHover={{ y: -1 }}
               whileTap={{ y: 0, scale: 0.98 }}
               transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2 h-10 pl-4 pr-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-colors duration-200 text-sm font-semibold tracking-tight shadow-[0_1px_2px_rgba(16,185,129,0.2),0_4px_12px_-2px_rgba(16,185,129,0.35)] hover:shadow-[0_2px_4px_rgba(16,185,129,0.25),0_8px_20px_-4px_rgba(16,185,129,0.4)] group"
+              className="inline-flex items-center gap-2 h-10 pl-4 pr-3.5 bg-[#041a3d] hover:bg-[#021028] text-white rounded-xl transition-all duration-200 text-sm font-extrabold tracking-tight shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group"
             >
               <span>{ctaText}</span>
               <ArrowRight className="w-3.5 h-3.5 opacity-90 group-hover:translate-x-0.5 transition-transform duration-200" />
@@ -643,7 +643,7 @@ export const Navbar = () => {
 
               <div className="pt-4">
                 <CmsHref href={ctaLink} onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="inline-flex items-center justify-center gap-2 w-full h-11 px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-semibold tracking-tight shadow-[0_1px_2px_rgba(16,185,129,0.2),0_4px_12px_-2px_rgba(16,185,129,0.35)] transition-colors duration-200">
+                  <button className="inline-flex items-center justify-center gap-2 w-full h-11 px-5 bg-[#041a3d] hover:bg-[#021028] text-white rounded-xl text-sm font-extrabold tracking-tight shadow-[0_4px_20px_rgba(14,165,233,0.35)] transition-all duration-200">
                     <span>{ctaText}</span>
                     <ArrowRight className="w-3.5 h-3.5 opacity-90" />
                   </button>

@@ -3,78 +3,114 @@
 @tailwind utilities;
 
 @layer base {
+  /* Override browser default autofill, focus, caret & outlines with brand dark navy blue #041a3d */
+  input, textarea, select {
+    accent-color: #041a3d !important;
+    caret-color: #041a3d !important;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  input:focus-within,
+  textarea:focus-within,
+  select:focus-within {
+    outline: none !important;
+    border-color: #041a3d !important;
+    box-shadow: 0 0 0 3px rgba(4, 26, 61, 0.25) !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #0f172a !important;
+    -webkit-box-shadow: 0 0 0px 1000px #f8fafc inset !important;
+    box-shadow: 0 0 0 3px rgba(4, 26, 61, 0.25) !important;
+    border-color: #041a3d !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
   :root {
-    /* OnIT India–aligned palette: green primary (#16a34a), emerald accents, mint neutrals */
-    --background: 150 25% 98%;
-    --foreground: 222 47% 11%;
+    /* TechVistar corporate brand: navy primary, cyan accents, cool gray backgrounds */
+    --background: 210 40% 98%;
+    --foreground: 215 80% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 215 80% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 215 80% 12%;
 
-    /* #16a34a — brand green (matches onitindia.com theme-color) */
-    --primary: 142 76% 36%;
+    /* Brand Navy / Royal Blue */
+    --primary: 217 90% 20%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 152 35% 94%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 210 30% 95%;
+    --secondary-foreground: 215 80% 12%;
 
-    --muted: 150 30% 96%;
-    --muted-foreground: 215 16% 42%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 20% 50%;
 
-    /* Mint surfaces (OnIT-style #ecfdf5 / #d1fae5 family) */
-    --accent: 152 45% 92%;
-    --accent-foreground: 160 55% 18%;
+    /* Cyan highlight/accent */
+    --accent: 199 80% 95%;
+    --accent-foreground: 217 90% 20%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 152 22% 90%;
-    --input: 152 22% 90%;
-    --ring: 142 76% 36%;
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 217 90% 20%;
 
     --radius: 0.625rem;
 
-    --gradient-start: 142 76% 36%;
-    --gradient-end: 160 84% 36%;
-    --glow-primary: 142 76% 36%;
-    --glow-accent: 158 64% 42%;
+    --gradient-start: 225 66% 50%;
+    --gradient-end: 221 83% 53%;
+    --glow-primary: 217 90% 20%;
+    --glow-accent: 199 85% 55%;
 
     --surface-elevated: 0 0% 100%;
-    --surface-overlay: 150 30% 97%;
+    --surface-overlay: 210 30% 97%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 142 76% 36%;
+    --sidebar-foreground: 215 80% 12%;
+    --sidebar-primary: 217 90% 20%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 152 35% 94%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 152 22% 90%;
-    --sidebar-ring: 142 76% 36%;
+    --sidebar-accent: 210 30% 95%;
+    --sidebar-accent-foreground: 215 80% 12%;
+    --sidebar-border: 210 20% 90%;
+    --sidebar-ring: 217 90% 20%;
   }
 
   .dark {
-    --background: 160 45% 6%;
-    --foreground: 144 30% 97%;
-    --card: 160 40% 9%;
-    --card-foreground: 144 30% 97%;
-    --popover: 160 40% 9%;
-    --popover-foreground: 144 30% 97%;
-    --primary: 142 71% 45%;
-    --primary-foreground: 160 45% 6%;
-    --secondary: 160 32% 14%;
-    --secondary-foreground: 144 30% 97%;
-    --muted: 160 28% 12%;
-    --muted-foreground: 215 20% 70%;
-    --accent: 160 32% 18%;
-    --accent-foreground: 144 30% 97%;
+    --background: 215 50% 6%;
+    --foreground: 210 40% 98%;
+    --card: 215 45% 9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 215 45% 9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 199 85% 55%;
+    --primary-foreground: 215 50% 6%;
+    --secondary: 215 30% 14%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 215 25% 12%;
+    --muted-foreground: 210 20% 70%;
+    --accent: 215 30% 18%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 160 28% 16%;
-    --input: 160 28% 16%;
-    --ring: 142 71% 45%;
+    --border: 215 25% 16%;
+    --input: 215 25% 16%;
+    --ring: 199 85% 55%;
   }
 }
 
@@ -99,43 +135,61 @@
 
 @layer utilities {
   .gradient-text {
-    @apply bg-gradient-to-r from-[hsl(var(--gradient-start))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent;
-  }
-
-  /* Home hero — animated highlight word only */
-  .hero-highlight-text {
-    background: linear-gradient(
-      105deg,
-      hsl(var(--primary)) 0%,
-      #6ee7b7 22%,
-      hsl(var(--primary)) 44%,
-      #34d399 66%,
-      hsl(var(--primary)) 88%,
-      #6ee7b7 100%
-    );
-    background-size: 220% auto;
+    background: linear-gradient(90deg, #2b56d4 0%, #3b82f6 30%, #2563eb 60%, #1d4ed8 100%);
+    background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
     -webkit-text-fill-color: transparent;
-    animation: hero-highlight-shimmer 4.5s ease-in-out infinite, hero-highlight-glow 3.2s ease-in-out infinite;
-    will-change: background-position, filter;
+    color: transparent;
+    animation: hero-highlight-shimmer 5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 20px rgba(37, 99, 235, 0.45));
+  }
+
+  /* Home hero — animated highlight word (Real Impact) */
+  .hero-highlight-text {
+    background: linear-gradient(90deg, #2b56d4 0%, #3b82f6 30%, #2563eb 60%, #1d4ed8 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: hero-highlight-shimmer 5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 20px rgba(37, 99, 235, 0.45));
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-highlight-text {
       animation: none;
-      background: none;
-      -webkit-background-clip: unset;
-      background-clip: unset;
-      color: hsl(var(--primary));
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
       filter: none;
     }
   }
 
   .hero-highlight-text--static {
-    color: hsl(var(--primary));
-    filter: drop-shadow(0 0 18px rgba(34, 197, 94, 0.22));
+    background: linear-gradient(90deg, #2b56d4 0%, #3b82f6 30%, #2563eb 60%, #1d4ed8 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: hero-highlight-shimmer 5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 20px rgba(37, 99, 235, 0.45));
+  }
+
+  /* High-contrast royal blue gradient for light sections matching paper plane graphic */
+  .hero-highlight-text--light {
+    background: linear-gradient(90deg, #2b56d4 0%, #3b82f6 30%, #2563eb 60%, #1d4ed8 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: hero-highlight-shimmer 5s ease-in-out infinite;
+    filter: drop-shadow(0 2px 14px rgba(37, 99, 235, 0.35));
   }
 
   /* Home hero — responsive typography & layout */
@@ -1833,12 +1887,12 @@
   height: 28px !important;
   padding: 0 10px 0 8px !important;
   border-radius: 8px !important;
-  background: rgba(16, 185, 129, 0.08) !important;
-  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  background: rgba(4, 26, 61, 0.08) !important;
+  border: 1px solid rgba(4, 26, 61, 0.22) !important;
   font-size: 12px !important;
   line-height: 1 !important;
-  font-weight: 500 !important;
-  color: #34d399 !important;
+  font-weight: 600 !important;
+  color: #041a3d !important;
   box-shadow: none !important;
   transition: background 200ms ease, border-color 200ms ease, color 200ms ease !important;
   text-transform: none !important;
@@ -1852,13 +1906,13 @@
   width: 13px !important;
   height: 13px !important;
   flex-shrink: 0 !important;
-  color: #34d399 !important;
+  color: #041a3d !important;
   transition: transform 200ms ease !important;
 }
 
 .back-btn-premium:hover {
-  background: rgba(16, 185, 129, 0.14) !important;
-  border-color: rgba(16, 185, 129, 0.4) !important;
+  background: rgba(4, 26, 61, 0.14) !important;
+  border-color: rgba(4, 26, 61, 0.4) !important;
 }
 
 .back-btn-premium:hover svg {
@@ -1866,7 +1920,7 @@
 }
 
 .back-btn-premium:active {
-  background: rgba(16, 185, 129, 0.18) !important;
+  background: rgba(4, 26, 61, 0.18) !important;
   transition: background 50ms !important;
 }
 

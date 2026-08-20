@@ -14,8 +14,8 @@ interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const SpotlightCard = ({
   children,
   className = '',
-  spotlightColor = 'rgba(34, 197, 94, 0.08)',
-  borderColor = 'rgba(34, 197, 94, 0.25)',
+  spotlightColor = 'rgba(14, 165, 233, 0.08)',
+  borderColor = 'rgba(14, 165, 233, 0.25)',
   borderBeam = false,
   ...props
 }: SpotlightCardProps) => {
@@ -85,7 +85,7 @@ export const SpotlightCard = ({
           style={{
             padding: '1px',
             background:
-              'linear-gradient(135deg, rgba(16,185,129,0.22), transparent 40%, transparent 60%, rgba(148,163,184,0.18))',
+              'linear-gradient(135deg, rgba(14,165,233,0.22), transparent 40%, transparent 60%, rgba(148,163,184,0.18))',
             WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',
@@ -109,7 +109,7 @@ export const SpotlightCard = ({
             className="absolute left-1/2 top-1/2 aspect-square w-[220%] -translate-x-1/2 -translate-y-1/2 will-change-transform"
             style={{
               background:
-                'conic-gradient(from 0deg, transparent 0deg 68%, rgba(16,185,129,0.08) 76%, rgba(16,185,129,0.65) 88%, rgba(52,211,153,1) 94%, rgba(255,255,255,0.95) 98%, transparent 100%)',
+                'conic-gradient(from 0deg, transparent 0deg 68%, rgba(14,165,233,0.08) 76%, rgba(14,165,233,0.65) 88%, rgba(52,211,153,1) 94%, rgba(255,255,255,0.95) 98%, transparent 100%)',
               animation: isHovered ? 'service-border-spin 2.4s linear infinite' : undefined,
             }}
           />
@@ -132,7 +132,7 @@ export const SpotlightCard = ({
             className="absolute left-1/2 top-1/2 aspect-square w-[220%] -translate-x-1/2 -translate-y-1/2 will-change-transform"
             style={{
               background:
-                'conic-gradient(from 180deg, transparent 0deg 78%, rgba(16,185,129,0.35) 90%, rgba(255,255,255,0.75) 96%, transparent 100%)',
+                'conic-gradient(from 180deg, transparent 0deg 78%, rgba(14,165,233,0.35) 90%, rgba(255,255,255,0.75) 96%, transparent 100%)',
               animation: isHovered ? 'service-border-spin 3.6s linear infinite reverse' : undefined,
             }}
           />

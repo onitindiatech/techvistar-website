@@ -30,7 +30,7 @@ export const SectionHeader = ({
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className={cn('mx-auto mb-14 max-w-3xl text-center md:mb-16', className)}
+      className={cn('mx-auto mb-14 max-w-5xl w-full text-center md:mb-16', className)}
     >
       <div className="mb-4 flex flex-col items-center gap-2">
         <span
@@ -54,7 +54,7 @@ export const SectionHeader = ({
       <h2
         id={headingId}
         className={cn(
-          'mb-5 font-display text-heading-lg md:text-heading-xl lg:text-display-lg',
+          'mb-5 font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight md:whitespace-nowrap',
           light ? 'text-slate-950' : 'text-white'
         )}
       >

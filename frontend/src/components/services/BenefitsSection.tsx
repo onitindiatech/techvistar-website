@@ -32,7 +32,7 @@ export const BenefitsSection = ({ service }: SectionProps) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              className="group flex items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50/60 p-4 transition-all duration-300 hover:border-emerald-500/20 hover:bg-white hover:shadow-[0_12px_30px_-12px_rgba(16,185,129,0.12)]"
+              className="group flex items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50/60 p-4 transition-all duration-300 hover:border-emerald-500/20 hover:bg-white hover:shadow-[0_12px_30px_-12px_rgba(14,165,233,0.12)]"
             >
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
                 <Check className="h-4 w-4" />
@@ -52,7 +52,7 @@ export const BenefitsSection = ({ service }: SectionProps) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.06 }}
-              className="rounded-2xl border border-slate-100 bg-gradient-to-br from-white to-slate-50/80 p-5 transition-all duration-300 hover:border-emerald-500/20 hover:shadow-[0_12px_30px_-12px_rgba(16,185,129,0.1)]"
+              className="rounded-2xl border border-slate-100 bg-gradient-to-br from-white to-slate-50/80 p-5 transition-all duration-300 hover:border-emerald-500/20 hover:shadow-[0_12px_30px_-12px_rgba(14,165,233,0.1)]"
             >
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600">
                 <Zap className="h-4 w-4" />

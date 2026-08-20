@@ -123,7 +123,7 @@ export const IndustriesSection = ({ service }: SectionProps) => {
               >
                 <Link
                   to={`/industries/${ind.slug}`}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/20 hover:shadow-[0_12px_25px_-8px_rgba(16,185,129,0.1)] transition-all duration-300 h-full"
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/20 hover:shadow-[0_12px_25px_-8px_rgba(14,165,233,0.1)] transition-all duration-300 h-full"
                 >
                   <div className="icon-btn pointer-events-none scale-[0.6] origin-top-left -mb-6 -mr-6 shrink-0">
                     <span className="icon-btn__back" style={getBackgroundStyle(glassColor)}></span>

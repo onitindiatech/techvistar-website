@@ -30,7 +30,7 @@ export const FAQItem = ({ faq, isOpen, onToggle }: FAQItemProps) => {
       className={cn(
         "group rounded-2xl border transition-all duration-300 bg-white/95 overflow-hidden",
         isOpen
-          ? "border-emerald-500/40 shadow-[0_12px_24px_rgba(16,185,129,0.04)] bg-emerald-500/[0.01]"
+          ? "border-emerald-500/40 shadow-[0_12px_24px_rgba(14,165,233,0.04)] bg-emerald-500/[0.01]"
           : "border-slate-200/80 shadow-sm hover:border-slate-300"
       )}
     >

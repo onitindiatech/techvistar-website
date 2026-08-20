@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveJobs, Job } from '@/services/job.service';
+import { FALLBACK_JOBS } from '@/data/jobs';
 import { getPublicPagesConfig } from '@/services/pages.service';
 import { mergePagesCmsConfig, DEFAULT_CAREERS_LANDING_CMS } from '@/types/pagesCms';
 import { seoFromItem } from '@/lib/seoAdmin';
@@ -49,11 +50,14 @@ const Careers = () => {
   const { data: jobs, isLoading, error } = useQuery<Job[]>({
     queryKey: ['activeJobs'],
     queryFn: getActiveJobs,
-    retry: 2,
+    retry: 1,
   });
 
   const activeJobs = useMemo(() => {
-    return (jobs || []).filter(job => job.status === 'active' && !job.isDeleted);
+    const loaded = (Array.isArray(jobs) ? jobs : []).filter(job => job.status === 'active' && !job.isDeleted);
+    const loadedSlugs = new Set(loaded.map((j) => j.slug));
+    const fallbackList = FALLBACK_JOBS.filter((j) => !loadedSlugs.has(j.slug));
+    return [...loaded, ...fallbackList];
   }, [jobs]);
 
   const departments = useMemo(() => {
@@ -136,29 +140,38 @@ const Careers = () => {
           title={
             careers.hero.subtitle ? (
               <>
-                {careers.hero.title}{' '}
-                <span className="text-emerald-500">{careers.hero.subtitle}</span>
+                {careers.hero.title}
+                <br />
+                <span className="hero-highlight-text--static inline-block font-black">
+                  {careers.hero.subtitle}
+                </span>
               </>
             ) : (
               careers.hero.title
             )
           }
-          subtitle={careers.hero.eyebrow || 'Careers at TechVistar'}
+          subtitle={(careers.hero.eyebrow || 'Careers at TechVistar').replace(/Veenero/gi, 'TechVistar')}
           description={careers.hero.description}
           backgroundImage={heroBg}
           bgPosition="right bottom"
         >
           <div className="flex flex-wrap items-center gap-4">
-            <Button onClick={handleScrollToPositions} size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 px-6 rounded-xl shadow-lg shadow-emerald-500/20">
-              View Open Positions
-            </Button>
+            <motion.button 
+              whileHover={{ y: -1 }}
+              whileTap={{ y: 0, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              onClick={handleScrollToPositions} 
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 bg-[#041a3d] hover:bg-[#021028] text-white rounded-xl transition-all duration-200 text-sm font-extrabold tracking-tight shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group cursor-pointer"
+            >
+              <span>View Open Positions</span>
+            </motion.button>
 
           </div>
         </PageHeader>
 
         {/* 2. Open Positions (Completely matching reference style) */}
         <section id="open-positions" className="pt-4 pb-12 md:pt-6 md:pb-16 bg-white border-b border-slate-100">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl space-y-6 md:space-y-8">
+          <div className="container mx-auto px-6 sm:px-12 md:px-14 lg:px-16 max-w-7xl space-y-6 md:space-y-8">
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-emerald-600">
                 <Briefcase className="h-4.5 w-4.5" />
@@ -243,10 +256,6 @@ const Careers = () => {
                   <div key={i} className="h-[360px] bg-slate-50 border border-slate-100 rounded-3xl animate-pulse" />
                 ))}
               </div>
-            ) : error ? (
-              <p className="text-sm text-red-500 bg-red-50 border border-red-150 p-8 rounded-2xl text-center font-bold">
-                Failed to load career listings. Please reload.
-              </p>
             ) : filteredJobs.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {filteredJobs.map((job) => {
@@ -269,7 +278,7 @@ const Careers = () => {
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103" 
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 via-transparent to-transparent pointer-events-none" />
-                          <Badge className="absolute bottom-4 left-4 bg-emerald-600 hover:bg-emerald-500 text-white border-none font-bold uppercase tracking-wider text-[8px] px-2 py-0.5 rounded shadow-md z-10">
+                          <Badge className="absolute bottom-4 left-4 bg-emerald-600 hover:bg-emerald-500 text-white border-none font-bold uppercase tracking-wider text-xs px-2.5 py-1 rounded shadow-md z-10">
                             {job.department}
                           </Badge>
                         </div>
@@ -279,12 +288,12 @@ const Careers = () => {
                           <h3 className="text-base font-bold text-slate-900 leading-snug group-hover:text-emerald-600 transition-colors">
                             {job.title}
                           </h3>
-                          <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-slate-400 font-extrabold uppercase">
+                          <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500 font-bold uppercase">
                             <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {job.location}</span>
                             <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {job.employmentType}</span>
                             <span className="flex items-center gap-1"><Briefcase className="w-3.5 h-3.5" /> {job.experience}</span>
                           </div>
-                          <p className="text-[11px] text-slate-500 leading-relaxed font-semibold line-clamp-3 pt-1">
+                          <p className="text-sm md:text-base text-slate-600 leading-relaxed font-normal line-clamp-3 pt-1">
                             {shortDesc}
                           </p>
                         </div>
@@ -293,11 +302,11 @@ const Careers = () => {
                       {/* Action buttons matching Vercel/Stripe pills */}
                       <div className="p-6 pt-0 border-t border-slate-50 flex items-center justify-between gap-4 mt-3">
                         <Link to={`/careers/apply/${job.slug}`} className="flex-1">
-                          <Button className="w-full h-9 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] tracking-wide shadow-md shadow-emerald-500/10 transition-all flex items-center justify-center gap-1">
-                            Apply Now <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 duration-300" />
+                          <Button className="w-full h-10 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm tracking-wide shadow-md shadow-emerald-500/10 transition-all flex items-center justify-center gap-1">
+                            Apply Now <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 duration-300" />
                           </Button>
                         </Link>
-                        <Link to={`/careers/${job.slug}`} className="text-[11px] font-bold text-emerald-650 hover:text-emerald-700 flex items-center gap-1 transition-colors">
+                        <Link to={`/careers/${job.slug}`} className="text-sm font-bold text-emerald-650 hover:text-emerald-700 flex items-center gap-1 transition-colors">
                           View Details <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 duration-300" />
                         </Link>
                       </div>
@@ -315,10 +324,10 @@ const Careers = () => {
 
         {/* 3. Why Join TechVistar (Exactly matching reference card design) */}
         <section className="pt-4 pb-12 md:pt-6 md:pb-16 bg-slate-50 border-b border-slate-100">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl space-y-10 md:space-y-12">
+          <div className="container mx-auto px-6 sm:px-12 md:px-14 lg:px-16 max-w-7xl space-y-10 md:space-y-12">
             <div className="text-center max-w-2xl mx-auto space-y-2">
-              <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Why Join TechVistar?</h2>
-              <p className="text-slate-500 text-xs sm:text-sm font-semibold">We empower people to do their best work and grow together.</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-slate-900 tracking-tight">Why Join TechVistar?</h2>
+              <p className="text-slate-600 text-base md:text-lg font-medium leading-relaxed">We empower people to do their best work and grow together.</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
@@ -327,7 +336,7 @@ const Careers = () => {
                   <motion.div 
                     key={idx} 
                     whileHover={{ y: -6 }}
-                    className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-[0_10px_30px_rgba(16,185,129,0.12)] hover:border-emerald-500/20 transition-all duration-300 flex flex-col group h-full text-left"
+                    className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-[0_10px_30px_rgba(14,165,233,0.12)] hover:border-emerald-500/20 transition-all duration-300 flex flex-col group h-full text-left"
                   >
                     {/* Landscape image */}
                     <div className="aspect-[16/9] w-full overflow-hidden bg-slate-100 relative">
@@ -341,8 +350,8 @@ const Careers = () => {
 
                     {/* Content */}
                     <div className="p-4 flex-grow flex flex-col justify-between space-y-2">
-                      <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">{benefit.title}</h3>
-                      <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">{benefit.desc}</p>
+                      <h3 className="text-base font-bold text-slate-900 leading-snug">{benefit.title}</h3>
+                      <p className="text-sm md:text-base text-slate-600 leading-relaxed font-normal">{benefit.desc}</p>
                     </div>
                   </motion.div>
                 );
@@ -353,10 +362,10 @@ const Careers = () => {
 
         {/* 4. Hiring Process (Perfect horizontal step icons sequence) */}
         <section className="py-10 md:py-12 bg-white border-b border-slate-100">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl space-y-12">
+          <div className="container mx-auto px-6 sm:px-12 md:px-14 lg:px-16 max-w-7xl space-y-12">
             <div className="text-center max-w-2xl mx-auto space-y-2">
-              <h2 className="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Our Hiring Process</h2>
-              <p className="text-slate-500 text-xs sm:text-sm font-semibold">Our simple and transparent hiring process</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-slate-900 tracking-tight">Our Hiring Process</h2>
+              <p className="text-slate-600 text-base md:text-lg font-medium leading-relaxed">Our simple and transparent hiring process</p>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative max-w-5xl mx-auto">
@@ -377,8 +386,8 @@ const Careers = () => {
                       <Icon className="h-5 w-5" />
                     </motion.div>
 
-                    <h4 className="text-[11px] font-bold text-slate-900 uppercase tracking-wider">{step.phase}</h4>
-                    <p className="text-[9px] text-slate-400 font-semibold leading-relaxed max-w-[130px]">{step.desc}</p>
+                    <h3 className="text-base font-bold text-slate-900 leading-snug">{step.phase}</h3>
+                    <p className="text-sm md:text-base text-slate-600 font-normal leading-relaxed max-w-[160px]">{step.desc}</p>
                   </div>
                 );
               })}

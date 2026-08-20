@@ -41,7 +41,7 @@ export const SolutionOverviewSection = ({ solution }: SectionProps) => {
 
           <RichTextContent
             content={solution.ourSolution.overview}
-            className="text-slate-600 text-sm md:text-sm leading-relaxed"
+            className="text-slate-600 text-base md:text-lg leading-relaxed font-normal"
           />
         </div>
 

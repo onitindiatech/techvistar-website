@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { decorateSolution } from '@/data/solutions';
+import { decorateSolution, decorateStaticSolution, SOLUTIONS_DATA } from '@/data/solutions';
 import { useQuery } from '@tanstack/react-query';
 import { getSolutionBySlug } from '@/services/solutions.service';
 import { PageSeo } from '@/components/common/PageSeo';
@@ -27,11 +27,19 @@ export const SolutionDetails = () => {
     queryKey: ['solutionDetails', slug],
     queryFn: () => getSolutionBySlug(slug || ''),
     enabled: !!slug,
-    staleTime: 0,
-    refetchOnMount: 'always',
+    retry: 1,
   });
 
-  const solution = apiSolution ? decorateSolution(apiSolution) : undefined;
+  const solution = useMemo(() => {
+    if (apiSolution) {
+      const dec = decorateSolution(apiSolution);
+      if (dec) return dec;
+    }
+    if (slug && SOLUTIONS_DATA[slug]) {
+      return decorateStaticSolution(SOLUTIONS_DATA[slug]);
+    }
+    return undefined;
+  }, [apiSolution, slug]);
 
   const navItems = useMemo(() => {
     if (!solution) return [];
@@ -60,7 +68,7 @@ export const SolutionDetails = () => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  if (isDetailLoading) {
+  if (isDetailLoading && !solution) {
     return (
       <>
         {seoBlock}

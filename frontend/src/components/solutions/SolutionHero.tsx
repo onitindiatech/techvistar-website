@@ -80,8 +80,8 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
                       {heroHighlights.map((highlight, idx) => (
-                        <div key={idx} className="flex gap-2.5 items-start text-xs text-slate-700 font-medium">
-                          <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-0.5 shrink-0 border border-emerald-100">
+                        <div key={idx} className="flex gap-2.5 items-start text-sm md:text-base text-slate-700 font-normal leading-relaxed">
+                          <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-1 shrink-0 border border-emerald-100">
                             <Check className="h-3 w-3 text-emerald-600" />
                           </div>
                           <span>{highlight.title}</span>

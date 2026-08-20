@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getPublicPagesConfig } from '@/services/pages.service';
 import { mergePagesCmsConfig } from '@/types/pagesCms';
 
-/** Applies global branding from Website Settings to document head (title, theme-color, favicon). */
+/** Applies global branding from Website Settings to document head (theme-color + favicon from master Logo). */
 export function WebsiteBrandingEffect() {
   const { data } = useQuery({
     queryKey: ['pages-config'],
@@ -25,16 +25,21 @@ export function WebsiteBrandingEffect() {
       themeMeta.setAttribute('content', settings.browserThemeColor);
     }
 
-    const faviconHref = settings.favicon?.trim() || '/favicon.webp';
+    // Single source of truth: Website Settings Logo (favicon field kept only for API compat).
+    const faviconHref = settings.logo?.trim() || settings.favicon?.trim() || '/favicon.webp';
     let link = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
     if (!link) {
       link = document.createElement('link');
       link.rel = 'icon';
       document.head.appendChild(link);
     }
-    link.type = faviconHref.endsWith('.webp') ? 'image/webp' : 'image/png';
+    link.type = faviconHref.endsWith('.webp')
+      ? 'image/webp'
+      : faviconHref.endsWith('.svg')
+        ? 'image/svg+xml'
+        : 'image/png';
     link.href = faviconHref;
-  }, [settings.browserThemeColor, settings.favicon]);
+  }, [settings.browserThemeColor, settings.logo, settings.favicon]);
 
   return null;
 }

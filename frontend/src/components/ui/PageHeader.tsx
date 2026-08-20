@@ -78,7 +78,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
       <motion.div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
-          backgroundImage: `linear-gradient(to right, rgba(16, 185, 129, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(16, 185, 129, 0.04) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(to right, rgba(14, 165, 233, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(14, 165, 233, 0.04) 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}
         animate={{
@@ -135,7 +135,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
       {/* Gradient Overlay for Text Readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/60 to-transparent z-0 pointer-events-none" />
 
-      <div className="container mx-auto px-4 max-w-6xl text-left relative z-10">
+      <div className="container mx-auto px-6 sm:px-12 md:px-14 lg:px-16 max-w-7xl text-left relative z-10">
         {subtitle && (
           <motion.div
             initial={{ opacity: 0, y: 15 }}

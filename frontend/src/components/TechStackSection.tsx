@@ -59,9 +59,9 @@ export const TechStackSection = () => {
         <svg width="100%" height="100%">
           <defs>
             <pattern id="network-grid" width="120" height="120" patternUnits="userSpaceOnUse">
-              <circle cx="10" cy="10" r="1.5" fill="#059669" />
+              <circle cx="10" cy="10" r="1.5" fill="#0ea5e9" />
               <circle cx="70" cy="50" r="1.5" fill="#0284c7" />
-              <circle cx="110" cy="90" r="1.5" fill="#059669" />
+              <circle cx="110" cy="90" r="1.5" fill="#0ea5e9" />
               <line x1="10" y1="10" x2="70" y2="50" stroke="#000" strokeWidth="0.5" />
               <line x1="70" y1="50" x2="110" y2="90" stroke="#000" strokeWidth="0.5" />
               <line x1="110" y1="90" x2="10" y2="10" stroke="#000" strokeWidth="0.5" />
@@ -154,7 +154,7 @@ export const TechStackSection = () => {
             {fullRow1.map((tech, idx) => (
               <div
                 key={`row1-${idx}`}
-                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:border-emerald-500/30 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(16,185,129,0.1)] transition-all duration-[350ms] ease-out group cursor-pointer"
+                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:border-emerald-500/30 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(14,165,233,0.1)] transition-all duration-350 ease-out group cursor-pointer"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-100/50 bg-white/80 p-1.5 shadow-sm transition-transform duration-300 group-hover:scale-105">
                   <TechStackLogo
@@ -179,7 +179,7 @@ export const TechStackSection = () => {
             {fullRow2.map((tech, idx) => (
               <div
                 key={`row2-${idx}`}
-                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:border-emerald-500/30 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(16,185,129,0.1)] transition-all duration-[350ms] ease-out group cursor-pointer"
+                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:border-emerald-500/30 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(14,165,233,0.1)] transition-all duration-350 ease-out group cursor-pointer"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-100/50 bg-white/80 p-1.5 shadow-sm transition-transform duration-300 group-hover:scale-105">
                   <TechStackLogo

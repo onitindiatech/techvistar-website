@@ -53,6 +53,7 @@ const AdminApplications = lazy(() => import("./pages/admin/Applications"));
 const AdminContacts = lazy(() => import("./pages/admin/Contacts"));
 const AdminNewsletter = lazy(() => import("./pages/admin/Newsletter"));
 
+
 const withSuspense = (element: ReactNode) => (
   <Suspense fallback={<RouteFallback />}>{element}</Suspense>
 );
@@ -99,7 +100,7 @@ const PageTransitionLoader = () => {
       style={{ opacity: progress === 100 ? 0 : 1 }}
     >
       <div 
-        className="h-full bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 shadow-[0_0_10px_rgba(16,185,129,0.6)] transition-all ease-out"
+        className="h-full bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 shadow-[0_0_10px_rgba(14,165,233,0.6)] transition-all ease-out"
         style={{ 
           width: `${progress}%`, 
           transitionDuration: progress === 15 ? '0ms' : '350ms'
@@ -174,7 +175,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <ClickSpark
-        sparkColor="#14B8A6"
+        sparkColor="#0EA5E9"
         sparkSize={8}
         sparkRadius={18}
         sparkCount={8}

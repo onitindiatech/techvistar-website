@@ -104,36 +104,38 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
               <div className="md:col-span-7 space-y-5">
 
                 
-                <h1 className="text-[1.75rem] leading-[1.12] md:text-5xl font-extrabold font-display text-slate-900 md:leading-tight">
+                <h1 className="text-3xl md:text-5xl font-extrabold font-display text-slate-900 leading-tight">
                   {service.title}
                 </h1>
                 
-                <p className="text-base md:text-lg font-bold text-emerald-600 leading-snug">
+                <p className="text-xl md:text-2xl font-bold font-display text-[#041a3d] leading-snug">
                   {service.heroTagline?.trim() ||
                     `Accelerate your digital footprint with custom ${service.title.toLowerCase()} configurations.`}
                 </p>
                 
                 <RichTextContent
                   content={service.longDescription}
-                  className="text-slate-600 text-sm leading-relaxed"
+                  className="text-slate-600 text-sm md:text-base leading-relaxed"
                 />
 
                 {/* Key Highlights */}
-                <div className="space-y-3 pt-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-400 font-semibold">
-                    Key Highlights
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
-                    {service.benefits.map((highlight, idx) => (
-                      <div key={idx} className="flex gap-2.5 items-start text-xs text-slate-700 font-medium">
-                        <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-0.5 shrink-0 border border-emerald-100">
-                          <Check className="h-3 w-3 text-emerald-600" />
+                {(service.benefits?.length ?? 0) > 0 && (
+                  <div className="space-y-3 pt-2">
+                    <h3 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
+                      Key Highlights
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
+                      {(service.benefits || []).map((highlight, idx) => (
+                        <div key={idx} className="flex gap-2.5 items-start text-sm md:text-base text-slate-700 font-normal leading-relaxed">
+                          <div className="h-4.5 w-4.5 rounded-full bg-blue-50 flex items-center justify-center p-0.5 mt-1 shrink-0 border border-blue-100">
+                            <Check className="h-3 w-3 text-[#041a3d]" />
+                          </div>
+                          <span>{highlight}</span>
                         </div>
-                        <span>{highlight}</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Cover Image / Illustration Area */}

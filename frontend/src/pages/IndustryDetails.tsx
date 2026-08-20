@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getIndustryBySlug } from '@/services/industry.service';
 import { decorateIndustry } from '@/data/industry.adapter';
+import { INDUSTRIES } from '@/data/industries';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -37,7 +38,14 @@ export const IndustryDetails = () => {
     enabled: !!slug,
   });
 
-  const industry = apiIndustry ? decorateIndustry(apiIndustry) : undefined;
+  const industry = (() => {
+    if (apiIndustry) {
+      const dec = decorateIndustry(apiIndustry);
+      if (dec) return dec;
+    }
+    return INDUSTRIES.find((i) => i.slug === slug);
+  })();
+
   const industrySeo = apiIndustry ? seoFromApi(apiIndustry as Record<string, unknown>) : undefined;
 
   const seoBlock = (
@@ -56,7 +64,7 @@ export const IndustryDetails = () => {
     window.scrollTo(0, 0);
   }, [industry?.slug]);
 
-  if (isLoading) {
+  if (isLoading && !industry) {
     return (
       <>
         {seoBlock}

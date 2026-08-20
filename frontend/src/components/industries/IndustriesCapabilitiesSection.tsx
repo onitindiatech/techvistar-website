@@ -43,7 +43,7 @@ export const IndustriesCapabilitiesSection = ({
 
   return (
     <section id="industries-we-serve" className="border-t border-slate-100 bg-white py-16 md:py-20">
-      <div className="container mx-auto max-w-7xl space-y-8 md:space-y-10 px-4 md:px-6">
+      <div className="container mx-auto max-w-7xl space-y-8 md:space-y-10 px-6 sm:px-12 md:px-14 lg:px-16">
         <div className="max-w-2xl space-y-3">
           <div className="flex items-center gap-2 text-emerald-600">
             {intro.icon ? (

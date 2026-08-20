@@ -26,8 +26,8 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
       className="space-y-6 lg:sticky"
       style={{ top: 'calc(var(--primary-nav-height, 80px) + var(--secondary-nav-height, 48px) + 16px)' }}
     >
-      <div className="relative space-y-6 overflow-hidden rounded-3xl border-2 border-emerald-500/20 bg-white p-6 shadow-sm">
-        <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-emerald-500/[0.03] blur-xl" />
+      <div className="relative space-y-6 overflow-hidden rounded-3xl border-2 border-[#041a3d]/20 bg-white p-6 shadow-sm">
+        <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-[#041a3d]/[0.03] blur-xl" />
 
         <h3 className="border-b border-slate-100 pb-3 font-display text-xs font-black uppercase tracking-wider text-slate-900">
           Project Metadata
@@ -36,7 +36,7 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
         <div className="space-y-5">
           {project.client && (
             <div className="flex items-start gap-4 text-xs">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-[#041a3d]">
                 <Briefcase className="h-4 w-4" />
               </div>
               <div>
@@ -48,7 +48,7 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
 
           {project.role && (
             <div className="flex items-start gap-4 text-xs">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-[#041a3d]">
                 <User className="h-4 w-4" />
               </div>
               <div>
@@ -60,7 +60,7 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
 
           {formattedDate && (
             <div className="flex items-start gap-4 text-xs">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-[#041a3d]">
                 <Calendar className="h-4 w-4" />
               </div>
               <div>
@@ -72,7 +72,7 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
 
           {matchingIndustries.length > 0 && (
             <div className="flex items-start gap-4 text-xs">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-[#041a3d]">
                 <Building2 className="h-4 w-4" />
               </div>
               <div>
@@ -96,7 +96,7 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
           <div className="space-y-3 border-t border-slate-100 pt-5">
             <div className="flex items-center gap-2">
               <Tag className="h-3.5 w-3.5 text-slate-400" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Tags</h4>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Tags</h3>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {project.tags.map((tag) => (
@@ -114,7 +114,7 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button
             asChild
-            className="h-10 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-emerald-700"
+            className="h-10 w-full rounded-xl bg-[#041a3d] py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-[#0b2859]"
           >
             <Link to="/contact">More Information</Link>
           </Button>

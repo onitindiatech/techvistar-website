@@ -56,7 +56,7 @@ export const ShineEffect = ({
   return (
     <div className={cn("relative overflow-hidden group/shine", className)}>
       {children}
-      <div className="absolute inset-0 -translate-x-full group-hover/shine:translate-x-full transition-transform duration-[1200ms] ease-out bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 -translate-x-full group-hover/shine:translate-x-full transition-transform duration-1200 ease-out bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
     </div>
   );
 };
@@ -64,7 +64,7 @@ export const ShineEffect = ({
 // 3. Hover Glow Shadow Effect
 export const GlowHover = ({
   children,
-  glowColor = 'rgba(16, 185, 129, 0.15)',
+  glowColor = 'rgba(14, 165, 233, 0.15)',
   className = '',
 }: {
   children: React.ReactNode;

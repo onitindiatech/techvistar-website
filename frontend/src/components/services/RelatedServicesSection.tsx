@@ -1,6 +1,7 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
-import { Service, decorateService, getServiceCardImage } from '@/data/services';
+import { Service, decorateService, getServiceCardImage, SERVICES } from '@/data/services';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -24,23 +25,32 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
     queryFn: getActiveServices,
   });
 
-  const activeServices = (apiServices || []).map(decorateService);
+  const activeServices = useMemo(() => {
+    const loaded = (apiServices || []).map(decorateService).filter((s): s is Service => Boolean(s));
+    const apiSlugs = new Set(loaded.map((s) => s.slug));
+    const fallbackList = SERVICES.filter((s) => !apiSlugs.has(s.slug));
+    return [...loaded, ...fallbackList];
+  }, [apiServices]);
 
-  const slugOrder = service.relatedServiceSlugs?.filter(Boolean) ?? [];
-  let relatedServices =
-    slugOrder.length > 0
-      ? slugOrder
-          .map((s) => activeServices.find((item) => item.slug === s && item.id !== service.id))
-          .filter((item): item is Service => Boolean(item))
-      : activeServices.filter((s) => s.id !== service.id && s.status === 'active').slice(0, 3);
+  const relatedServices = useMemo(() => {
+    const slugOrder = service.relatedServiceSlugs?.filter(Boolean) ?? [];
+    let picked: Service[] = [];
 
-  if (relatedServices.length === 0) {
-    relatedServices = activeServices
-      .filter((s) => s.id !== service.id && s.status === 'active')
-      .slice(0, 3);
-  } else {
-    relatedServices = relatedServices.slice(0, 3);
-  }
+    if (slugOrder.length > 0) {
+      picked = slugOrder
+        .map((s) => activeServices.find((item) => item.slug === s && item.id !== service.id && item.slug !== service.slug))
+        .filter((item): item is Service => Boolean(item));
+    }
+
+    if (picked.length < 3) {
+      const rest = activeServices.filter(
+        (s) => s.id !== service.id && s.slug !== service.slug && !picked.some((p) => p.slug === s.slug),
+      );
+      picked = [...picked, ...rest];
+    }
+
+    return picked.slice(0, 3);
+  }, [activeServices, service]);
 
   if (relatedServices.length === 0) return null;
 
@@ -62,9 +72,9 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
       return { bg: 'bg-red-50', text: 'text-red-600', border: 'border-red-100/50' };
     }
     if (slug.includes('marketing')) {
-      return { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100/50' };
+      return { bg: 'bg-blue-50', text: 'text-[#041a3d]', border: 'border-blue-100/50' };
     }
-    return { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100/50' };
+    return { bg: 'bg-blue-50', text: 'text-[#041a3d]', border: 'border-blue-100/50' };
   };
 
   // Animation variants
@@ -94,7 +104,7 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
   return (
     <section id="related" className="border-t border-slate-200/80 pt-12 scroll-mt-24">
       
-      <h2 className="mb-8 font-display text-2xl font-bold text-slate-900">Other Services</h2>
+      <h2 className="mb-8 font-display text-heading-sm text-slate-900">Other Services</h2>
 
       {/* Grid of related cards */}
       <motion.div 
@@ -116,7 +126,7 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
             >
               <Link 
                 to={`/services/${rs.slug}`}
-                className="flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.12)] transition-all duration-300 h-full overflow-hidden"
+                className="flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-[#041a3d]/30 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.12)] transition-all duration-300 h-full overflow-hidden"
               >
                 <div>
                   {/* Thumbnail Image Header */}
@@ -140,18 +150,18 @@ export const RelatedServicesSection = ({ service }: SectionProps) => {
 
                   {/* Body Content */}
                   <div className="p-5">
-                    <h3 className="text-sm font-bold text-slate-900 group-hover/card:text-emerald-700 transition-colors font-display line-clamp-1 mb-2">
+                    <h3 className="text-sm font-bold text-slate-900 group-hover/card:text-[#041a3d] transition-colors font-display line-clamp-1 mb-2">
                       {rs.title}
                     </h3>
 
-                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                    <p className="text-base text-slate-600 font-medium leading-relaxed line-clamp-2">
                       {rs.shortDescription}
                     </p>
                   </div>
                 </div>
 
                 <div className="px-5 pb-5 pt-3 border-t border-slate-100/50">
-                  <span className="text-xs font-bold text-emerald-600 flex items-center gap-1 group-hover/card:text-emerald-700 transition-colors">
+                  <span className="text-xs font-bold text-[#041a3d] flex items-center gap-1 group-hover/card:text-sky-600 transition-colors">
                     View details
                     <span className="group-hover/card:translate-x-1 transition-transform duration-300">&rarr;</span>
                   </span>

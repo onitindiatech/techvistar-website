@@ -9,14 +9,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25",
+        default: "bg-[#041a3d] text-white hover:bg-[#021028] shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] font-extrabold rounded-xl transition-all duration-300",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline: "border border-border bg-transparent text-foreground hover:bg-secondary hover:border-primary/50",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-secondary hover:text-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-primary text-primary-foreground font-semibold shadow-md shadow-primary/25 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30",
-        heroOutline: "border-2 border-primary/25 bg-background text-primary hover:bg-primary/5 hover:border-primary/40",
+        link: "text-[#041a3d] underline-offset-4 hover:underline",
+        hero: "bg-[#041a3d] text-white font-extrabold shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:bg-[#021028] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] rounded-xl transition-all duration-300",
+        heroOutline: "border-2 border-[#041a3d]/25 bg-background text-[#041a3d] hover:bg-[#041a3d]/5 hover:border-[#041a3d]/40 rounded-xl",
       },
       size: {
         default: "h-10 px-4 py-2",

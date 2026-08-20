@@ -113,7 +113,7 @@ export const SolutionsSection = ({ service }: SectionProps) => {
       <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none z-0" />
       <div className="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-sky-500/5 blur-3xl pointer-events-none z-0" />
 
-      <h2 className="relative z-10 mb-6 font-display text-heading-sm text-slate-900">Offerings</h2>
+      <h2 className="relative z-10 mb-6 font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Offerings</h2>
 
       {hasDetailedOfferings ? (
         /* Premium redesigned offerings grid */
@@ -128,7 +128,7 @@ export const SolutionsSection = ({ service }: SectionProps) => {
               key={idx}
               variants={cardVariants}
               whileHover={prefersReducedMotion ? {} : { y: -6, scale: 1.01 }}
-              className="group flex flex-col justify-between p-4 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(16,185,129,0.12)] transition-all duration-300"
+              className="group flex flex-col justify-between p-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-[#041a3d]/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(14,165,233,0.12)] transition-all duration-300"
             >
               <div>
                 {/* Header: Glass Icon Wrapper and Label */}
@@ -143,28 +143,28 @@ export const SolutionsSection = ({ service }: SectionProps) => {
                       </span>
                     </span>
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-[11px] font-bold text-[#041a3d] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Learn More
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold text-slate-900 mb-0.5 group-hover:text-emerald-700 transition-colors font-display">
+                <h3 className="text-base md:text-lg font-bold font-display text-slate-900 mb-1 group-hover:text-[#041a3d] transition-colors leading-snug">
                   {offering.title}
                 </h3>
                 
-                <p className="text-xs text-slate-500 leading-relaxed mb-2">
+                <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-3">
                   {offering.description}
                 </p>
               </div>
 
               {/* Technologies Badges */}
-              <div className="flex flex-wrap gap-1.5 mt-auto pt-1.5 border-t border-slate-100/50">
+              <div className="flex flex-wrap gap-2 mt-auto pt-2 border-t border-slate-100/50">
                 {offering.badges.map((tech, techIdx) => (
                   <Badge
                     key={techIdx}
                     variant="secondary"
-                    className="text-[9px] font-semibold bg-emerald-50/60 text-emerald-700 border border-emerald-100/30 px-2 py-0.5 rounded-md"
+                    className="text-xs md:text-sm font-semibold bg-blue-50/80 text-[#041a3d] border border-blue-100 px-3 py-1.5 rounded-lg"
                   >
                     {tech}
                   </Badge>
@@ -176,12 +176,12 @@ export const SolutionsSection = ({ service }: SectionProps) => {
       ) : (
         /* Fallback standard offerings grid for other pages */
         <div className="flex flex-col gap-3 relative z-10">
-          {service.offerings.map((offering, i) => (
+          {(service.offerings || []).map((offering, i) => (
             <div
               key={i}
-              className="flex gap-3 text-sm text-slate-700 leading-relaxed items-start p-3 rounded-xl border border-slate-100 bg-white shadow-sm hover:border-emerald-500/20 hover:shadow transition-all"
+              className="flex gap-3 text-sm text-slate-700 leading-relaxed items-start p-3 rounded-xl border border-slate-100 bg-white shadow-sm hover:border-[#041a3d]/20 hover:shadow transition-all"
             >
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-600 border border-emerald-100">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-blue-50 text-[#041a3d] border border-blue-100">
                 <Check className="h-3.5 w-3.5" />
               </span>
               <span className="font-medium">{offering}</span>

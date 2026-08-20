@@ -71,9 +71,9 @@ export const BenefitsSection = () => {
                 )}
               >
                 <SpotlightCard
-                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 backdrop-blur-sm shadow-[0_8px_30px_-12px_rgba(15,23,42,0.08)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.1)] hover:border-emerald-500/50 hover:bg-emerald-500/[0.04] transition-all duration-500 hover:-translate-y-2"
-                  spotlightColor="rgba(34, 197, 94, 0.03)"
-                  borderColor="rgba(34, 197, 94, 0.2)"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 backdrop-blur-sm shadow-[0_8px_30px_-12px_rgba(15,23,42,0.08)] hover:shadow-[0_20px_40px_-15px_rgba(14,165,233,0.1)] hover:border-emerald-500/50 hover:bg-emerald-500/[0.04] transition-all duration-500 hover:-translate-y-2"
+                  spotlightColor="rgba(14, 165, 233, 0.03)"
+                  borderColor="rgba(14, 165, 233, 0.2)"
                 >
                   <div
                     className="h-1 w-full bg-gradient-to-r from-primary via-emerald-500 to-teal-600 relative z-10"

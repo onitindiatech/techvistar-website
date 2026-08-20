@@ -90,8 +90,8 @@ export default function ProjectGlobe() {
       ctx.save();
       ctx.scale(tempCanvas.width / 100, tempCanvas.height / 100);
       
-      // Draw land (emerald green)
-      ctx.fillStyle = '#10b981';
+      // Draw land (tech cyan)
+      ctx.fillStyle = '#0EA5E9';
       
       // North America
       ctx.beginPath();
@@ -412,7 +412,7 @@ export default function ProjectGlobe() {
             }}
             onPointerOver={() => setHoveredCardId(project.id)}
             onPointerOut={() => setHoveredCardId(null)}
-            className={`absolute left-0 top-0 pointer-events-auto w-[130px] sm:w-[145px] rounded-xl border border-white/60 bg-white/80 backdrop-blur-[8px] p-2.5 shadow-[0_8px_30px_rgb(0,0,0,0.05)] hover:shadow-[0_12px_32px_rgba(16,185,129,0.12)] hover:border-emerald-500/30 transition-all duration-300 ease-out flex flex-col gap-2`}
+            className={`absolute left-0 top-0 pointer-events-auto w-[130px] sm:w-[145px] rounded-xl border border-white/60 bg-white/80 backdrop-blur-[8px] p-2.5 shadow-[0_8px_30px_rgb(0,0,0,0.05)] hover:shadow-[0_12px_32px_rgba(14,165,233,0.12)] hover:border-emerald-500/30 transition-all duration-300 ease-out flex flex-col gap-2`}
             style={{
               transform: 'translate(-50%, -50%) translate3d(0,0,0) scale(0.8)',
               opacity: 0,

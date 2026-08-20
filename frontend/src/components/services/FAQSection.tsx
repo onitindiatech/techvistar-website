@@ -39,7 +39,7 @@ export const FAQSection = ({ service }: SectionProps) => {
               key={i} 
               className={`border rounded-2xl overflow-hidden transition-all duration-300 ${
                 isOpen 
-                  ? 'border-emerald-500/30 bg-emerald-500/[0.02] shadow-[0_8px_20px_-8px_rgba(16,185,129,0.06)]' 
+                  ? 'border-emerald-500/30 bg-emerald-500/[0.02] shadow-[0_8px_20px_-8px_rgba(14,165,233,0.06)]' 
                   : 'border-slate-100 bg-slate-50/50 hover:bg-white hover:border-emerald-500/10'
               }`}
             >

@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
 
 interface MouseGradientProps {
-  color?: string; // e.g. "rgba(34, 197, 94, 0.12)"
+  color?: string; // e.g. "rgba(14, 165, 233, 0.12)"
   className?: string;
 }
 
 export const MouseGradient = ({
-  color = 'rgba(16, 185, 129, 0.12)',
+  color = 'rgba(14, 165, 233, 0.12)',
   className = '',
 }: MouseGradientProps) => {
   const prefersReducedMotion = useReducedMotion();

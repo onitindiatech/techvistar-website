@@ -28,6 +28,8 @@ import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import { MobileBackButton } from '@/components/ui/MobileBackButton';
 
+import { FALLBACK_JOBS } from '@/data/jobs';
+
 const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;
 
 const applicationSchema = z.object({
@@ -57,6 +59,12 @@ export const JobApplication = () => {
     queryFn: () => getJobBySlug(slug || ''),
     enabled: !!slug,
   });
+
+  const activeJob = (() => {
+    if (job) return job;
+    if (!slug) return undefined;
+    return FALLBACK_JOBS.find((j) => j.slug === slug);
+  })();
 
   const {
     register,
@@ -421,10 +429,9 @@ export const JobApplication = () => {
                     )}
                   </div>
 
+                  {/* Why Join */}
                   <div className="space-y-2">
-                    <Label htmlFor="whyJoinTechVistar" className="text-xs font-bold text-slate-700">
-                      Why do you want to join TechVistar?
-                    </Label>
+                    <Label htmlFor="whyJoinTechVistar" className="text-xs font-bold text-slate-700">Why do you want to join Veenero?</Label>
                     <Textarea
                       id="whyJoinTechVistar"
                       rows={3}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { AlertCircle, Layers, MessageSquare, Sparkles } from 'lucide-react';
-import { Industry } from '@/data/industries';
+import { Industry, INDUSTRIES } from '@/data/industries';
 import { IMAGE_MAP } from '@/data/services';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -40,20 +40,21 @@ export const Industries = () => {
   const catalog = landing.catalog || DEFAULT_INDUSTRIES_LANDING_CMS.catalog;
   const bottomCta = landing.cta || DEFAULT_INDUSTRIES_LANDING_CMS.cta;
 
-  const { data: apiIndustries, isLoading, isError, error, isSuccess } = useQuery({
+  const { data: apiIndustries, isLoading } = useQuery({
     queryKey: ['activeIndustries'],
     queryFn: () => getActiveIndustries(),
     retry: 2,
   });
 
   const industriesData = useMemo(() => {
-    if (isSuccess && Array.isArray(apiIndustries)) {
-      return apiIndustries
+    if (Array.isArray(apiIndustries) && apiIndustries.length > 0) {
+      const decorated = apiIndustries
         .map((item: unknown) => decorateIndustry(item))
         .filter((item): item is Industry => item !== null);
+      if (decorated.length > 0) return decorated;
     }
-    return [];
-  }, [apiIndustries, isSuccess]);
+    return [...INDUSTRIES];
+  }, [apiIndustries]);
 
   const scrollToIndustries = () => {
     const el = document.getElementById('all-industries');
@@ -65,7 +66,7 @@ export const Industries = () => {
       <PageSeo
         seo={seoFromItem(landing as unknown as Record<string, unknown>)}
         defaults={{
-          title: landing.seoTitle || DEFAULT_INDUSTRIES_LANDING_CMS.seoTitle || 'Industries | TechVistar',
+          title: landing.seoTitle || DEFAULT_INDUSTRIES_LANDING_CMS.seoTitle || 'Industries | Veenero',
           description: landing.seoDescription || DEFAULT_INDUSTRIES_LANDING_CMS.seoDescription || '',
           url: buildCanonical('/industries'),
         }}
@@ -95,27 +96,10 @@ export const Industries = () => {
               </div>
             </div>
           </section>
-        ) : isError ? (
-          <section className="py-16 md:py-24">
-            <div className="container mx-auto max-w-lg px-4 md:px-6">
-              <div className="flex flex-col items-center rounded-2xl border border-red-100 bg-red-50/50 p-8 text-center">
-                <div className="mb-4 rounded-xl bg-red-100 p-3 text-red-600">
-                  <AlertCircle className="h-8 w-8" />
-                </div>
-                <h3 className="mb-1 text-lg font-bold text-red-900">Failed to load industries</h3>
-                <p className="mb-6 text-sm leading-relaxed text-red-700">
-                  {error instanceof Error ? error.message : 'An unexpected server error occurred.'}
-                </p>
-                <Button onClick={() => window.location.reload()} variant="outline">
-                  Reload Page
-                </Button>
-              </div>
-            </div>
-          </section>
         ) : (
           <>
             <section id="all-industries" className="bg-slate-50 py-16 md:py-24">
-              <div className="container mx-auto max-w-7xl space-y-10 md:space-y-12 px-4 md:px-6">
+              <div className="container mx-auto max-w-7xl space-y-10 md:space-y-12 px-6 sm:px-12 md:px-14 lg:px-16">
                 <div className="max-w-2xl space-y-3">
                   <div className="flex items-center gap-2 text-emerald-600">
                     <Layers className="h-4 w-4" />
@@ -151,7 +135,7 @@ export const Industries = () => {
                   <div className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
                     <h3 className="mb-2 text-lg font-bold text-slate-800">No industries available.</h3>
                     <p className="text-sm text-slate-500">
-                      Check back soon for new industry solutions from TechVistar.
+                      Check back soon for new industry solutions from Veenero.
                     </p>
                   </div>
                 )}
@@ -168,11 +152,11 @@ export const Industries = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="relative mx-auto w-full max-w-none overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-700 p-8 text-center text-white shadow-[0_20px_50px_rgba(16,185,129,0.15)] md:p-12"
+            className="relative mx-auto w-full max-w-none overflow-hidden rounded-3xl border border-[#041a3d]/30 bg-[#041a3d] p-8 text-center text-white shadow-[0_20px_50px_rgba(5,27,61,0.25)] md:p-12"
             style={
               bottomCta.backgroundImage
                 ? {
-                    backgroundImage: `linear-gradient(rgba(5, 150, 105, 0.88), rgba(5, 150, 105, 0.92)), url(${bottomCta.backgroundImage})`,
+                    backgroundImage: `linear-gradient(rgba(4, 26, 61, 0.9), rgba(4, 26, 61, 0.94)), url(${bottomCta.backgroundImage})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }
@@ -180,7 +164,7 @@ export const Industries = () => {
             }
           >
             <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
-            <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-emerald-300/20 blur-2xl" />
+            <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-blue-400/20 blur-2xl" />
 
             <div className="pointer-events-none absolute inset-0 z-0 opacity-10" aria-hidden="true">
               <svg width="100%" height="100%">
@@ -193,7 +177,7 @@ export const Industries = () => {
 
             <div className="relative z-10 space-y-6">
               <div className="inline-flex select-none items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
-                <Sparkles className="h-3 w-3 animate-pulse text-emerald-100" />
+                <Sparkles className="h-3 w-3 animate-pulse text-blue-200" />
                 <span>{bottomCta.badge || DEFAULT_INDUSTRIES_LANDING_CMS.cta.badge}</span>
               </div>
 
@@ -201,40 +185,40 @@ export const Industries = () => {
                 {bottomCta.title || DEFAULT_INDUSTRIES_LANDING_CMS.cta.title}
               </h2>
 
-              <p className="mx-auto max-w-xl text-xs font-medium leading-relaxed text-emerald-50/90 md:text-sm">
+              <p className="mx-auto max-w-xl text-xs font-medium leading-relaxed text-blue-100/90 md:text-sm">
                 {bottomCta.description || DEFAULT_INDUSTRIES_LANDING_CMS.cta.description}
               </p>
 
               <div className="flex flex-wrap justify-center gap-4 pt-2">
-                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
-                  <Button
-                    asChild
-                    className="inline-flex h-11 items-center gap-2 rounded-xl border-none bg-white px-7 py-3 text-xs font-bold text-emerald-700 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:bg-slate-50 hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] md:text-sm"
-                  >
-                    <CmsHref href={bottomCta.buttonLink || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonLink}>
-                      {bottomCta.buttonText || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonText}
-                    </CmsHref>
-                  </Button>
-                </motion.div>
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ y: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-7 text-xs font-extrabold text-[#041a3d] shadow-md transition-all hover:bg-slate-100 md:text-sm cursor-pointer group"
+                >
+                  <CmsHref href={bottomCta.buttonLink || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonLink} className="inline-flex items-center gap-2 text-[#041a3d]">
+                    <span>{bottomCta.buttonText || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonText}</span>
+                  </CmsHref>
+                </motion.button>
 
-                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
-                  <Button
-                    variant="outline"
-                    className="inline-flex h-11 items-center gap-2 rounded-xl border-white/30 px-7 py-3 text-xs font-bold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm"
-                    asChild
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ y: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-7 text-xs font-extrabold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm cursor-pointer group"
+                >
+                  <CmsHref
+                    href={
+                      bottomCta.secondaryButtonLink ||
+                      DEFAULT_INDUSTRIES_LANDING_CMS.cta.secondaryButtonLink
+                    }
+                    className="inline-flex items-center gap-2 text-white"
                   >
-                    <CmsHref
-                      href={
-                        bottomCta.secondaryButtonLink ||
-                        DEFAULT_INDUSTRIES_LANDING_CMS.cta.secondaryButtonLink
-                      }
-                    >
-                      <MessageSquare className="h-4 w-4" />
-                      {bottomCta.secondaryButtonText ||
-                        DEFAULT_INDUSTRIES_LANDING_CMS.cta.secondaryButtonText}
-                    </CmsHref>
-                  </Button>
-                </motion.div>
+                    <MessageSquare className="h-4 w-4 text-white" />
+                    <span>{bottomCta.secondaryButtonText ||
+                      DEFAULT_INDUSTRIES_LANDING_CMS.cta.secondaryButtonText}</span>
+                  </CmsHref>
+                </motion.button>
               </div>
             </div>
           </motion.section>

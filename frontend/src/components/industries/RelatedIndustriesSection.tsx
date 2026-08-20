@@ -1,7 +1,8 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Industry } from '@/data/industries';
+import { Industry, INDUSTRIES } from '@/data/industries';
 import { getActiveIndustries } from '@/services/industry.service';
 import { decorateIndustry, getIndustryCardImage } from '@/data/industry.adapter';
 import { Badge } from '@/components/ui/badge';
@@ -17,18 +18,34 @@ export const RelatedIndustriesSection = ({ industry }: RelatedIndustriesSectionP
     staleTime: 5 * 60 * 1000,
   });
 
-  const allIndustries = (apiIndustries || [])
-    .map((item: unknown) => decorateIndustry(item))
-    .filter((item): item is Industry => item !== null && item.slug !== industry.slug);
+  const allIndustries = useMemo(() => {
+    const loaded = (apiIndustries || [])
+      .map((item: unknown) => decorateIndustry(item))
+      .filter((item): item is Industry => Boolean(item));
+    const loadedSlugs = new Set(loaded.map((i) => i.slug));
+    const fallbackList = INDUSTRIES.filter((i) => !loadedSlugs.has(i.slug));
+    return [...loaded, ...fallbackList];
+  }, [apiIndustries]);
 
-  const curatedSlugs = industry.relatedIndustrySlugs?.filter(Boolean) || [];
-  const related =
-    curatedSlugs.length > 0
-      ? curatedSlugs
-          .map((slug) => allIndustries.find((item) => item.slug === slug))
-          .filter((item): item is Industry => Boolean(item))
-          .slice(0, 6)
-      : allIndustries.slice(0, 3);
+  const related = useMemo(() => {
+    const curatedSlugs = industry.relatedIndustrySlugs?.filter(Boolean) || [];
+    let picked: Industry[] = [];
+
+    if (curatedSlugs.length > 0) {
+      picked = curatedSlugs
+        .map((slug) => allIndustries.find((item) => item.slug === slug && item.slug !== industry.slug))
+        .filter((item): item is Industry => Boolean(item));
+    }
+
+    if (picked.length < 3) {
+      const rest = allIndustries.filter(
+        (item) => item.slug !== industry.slug && !picked.some((p) => p.slug === item.slug),
+      );
+      picked = [...picked, ...rest];
+    }
+
+    return picked.slice(0, 3);
+  }, [allIndustries, industry]);
 
   if (related.length === 0) return null;
 
@@ -71,7 +88,7 @@ export const RelatedIndustriesSection = ({ industry }: RelatedIndustriesSectionP
                   <h3 className="font-display text-base font-bold text-slate-900 group-hover:text-emerald-600">
                     {item.title}
                   </h3>
-                  <p className="mt-2 line-clamp-2 text-xs font-medium text-slate-500">{item.shortDescription}</p>
+                  <p className="mt-2 line-clamp-2 text-base font-medium leading-relaxed text-slate-600">{item.shortDescription}</p>
                 </div>
               </Link>
             </motion.div>

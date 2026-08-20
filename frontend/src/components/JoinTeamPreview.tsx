@@ -38,7 +38,7 @@ export const JoinTeamPreview = () => {
               
               <h2 className="font-display text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-900 tracking-tight mt-0">
                 Build Your Future <br />
-                <span className="gradient-text">With TechVistar</span>
+                <span className="gradient-text">With Veenero</span>
               </h2>
               
               <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl font-medium">

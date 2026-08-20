@@ -226,7 +226,7 @@ export const IMAGE_MAP: Record<string, string> = {
   '3d_documentation': img3d_documentation,
 };
 
-const DEFAULT_SERVICE_COVER = serviceWebDev;
+export const DEFAULT_SERVICE_COVER = serviceWebDev;
 
 /** Original approved cover asset per seeded service slug */
 const SERVICE_SLUG_COVER_ASSETS: Record<string, string> = {

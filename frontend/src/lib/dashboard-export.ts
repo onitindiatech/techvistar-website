@@ -133,7 +133,7 @@ export async function exportDashboardPdf(
   );
 
   doc.setFontSize(16);
-  doc.text("TechVistar Dashboard Report", 14, 18);
+  doc.text("Veenero Dashboard Report", 14, 18);
   doc.setFontSize(10);
   doc.text(`Generated ${format(new Date(), "MMM d, yyyy · HH:mm")}`, 14, 26);
   doc.text(`Admin: ${adminName}`, 14, 32);

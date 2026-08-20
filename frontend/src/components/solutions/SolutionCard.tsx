@@ -43,7 +43,7 @@ export const SolutionCard = ({
         className={cn(
           'group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-all duration-300',
           featured
-            ? 'border-emerald-500/35 shadow-[0_8px_40px_-12px_rgba(16,185,129,0.35)] hover:border-emerald-500/55 hover:shadow-[0_20px_50px_-12px_rgba(16,185,129,0.45)]'
+            ? 'border-emerald-500/35 shadow-[0_8px_40px_-12px_rgba(14,165,233,0.35)] hover:border-emerald-500/55 hover:shadow-[0_20px_50px_-12px_rgba(14,165,233,0.45)]'
             : 'border-slate-200/80 shadow-sm hover:border-emerald-500/25 hover:shadow-xl'
         )}
       >
@@ -90,18 +90,18 @@ export const SolutionCard = ({
             {solution.title}
           </h3>
 
-          <p className="mt-2 line-clamp-3 text-sm font-medium leading-relaxed text-slate-500">
+          <p className="mt-2 line-clamp-3 text-base md:text-lg font-medium leading-relaxed text-slate-600">
             {solution.desc || solution.heroDescription || solution.subtitle}
           </p>
 
           {offeringItems.length > 0 && (
             <div className="mt-5 flex-1">
-              <p className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
+              <p className="mb-2.5 text-xs font-bold uppercase tracking-[0.12em] text-slate-400">
                 {offeringsLabel}
               </p>
               <ul className="space-y-2">
                 {offeringItems.slice(0, 3).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs font-medium text-slate-600">
+                  <li key={i} className="flex items-start gap-2 text-sm md:text-base font-medium text-slate-700">
                     <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" />
                     <span className="line-clamp-1">{item}</span>
                   </li>

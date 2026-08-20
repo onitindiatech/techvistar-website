@@ -45,7 +45,7 @@ export const ABOUT_COPY = {
 /** Dedicated About page — extended copy */
 export const ABOUT_PAGE = {
   hero: {
-    eyebrow: 'Company',
+    eyebrow: 'ABOUT US',
     title: 'About TechVistar',
     lead:
       'TechVistar is a technology-first growth partner. We help organizations design and run digital systems—web, brand presence, marketing instrumentation, automation, AI, and documentation—with the discipline of a product team and the language of business outcomes.',

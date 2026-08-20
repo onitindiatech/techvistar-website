@@ -79,7 +79,7 @@ export const ProjectFeaturesSection = ({ project }: SectionProps) => {
                   key={idx}
                   variants={cardVariants}
                   whileHover={prefersReducedMotion ? {} : { y: -6, scale: 1.01 }}
-                  className="group flex flex-col justify-between p-4 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(16,185,129,0.12)] transition-all duration-300"
+                  className="group flex flex-col justify-between p-4 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(14,165,233,0.12)] transition-all duration-300"
                 >
                   <div>
                     <div className="flex items-start justify-between gap-4 mb-1 overflow-visible">
@@ -121,7 +121,7 @@ export const ProjectFeaturesSection = ({ project }: SectionProps) => {
                   key={idx}
                   variants={cardVariants}
                   whileHover={prefersReducedMotion ? {} : { y: -6, scale: 1.01 }}
-                  className="group flex flex-col justify-between p-4 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(16,185,129,0.12)] transition-all duration-300"
+                  className="group flex flex-col justify-between p-4 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_-8px_rgba(14,165,233,0.12)] transition-all duration-300"
                 >
                   <div>
                     <div className="flex items-start justify-between gap-4 mb-1 overflow-visible">

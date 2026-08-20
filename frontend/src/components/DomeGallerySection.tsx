@@ -105,16 +105,16 @@ export const DomeGallerySection = () => {
         }}
       />
 
-      {/* Light green blurred glow and soft gradients */}
-      <div className="absolute top-1/4 right-10 w-96 h-96 bg-emerald-500/[0.025] rounded-full blur-[80px] pointer-events-none animate-pulse" style={{ animationDuration: '8s' }} />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-teal-500/[0.015] rounded-full blur-[70px] pointer-events-none" />
+      {/* Blue blurred glow and soft radial gradients around earth globe */}
+      <div className="absolute top-1/4 right-10 w-[500px] h-[500px] bg-[#0b2859]/[0.08] rounded-full blur-[100px] pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#0ea5e9]/[0.06] rounded-full blur-[90px] pointer-events-none" />
 
-      {/* Floating particles - subtle CSS animated dots */}
+      {/* Floating particles - subtle blue animated dots */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[15%] left-[45%] w-1.5 h-1.5 rounded-full bg-emerald-400/20 animate-pulse" />
-        <div className="absolute bottom-[25%] left-[12%] w-1 h-1 rounded-full bg-emerald-300/30" />
-        <div className="absolute top-[40%] right-[5%] w-2 h-2 rounded-full bg-teal-400/10 animate-ping [animation-duration:4s]" />
-        <div className="absolute bottom-[15%] right-[42%] w-1.5 h-1.5 rounded-full bg-emerald-400/25" />
+        <div className="absolute top-[15%] left-[45%] w-1.5 h-1.5 rounded-full bg-[#0b2859]/30 animate-pulse" />
+        <div className="absolute bottom-[25%] left-[12%] w-1 h-1 rounded-full bg-blue-500/30" />
+        <div className="absolute top-[40%] right-[5%] w-2 h-2 rounded-full bg-[#0b2859]/20 animate-ping [animation-duration:4s]" />
+        <div className="absolute bottom-[15%] right-[42%] w-1.5 h-1.5 rounded-full bg-[#0b2859]/25" />
       </div>
 
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
@@ -128,9 +128,9 @@ export const DomeGallerySection = () => {
             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             {/* Small Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-emerald-700">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0b2859]/10 border border-[#0b2859]/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0b2859] animate-pulse" />
+              <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-[#0b2859]">
                 {portfolio.badge}
               </span>
             </div>
@@ -138,7 +138,7 @@ export const DomeGallerySection = () => {
             <h2 className="font-display text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-900 tracking-tight">
               {portfolio.heading}{' '}
               {portfolio.highlight ? (
-                <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 bg-clip-text text-transparent">
+                <span className="hero-highlight-text--light inline-block font-black">
                   {portfolio.highlight}
                 </span>
               ) : null}
@@ -152,8 +152,8 @@ export const DomeGallerySection = () => {
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
                 {features.map((feat) => (
                   <li key={feat} className="flex items-center gap-2.5 text-slate-700 font-medium text-[0.85rem] sm:text-sm">
-                    <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100 shrink-0">
-                      <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
+                    <div className="w-5 h-5 rounded-full bg-[#0b2859]/10 flex items-center justify-center border border-[#0b2859]/20 shrink-0">
+                      <Check className="w-3.5 h-3.5 text-[#0b2859]" strokeWidth={3} />
                     </div>
                     <span>{feat}</span>
                   </li>
@@ -161,17 +161,29 @@ export const DomeGallerySection = () => {
               </ul>
             ) : null}
 
-            <div className="flex flex-wrap gap-4 pt-3">
-              <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl px-6 py-5 shadow-lg shadow-emerald-500/10 transition-all duration-300">
-                <CmsHref href={portfolio.primaryButtonLink || '/work'}>
-                  {portfolio.primaryButtonText} <ArrowRight className="w-4 h-4 ml-1" />
+            <div className="flex flex-wrap items-center gap-4 pt-3">
+              <motion.button
+                whileHover={{ y: -1 }}
+                whileTap={{ y: 0, scale: 0.98 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-flex items-center justify-center h-11 px-6 bg-[#041a3d] hover:bg-[#021028] text-white rounded-xl transition-all duration-200 text-sm font-extrabold tracking-tight shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group cursor-pointer"
+              >
+                <CmsHref href={portfolio.primaryButtonLink || '/work'} className="inline-flex items-center gap-2 text-white">
+                  <span>{portfolio.primaryButtonText}</span>
+                  <ArrowRight className="w-3.5 h-3.5 opacity-90 group-hover:translate-x-0.5 transition-transform duration-200" />
                 </CmsHref>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="border-slate-200 hover:border-emerald-500/30 hover:bg-emerald-50/20 text-slate-700 font-semibold rounded-xl px-6 py-5 transition-all duration-300">
-                <CmsHref href={portfolio.secondaryButtonLink || '/work'}>
-                  {portfolio.secondaryButtonText}
+              </motion.button>
+
+              <motion.button
+                whileHover={{ y: -1 }}
+                whileTap={{ y: 0, scale: 0.98 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-flex items-center justify-center h-11 px-6 border-2 border-slate-200 hover:border-[#041a3d]/30 hover:bg-[#041a3d]/5 text-slate-800 font-extrabold rounded-xl transition-all duration-200 text-sm tracking-tight cursor-pointer"
+              >
+                <CmsHref href={portfolio.secondaryButtonLink || '/work'} className="text-slate-800">
+                  <span>{portfolio.secondaryButtonText}</span>
                 </CmsHref>
-              </Button>
+              </motion.button>
             </div>
           </motion.div>
 
@@ -182,12 +194,16 @@ export const DomeGallerySection = () => {
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            {/* Wrapper slightly shifted right on desktop, with the auto-rotating interactive DomeGallery */}
+            {/* Soft, circular glowing blue shadow aura around the 3D Earth Globe (No white box) */}
+            <div className="absolute top-1/2 left-1/2 lg:left-[55%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] md:w-[460px] md:h-[460px] rounded-full bg-[#0b2859]/[0.28] blur-[80px] pointer-events-none -z-10 animate-pulse" style={{ animationDuration: '5s' }} />
+            <div className="absolute top-1/2 left-1/2 lg:left-[55%] -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] rounded-full bg-[#0b2859]/[0.32] blur-[45px] pointer-events-none -z-10" />
+
+            {/* Wrapper slightly shifted right on desktop, auto-rotating interactive DomeGallery without white box frame */}
             <div className="w-full h-full max-w-[550px] lg:translate-x-8 relative">
               {portfolio.globeEnabled ? (
                 <DomeGallery
                   images={WHATSAPP_CHAT_IMAGES}
-                  overlayBlurColor="#ffffff"
+                  overlayBlurColor="transparent"
                   grayscale={false}
                   fit={0.42}
                   minRadius={380}

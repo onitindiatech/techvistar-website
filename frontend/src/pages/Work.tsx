@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveProjects } from '@/services/portfolio.service';
-import { decorateProject, IMAGE_MAP } from '@/data/projects';
+import { decorateProject, IMAGE_MAP, PROJECTS } from '@/data/projects';
 import { useProjectFilters } from '@/hooks/useProjectFilters';
 import { getPublicPagesConfig } from '@/services/pages.service';
 import { Navbar } from '@/components/Navbar';
@@ -71,7 +71,7 @@ function renderHighlightedTitle(title: string, highlightedWords: string): React.
 
   return segments.map((segment, index) =>
     words.some((word) => word.toLowerCase() === segment.toLowerCase()) ? (
-      <span key={`${segment}-${index}`} className="text-emerald-400">
+      <span key={`${segment}-${index}`} className="hero-highlight-text--static inline-block font-black">
         {segment}
       </span>
     ) : (
@@ -98,12 +98,16 @@ export const Work = () => {
   const landing = mergePagesCmsConfig(pagesConfigApi).portfolioLanding;
   const filters = landing.filters || DEFAULT_PAGES_CMS_CONFIG.portfolioLanding.filters;
 
-  const { data: apiProjects, isLoading, isError, error } = useQuery({
+  const { data: apiProjects, isLoading } = useQuery({
     queryKey: ['activeProjects'],
     queryFn: getActiveProjects,
+    retry: 2,
   });
 
-  const projectsData = (apiProjects || []).map(decorateProject);
+  const projectsData = (Array.isArray(apiProjects) && apiProjects.length > 0)
+    ? apiProjects.map(decorateProject).filter((p): p is ReturnType<typeof decorateProject> => Boolean(p))
+    : [...PROJECTS];
+
   const filterHook = useProjectFilters(projectsData);
 
   const {
@@ -124,8 +128,24 @@ export const Work = () => {
     setSearchQuery,
   } = filterHook;
 
-  const featuredProjects = projectsData.filter((project) => project.featured === true);
-  const normalProjects = filteredProjects.filter((project) => project.featured !== true);
+  const featuredProjects = useMemo(() => {
+    const featured = filteredProjects.filter((project) => project.featured === true);
+    if (featured.length >= 4) return featured.slice(0, 4);
+    const nonFeatured = filteredProjects.filter((project) => project.featured !== true);
+    return [...featured, ...nonFeatured].slice(0, 4);
+  }, [filteredProjects]);
+
+  const featuredIds = useMemo(() => new Set(featuredProjects.map((p) => p.id)), [featuredProjects]);
+  const normalProjects = useMemo(() => {
+    const unfeatured = filteredProjects.filter((p) => !featuredIds.has(p.id));
+    if (unfeatured.length > 0 && unfeatured.length % 3 !== 0) {
+      const needed = 3 - (unfeatured.length % 3);
+      const candidates = projectsData.filter((p) => !unfeatured.some((u) => u.id === p.id));
+      return [...unfeatured, ...candidates.slice(0, needed)];
+    }
+    return unfeatured;
+  }, [filteredProjects, featuredIds, projectsData]);
+
   const statisticsCards = landing.statistics.cards.length
     ? landing.statistics.cards
     : DEFAULT_PAGES_CMS_CONFIG.portfolioLanding.statistics.cards;
@@ -144,60 +164,6 @@ export const Work = () => {
       </>
     );
   }
-
-  if (isError) {
-    return (
-      <>
-        <Navbar />
-        <main className="min-h-screen bg-slate-50 pt-20">
-          <section className="py-16 md:py-24">
-            <div className="container mx-auto max-w-lg px-4 md:px-6">
-              <div className="flex flex-col items-center rounded-2xl border border-red-100 bg-red-50/50 p-8 text-center">
-                <div className="mb-4 rounded-xl bg-red-100 p-3 text-red-600">
-                  <AlertCircle className="h-8 w-8" />
-                </div>
-                <h3 className="mb-1 text-lg font-bold text-red-900">Failed to load portfolio</h3>
-                <p className="mb-6 text-sm leading-relaxed text-red-700">
-                  {error instanceof Error ? error.message : 'An unexpected server error occurred.'}
-                </p>
-                <Button onClick={() => window.location.reload()} variant="outline">
-                  Reload Page
-                </Button>
-              </div>
-            </div>
-          </section>
-        </main>
-        <Footer />
-      </>
-    );
-  }
-
-    if (isError) {
-      return (
-        <>
-          <Navbar />
-          <main className="min-h-screen bg-slate-50 pt-20">
-            <section className="py-16 md:py-24">
-              <div className="container mx-auto max-w-lg px-4 md:px-6">
-                <div className="flex flex-col items-center rounded-2xl border border-red-100 bg-red-50/50 p-8 text-center">
-                  <div className="mb-4 rounded-xl bg-red-100 p-3 text-red-600">
-                    <AlertCircle className="h-8 w-8" />
-                  </div>
-                  <h3 className="mb-1 text-lg font-bold text-red-900">Failed to load portfolio</h3>
-                  <p className="mb-6 text-sm leading-relaxed text-red-700">
-                    {error instanceof Error ? error.message : 'An unexpected server error occurred.'}
-                  </p>
-                  <Button onClick={() => window.location.reload()} variant="outline">
-                    Reload Page
-                  </Button>
-                </div>
-              </div>
-            </section>
-          </main>
-          <Footer />
-        </>
-      );
-    }
 
     return (
       <>
@@ -223,12 +189,17 @@ export const Work = () => {
           >
             <div className="space-y-6">
               <div className="flex flex-wrap gap-4">
-                <Button asChild className="h-11 rounded-xl bg-emerald-600 px-6 text-sm font-bold text-white hover:bg-emerald-500">
-                  <CmsHref href={landing.hero.primaryButtonLink || '#projects-grid'}>
-                    {landing.hero.primaryButtonText}
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ y: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="inline-flex items-center justify-center gap-2 h-11 px-6 bg-[#041a3d] hover:bg-[#021028] text-white rounded-xl transition-all duration-200 text-sm font-extrabold tracking-tight shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group cursor-pointer"
+                >
+                  <CmsHref href={landing.hero.primaryButtonLink || '#projects-grid'} className="inline-flex items-center gap-2 text-white">
+                    <span>{landing.hero.primaryButtonText}</span>
+                    <ArrowRight className="w-3.5 h-3.5 opacity-90 group-hover:translate-x-0.5 transition-transform duration-200" />
                   </CmsHref>
-                </Button>
+                </motion.button>
                 <Button asChild variant="outline" className="h-11 rounded-xl border-white/20 bg-white/5 px-6 text-sm font-bold text-white hover:bg-white/10">
                   <CmsHref href={landing.hero.secondaryButtonLink || '/contact'}>
                     {landing.hero.secondaryButtonText}
@@ -250,7 +221,7 @@ export const Work = () => {
 
           {(filters.enableSearch || filters.enableFilters) && (
             <section id="projects-grid" className="sticky top-20 z-40 border-y border-slate-200/80 bg-white/80 py-4 backdrop-blur-md">
-              <div className="container-custom mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 md:flex-row md:px-6">
+              <div className="container-custom mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 sm:px-12 md:flex-row md:px-14 lg:px-16">
                 {filters.enableSearch ? (
                   <div className="relative w-full md:w-72">
                     <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -325,7 +296,7 @@ export const Work = () => {
             </section>
           )}
 
-          <section className="container-custom mx-auto max-w-7xl px-4 pt-12 pb-16 md:px-6 md:pt-20 md:pb-20">
+          <section className="container-custom mx-auto max-w-7xl px-6 pt-12 pb-16 sm:px-12 md:px-14 md:pt-20 md:pb-20 lg:px-16">
             <div className="mb-12 space-y-2 text-center">
               <span className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-emerald-600">
                 {landing.featuredProjects.badge}
@@ -341,22 +312,22 @@ export const Work = () => {
                 <motion.div
                   key={project.id}
                   whileHover={{ y: -6 }}
-                  className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/60 bg-white text-slate-900 shadow-md transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.15)]"
+                  className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/60 bg-white text-slate-900 shadow-md transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.15)]"
                 >
                   <div className="space-y-4">
                     <div className="relative flex h-44 items-center justify-center overflow-hidden border-b border-slate-100 bg-slate-50">
                       <img
                         src={project.thumbnail}
-                        alt={project.title}
+                        alt=""
                         className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.03]"
                       />
-                      <span className="absolute left-3 top-3 z-10 rounded bg-emerald-600 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-md">
+                      <span className="absolute left-3 top-3 z-10 rounded bg-[#041a3d] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-md">
                         {project.category}
                       </span>
                     </div>
 
                     <div className="space-y-2.5 p-5">
-                      <div className="font-display text-sm font-bold leading-snug text-slate-900 transition-colors group-hover:text-emerald-600 line-clamp-1">
+                      <div className="font-display text-sm font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d] line-clamp-1">
                         {project.title}
                       </div>
                       <p className="line-clamp-3 text-xs leading-relaxed text-slate-500">
@@ -368,7 +339,7 @@ export const Work = () => {
                   <div className="flex items-center justify-between border-t border-slate-100/60 px-5 pb-5 pt-3">
                     <Link
                       to={`/work/${project.slug}`}
-                      className="flex items-center gap-1 text-xs font-bold text-emerald-600 transition-colors hover:text-emerald-700"
+                      className="flex items-center gap-1 text-xs font-bold text-[#041a3d] transition-colors hover:text-sky-600"
                     >
                       {landing.featuredProjects.primaryButtonLabel || 'View Case Study'}
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -381,7 +352,7 @@ export const Work = () => {
 
           <section className="container-custom mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-12">
             <div className="mx-auto mb-10 max-w-2xl space-y-2 text-center">
-              <span className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-emerald-600">
+              <span className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-[#041a3d]">
                 {landing.recentWork.badge}
               </span>
               <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
@@ -396,22 +367,22 @@ export const Work = () => {
                   <motion.div
                     key={project.id}
                     whileHover={{ y: -6 }}
-                    className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/60 bg-white text-slate-900 shadow-md transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.15)]"
+                    className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/60 bg-white text-slate-900 shadow-md transition-all duration-300 hover:border-[#041a3d]/40 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.15)]"
                   >
                     <div className="space-y-4">
                       <div className="relative flex h-48 items-center justify-center overflow-hidden border-b border-slate-100 bg-white">
                         <img
                           src={project.thumbnail}
-                          alt={project.title}
+                          alt=""
                           className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.02]"
                         />
-                        <span className="absolute left-3 top-3 z-10 rounded bg-emerald-600 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-md">
+                        <span className="absolute left-3 top-3 z-10 rounded bg-[#041a3d] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-md">
                           {project.industry}
                         </span>
                       </div>
 
                       <div className="space-y-3 p-5">
-                        <div className="text-base font-bold text-slate-900 transition-colors group-hover:text-emerald-600">
+                        <div className="text-base font-bold text-slate-900 transition-colors group-hover:text-[#041a3d]">
                           {project.title}
                         </div>
                         <p className="line-clamp-3 text-xs font-semibold leading-relaxed text-slate-600">
@@ -467,7 +438,7 @@ export const Work = () => {
             )}
           </section>
 
-          <section className="border-t border-slate-200/80 bg-slate-50 px-4 py-12 md:py-16 md:px-6">
+          <section className="border-t border-slate-200/80 bg-slate-50 px-6 py-12 sm:px-12 md:py-16 md:px-14 lg:px-16">
             <div className="mx-auto mb-12 max-w-2xl space-y-2 text-center">
               <h2 className="font-display text-2xl font-extrabold text-slate-900 sm:text-3xl">
                 {landing.statistics.heading}
@@ -477,7 +448,7 @@ export const Work = () => {
 
             <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-12">
               <div className="space-y-6 md:col-span-8">
-                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-xl transition-all duration-300 hover:shadow-[0_20px_50px_rgba(16,185,129,0.08)]">
+                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-xl transition-all duration-300 hover:shadow-[0_20px_50px_rgba(14,165,233,0.08)]">
                   <div className="flex w-fit gap-1 rounded-full border border-slate-200/80 bg-amber-50/30 px-3 py-1 text-amber-400">
                     <Star className="h-4 w-4 fill-current" />
                     <Star className="h-4 w-4 fill-current" />
@@ -531,7 +502,7 @@ export const Work = () => {
             </div>
           </section>
 
-          <section className="container-custom mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16 border-t border-slate-200/80">
+          <section className="container-custom mx-auto max-w-7xl px-6 py-12 sm:px-12 md:px-14 md:py-16 lg:px-16 border-t border-slate-200/80">
             <div className="mx-auto mb-12 max-w-2xl space-y-2 text-center">
               <h2 className="font-display text-2xl font-extrabold text-slate-900 sm:text-3xl">
                 {landing.workflow.heading}
@@ -602,11 +573,11 @@ export const Work = () => {
           <section className="container-custom mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-12">
             <motion.div
               whileHover={{ y: -2 }}
-              className="relative overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-700 p-8 text-center text-white shadow-[0_20px_50px_rgba(16,185,129,0.15)] sm:p-12"
+              className="relative overflow-hidden rounded-3xl border border-[#041a3d]/30 bg-[#041a3d] p-8 text-center text-white shadow-[0_20px_50px_rgba(5,27,61,0.25)] sm:p-12"
               style={
                 landing.cta.backgroundImage
                   ? {
-                      backgroundImage: `linear-gradient(rgba(5, 150, 105, 0.88), rgba(5, 150, 105, 0.92)), url(${resolveLandingBackground(landing.cta.backgroundImage)})`,
+                      backgroundImage: `linear-gradient(rgba(4, 26, 61, 0.9), rgba(4, 26, 61, 0.94)), url(${resolveLandingBackground(landing.cta.backgroundImage)})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                     }
@@ -614,7 +585,7 @@ export const Work = () => {
               }
             >
               <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
-              <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-emerald-300/20 blur-2xl" />
+              <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-blue-400/20 blur-2xl" />
 
               <div className="pointer-events-none absolute inset-0 z-0 opacity-10" aria-hidden="true">
                 <svg width="100%" height="100%">
@@ -636,7 +607,7 @@ export const Work = () => {
               <div className="relative z-10 mx-auto max-w-2xl space-y-6">
                 {landing.cta.badge ? (
                   <div className="inline-flex select-none items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
-                    <Sparkles className="h-3 w-3 animate-pulse text-emerald-100" />
+                    <Sparkles className="h-3 w-3 animate-pulse text-blue-200" />
                     <span>{landing.cta.badge}</span>
                   </div>
                 ) : null}
@@ -644,23 +615,31 @@ export const Work = () => {
                 <h3 className="font-display text-2xl font-extrabold text-white sm:text-3xl">
                   {landing.cta.title}
                 </h3>
-                <p className="text-sm font-medium leading-relaxed text-emerald-50/90 sm:text-base">
+                <p className="text-sm font-medium leading-relaxed text-blue-100/90 sm:text-base">
                   {landing.cta.description}
                 </p>
                 <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
-                  <Button asChild className="h-auto rounded-xl bg-white px-8 py-3.5 text-sm font-bold text-emerald-700 shadow-lg shadow-emerald-950/10 transition-all hover:bg-emerald-50">
-                    <CmsHref href={landing.cta.buttonLink || '/contact'}>{landing.cta.buttonText}</CmsHref>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="h-auto rounded-xl border-white/20 bg-transparent px-8 py-3.5 text-sm font-bold text-white backdrop-blur-sm hover:bg-white/10"
+                  <motion.button
+                    whileHover={{ y: -1 }}
+                    whileTap={{ y: 0, scale: 0.98 }}
+                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-8 text-xs font-extrabold text-[#041a3d] shadow-md transition-all hover:bg-slate-100 sm:text-sm cursor-pointer group"
                   >
-                    <CmsHref href={landing.cta.secondaryButtonLink || '#projects-grid'}>
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      {landing.cta.secondaryButtonText}
+                    <CmsHref href={landing.cta.buttonLink || '/contact'} className="inline-flex items-center gap-2 text-[#041a3d]">
+                      <span>{landing.cta.buttonText}</span>
                     </CmsHref>
-                  </Button>
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ y: -1 }}
+                    whileTap={{ y: 0, scale: 0.98 }}
+                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-8 text-xs font-extrabold text-white transition-all hover:border-white hover:bg-white/10 sm:text-sm cursor-pointer group"
+                  >
+                    <CmsHref href={landing.cta.secondaryButtonLink || '#projects-grid'} className="inline-flex items-center gap-2 text-white">
+                      <MessageSquare className="h-4 w-4 text-white" />
+                      <span>{landing.cta.secondaryButtonText}</span>
+                    </CmsHref>
+                  </motion.button>
                 </div>
               </div>
             </motion.div>

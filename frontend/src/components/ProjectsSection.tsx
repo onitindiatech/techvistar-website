@@ -16,7 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveProjects } from '@/services/portfolio.service';
-import { decorateProject, SECTION_PROJECTS } from '@/data/projects';
+import { decorateProject, PROJECTS, SECTION_PROJECTS } from '@/data/projects';
 import { Link } from 'react-router-dom';
 import { HoverCard } from '@/components/animations/HoverCard';
 
@@ -26,7 +26,12 @@ export const ProjectsSection = () => {
     queryFn: getActiveProjects,
   });
 
-  const projectsData = (apiProjects || []).map(decorateProject);
+  const projectsData = useMemo(() => {
+    const loaded = (apiProjects || []).map(decorateProject).filter(Boolean);
+    const apiSlugs = new Set(loaded.map((p) => p.slug));
+    const fallbackList = PROJECTS.filter((p) => !apiSlugs.has(p.slug));
+    return [...loaded, ...fallbackList];
+  }, [apiProjects]);
 
   const { ref, isInView } = useAnimatedSection();
   const reduceMotion = useReducedMotion();

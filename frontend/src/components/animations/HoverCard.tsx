@@ -31,7 +31,7 @@ export const HoverCard = ({
       whileHover={{
         y: -depth,
         scale,
-        boxShadow: '0 20px 40px -15px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(34, 197, 94, 0.1)',
+        boxShadow: '0 20px 40px -15px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(14, 165, 233, 0.1)',
       }}
       transition={{
         type: 'spring',

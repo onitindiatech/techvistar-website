@@ -72,8 +72,8 @@ export const IndustryHero = ({ industry }: IndustryHeroProps) => {
                   </p>
                   <div className="grid grid-cols-1 gap-x-4 gap-y-2.5 sm:grid-cols-2">
                     {industry.benefits.map((highlight, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5 text-xs font-medium text-slate-700">
-                        <div className="mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border border-emerald-100 bg-emerald-50 p-0.5">
+                      <div key={idx} className="flex items-start gap-2.5 text-sm md:text-base font-normal text-slate-700 leading-relaxed">
+                        <div className="mt-1 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border border-emerald-100 bg-emerald-50 p-0.5">
                           <Check className="h-3 w-3 text-emerald-600" />
                         </div>
                         <span>{highlight}</span>

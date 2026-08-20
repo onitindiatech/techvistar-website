@@ -100,7 +100,7 @@ function HeroNativeVideo({
         loop
         playsInline
         preload={usePosterLayer ? 'auto' : 'metadata'}
-        poster={!usePosterLayer ? hero.backgroundImage || undefined : undefined}
+        poster={undefined}
         className={cn(HERO_MEDIA_CLASS, hero.backgroundBlur && 'scale-105 blur-sm')}
         onCanPlayThrough={() => markVideoReady(setVideoReady)}
         onLoadedData={() => {
@@ -152,7 +152,7 @@ export function HeroBackgroundMedia({ hero }: HeroBackgroundMediaProps) {
           startTime={hero.youtubeStartTime}
           overlayClassName={`bg-black/${hero.overlayOpacity}`}
           iframeClassName="w-[177.78svh]"
-          posterUrl={heroPoster || hero.backgroundImage || undefined}
+          posterUrl={heroPoster || undefined}
           fadePosterOnReady={Boolean(heroPoster)}
           loadImmediately={Boolean(heroPoster)}
         />
@@ -213,7 +213,7 @@ export function HeroBackgroundMedia({ hero }: HeroBackgroundMediaProps) {
         startTime={hero.youtubeStartTime}
         overlayClassName={`bg-black/${hero.overlayOpacity}`}
         iframeClassName="w-[177.78svh]"
-        posterUrl={heroPoster || hero.backgroundImage || undefined}
+        posterUrl={heroPoster || undefined}
         fadePosterOnReady={Boolean(heroPoster)}
         loadImmediately={Boolean(heroPoster)}
       />

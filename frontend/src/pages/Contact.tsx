@@ -206,9 +206,9 @@ export const Contact = () => {
                 <motion.a 
                   href={phoneHref}
                   whileHover={{ y: -2, scale: 1.01 }}
-                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
+                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(14,165,233,0.06)] hover:border-[#041a3d]/30 hover:bg-[#041a3d]/[0.01] transition-all duration-300"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-[#041a3d] group-hover:bg-[#041a3d] group-hover:text-white transition-colors">
                     <Phone className="h-4.5 w-4.5" />
                   </div>
                   <div>
@@ -222,9 +222,9 @@ export const Contact = () => {
                 <motion.a 
                   href={`mailto:${contactEmail}`}
                   whileHover={{ y: -2, scale: 1.01 }}
-                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
+                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(14,165,233,0.06)] hover:border-[#041a3d]/30 hover:bg-[#041a3d]/[0.01] transition-all duration-300"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-[#041a3d] group-hover:bg-[#041a3d] group-hover:text-white transition-colors">
                     <Mail className="h-4.5 w-4.5" />
                   </div>
                   <div>
@@ -237,9 +237,9 @@ export const Contact = () => {
                 {/* Office address */}
                 <motion.div 
                   whileHover={{ y: -2, scale: 1.01 }}
-                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
+                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(14,165,233,0.06)] hover:border-[#041a3d]/30 hover:bg-[#041a3d]/[0.01] transition-all duration-300"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-[#041a3d] group-hover:bg-[#041a3d] group-hover:text-white transition-colors">
                     <MapPin className="h-4.5 w-4.5" />
                   </div>
                   <div>
@@ -252,9 +252,9 @@ export const Contact = () => {
                 {/* Working hours */}
                 <motion.div 
                   whileHover={{ y: -2, scale: 1.01 }}
-                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(16,185,129,0.06)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01] transition-all duration-300"
+                  className="group flex gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-[0_12px_24px_rgba(14,165,233,0.06)] hover:border-[#041a3d]/30 hover:bg-[#041a3d]/[0.01] transition-all duration-300"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-[#041a3d] group-hover:bg-[#041a3d] group-hover:text-white transition-colors">
                     <Clock className="h-4.5 w-4.5" />
                   </div>
                   <div>
@@ -272,7 +272,7 @@ export const Contact = () => {
             <div className="lg:col-span-7">
               <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-xl relative">
                 <div className="flex items-center gap-3 pb-3 mb-4 border-b border-slate-100">
-                  <Mail className="w-5.5 h-5.5 text-emerald-600" />
+                  <Mail className="w-5.5 h-5.5 text-[#041a3d]" />
                   <div>
                     <h3 className="font-display text-lg font-bold text-slate-900">{contact.cta.title}</h3>
                     <p className="text-[11px] text-slate-500 font-bold mt-0.5">{contact.cta.description}</p>
@@ -291,7 +291,7 @@ export const Contact = () => {
                         placeholder="Enter your full name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500/20 transition-all"
+                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -303,7 +303,7 @@ export const Contact = () => {
                         placeholder="Enter your work email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500/20 transition-all"
+                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -318,7 +318,7 @@ export const Contact = () => {
                         placeholder="Your contact number"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500/20 transition-all"
+                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -329,7 +329,7 @@ export const Contact = () => {
                         placeholder="Your company name"
                         value={formData.company}
                         onChange={(e) => handleInputChange('company', e.target.value)}
-                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500/20 transition-all"
+                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -341,7 +341,7 @@ export const Contact = () => {
                       id="inquiryType"
                       value={formData.inquiryType}
                       onChange={(e) => handleInputChange('inquiryType', e.target.value)}
-                      className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-emerald-500/60 rounded-xl px-4 text-sm font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-emerald-500/20 transition-all cursor-pointer"
+                      className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 focus:outline-none transition-all cursor-pointer"
                     >
                       <option value="Web Development">Web Development</option>
                       <option value="Mobile Development">Mobile Development</option>
@@ -361,18 +361,21 @@ export const Contact = () => {
                       placeholder="Share your project details, goals, and requirements..."
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/60 rounded-xl p-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500/20 transition-all resize-none"
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl p-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all resize-none"
                     />
                   </div>
 
-                  <Button
+                  <motion.button
+                    whileHover={{ y: -1 }}
+                    whileTap={{ y: 0, scale: 0.98 }}
+                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 mt-2 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]"
+                    className="w-full h-12 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-sm rounded-xl transition-all duration-200 shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] flex items-center justify-center gap-2 mt-2 cursor-pointer"
                   >
                     <span>{isSubmitting ? 'Sending...' : contact.cta.buttonText}</span>
                     <Send className="w-4 h-4" />
-                  </Button>
+                  </motion.button>
                 </form>
               </div>
             </div>
@@ -382,7 +385,7 @@ export const Contact = () => {
 
         {/* HEADQUARTERS MAP & DIRECTIONS BANNER */}
         <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
-          <div className="group w-full rounded-[2rem] overflow-hidden border border-slate-200/60 bg-white shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-15px_rgba(16,185,129,0.2)] transition-all duration-700 flex flex-col md:flex-row relative">
+          <div className="group w-full rounded-[2rem] overflow-hidden border border-slate-200/60 bg-white shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-15px_rgba(14,165,233,0.2)] transition-all duration-700 flex flex-col md:flex-row relative">
             
             {/* Grayscale OSM Map representation */}
             <div className="w-full md:w-[55%] h-80 md:h-auto min-h-[400px] relative overflow-hidden bg-slate-100">
@@ -401,8 +404,8 @@ export const Contact = () => {
               
               <div className="relative z-10 space-y-6">
                 <div>
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-3 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow-sm">
-                    <MapPin className="w-3.5 h-3.5" />
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-[#041a3d] bg-blue-50 border border-blue-200/60 px-3 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow-sm">
+                    <MapPin className="w-3.5 h-3.5 text-[#041a3d]" />
                     {contact.office.heading}
                   </span>
                   <h3 className="text-2xl md:text-4xl font-extrabold font-display text-slate-900 mb-3">TechVistar</h3>
@@ -412,15 +415,18 @@ export const Contact = () => {
                 </div>
                 
                 <div className="pt-6 border-t border-slate-100">
-                  <a 
+                  <motion.a 
+                    whileHover={{ y: -1 }}
+                    whileTap={{ y: 0, scale: 0.98 }}
+                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                     href="https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 h-12 px-7 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-[0_8px_20px_-6px_rgba(16,185,129,0.3)] hover:shadow-[0_12px_25px_-4px_rgba(16,185,129,0.4)] group/btn"
+                    className="inline-flex items-center justify-center gap-2 h-11 px-7 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-sm rounded-xl transition-all duration-200 shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group/btn"
                   >
                     <span>Get Directions</span>
                     <ArrowUpRight className="w-4 h-4 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                  </a>
+                  </motion.a>
                 </div>
               </div>
             </div>
@@ -440,7 +446,7 @@ export const Contact = () => {
                 <motion.div 
                   key={office._id}
                   whileHover={{ y: -8, scale: 1.01 }}
-                  className="group relative bg-white border border-slate-200/60 hover:border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 flex flex-col justify-between"
+                  className="group relative bg-white border border-slate-200/60 hover:border-[#041a3d]/30 rounded-[2rem] overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(14,165,233,0.15)] transition-all duration-500 flex flex-col justify-between"
                 >
                   <div className="h-48 w-full bg-slate-100 relative overflow-hidden border-b border-slate-100">
                     {showMap ? (
@@ -476,7 +482,7 @@ export const Contact = () => {
                             e.stopPropagation();
                             setMapToggles(prev => ({ ...prev, [office.officeId]: true }));
                           }}
-                          className="absolute bottom-3 right-3 z-20 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center gap-1.5 hover:scale-105"
+                          className="absolute bottom-3 right-3 z-20 bg-[#041a3d] hover:bg-[#0b2859] text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center gap-1.5 hover:scale-105"
                         >
                           <MapPin className="w-3.5 h-3.5" />
                           <span>Show Map</span>
@@ -488,16 +494,16 @@ export const Contact = () => {
                   <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20 flex-1 flex flex-col justify-between">
                     <div className="space-y-4">
                       <div className="flex items-start justify-between gap-2">
-                        <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-emerald-600 transition-colors duration-300">
+                        <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-[#041a3d] transition-colors duration-300">
                           {office.name}
                         </div>
-                        <span className="shrink-0 text-[9px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider border border-emerald-200/60">
+                        <span className="shrink-0 text-[9px] font-black text-[#041a3d] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider border border-blue-200/60">
                           {office.badge}
                         </span>
                       </div>
 
                       <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
-                        <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-emerald-400 transition-colors duration-300" />
+                        <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-[#041a3d] transition-colors duration-300" />
                         <p className="text-sm font-semibold leading-relaxed whitespace-pre-line">
                           {office.address}
                         </p>
@@ -509,7 +515,7 @@ export const Contact = () => {
                         href={`https://maps.google.com/?q=${encodeURIComponent(office.name + ' ' + office.address)}`}
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 transition-colors group/link"
+                        className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#041a3d] hover:text-sky-600 transition-colors group/link"
                       >
                         View on Maps
                         <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />

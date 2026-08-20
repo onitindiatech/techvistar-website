@@ -48,11 +48,11 @@ export const ProjectCTASection = ({ projectCta }: ProjectCTASectionProps) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       id="contact"
-      className="relative overflow-hidden bg-gradient-to-r from-emerald-600 via-[#10B981] to-emerald-700 border border-emerald-500/30 rounded-3xl p-8 md:p-12 text-white shadow-[0_20px_50px_rgba(16,185,129,0.15)] scroll-mt-24 text-center w-full"
+      className="relative overflow-hidden bg-[#041a3d] border border-[#041a3d]/30 rounded-3xl p-8 md:p-12 text-white shadow-[0_20px_50px_rgba(5,27,61,0.25)] scroll-mt-24 text-center w-full"
       style={
         !hasProjectCta && (cta as PortfolioLandingCtaBlock).backgroundImage
           ? {
-              backgroundImage: `linear-gradient(rgba(5, 150, 105, 0.88), rgba(5, 150, 105, 0.92)), url(${resolveLandingBackground((cta as PortfolioLandingCtaBlock).backgroundImage!)})`,
+              backgroundImage: `linear-gradient(rgba(4, 26, 61, 0.9), rgba(4, 26, 61, 0.94)), url(${resolveLandingBackground((cta as PortfolioLandingCtaBlock).backgroundImage!)})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }
@@ -60,7 +60,7 @@ export const ProjectCTASection = ({ projectCta }: ProjectCTASectionProps) => {
       }
     >
       <div className="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-      <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-emerald-300/20 blur-2xl pointer-events-none" />
+      <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-blue-400/20 blur-2xl pointer-events-none" />
 
       <div className="absolute inset-0 pointer-events-none z-0 opacity-10" aria-hidden="true">
         <svg width="100%" height="100%">
@@ -74,7 +74,7 @@ export const ProjectCTASection = ({ projectCta }: ProjectCTASectionProps) => {
       <div className="relative z-10 space-y-6">
         {cta.badge?.trim() && (
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-xs font-semibold select-none">
-            <Sparkles className="h-3 w-3 text-emerald-100 animate-pulse" />
+            <Sparkles className="h-3 w-3 text-blue-200 animate-pulse" />
             <span>{cta.badge}</span>
           </div>
         )}
@@ -84,31 +84,36 @@ export const ProjectCTASection = ({ projectCta }: ProjectCTASectionProps) => {
         </h2>
 
         {cta.description?.trim() && (
-          <p className="text-emerald-50/90 text-xs md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
+          <p className="text-blue-100/90 text-xs md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
             {cta.description}
           </p>
         )}
 
         <div className="flex flex-wrap gap-4 justify-center pt-2">
           {cta.buttonText?.trim() && (
-            <Button
-              asChild
-              className="bg-white text-emerald-700 hover:bg-slate-50 font-bold border-none shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] px-7 py-3 rounded-xl inline-flex items-center gap-2 transition-all h-11 text-xs md:text-sm"
+            <motion.button
+              whileHover={{ y: -1 }}
+              whileTap={{ y: 0, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-7 text-xs font-extrabold text-[#041a3d] shadow-md transition-all hover:bg-slate-100 md:text-sm cursor-pointer group"
             >
-              <CmsHref href={cta.buttonLink || '/contact'}>{cta.buttonText}</CmsHref>
-            </Button>
+              <CmsHref href={cta.buttonLink || '/contact'} className="inline-flex items-center gap-2 text-[#041a3d]">
+                <span>{cta.buttonText}</span>
+              </CmsHref>
+            </motion.button>
           )}
           {cta.secondaryButtonText?.trim() && (
-            <Button
-              asChild
-              variant="outline"
-              className="border-white/30 hover:border-white text-white hover:bg-white/10 font-bold px-7 py-3 rounded-xl inline-flex items-center gap-2 h-11 text-xs md:text-sm transition-all"
+            <motion.button
+              whileHover={{ y: -1 }}
+              whileTap={{ y: 0, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-7 text-xs font-extrabold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm cursor-pointer group"
             >
-              <CmsHref href={cta.secondaryButtonLink || '/work'}>
-                <MessageSquare className="h-4.5 w-4.5 mr-2" />
-                {cta.secondaryButtonText}
+              <CmsHref href={cta.secondaryButtonLink || '/work'} className="inline-flex items-center gap-2 text-white">
+                <MessageSquare className="h-4.5 w-4.5 text-white mr-2" />
+                <span>{cta.secondaryButtonText}</span>
               </CmsHref>
-            </Button>
+            </motion.button>
           )}
         </div>
       </div>

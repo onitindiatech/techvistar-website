@@ -40,7 +40,7 @@ export const ProjectHero = ({ project }: ProjectHeroProps) => {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
               <div className="md:col-span-7 space-y-5">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/50 text-xs font-semibold uppercase tracking-wider">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#041a3d] border border-blue-200/50 text-xs font-bold uppercase tracking-wider">
                     {project.category}
                   </div>
                   <Badge
@@ -55,7 +55,7 @@ export const ProjectHero = ({ project }: ProjectHeroProps) => {
                   {project.title}
                 </h1>
 
-                <p className="text-base md:text-lg font-bold text-emerald-600 leading-snug">
+                <p className="text-base md:text-lg font-bold text-[#041a3d] leading-snug">
                   {heroTagline}
                 </p>
 
@@ -71,9 +71,9 @@ export const ProjectHero = ({ project }: ProjectHeroProps) => {
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
                       {heroHighlights.map((highlight, idx) => (
-                        <div key={idx} className="flex gap-2.5 items-start text-xs text-slate-700 font-medium">
-                          <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-0.5 shrink-0 border border-emerald-100">
-                            <Check className="h-3 w-3 text-emerald-600" />
+                        <div key={idx} className="flex gap-2.5 items-start text-sm md:text-base text-slate-700 font-normal leading-relaxed">
+                          <div className="h-4.5 w-4.5 rounded-full bg-blue-50 flex items-center justify-center p-0.5 mt-1 shrink-0 border border-blue-100">
+                            <Check className="h-3 w-3 text-[#041a3d]" />
                           </div>
                           <span>{highlight}</span>
                         </div>

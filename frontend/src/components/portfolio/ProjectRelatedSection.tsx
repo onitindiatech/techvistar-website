@@ -36,7 +36,7 @@ export const ProjectRelatedSection = ({ relatedProjects }: SectionProps) => {
         <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-emerald-600" />
         </div>
-        <h2 className="mb-8 font-display text-2xl font-bold text-slate-900">Related Projects</h2>
+        <h2 className="font-display text-heading-sm text-slate-900">Related Projects</h2>
       </div>
 
       <motion.div
@@ -54,7 +54,7 @@ export const ProjectRelatedSection = ({ relatedProjects }: SectionProps) => {
           >
             <Link
               to={`/work/${rp.slug}`}
-              className="flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(16,185,129,0.12)] transition-all duration-300 h-full overflow-hidden"
+              className="flex flex-col justify-between rounded-2xl bg-white/70 backdrop-blur-md border border-slate-100 hover:border-emerald-500/30 hover:shadow-[0_15px_30px_-8px_rgba(14,165,233,0.12)] transition-all duration-300 h-full overflow-hidden"
             >
               <div>
                 <div className="relative aspect-video w-full overflow-hidden bg-transparent border-b border-slate-100/50">
@@ -78,7 +78,7 @@ export const ProjectRelatedSection = ({ relatedProjects }: SectionProps) => {
                     {rp.title}
                   </h3>
 
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                  <p className="text-base text-slate-600 font-medium leading-relaxed line-clamp-2">
                     {rp.description}
                   </p>
                 </div>

@@ -102,7 +102,7 @@ export const IndustryOverviewSection = ({ industry }: IndustryOverviewSectionPro
 
           <RichTextContent
             content={industry.overview || industry.description}
-            className="text-sm leading-relaxed text-slate-600 md:text-sm"
+            className="text-base md:text-lg leading-relaxed text-slate-600 font-normal"
           />
 
 

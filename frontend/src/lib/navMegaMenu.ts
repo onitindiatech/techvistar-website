@@ -1,6 +1,8 @@
 import type { LucideIcon } from 'lucide-react';
 import { Briefcase, Brain } from 'lucide-react';
 import { resolveLucideIcon } from '@/lib/resolveLucideIcon';
+import { SERVICES } from '@/data/services';
+import { SOLUTIONS_DATA, resolveSolutionIcon } from '@/data/solutions';
 
 /** Design capacity: 3 columns × 4 links (matches current mega-menu layout). */
 export const NAV_MEGA_ITEMS_PER_COLUMN = 4;
@@ -99,15 +101,6 @@ function buildColumns(
 
 /**
  * Derives a concise one-liner subtitle from a potentially long CMS description.
- *
- * Strategy (in priority order):
- * 1. If the text is already ≤ MAX chars — return it as-is (no change).
- * 2. Try to cut at the first natural sentence boundary (`. `, `; `, `, `) within
- *    the MAX window, producing a clean fragment without a trailing separator.
- * 3. Fall back to the last whole-word boundary within MAX chars + "…".
- *
- * MAX is tuned so the result fits comfortably on one line in the mega-menu
- * column (≈ 6-10 words / ~55 characters).
  */
 const MEGA_DESC_MAX = 55;
 
@@ -134,11 +127,19 @@ function condenseMegaDesc(raw: string): string {
 function toServiceNavItem(service: any): NavMegaItem | null {
   const slug = String(service?.slug ?? '').trim();
   if (!slug) return null;
+
+  let iconComp: LucideIcon = Briefcase;
+  if (typeof service.icon === 'function' || (typeof service.icon === 'object' && service.icon !== null)) {
+    iconComp = service.icon as LucideIcon;
+  } else if (typeof service.icon === 'string' && service.icon) {
+    iconComp = (resolveLucideIcon(service.icon) as LucideIcon) || Briefcase;
+  }
+
   return {
     label: String(service.title || slug).trim(),
     to: `/services/${slug}`,
-    desc: condenseMegaDesc(String(service.shortDescription || '')),
-    icon: resolveLucideIcon(String(service.icon || 'Briefcase')) || Briefcase,
+    desc: condenseMegaDesc(String(service.shortDescription || service.overview || service.fullDescription || service.longDescription || '')),
+    icon: iconComp,
     slug,
   };
 }
@@ -146,22 +147,41 @@ function toServiceNavItem(service: any): NavMegaItem | null {
 function toSolutionNavItem(solution: any): NavMegaItem | null {
   const slug = String(solution?.slug ?? '').trim();
   if (!slug) return null;
+
+  let iconComp: LucideIcon = Brain;
+  if (typeof solution.icon === 'function' || (typeof solution.icon === 'object' && solution.icon !== null)) {
+    iconComp = solution.icon as LucideIcon;
+  } else if (typeof solution.icon === 'string' && solution.icon) {
+    iconComp = (resolveLucideIcon(solution.icon) as LucideIcon) || (resolveSolutionIcon(solution.icon) as LucideIcon) || Brain;
+  }
+
   return {
     label: String(solution.title || slug).trim(),
     to: `/solutions/${slug}`,
-    desc: condenseMegaDesc(String(solution.shortDescription || '')),
-    icon: resolveLucideIcon(String(solution.icon || 'Brain')) || Brain,
+    desc: condenseMegaDesc(String(solution.shortDescription || solution.subtitle || solution.desc || solution.heroDescription || '')),
+    icon: iconComp,
     slug,
   };
 }
 
 
 /**
- * Build Services mega-menu columns from active CMS records only.
- * Caps each column to the design limit; remaining items stay on the landing page.
+ * Build Services mega-menu columns. Falls back to or combines with static SERVICES if API returns a sparse list.
  */
 export function buildServiceNavColumns(services: any[] | undefined | null): NavMegaColumn[] {
-  const active = sortByDisplayOrder((services ?? []).filter((service) => service?.slug));
+  const staticServices = SERVICES as any[];
+  let sourceList: any[] = services && services.length > 0 ? services : staticServices;
+
+  if (services && services.length > 0 && services.length < 6) {
+    const apiSlugs = new Set(services.map((s) => s.slug));
+    const extraStatic = staticServices.filter((s) => !apiSlugs.has(s.slug));
+    sourceList = [...services, ...extraStatic];
+  }
+
+  let active = sortByDisplayOrder(sourceList.filter((service) => service?.slug));
+  if (active.length === 0 && staticServices.length > 0) {
+    active = sortByDisplayOrder(staticServices.filter((service) => service?.slug));
+  }
   const items: NavMegaItem[] = [];
   const categories: string[] = [];
 
@@ -172,15 +192,32 @@ export function buildServiceNavColumns(services: any[] | undefined | null): NavM
     categories.push(String(service.category || ''));
   }
 
-  return buildColumns(items, categories, SERVICE_COLUMN_RULES);
+  const columns = buildColumns(items, categories, SERVICE_COLUMN_RULES);
+  const totalItems = columns.reduce((acc, col) => acc + col.items.length, 0);
+  if (totalItems === 0 && sourceList !== staticServices) {
+    return buildServiceNavColumns(staticServices);
+  }
+
+  return columns;
 }
 
 /**
- * Build Solutions mega-menu columns from active CMS records only.
- * Same capacity rules as Services.
+ * Build Solutions mega-menu columns. Falls back to or combines with static SOLUTIONS_DATA if API returns a sparse list.
  */
 export function buildSolutionNavColumns(solutions: any[] | undefined | null): NavMegaColumn[] {
-  const active = sortByDisplayOrder((solutions ?? []).filter((solution) => solution?.slug));
+  const staticSolutions = Object.values(SOLUTIONS_DATA);
+  let sourceList: any[] = solutions && solutions.length > 0 ? solutions : (staticSolutions as any[]);
+
+  if (solutions && solutions.length > 0 && solutions.length < 4) {
+    const apiSlugs = new Set(solutions.map((s: any) => s.slug));
+    const extraStatic = staticSolutions.filter((s: any) => !apiSlugs.has(s.slug));
+    sourceList = [...solutions, ...extraStatic];
+  }
+
+  let active = sortByDisplayOrder(sourceList.filter((solution) => solution?.slug));
+  if (active.length === 0 && staticSolutions.length > 0) {
+    active = sortByDisplayOrder(staticSolutions.filter((solution) => solution?.slug));
+  }
   const items: NavMegaItem[] = [];
   const categories: string[] = [];
 
@@ -191,5 +228,12 @@ export function buildSolutionNavColumns(solutions: any[] | undefined | null): Na
     categories.push(String(solution.category || ''));
   }
 
-  return buildColumns(items, categories, SOLUTION_COLUMN_RULES);
+  const columns = buildColumns(items, categories, SOLUTION_COLUMN_RULES);
+  const totalItems = columns.reduce((acc, col) => acc + col.items.length, 0);
+  if (totalItems === 0 && sourceList !== staticSolutions) {
+    return buildSolutionNavColumns(staticSolutions as any[]);
+  }
+
+  return columns;
 }
+

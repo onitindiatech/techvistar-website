@@ -506,7 +506,7 @@ const VERIFY_COLLECTIONS = [
 function collectStringValues(value: unknown, hits: string[]): void {
   if (value === null || value === undefined) return;
   if (typeof value === 'string') {
-    if (value.includes('cloudinary.com') || value.startsWith('techvistar/')) {
+    if (value.includes('cloudinary.com') || value.startsWith('veenero/')) {
       hits.push(value);
     }
     return;
@@ -560,7 +560,7 @@ async function verifyMigration(): Promise<{
     [];
 
   for (const publicId of publicIdsToVerify) {
-    const resourceTypes: ResourceType[] = publicId.startsWith('techvistar/resumes/')
+    const resourceTypes: ResourceType[] = publicId.startsWith('veenero/resumes/')
       ? ['image', 'raw']
       : ['image'];
 
@@ -615,7 +615,7 @@ async function writeLogFile(summary: Record<string, unknown>): Promise<string> {
 
 async function main(): Promise<void> {
   console.log('══════════════════════════════════════════════════════════════');
-  console.log(' TechVistar Cloudinary asset migration');
+  console.log(' Veenero Cloudinary asset migration');
   console.log(` Legacy cloud : ${LEGACY_CLOUD}`);
   console.log(` Target cloud : ${TARGET_CLOUD}`);
   console.log(` Mode         : ${VERIFY_ONLY ? 'verify-only' : DRY_RUN ? 'dry-run' : 'live'}`);

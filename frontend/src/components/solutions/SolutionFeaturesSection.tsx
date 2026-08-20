@@ -69,7 +69,7 @@ export const SolutionFeaturesSection = ({ solution }: SectionProps) => {
           </h2>
         </div>
         {solution.sectionCopy?.featuresSubtitle?.trim() && (
-          <p className="pl-7 text-xs font-medium text-slate-500">
+          <p className="pl-7 text-base font-medium leading-relaxed text-slate-600">
             {solution.sectionCopy.featuresSubtitle}
           </p>
         )}
@@ -102,17 +102,17 @@ export const SolutionFeaturesSection = ({ solution }: SectionProps) => {
                       </span>
                     </span>
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-xs font-bold text-emerald-600 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Learn More
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold text-slate-900 mb-0.5 group-hover:text-emerald-700 transition-colors font-display">
+                <h3 className="text-base font-bold text-slate-900 mb-1 group-hover:text-emerald-700 transition-colors font-display">
                   {feature.title}
                 </h3>
 
-                <p className="text-xs text-slate-500 leading-relaxed mb-2">
+                <p className="text-base font-medium text-slate-600 leading-relaxed mb-2">
                   {feature.description}
                 </p>
               </div>

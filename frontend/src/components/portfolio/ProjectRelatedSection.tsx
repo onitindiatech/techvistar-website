@@ -78,7 +78,7 @@ export const ProjectRelatedSection = ({ relatedProjects }: SectionProps) => {
                     {rp.title}
                   </h3>
 
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                  <p className="text-base text-slate-600 font-medium leading-relaxed line-clamp-2">
                     {rp.description}
                   </p>
                 </div>

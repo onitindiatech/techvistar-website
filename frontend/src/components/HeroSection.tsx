@@ -348,67 +348,37 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
                   display.source === 'responsive' && display.ctaLayout === 'inline' && 'hero-cta-row--inline'
                 )}
               >
-                <motion.div
-                  whileHover={
-                    prefersReducedMotion
-                      ? undefined
-                      : { y: -3, transition: { type: 'spring', stiffness: 420, damping: 22 } }
-                  }
-                  whileTap={{ scale: 0.95 }}
-                  style={{ transformStyle: 'preserve-3d' }}
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ y: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-6 sm:px-8 bg-[#041a3d] hover:bg-[#021028] text-white rounded-xl transition-all duration-200 text-sm font-extrabold tracking-tight shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group cursor-pointer"
                 >
-                  <Button
-                    size="lg"
-                    className={cn(
-                      'hero-cta-primary group h-11 sm:h-12 w-full lg:w-auto min-w-0 lg:min-w-[11.5rem] rounded-lg border-0',
-                      'bg-primary px-6 sm:px-8 text-[0.9375rem] sm:text-base font-semibold text-primary-foreground',
-                      'shadow-[0_12px_40px_-12px_rgba(14,165,233,0.45)]',
-                      'transition-[background-color,box-shadow,transform] duration-300',
-                      'hover:bg-emerald-400 hover:shadow-[0_18px_44px_-10px_rgba(14,165,233,0.55)]',
-                      'focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
-                    )}
-                    asChild
+                  <Link
+                    to="/#contact"
+                    className="inline-flex items-center justify-center gap-2 text-white"
+                    onClick={handlePrimaryCta}
                   >
-                    <Link
-                      to="/#contact"
-                      className="inline-flex items-center justify-center gap-2"
-                      onClick={handlePrimaryCta}
-                    >
-                      <span>{display.ctaPrimary}</span>
-                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
-                    </Link>
-                  </Button>
-                </motion.div>
-                <motion.div
-                  whileHover={
-                    prefersReducedMotion ? undefined : { y: -2, transition: { type: 'spring', stiffness: 400, damping: 24 } }
-                  }
-                  whileTap={{ scale: 0.96 }}
-                  style={{ transformStyle: 'preserve-3d' }}
+                    <span>{display.ctaPrimary}</span>
+                    <ArrowRight className="w-3.5 h-3.5 opacity-90 group-hover:translate-x-0.5 transition-transform duration-200" />
+                  </Link>
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ y: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-6 sm:px-8 border-2 border-white/20 hover:border-[#041a3d]/40 bg-white/5 hover:bg-white/10 text-white rounded-xl transition-all duration-200 text-sm font-extrabold tracking-tight group cursor-pointer"
                 >
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className={cn(
-                      'hero-cta-secondary group h-11 sm:h-12 w-full lg:w-auto min-w-0 lg:min-w-[11.5rem] rounded-lg',
-                      'border-white/20 bg-white/[0.06] px-6 sm:px-8 text-[0.9375rem] sm:text-base font-semibold text-white',
-                      'shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] backdrop-blur-sm',
-                      'transition-[border-color,background-color,box-shadow] duration-300',
-                      'hover:border-emerald-400/45 hover:bg-white/[0.1] hover:shadow-[0_0_20px_rgba(14,165,233,0.15)]',
-                      'focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
-                    )}
-                    asChild
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center justify-center gap-2 text-white"
+                    onClick={handleSecondaryCta}
                   >
-                    <Link
-                      to="/services"
-                      className="inline-flex items-center justify-center gap-2"
-                      onClick={handleSecondaryCta}
-                    >
-                      <span>{display.ctaSecondary}</span>
-                      <ArrowRight className="h-4 w-4 opacity-80 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
-                    </Link>
-                  </Button>
-                </motion.div>
+                    <span>{display.ctaSecondary}</span>
+                    <ArrowRight className="w-3.5 h-3.5 opacity-90 group-hover:translate-x-0.5 transition-transform duration-200" />
+                  </Link>
+                </motion.button>
               </motion.div>
 
               <motion.div variants={fadeUp} className="mt-4 hidden w-full md:mt-6 md:block lg:mt-7">
@@ -453,8 +423,8 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
           ) : null}
 
           {showHighlightsBlock && ipadProHighlights.length > 0 ? (
-            <div className="hero-ipad-highlights" aria-label="Why Choose TechVistar">
-              <p className="hero-ipad-highlights-title">Why Choose TechVistar</p>
+            <div className="hero-ipad-highlights" aria-label="Why Choose Veenero">
+              <p className="hero-ipad-highlights-title">Why Choose Veenero</p>
               <ul className="hero-ipad-highlights-pills">
                 {ipadProHighlights.map((highlight) => (
                   <li key={highlight} className="hero-ipad-highlight-pill">

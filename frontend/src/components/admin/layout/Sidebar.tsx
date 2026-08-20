@@ -30,61 +30,28 @@ const navGroups: { title: string; items: NavItem[] }[] = [
     items: [{ label: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard }],
   },
   {
-    title: "Website",
+    title: "Content & Media",
     items: [
-      { label: "Home", path: "/admin/home-settings", icon: Home },
-      { label: "About", path: "/admin/about-settings", icon: Info },
-      { label: "Contact", path: "/admin/contact-settings", icon: Phone },
-      { label: "Website Settings", path: "/admin/website-settings", icon: SlidersHorizontal },
-    ],
-  },
-  {
-    title: "Services",
-    items: [
+      { label: "Website Content", path: "/admin/content", icon: Home },
       { label: "Services", path: "/admin/services", icon: Wrench },
-      { label: "Services Landing", path: "/admin/services-settings", icon: Settings },
+      { label: "Projects / Portfolio", path: "/admin/projects", icon: Package },
     ],
   },
   {
-    title: "Solutions",
+    title: "Engagement",
     items: [
-      { label: "Solutions", path: "/admin/solutions", icon: Shapes },
-      { label: "Solutions Landing", path: "/admin/solutions-landing", icon: Settings },
+      { label: "Testimonials", path: "/admin/testimonials", icon: MessageSquareText },
+      { label: "Team", path: "/admin/team", icon: Contact },
+      { label: "Blog / Articles", path: "/admin/blog", icon: FileText },
+      { label: "Contact / Enquiries", path: "/admin/enquiries", icon: Mail },
     ],
   },
   {
-    title: "Industries",
+    title: "System",
     items: [
-      { label: "Industries", path: "/admin/industries", icon: Building },
-      { label: "Industries Landing", path: "/admin/industries-landing", icon: Settings },
+      { label: "Media / Images", path: "/admin/media", icon: Globe },
+      { label: "Settings", path: "/admin/settings", icon: Settings },
     ],
-  },
-  {
-    title: "Portfolio",
-    items: [
-      { label: "Portfolio", path: "/admin/portfolio", icon: Package },
-      { label: "Portfolio Landing", path: "/admin/portfolio-landing", icon: Settings2 },
-    ],
-  },
-  {
-    title: "Careers",
-    items: [
-      { label: "Jobs", path: "/admin/jobs", icon: BriefcaseBusiness },
-      { label: "Applications", path: "/admin/applications", icon: FileText },
-      { label: "Careers Landing", path: "/admin/careers-landing", icon: Settings },
-    ],
-  },
-  {
-    title: "Content",
-    items: [
-      { label: "FAQs", path: "/admin/faqs", icon: MessageSquareText },
-      { label: "Newsletter", path: "/admin/newsletter", icon: Mail },
-      { label: "Page SEO", path: "/admin/page-seo", icon: Globe },
-    ],
-  },
-  {
-    title: "Inbox",
-    items: [{ label: "Contacts", path: "/admin/contacts", icon: Contact }],
   },
 ];
 
@@ -97,10 +64,10 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
         <div className="flex items-center gap-3">
           <div className="relative group cursor-pointer">
             <div className="absolute inset-0 bg-emerald-500 rounded-xl blur opacity-30 group-hover:opacity-55 transition-opacity" />
-            <img src={logo} alt="TechVistar" className="h-9 w-9 rounded-xl object-cover border border-slate-700 relative z-10" />
+            <img src={logo} alt="Veenero Sustainable Solutions" className="h-9 w-9 rounded-xl object-cover border border-slate-700 relative z-10" />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-[0.25em] text-emerald-400">TechVistar</p>
+            <p className="text-[9px] font-black uppercase tracking-[0.25em] text-emerald-400">Veenero</p>
             <h2 className="text-sm font-extrabold text-white tracking-tight leading-tight font-display">Workspace</h2>
           </div>
         </div>

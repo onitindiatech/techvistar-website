@@ -208,8 +208,8 @@ export const DEFAULT_WEBSITE_SETTINGS: WebsiteSettingsConfig = {
     legalLinks: [],
   },
   socialLinks: {
-    linkedin: DEFAULT_SOCIAL_LINKEDIN,
-    instagram: DEFAULT_SOCIAL_INSTAGRAM,
+    linkedin: SITE.socials[0] || 'https://www.linkedin.com/company/techvistar',
+    instagram: SITE.socials[1] || 'https://www.instagram.com/tech_vistar',
     twitter: '',
     facebook: '',
     github: '',
@@ -246,6 +246,7 @@ export const DEFAULT_WEBSITE_SETTINGS: WebsiteSettingsConfig = {
     expectedReturnDate: '',
     buttonText: 'Contact support',
     buttonLink: '/contact',
+    allowedIps: '',
   },
 };
 

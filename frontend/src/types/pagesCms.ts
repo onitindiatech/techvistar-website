@@ -358,10 +358,10 @@ export const DEFAULT_ABOUT_CMS: AboutCmsConfig = {
     buttonText: ABOUT_PAGE.ctaButtonText,
     buttonLink: '/#contact',
   },
-  seoTitle: 'About TechVistar | Technology-first growth partner',
+  seoTitle: 'About Veenero | Technology-first growth partner',
   seoDescription:
-    'Learn about TechVistar — a Hyderabad-based technology-first growth partner delivering web systems, automation, applied AI, and accountable digital delivery.',
-  canonicalUrl: 'https://techvistar.com/about',
+    'Learn about Veenero — a Hyderabad-based technology-first growth partner delivering web systems, automation, applied AI, and accountable digital delivery.',
+  canonicalUrl: 'https://veenero.com/about',
   robotsIndex: true,
   robotsFollow: true,
 };
@@ -376,11 +376,11 @@ export const DEFAULT_CONTACT_CMS: ContactCmsConfig = {
   },
   office: {
     heading: 'Visit Us',
-    address: 'TechVistar HQ, Noida, Uttar Pradesh, India',
+    address: 'Veenero HQ, Noida, Uttar Pradesh, India',
     hours: 'Monday - Saturday, 09:00 AM - 07:00 PM IST',
   },
   contactInfo: {
-    email: 'hello@techvistar.com',
+    email: 'hello@veenero.com',
     phone: '+91 9573157982',
     supportText: 'We reply within 24 hours',
   },
@@ -390,9 +390,9 @@ export const DEFAULT_CONTACT_CMS: ContactCmsConfig = {
     buttonText: 'Send Message',
     buttonLink: '#contact-form-section',
   },
-  seoTitle: 'Contact TechVistar | Start your project',
-  seoDescription: 'Contact TechVistar for web development, AI, automation, and digital growth engagements.',
-  canonicalUrl: 'https://techvistar.com/contact',
+  seoTitle: 'Contact Veenero | Start your project',
+  seoDescription: 'Contact Veenero for web development, AI, automation, and digital growth engagements.',
+  canonicalUrl: 'https://veenero.com/contact',
   robotsIndex: true,
   robotsFollow: true,
 };
@@ -476,9 +476,9 @@ export const DEFAULT_SOLUTIONS_LANDING_CMS: SolutionsLandingCmsConfig = {
     secondaryButtonLink: '/contact',
     backgroundImage: '',
   },
-  seoTitle: 'Solutions | TechVistar',
-  seoDescription: 'Explore TechVistar business, AI, and digital solutions engineered for measurable outcomes.',
-  canonicalUrl: 'https://techvistar.com/solutions',
+  seoTitle: 'Solutions | Veenero',
+  seoDescription: 'Explore Veenero business, AI, and digital solutions engineered for measurable outcomes.',
+  canonicalUrl: 'https://veenero.com/solutions',
   robotsIndex: true,
   robotsFollow: true,
 };
@@ -560,9 +560,9 @@ export const DEFAULT_INDUSTRIES_LANDING_CMS: IndustriesLandingCmsConfig = {
   },
   sidebarDefaults: DEFAULT_INDUSTRY_SIDEBAR,
   consultationDefaults: DEFAULT_INDUSTRY_CONSULTATION,
-  seoTitle: 'Industries | TechVistar',
-  seoDescription: 'Explore TechVistar industry solutions across healthcare, fintech, education, and enterprise sectors.',
-  canonicalUrl: 'https://techvistar.com/industries',
+  seoTitle: 'Industries | Veenero',
+  seoDescription: 'Explore Veenero industry solutions across healthcare, fintech, education, and enterprise sectors.',
+  canonicalUrl: 'https://veenero.com/industries',
   robotsIndex: true,
   robotsFollow: true,
 };
@@ -621,7 +621,7 @@ export const DEFAULT_PORTFOLIO_LANDING_CMS: PortfolioLandingCmsConfig = {
   testimonial: {
     badge: 'Client Success',
     quote:
-      'TechVistar delivered our route optimization system ahead of schedule. The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag.',
+      'Veenero delivered our route optimization system ahead of schedule. The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag.',
     author: 'Chief of Operations',
     role: '',
     company: 'Logistics Fleet Management Company',
@@ -653,10 +653,10 @@ export const DEFAULT_PORTFOLIO_LANDING_CMS: PortfolioLandingCmsConfig = {
     image: '',
     imagePublicId: '',
   },
-  seoTitle: 'Our Work | TechVistar Portfolio',
+  seoTitle: 'Our Work | Veenero Portfolio',
   seoDescription:
     'Showcase production-ready digital products, enterprise platforms, AI solutions, SaaS applications and scalable software engineered for modern businesses.',
-  canonicalUrl: 'https://techvistar.com/work',
+  canonicalUrl: 'https://veenero.com/work',
   robotsIndex: true,
   robotsFollow: true,
 };
@@ -671,7 +671,7 @@ export const DEFAULT_CAREERS_LANDING_CMS: CareersLandingCmsConfig = {
     backgroundImage: '',
   },
   culture: {
-    title: 'Life at TechVistar',
+    title: 'Life at Veenero',
     description:
       'Real photography of workspaces, collaboration synch, and cultural events.',
   },
@@ -698,10 +698,10 @@ export const DEFAULT_CAREERS_LANDING_CMS: CareersLandingCmsConfig = {
     buttonText: 'Submit Open Application',
     buttonLink: '/contact',
   },
-  seoTitle: 'Careers at TechVistar | Join our engineering team',
+  seoTitle: 'Careers at Veenero | Join our engineering team',
   seoDescription:
-    'Explore open roles at TechVistar. Join a collaborative team building web, AI, and automation products.',
-  canonicalUrl: 'https://techvistar.com/careers',
+    'Explore open roles at Veenero. Join a collaborative team building web, AI, and automation products.',
+  canonicalUrl: 'https://veenero.com/careers',
   robotsIndex: true,
   robotsFollow: true,
 };

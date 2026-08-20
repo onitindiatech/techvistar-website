@@ -9,7 +9,7 @@
         "process"
       ],
       "featured": true,
-      "question": "What is TechVistar's delivery methodology?",
+      "question": "What is Veenero's delivery methodology?",
       "answer": "We use an iterative, milestone-driven delivery process. It begins with aligning on vision, locking in the scope, executing clean development sprints with regular demos, and finalizing with production launch and handover training."
     },
     {
@@ -33,7 +33,7 @@
         "services"
       ],
       "featured": true,
-      "question": "What services does TechVistar offer?",
+      "question": "What services does Veenero offer?",
       "answer": "We offer end-to-end digital solutions including Web & Mobile Development, AI Solutions, Cloud & DevOps, UI/UX Design, Automation, Data Analytics, and Product Engineering."
     },
     {
@@ -5015,7 +5015,7 @@
       ],
       "status": "active",
       "featured": true,
-      "applyUrl": "mailto:careers@techvistar.com?subject=Application%20for%20Frontend%20Developer"
+      "applyUrl": "mailto:careers@veenero.com?subject=Application%20for%20Frontend%20Developer"
     },
     {
       "id": "2",
@@ -5045,7 +5045,7 @@
       ],
       "status": "active",
       "featured": true,
-      "applyUrl": "mailto:careers@techvistar.com?subject=Application%20for%20Backend%20Developer"
+      "applyUrl": "mailto:careers@veenero.com?subject=Application%20for%20Backend%20Developer"
     },
     {
       "id": "3",
@@ -5059,7 +5059,7 @@
       "responsibilities": [
         "Conduct user research, interviews, and structure user flows",
         "Build wireframes, interactive prototypes, and layout mockups",
-        "Maintain and expand TechVistar's design system library in Figma",
+        "Maintain and expand Veenero's design system library in Figma",
         "Work alongside engineering teams to ensure pixel-perfect visual styling"
       ],
       "requirements": [
@@ -5075,7 +5075,7 @@
       ],
       "status": "active",
       "featured": true,
-      "applyUrl": "mailto:careers@techvistar.com?subject=Application%20for%20UI/UX%20Designer"
+      "applyUrl": "mailto:careers@veenero.com?subject=Application%20for%20UI/UX%20Designer"
     },
     {
       "id": "4",
@@ -5105,7 +5105,7 @@
       ],
       "status": "active",
       "featured": false,
-      "applyUrl": "mailto:careers@techvistar.com?subject=Application%20for%20React%20Internship"
+      "applyUrl": "mailto:careers@veenero.com?subject=Application%20for%20React%20Internship"
     },
     {
       "id": "5",
@@ -5135,7 +5135,7 @@
       ],
       "status": "active",
       "featured": false,
-      "applyUrl": "mailto:careers@techvistar.com?subject=Application%20for%20Full%20Stack%20Internship"
+      "applyUrl": "mailto:careers@veenero.com?subject=Application%20for%20Full%20Stack%20Internship"
     },
     {
       "id": "6",
@@ -5145,7 +5145,7 @@
       "employmentType": "Internship",
       "location": "Remote / Hybrid",
       "experience": "Fresher / Entry",
-      "description": "Help TechVistar grow its audience by creating social content, setting up search campaigns, and drafting marketing materials.",
+      "description": "Help Veenero grow its audience by creating social content, setting up search campaigns, and drafting marketing materials.",
       "responsibilities": [
         "Assist in managing and drafting posts for company social channels",
         "Support email marketing setups and newsletter compilation",
@@ -5165,7 +5165,7 @@
       ],
       "status": "active",
       "featured": false,
-      "applyUrl": "mailto:careers@techvistar.com?subject=Application%20for%20Marketing%20Internship"
+      "applyUrl": "mailto:careers@veenero.com?subject=Application%20for%20Marketing%20Internship"
     },
     {
       "id": "7",
@@ -5175,10 +5175,10 @@
       "employmentType": "Internship",
       "location": "Campus-Based",
       "experience": "Student",
-      "description": "Represent TechVistar on your college campus! Promote our training programs, coordinate guest lectures, and drive student registrations.",
+      "description": "Represent Veenero on your college campus! Promote our training programs, coordinate guest lectures, and drive student registrations.",
       "responsibilities": [
-        "Promote TechVistar programs and workshops across campus channels",
-        "Serve as the primary liaison between your college and TechVistar team",
+        "Promote Veenero programs and workshops across campus channels",
+        "Serve as the primary liaison between your college and Veenero team",
         "Coordinate with college authorities to organize seminar presentations",
         "Help fellow students sign up for internships and webinars"
       ],
@@ -5191,11 +5191,11 @@
       "benefits": [
         "Certificate of Excellence and letter of recommendation",
         "Performance-based cash rewards and referral bonuses",
-        "Free access to TechVistar specialized training modules"
+        "Free access to Veenero specialized training modules"
       ],
       "status": "active",
       "featured": false,
-      "applyUrl": "mailto:careers@techvistar.com?subject=Application%20for%20Campus%20Ambassador"
+      "applyUrl": "mailto:careers@veenero.com?subject=Application%20for%20Campus%20Ambassador"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
-  "name": "techvistar-backend",
+  "name": "veenero-backend",
   "version": "1.0.0",
-  "description": "TypeScript backend starter architecture for TechVistar",
+  "description": "TypeScript backend starter architecture for Veenero",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc && tsc-alias",
@@ -22,7 +22,7 @@
     "node",
     "saas"
   ],
-  "author": "TechVistar Development Team",
+  "author": "Veenero Development Team",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -38,6 +38,7 @@
     "mongoose": "^9.7.3",
     "morgan": "^1.10.0",
     "multer": "^2.2.0",
+    "sharp": "^0.35.3",
     "winston": "^3.19.0"
   },
   "devDependencies": {

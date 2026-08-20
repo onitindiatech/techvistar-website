@@ -47,24 +47,24 @@ export const Solutions = () => {
   const { data: apiSolutions, isLoading, isError, error } = useQuery({
     queryKey: ['activeSolutions'],
     queryFn: () => getActiveSolutions(),
-    retry: 2,
+    retry: false,
+    staleTime: 300000,
   });
 
   const activeSolutions = useMemo((): SolutionListItem[] => {
-    if (apiSolutions !== undefined) {
-      return apiSolutions.map((item: Record<string, unknown>) => ({
-        ...decorateSolution(item),
-        featured: item.featured === true || item.featured === 'true',
-      }));
-    }
-    if (isError) {
-      return Object.values(SOLUTIONS_DATA).map((item) => ({
+    const loaded = (Array.isArray(apiSolutions) ? apiSolutions : []).map((item: Record<string, unknown>) => ({
+      ...decorateSolution(item),
+      featured: item.featured === true || item.featured === 'true',
+    }));
+    const loadedSlugs = new Set(loaded.map((s) => s.slug));
+    const fallbackList = Object.values(SOLUTIONS_DATA)
+      .map((item) => ({
         ...decorateStaticSolution(item),
         featured: false,
-      }));
-    }
-    return [];
-  }, [apiSolutions, isError]);
+      }))
+      .filter((s) => !loadedSlugs.has(s.slug));
+    return [...loaded, ...fallbackList];
+  }, [apiSolutions]);
 
   const categories = useMemo(
     () => ['All', ...Array.from(new Set(activeSolutions.map((s) => s.category)))],
@@ -121,7 +121,7 @@ export const Solutions = () => {
         />
 
         <section className="border-b border-slate-200 bg-white py-8">
-          <div className="container mx-auto max-w-7xl px-4 md:px-6">
+          <div className="container mx-auto max-w-7xl px-6 sm:px-12 md:px-14 lg:px-16">
             <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-2 text-emerald-600">
                 <Layers className="h-4 w-4" />
@@ -197,7 +197,7 @@ export const Solutions = () => {
           <>
             {featuredSolutions.length > 0 && (
               <section id="featured-solutions" className="border-b border-slate-100 bg-white py-16 md:py-24">
-                <div className="container mx-auto max-w-7xl space-y-10 px-4 md:space-y-12 md:px-6">
+                <div className="container mx-auto max-w-7xl space-y-10 px-6 sm:px-12 md:space-y-12 md:px-14 lg:px-16">
                   <div className="max-w-2xl space-y-3">
                     <div className="flex items-center gap-2 text-emerald-600">
                       <Star className="h-4 w-4 fill-emerald-500 text-emerald-500" />
@@ -229,7 +229,7 @@ export const Solutions = () => {
             )}
 
             <section id="all-solutions" className="bg-slate-50 py-16 md:py-24">
-              <div className="container mx-auto max-w-7xl space-y-10 px-4 md:space-y-12 md:px-6">
+              <div className="container mx-auto max-w-7xl space-y-10 px-6 sm:px-12 md:space-y-12 md:px-14 lg:px-16">
                 <div className="max-w-2xl space-y-3">
                   <div className="flex items-center gap-2 text-emerald-600">
                     <Layers className="h-4 w-4" />

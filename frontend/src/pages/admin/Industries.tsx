@@ -1600,7 +1600,7 @@ const Industries = () => {
                       onChange={setSeo}
                       slug={slug}
                       pathPrefix="/industries/"
-                      defaultTitle={title ? `${title} | TechVistar Industries` : ''}
+                      defaultTitle={title ? `${title} | Veenero Industries` : ''}
                       defaultDescription={shortDescription}
                       defaultImage={coverImage || thumbnail}
                     />

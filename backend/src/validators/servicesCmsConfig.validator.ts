@@ -72,7 +72,7 @@ function parseSidebarDefaultsBlock(sidebarDefaults: Record<string, unknown>): Re
       sidebarDefaults.directInquiriesBody,
       'Have an SOW ready or need instant escalation? Contact our lead architect directly at:'
     ),
-    contactEmail: trimStr(sidebarDefaults.contactEmail, 'hello@techvistar.com'),
+    contactEmail: trimStr(sidebarDefaults.contactEmail, 'hello@veenero.com'),
   };
 }
 
@@ -88,7 +88,7 @@ function parseConsultationDefaultsBlock(
     submitLabel: trimStr(consultationDefaults.submitLabel, 'Submit Requirements'),
     privacyText: trimStr(
       consultationDefaults.privacyText,
-      'I agree to be contacted by the TechVistar engineering team and accept the privacy policy.'
+      'I agree to be contacted by the Veenero engineering team and accept the privacy policy.'
     ),
     successTitle: trimStr(consultationDefaults.successTitle, 'Inquiry Submitted'),
     successMessage: trimStr(

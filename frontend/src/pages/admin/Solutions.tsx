@@ -1470,7 +1470,7 @@ const Solutions = () => {
                       onChange={setSeo}
                       slug={slug}
                       pathPrefix="/solutions/"
-                      defaultTitle={title ? `${title} | TechVistar Solutions` : ''}
+                      defaultTitle={title ? `${title} | Veenero Solutions` : ''}
                       defaultDescription={stripHtmlToText(extendedCms.heroDescription) || subtitle}
                       defaultImage={dashboardImage}
                     />

@@ -8,7 +8,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
-import { decorateService, getServiceCardImage, type Service } from '@/data/services';
+import { decorateService, getServiceCardImage, SERVICES, type Service } from '@/data/services';
 import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
 import { mergeServicesCmsConfig } from '@/types/servicesCms';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
@@ -86,7 +86,12 @@ export const ServicesSection = () => {
     queryFn: getActiveServices,
   });
 
-  const activeServices = [...(apiServices || []).map(decorateService)].sort((a, b) => a.order - b.order);
+  const activeServices = useMemo(() => {
+    const loaded = (apiServices || []).map(decorateService).filter((s): s is Service => Boolean(s));
+    const apiSlugs = new Set(loaded.map((s) => s.slug));
+    const fallbackList = SERVICES.filter((s) => !apiSlugs.has(s.slug));
+    return [...loaded, ...fallbackList].sort((a, b) => a.order - b.order);
+  }, [apiServices]);
 
   const services = useMemo(() => {
     const manualSlugs = (homeFeatured.manualSelection || []).map((slug) => slug.trim()).filter(Boolean);
@@ -199,12 +204,17 @@ export const ServicesSection = () => {
           transition={{ duration: 0.55, ease, delay: 0.35 }}
           className="mt-10 flex justify-center md:mt-12"
         >
-          <Button asChild variant="hero" size="lg" className="rounded-xl px-8 text-white hover:text-white">
-            <Link to={viewAllHref} aria-label={viewAllLabel} className="text-white hover:text-white flex items-center gap-2">
-              {viewAllLabel}
-              <ArrowRight className="h-4 w-4 text-white" aria-hidden />
+          <motion.button
+            whileHover={{ y: -1 }}
+            whileTap={{ y: 0, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center justify-center h-11 px-8 bg-[#041a3d] hover:bg-[#021028] text-white rounded-xl transition-all duration-200 text-sm font-extrabold tracking-tight shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group cursor-pointer"
+          >
+            <Link to={viewAllHref} aria-label={viewAllLabel} className="inline-flex items-center gap-2 text-white">
+              <span>{viewAllLabel}</span>
+              <ArrowRight className="w-4 h-4 opacity-90 group-hover:translate-x-0.5 transition-transform duration-200" aria-hidden />
             </Link>
-          </Button>
+          </motion.button>
         </motion.div>
       </div>
     </SiteSection>

@@ -332,7 +332,7 @@ export function IndustryExtendedCmsFields({
         </div>
         <div className="border-t border-slate-100 pt-4">
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Why Choose TechVistar</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Why Choose Veenero</p>
             <Button
               type="button"
               variant="outline"

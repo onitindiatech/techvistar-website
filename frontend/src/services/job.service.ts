@@ -336,7 +336,7 @@ export interface JobApplicationInput {
   resumeMimeType?: string;
   originalFileName?: string;
   coverLetter: string;
-  whyJoinTechVistar?: string;
+  whyJoinVeenero?: string;
 }
 
 /**

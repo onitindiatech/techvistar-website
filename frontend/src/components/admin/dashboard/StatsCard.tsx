@@ -138,7 +138,7 @@ export const StatsCard = ({
             </div>
           )}
           <div>
-            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">TechVistar</p>
+            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Veenero</p>
             <h4 className="text-xs font-semibold text-slate-700">{title}</h4>
           </div>
         </div>

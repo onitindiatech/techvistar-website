@@ -52,6 +52,10 @@ const AdminJobs = lazy(() => import("./pages/admin/Jobs"));
 const AdminApplications = lazy(() => import("./pages/admin/Applications"));
 const AdminContacts = lazy(() => import("./pages/admin/Contacts"));
 const AdminNewsletter = lazy(() => import("./pages/admin/Newsletter"));
+const AdminTestimonials = lazy(() => import("./pages/admin/Testimonials"));
+const AdminTeam = lazy(() => import("./pages/admin/Team"));
+const AdminBlog = lazy(() => import("./pages/admin/Blog"));
+const AdminMedia = lazy(() => import("./pages/admin/MediaLibrary"));
 
 const withSuspense = (element: ReactNode) => (
   <Suspense fallback={<RouteFallback />}>{element}</Suspense>
@@ -209,8 +213,18 @@ const App = () => (
           <Route element={<ProtectedRoute />}>
             <Route path="/admin" element={withSuspense(<AdminLayout />)}>
               <Route index element={withSuspense(<AdminDashboard />)} />
-              <Route path="dashboard" element={withSuspense(<AdminDashboard />)} />
+              <Route path="content" element={withSuspense(<AdminHomeSettings />)} />
               <Route path="services" element={withSuspense(<AdminServices />)} />
+              <Route path="projects" element={withSuspense(<AdminPortfolio />)} />
+              <Route path="testimonials" element={withSuspense(<AdminTestimonials />)} />
+              <Route path="team" element={withSuspense(<AdminTeam />)} />
+              <Route path="blog" element={withSuspense(<AdminBlog />)} />
+              <Route path="enquiries" element={withSuspense(<AdminContacts />)} />
+              <Route path="media" element={withSuspense(<AdminMedia />)} />
+              <Route path="settings" element={withSuspense(<AdminWebsiteSettings />)} />
+              
+              {/* Legacy fallback routes preserved */}
+              <Route path="dashboard" element={withSuspense(<AdminDashboard />)} />
               <Route path="services-settings" element={withSuspense(<AdminServicesSettings />)} />
               <Route path="home-settings" element={withSuspense(<AdminHomeSettings />)} />
               <Route path="about-settings" element={withSuspense(<AdminAboutSettings />)} />

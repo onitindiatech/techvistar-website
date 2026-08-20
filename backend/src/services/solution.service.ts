@@ -3,6 +3,7 @@
  * @description Service layer managing Solution database CRUD queries and slug auto-generation.
  */
 
+import mongoose from 'mongoose';
 import { Solution, ISolution } from '@/models/Solution';
 import { ApiError } from '@/utils/ApiError';
 import { logger } from '@/utils/logger';
@@ -11,6 +12,57 @@ import {
   syncScalarMediaFields,
   deleteCloudinaryPublicIds,
 } from '@/utils/mediaAsset';
+
+const FALLBACK_SOLUTIONS: Record<string, unknown>[] = [
+  {
+    slug: 'enterprise-software',
+    title: 'Enterprise Software',
+    subtitle: 'Streamline Core Operations and Administrative Controls at Scale',
+    icon: 'Building2',
+    category: 'Business Solutions',
+    status: 'active',
+  },
+  {
+    slug: 'ai-automation',
+    title: 'AI & Automation Solutions',
+    subtitle: 'Deploy Autonomous LLM Agents and Intelligent Document Processing',
+    icon: 'Brain',
+    category: 'AI Solutions',
+    status: 'active',
+  },
+  {
+    slug: 'cloud-infrastructure',
+    title: 'Cloud & Infrastructure',
+    subtitle: 'Resilient Multi-Cloud Migrations and High-Throughput Kubernetes',
+    icon: 'Cloud',
+    category: 'Digital Solutions',
+    status: 'active',
+  },
+  {
+    slug: 'saas-platforms',
+    title: 'SaaS Platforms',
+    subtitle: 'Architect High-Velocity Multi-Tenant Cloud Products',
+    icon: 'Layers',
+    category: 'Business Solutions',
+    status: 'active',
+  },
+  {
+    slug: 'custom-software-development',
+    title: 'Custom Software Development',
+    subtitle: 'Tailored Full-Stack Engineering for Mission-Critical Operations',
+    icon: 'Code2',
+    category: 'Digital Solutions',
+    status: 'active',
+  },
+  {
+    slug: 'enterprise-ai-integration',
+    title: 'Enterprise AI Integration',
+    subtitle: 'Embed Secure Proprietary LLMs and Vector Retrieval into Workflows',
+    icon: 'Sparkles',
+    category: 'AI Solutions',
+    status: 'active',
+  },
+];
 
 export class SolutionService {
   /**
@@ -159,11 +211,24 @@ export class SolutionService {
    */
   async getActiveSolutions(category?: string): Promise<ISolution[]> {
     logger.info('[SolutionService] Retrieving all active solutions', { category });
-    const query: Record<string, unknown> = { status: 'active', isDeleted: { $ne: true } };
-    if (category && category !== 'All') {
-      query.category = { $regex: new RegExp('^' + category + '$', 'i') };
+    if (mongoose.connection.readyState !== 1) {
+      logger.warn('[SolutionService] DB not ready, returning fallbacks instantly');
+      return FALLBACK_SOLUTIONS as unknown as ISolution[];
     }
-    return Solution.find(query).sort({ displayOrder: 1, createdAt: 1 }).lean() as Promise<ISolution[]>;
+    try {
+      const query: Record<string, unknown> = { status: 'active', isDeleted: { $ne: true } };
+      if (category && category !== 'All') {
+        query.category = { $regex: new RegExp('^' + category + '$', 'i') };
+      }
+      const results = await Solution.find(query).sort({ displayOrder: 1, createdAt: 1 }).lean() as ISolution[];
+      if (results && results.length > 0) {
+        return results;
+      }
+    } catch (err) {
+      logger.warn('[SolutionService] Database query failed or unavailable, using in-memory fallbacks', { err });
+    }
+
+    return FALLBACK_SOLUTIONS as unknown as ISolution[];
   }
 
   /**
@@ -240,11 +305,21 @@ export class SolutionService {
    */
   async getSolutionBySlug(slug: string): Promise<ISolution> {
     logger.info('[SolutionService] Retrieving active solution by slug', { slug });
-    const solution = await Solution.findOne({ slug, status: 'active', isDeleted: { $ne: true } }).lean();
-    if (!solution) {
-      throw ApiError.notFound(`Solution not found for slug "${slug}"`);
+    try {
+      const solution = await Solution.findOne({ slug, status: 'active', isDeleted: { $ne: true } }).lean();
+      if (solution) {
+        return solution as ISolution;
+      }
+    } catch (err) {
+      logger.warn('[SolutionService] Database query for solution slug failed, checking in-memory fallbacks', { slug, err });
     }
-    return solution as ISolution;
+
+    const fallback = FALLBACK_SOLUTIONS.find((s) => s.slug === slug);
+    if (fallback) {
+      return { ...fallback, status: 'active' } as unknown as ISolution;
+    }
+
+    throw ApiError.notFound(`Solution not found for slug "${slug}"`);
   }
 }
 

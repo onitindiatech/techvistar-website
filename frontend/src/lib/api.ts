@@ -12,7 +12,7 @@ export function getApiBaseUrl(): string {
 
   if (import.meta.env.PROD) {
     console.error(
-      '[TechVistar] VITE_API_BASE_URL is not set in this production build. ' +
+      '[Veenero] VITE_API_BASE_URL is not set in this production build. ' +
         'API calls will fail outside localhost. Set the variable in Vercel and redeploy.',
     );
   }

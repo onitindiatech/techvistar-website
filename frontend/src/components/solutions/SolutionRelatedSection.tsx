@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { decorateSolution, type SolutionDetail } from '@/data/solutions';
+import { decorateSolution, decorateStaticSolution, SOLUTIONS_DATA, type SolutionDetail } from '@/data/solutions';
 import { getActiveSolutions } from '@/services/solutions.service';
 import { Badge } from '@/components/ui/badge';
 import { getSolutionCardImage } from '@/components/solutions/SolutionCard';
@@ -27,22 +27,34 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
     staleTime: 60_000,
   });
 
-  const activeSolutions = useMemo(
-    () => (apiSolutions || []).map(decorateSolution),
-    [apiSolutions],
-  );
+  const activeSolutions = useMemo(() => {
+    const loaded = (Array.isArray(apiSolutions) ? apiSolutions : []).map(decorateSolution);
+    const loadedSlugs = new Set(loaded.map((s) => s.slug));
+    const fallbackList = Object.values(SOLUTIONS_DATA)
+      .map(decorateStaticSolution)
+      .filter((s) => !loadedSlugs.has(s.slug));
+    return [...loaded, ...fallbackList];
+  }, [apiSolutions]);
 
-  const slugOrder = solution.relatedSolutionSlugs?.filter(Boolean) ?? [];
-  let related =
-    slugOrder.length > 0
-      ? slugOrder
-          .map((slug) =>
-            activeSolutions.find((item) => item.slug === slug && item.slug !== solution.slug),
-          )
-          .filter((item): item is SolutionDetail => Boolean(item))
-      : activeSolutions.filter((item) => item.slug !== solution.slug).slice(0, 3);
+  const related = useMemo(() => {
+    const slugOrder = solution.relatedSolutionSlugs?.filter(Boolean) ?? [];
+    let picked: SolutionDetail[] = [];
 
-  related = related.slice(0, 3);
+    if (slugOrder.length > 0) {
+      picked = slugOrder
+        .map((slug) => activeSolutions.find((item) => item.slug === slug && item.slug !== solution.slug))
+        .filter((item): item is SolutionDetail => Boolean(item));
+    }
+
+    if (picked.length < 3) {
+      const rest = activeSolutions.filter(
+        (item) => item.slug !== solution.slug && !picked.some((p) => p.slug === item.slug),
+      );
+      picked = [...picked, ...rest];
+    }
+
+    return picked.slice(0, 3);
+  }, [activeSolutions, solution]);
 
   if (related.length === 0) return null;
 
@@ -142,7 +154,7 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
                       {item.title}
                     </h3>
 
-                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                    <p className="text-base text-slate-600 font-medium leading-relaxed line-clamp-2">
                       {item.subtitle}
                     </p>
                   </div>

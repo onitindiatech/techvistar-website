@@ -74,14 +74,16 @@ export const ServicesLandingHero = ({
           transition={{ duration: 0.7, delay: 0.2 }}
           className="mt-8 flex flex-wrap items-center justify-start gap-4"
         >
-          <Button
+          <motion.button
+            whileHover={{ y: -1 }}
+            whileTap={{ y: 0, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             onClick={onExplore}
-            size="lg"
-            className="h-12 rounded-xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500"
+            className="inline-flex items-center justify-center gap-2 h-11 px-6 bg-[#041a3d] hover:bg-[#021028] text-white rounded-xl transition-all duration-200 text-sm font-extrabold tracking-tight shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group cursor-pointer"
           >
-            {landing.ctaText?.trim() || 'Explore Services'}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+            <span>{landing.ctaText?.trim() || 'Explore Services'}</span>
+            <ArrowRight className="w-3.5 h-3.5 opacity-90 group-hover:translate-x-0.5 transition-transform duration-200" />
+          </motion.button>
         </motion.div>
       </div>
     </section>

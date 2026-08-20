@@ -1,4 +1,4 @@
-# TechVistar Backend Starter
+# Veenero Backend Starter
 
 A TypeScript Node/Express backend architecture setup to scale into a robust SaaS backend service.
 

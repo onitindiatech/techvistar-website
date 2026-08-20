@@ -67,7 +67,7 @@ export const env = {
   // ── Database (MongoDB) ────────────────────────────────────────────────────
   // In development, defaults to local MongoDB.
   // In production, MONGODB_URI must be set (e.g. MongoDB Atlas connection string).
-  mongoUri: optional('MONGODB_URI', 'mongodb://localhost:27017/techvistar'),
+  mongoUri: optional('MONGODB_URI', 'mongodb://localhost:27017/veenero'),
 
   // ── JWT Authentication (Phase 2) ──────────────────────────────────────────
   jwtAccessSecret:    optional('JWT_ACCESS_SECRET', optional('JWT_SECRET', 'change_me_before_production')),
@@ -88,7 +88,7 @@ export const env = {
   mailPort:    optionalInt('MAIL_PORT', 587),
   mailUser:    optional('MAIL_USER', ''),
   mailPass:    optional('MAIL_PASS', ''),
-  mailFrom:    optional('MAIL_FROM', 'TechVistar <no-reply@techvistar.in>'),
+  mailFrom:    optional('MAIL_FROM', 'Veenero <no-reply@veenero.in>'),
 
   // ── AI Services (Phase 4) ─────────────────────────────────────────────────
   openaiApiKey: optional('OPENAI_API_KEY', ''),

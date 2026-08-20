@@ -29,7 +29,7 @@ export const FAQSection = ({
   limit,
   title = "Frequently Asked Questions",
   highlight = "FAQ",
-  description = "Here are some common questions about working with TechVistar. Can't find what you're looking for? Let's talk.",
+  description = "Here are some common questions about working with Veenero. Can't find what you're looking for? Let's talk.",
   showViewAll = false,
   layout = "centered",
 }: FAQSectionProps) => {

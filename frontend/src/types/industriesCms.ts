@@ -33,7 +33,7 @@ export const DEFAULT_INDUSTRY_CONSULTATION: IndustryConsultationBlock = {
     'Share your vertical requirements and our specialists will scope a compliant delivery roadmap.',
   submitLabel: 'Submit Requirements',
   privacyText:
-    'I agree to be contacted by the TechVistar team and accept the privacy policy.',
+    'I agree to be contacted by the Veenero team and accept the privacy policy.',
   successTitle: 'Inquiry Submitted',
   successMessage:
     'Thank you! We will respond within one business day regarding your industry engagement.',
@@ -51,7 +51,7 @@ export function resolveIndustryCtaBlock(
     badge: 'Industry Solutions',
     headline:
       industry.cta?.title?.trim() ||
-      `Partner with TechVistar for ${industry.title || 'your industry'}`,
+      `Partner with Veenero for ${industry.title || 'your industry'}`,
     body:
       industry.cta?.subtitle?.trim() ||
       'Discuss compliance, deployment, and enterprise delivery with our vertical specialists.',

@@ -19,7 +19,7 @@ import { DB, ERROR_CODES } from '@/constants';
 // ─── Mongoose global settings ─────────────────────────────────────────────────
 // These apply to every model/query — set once here, not per-query
 mongoose.set('strictQuery', true);   // Ignore fields not in schema (prevents fat-finger writes)
-mongoose.set('bufferCommands', false);   // Fail fast on DB unavailability, avoid buffering timeouts
+mongoose.set('bufferCommands', true);   // Allow Mongoose to buffer queries during initial connection/reconnect
 mongoose.set('debug', env.isDev && env.logLevel === 'debug'); // Log Mongoose queries in debug mode
 
 // ─── Connection options ───────────────────────────────────────────────────────

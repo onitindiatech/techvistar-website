@@ -10,7 +10,7 @@ import { Admin } from '../models/Admin';
 
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/techvistar';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/veenero';
 
 async function seedAdmin() {
   try {
@@ -18,7 +18,7 @@ async function seedAdmin() {
     await mongoose.connect(MONGODB_URI);
     console.log('[Seed:Admin] Connected successfully.');
 
-    const defaultEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@techvistar.com';
+    const defaultEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@veenero.com';
     const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin@1234';
 
     const existingAdmin = await Admin.findOne({ email: defaultEmail });
@@ -28,7 +28,7 @@ async function seedAdmin() {
     }
 
     const admin = new Admin({
-      name: 'TechVistar Admin',
+      name: 'Veenero Admin',
       email: defaultEmail,
       password: defaultPassword,
       role: 'admin',

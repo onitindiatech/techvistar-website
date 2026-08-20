@@ -3,6 +3,42 @@
 @tailwind utilities;
 
 @layer base {
+  /* Override browser default autofill, focus, caret & outlines with brand dark navy blue #041a3d */
+  input, textarea, select {
+    accent-color: #041a3d !important;
+    caret-color: #041a3d !important;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  input:focus-within,
+  textarea:focus-within,
+  select:focus-within {
+    outline: none !important;
+    border-color: #041a3d !important;
+    box-shadow: 0 0 0 3px rgba(4, 26, 61, 0.25) !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #0f172a !important;
+    -webkit-box-shadow: 0 0 0px 1000px #f8fafc inset !important;
+    box-shadow: 0 0 0 3px rgba(4, 26, 61, 0.25) !important;
+    border-color: #041a3d !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
   :root {
     /* TechVistar corporate brand: navy primary, cyan accents, cool gray backgrounds */
     --background: 210 40% 98%;
@@ -37,8 +73,8 @@
 
     --radius: 0.625rem;
 
-    --gradient-start: 217 90% 20%;
-    --gradient-end: 199 85% 55%;
+    --gradient-start: 225 66% 50%;
+    --gradient-end: 221 83% 53%;
     --glow-primary: 217 90% 20%;
     --glow-accent: 199 85% 55%;
 
@@ -85,57 +121,182 @@
 
   html {
     scroll-behavior: smooth;
+    font-size: 16px;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
+
+  /* 🎯 SCREENSHOT VISUAL TYPOGRAPHY HIERARCHY — 3 LEVEL SYSTEM 🎯 */
+
+  /* LEVEL 1: Largest hero main titles ("Custom Software Development") */
+  h1,
+  .text-display-2xl,
+  .text-display-xl,
+  .text-display-lg,
+  .text-heading-xl,
+  .text-5xl,
+  .text-6xl,
+  .text-7xl {
+    font-size: clamp(2.25rem, 4vw, 3.25rem) !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.025em !important;
+  }
+
+  /* LEVEL 2: Medium section titles / hero taglines ("Accelerate your digital footprint...") */
+  h2,
+  .text-heading-lg,
+  .text-heading-md,
+  .text-2xl,
+  .text-3xl,
+  .text-4xl {
+    font-size: clamp(1.375rem, 2.5vw, 1.875rem) !important;
+    line-height: 1.25 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* LEVEL 3 & ALL OTHER VISIBLE TEXT: ("When standard SaaS tools are not enough...") */
+  /* This includes paragraphs, descriptions, card headers, labels, badges, stat titles, buttons, nav, footer, forms */
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label,
+  li,
+  td,
+  th,
+  div,
+  small,
+  code,
+  badge,
+  nav,
+  footer,
+  form,
+  header,
+  section,
+  main,
+  aside,
+  time,
+  mark,
+  .text-heading-sm,
+  .text-heading-xs,
+  .text-body-lg,
+  .text-body-md,
+  .text-body-sm,
+  .text-caption,
+  .text-label,
+  .text-button,
+  .text-nav,
+  .text-mega,
+  .text-mega-desc,
+  .text-lg,
+  .text-base,
+  .text-sm,
+  .text-xs {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Preserve container heading size for child spans like hero gradient text */
+  h1 *,
+  .text-display-2xl *,
+  .text-display-xl * {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  h2 *,
+  .text-heading-lg *,
+  .text-heading-md * {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  /* Ensure all small badge/tag/stat font size overrides evaluate to Level 3 size */
+  [class*="text-\["],
+  [class*="text-xs"],
+  [class*="text-sm"],
+  [class*="text-caption"],
+  [class*="text-label"] {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+  }
 }
 
 @layer utilities {
   .gradient-text {
-    @apply bg-gradient-to-r from-[hsl(var(--gradient-start))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent;
-  }
-
-  /* Home hero — animated highlight word only */
-  .hero-highlight-text {
-    background: linear-gradient(
-      105deg,
-      hsl(var(--primary)) 0%,
-      #7dd3fc 22%,
-      hsl(var(--primary)) 44%,
-      #38bdf8 66%,
-      hsl(var(--primary)) 88%,
-      #7dd3fc 100%
-    );
-    background-size: 220% auto;
+    background: linear-gradient(90deg, #2b56d4 0%, #3b82f6 30%, #2563eb 60%, #1d4ed8 100%);
+    background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
     -webkit-text-fill-color: transparent;
-    animation: hero-highlight-shimmer 4.5s ease-in-out infinite, hero-highlight-glow 3.2s ease-in-out infinite;
-    will-change: background-position, filter;
+    color: transparent;
+    animation: hero-highlight-shimmer 5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 20px rgba(37, 99, 235, 0.45));
+  }
+
+  /* Home hero — animated highlight word (Real Impact) */
+  .hero-highlight-text {
+    background: linear-gradient(90deg, #2b56d4 0%, #3b82f6 30%, #2563eb 60%, #1d4ed8 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: hero-highlight-shimmer 5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 20px rgba(37, 99, 235, 0.45));
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-highlight-text {
       animation: none;
-      background: none;
-      -webkit-background-clip: unset;
-      background-clip: unset;
-      color: hsl(var(--primary));
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
       filter: none;
     }
   }
 
   .hero-highlight-text--static {
-    color: hsl(var(--primary));
-    filter: drop-shadow(0 0 18px rgba(34, 197, 94, 0.22));
+    background: linear-gradient(90deg, #2b56d4 0%, #3b82f6 30%, #2563eb 60%, #1d4ed8 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: hero-highlight-shimmer 5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 20px rgba(37, 99, 235, 0.45));
+  }
+
+  /* High-contrast royal blue gradient for light sections matching paper plane graphic */
+  .hero-highlight-text--light {
+    background: linear-gradient(90deg, #2b56d4 0%, #3b82f6 30%, #2563eb 60%, #1d4ed8 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: hero-highlight-shimmer 5s ease-in-out infinite;
+    filter: drop-shadow(0 2px 14px rgba(37, 99, 235, 0.35));
   }
 
   /* Home hero — responsive typography & layout */
@@ -1833,12 +1994,12 @@
   height: 28px !important;
   padding: 0 10px 0 8px !important;
   border-radius: 8px !important;
-  background: rgba(16, 185, 129, 0.08) !important;
-  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  background: rgba(4, 26, 61, 0.08) !important;
+  border: 1px solid rgba(4, 26, 61, 0.22) !important;
   font-size: 12px !important;
   line-height: 1 !important;
-  font-weight: 500 !important;
-  color: #34d399 !important;
+  font-weight: 600 !important;
+  color: #041a3d !important;
   box-shadow: none !important;
   transition: background 200ms ease, border-color 200ms ease, color 200ms ease !important;
   text-transform: none !important;
@@ -1852,13 +2013,13 @@
   width: 13px !important;
   height: 13px !important;
   flex-shrink: 0 !important;
-  color: #34d399 !important;
+  color: #041a3d !important;
   transition: transform 200ms ease !important;
 }
 
 .back-btn-premium:hover {
-  background: rgba(16, 185, 129, 0.14) !important;
-  border-color: rgba(16, 185, 129, 0.4) !important;
+  background: rgba(4, 26, 61, 0.14) !important;
+  border-color: rgba(4, 26, 61, 0.4) !important;
 }
 
 .back-btn-premium:hover svg {
@@ -1866,7 +2027,7 @@
 }
 
 .back-btn-premium:active {
-  background: rgba(16, 185, 129, 0.18) !important;
+  background: rgba(4, 26, 61, 0.18) !important;
   transition: background 50ms !important;
 }
 

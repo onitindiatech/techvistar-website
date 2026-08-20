@@ -84,12 +84,19 @@ export const IMAGE_MAP: Record<string, string> = {
 };
 
 export function decorateProject(apiProject: any): Project {
+  const rawThumb = apiProject.thumbnail || '';
+  const resolvedThumb =
+    IMAGE_MAP[rawThumb] ||
+    (rawThumb.startsWith('http') || rawThumb.startsWith('/') || rawThumb.startsWith('data:')
+      ? rawThumb
+      : mobilityImg);
+
   return {
     id: apiProject._id || apiProject.id,
     title: apiProject.title,
     slug: apiProject.slug,
     description: apiProject.description,
-    thumbnail: IMAGE_MAP[apiProject.thumbnail] || apiProject.thumbnail || '',
+    thumbnail: resolvedThumb,
     category: apiProject.category,
     technologies: apiProject.technologies || [],
     liveUrl: apiProject.liveUrl || '#',

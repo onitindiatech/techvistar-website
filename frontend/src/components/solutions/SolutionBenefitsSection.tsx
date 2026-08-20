@@ -47,7 +47,7 @@ export const SolutionBenefitsSection = ({ solution }: SectionProps) => {
           </h2>
         </div>
         {solution.sectionCopy?.benefitsSubtitle?.trim() && (
-          <p className="pl-7 text-xs font-medium text-slate-500">
+          <p className="pl-7 text-base font-medium leading-relaxed text-slate-600">
             {solution.sectionCopy.benefitsSubtitle}
           </p>
         )}
@@ -68,8 +68,8 @@ export const SolutionBenefitsSection = ({ solution }: SectionProps) => {
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600">
                 <Icon className="h-4 w-4" />
               </div>
-              <h3 className="mb-1.5 font-display text-sm font-bold text-slate-900">{benefit.title}</h3>
-              <p className="text-xs font-medium leading-relaxed text-slate-500">{benefit.desc}</p>
+              <h3 className="mb-1.5 font-display text-base font-bold text-slate-900">{benefit.title}</h3>
+              <p className="text-base font-medium leading-relaxed text-slate-600">{benefit.desc}</p>
             </motion.div>
           );
         })}

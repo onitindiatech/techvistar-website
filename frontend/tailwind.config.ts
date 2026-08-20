@@ -18,33 +18,38 @@ export default {
         display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        /* TechVistar type scale — sizes match existing premium UI */
-        'display-2xl': [
-          'clamp(2.25rem, 4vw + 1rem, 3.5rem)',
-          { lineHeight: '1.12', letterSpacing: '-0.028em', fontWeight: '800' },
-        ],
-        'display-xl': [
-          'clamp(2rem, 3vw + 0.75rem, 3rem)',
-          { lineHeight: '1.15', letterSpacing: '-0.025em', fontWeight: '800' },
-        ],
-        'display-lg': [
-          'clamp(1.875rem, 2.25vw + 0.625rem, 2.5rem)',
-          { lineHeight: '1.16', letterSpacing: '-0.024em', fontWeight: '800' },
-        ],
-        'heading-xl': ['2.25rem', { lineHeight: '1.15', letterSpacing: '-0.025em', fontWeight: '800' }],
-        'heading-lg': ['1.875rem', { lineHeight: '1.15', letterSpacing: '-0.022em', fontWeight: '800' }],
-        'heading-md': ['1.5rem', { lineHeight: '1.25', letterSpacing: '-0.02em', fontWeight: '700' }],
-        'heading-sm': ['1.25rem', { lineHeight: '1.3', letterSpacing: '-0.015em', fontWeight: '700' }],
-        'heading-xs': ['1.125rem', { lineHeight: '1.35', letterSpacing: '-0.01em', fontWeight: '700' }],
-        'body-lg': ['1.125rem', { lineHeight: '1.65', letterSpacing: '0', fontWeight: '500' }],
-        'body-md': ['1rem', { lineHeight: '1.65', letterSpacing: '0', fontWeight: '400' }],
-        'body-sm': ['0.875rem', { lineHeight: '1.55', letterSpacing: '0', fontWeight: '400' }],
-        'caption': ['0.75rem', { lineHeight: '1.45', letterSpacing: '0.01em', fontWeight: '500' }],
-        'label': ['0.6875rem', { lineHeight: '1.3', letterSpacing: '0.22em', fontWeight: '700' }],
-        'button': ['0.875rem', { lineHeight: '1.25', letterSpacing: '0.01em', fontWeight: '600' }],
-        'nav': ['0.9375rem', { lineHeight: '1.4', letterSpacing: '0.02em', fontWeight: '600' }],
-        'mega': ['0.875rem', { lineHeight: '1.25', letterSpacing: '0', fontWeight: '700' }],
-        'mega-desc': ['0.6875rem', { lineHeight: '1.45', letterSpacing: '0', fontWeight: '500' }],
+        /* STRICT 3-LEVEL SCREENSHOT TYPOGRAPHY SYSTEM */
+        /* Level 1: Hero Main Titles ("Custom Software Development") */
+        'display-2xl': ['clamp(2.25rem, 4vw, 3.25rem)', { lineHeight: '1.15', letterSpacing: '-0.025em', fontWeight: '800' }],
+        'display-xl': ['clamp(2.25rem, 4vw, 3.25rem)', { lineHeight: '1.15', letterSpacing: '-0.025em', fontWeight: '800' }],
+        'display-lg': ['clamp(2rem, 3.5vw, 2.75rem)', { lineHeight: '1.15', letterSpacing: '-0.024em', fontWeight: '800' }],
+        'heading-xl': ['clamp(2rem, 3.5vw, 2.75rem)', { lineHeight: '1.15', letterSpacing: '-0.025em', fontWeight: '800' }],
+
+        /* Level 2: Section Headers & Major Subtitles ("Accelerate your digital footprint...") */
+        'heading-lg': ['clamp(1.375rem, 2.5vw, 1.875rem)', { lineHeight: '1.25', letterSpacing: '-0.022em', fontWeight: '800' }],
+        'heading-md': ['clamp(1.25rem, 2vw, 1.625rem)', { lineHeight: '1.25', letterSpacing: '-0.02em', fontWeight: '700' }],
+
+        /* Level 3 & ALL OTHER TEXT ("When standard SaaS tools are not enough...") */
+        'heading-sm': ['1rem', { lineHeight: '1.6', letterSpacing: '-0.015em', fontWeight: '700' }],
+        'heading-xs': ['1rem', { lineHeight: '1.6', letterSpacing: '-0.01em', fontWeight: '700' }],
+        'body-lg': ['1rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '500' }],
+        'body-md': ['1rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
+        'body-sm': ['1rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
+        'caption': ['1rem', { lineHeight: '1.6', letterSpacing: '0.01em', fontWeight: '500' }],
+        'label': ['1rem', { lineHeight: '1.6', letterSpacing: '0.12em', fontWeight: '700' }],
+        'button': ['1rem', { lineHeight: '1.6', letterSpacing: '0.01em', fontWeight: '600' }],
+        'nav': ['1rem', { lineHeight: '1.6', letterSpacing: '0.02em', fontWeight: '600' }],
+        'mega': ['1rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '700' }],
+        'mega-desc': ['1rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '500' }],
+        'xs': ['1rem', { lineHeight: '1.6' }],
+        'sm': ['1rem', { lineHeight: '1.6' }],
+        'base': ['1rem', { lineHeight: '1.6' }],
+        'lg': ['1rem', { lineHeight: '1.6' }],
+        'xl': ['1.25rem', { lineHeight: '1.3' }],
+        '2xl': ['clamp(1.375rem, 2.5vw, 1.875rem)', { lineHeight: '1.25' }],
+        '3xl': ['clamp(1.5rem, 3vw, 2.25rem)', { lineHeight: '1.2' }],
+        '4xl': ['clamp(2.25rem, 4vw, 3.25rem)', { lineHeight: '1.15' }],
+        '5xl': ['clamp(2.25rem, 4vw, 3.25rem)', { lineHeight: '1.15' }],
       },
       letterSpacing: {
         'tight-display': '-0.025em',

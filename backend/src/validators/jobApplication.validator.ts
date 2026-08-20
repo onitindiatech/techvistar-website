@@ -21,7 +21,7 @@ interface JobApplicationInput {
   resumeMimeType?: unknown;
   originalFileName?: unknown;
   coverLetter?: unknown;
-  whyJoinTechVistar?: unknown;
+  whyJoinVeenero?: unknown;
   status?: unknown;
 }
 
@@ -50,7 +50,7 @@ export function validateJobApplicationInput(input: JobApplicationInput, isUpdate
   resumeMimeType?: string;
   originalFileName?: string;
   coverLetter: string;
-  whyJoinTechVistar?: string;
+  whyJoinVeenero?: string;
   status?: typeof VALIDATION.JOB_APPLICATION_STATUSES[number];
 } {
   const errors: Array<{ field: string; message: string }> = [];
@@ -193,7 +193,7 @@ export function validateJobApplicationInput(input: JobApplicationInput, isUpdate
     resumeMimeType: input.resumeMimeType ? String(input.resumeMimeType).trim() : '',
     originalFileName: input.originalFileName ? String(input.originalFileName).trim() : '',
     coverLetter: String(input.coverLetter).trim(),
-    whyJoinTechVistar: input.whyJoinTechVistar ? String(input.whyJoinTechVistar).trim() : '',
+    whyJoinVeenero: input.whyJoinVeenero ? String(input.whyJoinVeenero).trim() : '',
     status: input.status ? (String(input.status).trim() as any) : undefined,
   };
 }

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getServiceBySlug } from '@/services/services.service';
 import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
-import { decorateService, getServiceHeroImage } from '@/data/services';
+import { decorateService, getServiceHeroImage, SERVICES } from '@/data/services';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical, seoFromApi } from '@/lib/seoResolve';
 import { mergeServicesCmsConfig } from '@/types/servicesCms';
@@ -16,10 +16,6 @@ import { ServiceSectionNavigation } from '@/components/services/ServiceSectionNa
 import { OverviewSection } from '@/components/services/OverviewSection';
 import { SolutionsSection } from '@/components/services/SolutionsSection';
 import { ProcessSection } from '@/components/services/ProcessSection';
-import { TechnologySection } from '@/components/services/TechnologySection';
-import { FAQSection } from '@/components/services/FAQSection';
-import { RelatedServicesSection } from '@/components/services/RelatedServicesSection';
-import { IndustriesSection } from '@/components/services/IndustriesSection';
 import { ServiceSidebar } from '@/components/services/ServiceSidebar';
 import { CTASection } from '@/components/services/CTASection';
 
@@ -30,6 +26,7 @@ const ServiceDetails = () => {
     queryKey: ['serviceDetails', slug],
     queryFn: () => getServiceBySlug(slug || ''),
     enabled: !!slug,
+    retry: 1,
   });
 
   const { data: cmsConfigApi } = useQuery({
@@ -38,7 +35,14 @@ const ServiceDetails = () => {
   });
 
   const cmsConfig = mergeServicesCmsConfig(cmsConfigApi);
-  const service = apiService ? decorateService(apiService) : undefined;
+  const service = (() => {
+    if (apiService) {
+      const dec = decorateService(apiService);
+      if (dec) return dec;
+    }
+    return SERVICES.find((s) => s.slug === slug);
+  })();
+
   const serviceSeo = apiService ? seoFromApi(apiService as Record<string, unknown>) : undefined;
 
   const seoBlock = (
@@ -57,7 +61,7 @@ const ServiceDetails = () => {
     window.scrollTo(0, 0);
   }, [service?.slug]);
 
-  if (isLoading) {
+  if (isLoading && !service) {
     return (
       <>
         {seoBlock}
@@ -113,10 +117,6 @@ const ServiceDetails = () => {
               <OverviewSection service={service} />
               <SolutionsSection service={service} />
               <ProcessSection service={service} />
-              <TechnologySection service={service} />
-              {showFaq ? <FAQSection service={service} /> : null}
-              <RelatedServicesSection service={service} />
-              <IndustriesSection service={service} />
             </div>
 
             <div className="space-y-6">

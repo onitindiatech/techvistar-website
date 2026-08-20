@@ -119,7 +119,7 @@ export function useFooterContent() {
 
   return useMemo(() => {
     const heading =
-      wsFooter.heading?.trim() || websiteSettings.companyName?.trim() || 'TechVistar';
+      wsFooter.heading?.trim() || websiteSettings.companyName?.trim() || 'Veenero';
     const companyDescription =
       wsFooter.description?.trim() || DEFAULT_WEBSITE_SETTINGS.footer.description;
     const logo = resolveSiteLogo(websiteSettings.logo, defaultLogoUrl);

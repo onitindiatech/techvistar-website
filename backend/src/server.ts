@@ -26,10 +26,38 @@ import '@/config/cloudinary'; // Phase 1.5 — configure Cloudinary SDK at start
 import { logger, setupProcessLogger } from '@/utils/logger';
 import { DEV_ORIGINS, PRODUCTION_CORS_FALLBACK_ORIGINS } from '@/constants';
 import { serviceService } from '@/services/service.service';
+import { PagesCmsConfig } from '@/models/PagesCmsConfig';
 
 // ─── Register process-level error handlers ────────────────────────────────────
 // Must be set up before anything async happens
 setupProcessLogger();
+
+async function migrateDatabaseBrandName(): Promise<void> {
+  try {
+    const pagesCms = await PagesCmsConfig.findOne({ configKey: 'global' });
+    if (pagesCms && pagesCms.websiteSettings?.companyName === 'Veenero') {
+      pagesCms.websiteSettings.companyName = 'TechVistar';
+      pagesCms.websiteSettings.browserTitle = 'TechVistar | Technology-first growth — web, automation & applied AI';
+      pagesCms.websiteSettings.email = 'hello@techvistar.com';
+      pagesCms.websiteSettings.supportEmail = 'support@techvistar.com';
+      pagesCms.websiteSettings.salesEmail = 'hello@techvistar.com';
+      pagesCms.websiteSettings.careersEmail = 'careers@techvistar.com';
+      if (pagesCms.websiteSettings.footer) {
+        pagesCms.websiteSettings.footer.heading = 'TechVistar';
+        pagesCms.websiteSettings.footer.newsletterHeading = 'Stay updated with TechVistar';
+      }
+      if (pagesCms.websiteSettings.seoDefaults) {
+        pagesCms.websiteSettings.seoDefaults.siteTitle = 'TechVistar | Technology-first growth — web, automation & applied AI';
+        pagesCms.websiteSettings.seoDefaults.canonicalUrl = 'https://techvistar.com';
+        pagesCms.websiteSettings.seoDefaults.twitterHandle = '@TechVistar';
+      }
+      await pagesCms.save();
+      logger.info('[Migration] Updated existing PagesCmsConfig in MongoDB to TechVistar');
+    }
+  } catch (err) {
+    logger.warn('[Migration] Brand name auto-migration skipped:', err);
+  }
+}
 
 // ─── Startup ──────────────────────────────────────────────────────────────────
 async function startServer(): Promise<void> {
@@ -57,6 +85,7 @@ async function startServer(): Promise<void> {
     try {
       await connectDB();
       await serviceService.seedFallbackServicesIfNeeded();
+      await migrateDatabaseBrandName();
     } catch (dbErr) {
       if (env.isProd) {
         throw dbErr; // Re-throw to outer catch → process.exit(1)

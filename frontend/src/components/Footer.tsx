@@ -75,7 +75,7 @@ export const Footer = () => {
 
       toast({
         title: "Successfully Subscribed!",
-        description: "You've been added to our newsletter list for TechVistar engineering updates.",
+        description: "You've been added to our newsletter list for Veenero engineering updates.",
       });
       setEmail('');
     } catch (err: any) {
@@ -297,9 +297,15 @@ export const Footer = () => {
                 className="bg-white/[0.02] border-white/5 text-white placeholder:text-slate-600 text-xs h-10 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30"
                 required
               />
-              <Button type="submit" disabled={isSubmitting} size="default" className="w-full h-10 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-xs rounded-xl shadow-md transition-all hover:opacity-95">
-                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-              </Button>
+              <motion.button 
+                whileHover={{ y: -1 }}
+                whileTap={{ y: 0, scale: 0.98 }}
+                type="submit" 
+                disabled={isSubmitting} 
+                className="w-full h-10 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-xs rounded-xl shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>{isSubmitting ? 'Subscribing...' : 'Subscribe'}</span>
+              </motion.button>
             </form>
           </motion.div>
           </div>

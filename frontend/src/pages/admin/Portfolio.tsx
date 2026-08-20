@@ -1421,7 +1421,7 @@ const Portfolio = () => {
                       onChange={setSeo}
                       slug={slug}
                       pathPrefix="/work/"
-                      defaultTitle={title ? `${title} | TechVistar Portfolio` : ''}
+                      defaultTitle={title ? `${title} | Veenero Portfolio` : ''}
                       defaultDescription={description}
                       defaultImage={thumbnail}
                     />

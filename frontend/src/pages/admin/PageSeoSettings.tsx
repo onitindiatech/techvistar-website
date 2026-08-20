@@ -110,8 +110,8 @@ const PageSeoSettings = () => {
             onChange={(seo) => { setAboutSeo(seo); setIsDirty(true); }}
             slug=""
             pathPrefix="/about"
-            defaultTitle="About TechVistar | Technology-first growth partner"
-            defaultDescription="Learn about TechVistar — a Hyderabad-based technology-first growth partner."
+            defaultTitle="About Veenero | Technology-first growth partner"
+            defaultDescription="Learn about Veenero — a Hyderabad-based technology-first growth partner."
           />
         </CmsSectionCard>
       </CmsSectionAnchor>
@@ -131,8 +131,8 @@ const PageSeoSettings = () => {
             onChange={(seo) => { setCareersSeo(seo); setIsDirty(true); }}
             slug=""
             pathPrefix="/careers"
-            defaultTitle="Careers at TechVistar | Join our engineering team"
-            defaultDescription="Explore open roles at TechVistar and join our engineering team."
+            defaultTitle="Careers at Veenero | Join our engineering team"
+            defaultDescription="Explore open roles at Veenero and join our engineering team."
           />
         </CmsSectionCard>
       </CmsSectionAnchor>

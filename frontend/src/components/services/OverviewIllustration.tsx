@@ -37,7 +37,7 @@ interface IllustrationProps {
 export const OverviewIllustration = ({ slug }: IllustrationProps) => {
   // Common container with 3D perspective rotation
   const containerClass = "relative w-full max-w-[280px] h-[220px] mx-auto flex items-center justify-center [perspective:800px] select-none";
-  const glassPanelClass = "absolute bg-white/60 backdrop-blur-md border border-emerald-500/20 rounded-xl p-3 shadow-[0_8px_32px_0_rgba(14,165,233,0.08)] flex flex-col justify-between transition-all duration-300 hover:border-emerald-500/40 hover:-translate-y-1";
+  const glassPanelClass = "absolute bg-white/70 backdrop-blur-md border border-[#0b2859]/20 rounded-xl p-3 shadow-[0_12px_32px_0_rgba(11,40,89,0.22)] flex flex-col justify-between transition-all duration-300 hover:border-[#0b2859]/40 hover:-translate-y-1";
 
   // Dynamic content based on service slug
   switch (slug) {
@@ -647,7 +647,7 @@ export const OverviewIllustration = ({ slug }: IllustrationProps) => {
           <div className={`${glassPanelClass} w-44 h-32 [transform:rotateX(30deg)_rotateY(-15deg)_translateZ(20px)]`}>
             <div className="flex-1 flex flex-col items-center justify-center gap-2">
               <Briefcase className="w-8 h-8 text-emerald-500" />
-              <span className="text-[10px] font-bold text-emerald-700/80">TechVistar Service</span>
+              <span className="text-[10px] font-bold text-emerald-700/80">Veenero Service</span>
             </div>
           </div>
         </div>

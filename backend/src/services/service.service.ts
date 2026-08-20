@@ -3,6 +3,7 @@
  * @description Service layer managing Service database queries and slug generation.
  */
 
+import mongoose from 'mongoose';
 import { Service, IService } from '@/models/Service';
 import { ApiError } from '@/utils/ApiError';
 import { logger } from '@/utils/logger';
@@ -231,6 +232,7 @@ export class ServiceService {
       if (!existing) {
         await Service.create({
           ...fallbackService,
+          status: 'active',
           isDeleted: false,
           deletedAt: null,
           deletedBy: '',
@@ -256,14 +258,33 @@ export class ServiceService {
   async getActiveServices(category?: string): Promise<IService[]> {
     logger.info('[ServiceService] Retrieving all active services', { category });
 
-    const query: any = { status: 'active', isDeleted: { $ne: true } };
-    if (category && category !== 'All') {
-      query.category = { $regex: new RegExp('^' + category + '$', 'i') };
+    if (mongoose.connection.readyState !== 1) {
+      logger.warn('[ServiceService] DB not ready, returning fallbacks instantly');
+      return FALLBACK_SERVICES.map((srv, idx) => ({ ...srv, status: 'active', displayOrder: idx + 1 })) as unknown as IService[];
     }
-    return Service.find(query)
-      .select('title slug shortDescription fullDescription icon coverImage thumbnail dashboardImage features technologies benefits offerings displayOrder seoTitle seoDescription category featured')
-      .sort({ displayOrder: 1, createdAt: 1 })
-      .lean() as Promise<IService[]>;
+
+    try {
+      const query: any = { status: 'active', isDeleted: { $ne: true } };
+      if (category && category !== 'All') {
+        query.category = { $regex: new RegExp('^' + category + '$', 'i') };
+      }
+      const results = await Service.find(query)
+        .select('title slug shortDescription fullDescription icon coverImage thumbnail dashboardImage features technologies benefits offerings displayOrder seoTitle seoDescription category featured')
+        .sort({ displayOrder: 1, createdAt: 1 })
+        .lean() as IService[];
+
+      if (results && results.length > 0) {
+        return results;
+      }
+    } catch (err) {
+      logger.warn('[ServiceService] Database query failed or unavailable, using in-memory fallbacks', { err });
+    }
+
+    return FALLBACK_SERVICES.map((srv, idx) => ({
+      ...srv,
+      status: 'active',
+      displayOrder: idx + 1,
+    })) as unknown as IService[];
   }
 
   /**
@@ -351,11 +372,21 @@ export class ServiceService {
   async getServiceBySlug(slug: string): Promise<IService> {
     logger.info('[ServiceService] Retrieving active service by slug', { slug });
 
-    const service = await Service.findOne({ slug, status: 'active', isDeleted: { $ne: true } }).lean();
-    if (!service) {
-      throw ApiError.notFound(`Service not found for slug "${slug}"`);
+    try {
+      const service = await Service.findOne({ slug, status: 'active', isDeleted: { $ne: true } }).lean();
+      if (service) {
+        return service as IService;
+      }
+    } catch (err) {
+      logger.warn('[ServiceService] Database query for service slug failed, checking in-memory fallbacks', { slug, err });
     }
-    return service as IService;
+
+    const fallback = FALLBACK_SERVICES.find((s) => s.slug === slug);
+    if (fallback) {
+      return { ...fallback, status: 'active' } as unknown as IService;
+    }
+
+    throw ApiError.notFound(`Service not found for slug "${slug}"`);
   }
 }
 

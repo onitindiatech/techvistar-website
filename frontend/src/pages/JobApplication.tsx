@@ -28,6 +28,8 @@ import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import { MobileBackButton } from '@/components/ui/MobileBackButton';
 
+import { FALLBACK_JOBS } from '@/data/jobs';
+
 const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;
 
 const applicationSchema = z.object({
@@ -39,7 +41,7 @@ const applicationSchema = z.object({
   linkedinUrl: z.string().url('Invalid URL').or(z.literal('')),
   portfolioUrl: z.string().url('Invalid URL').or(z.literal('')),
   coverLetter: z.string().min(20, 'Cover letter must be at least 20 characters'),
-  whyJoinTechVistar: z.string().optional(),
+  whyJoinVeenero: z.string().optional(),
 });
 
 type ApplicationFormValues = z.infer<typeof applicationSchema>;
@@ -58,6 +60,12 @@ export const JobApplication = () => {
     enabled: !!slug,
   });
 
+  const activeJob = (() => {
+    if (job) return job;
+    if (!slug) return undefined;
+    return FALLBACK_JOBS.find((j) => j.slug === slug);
+  })();
+
   const {
     register,
     handleSubmit,
@@ -74,7 +82,7 @@ export const JobApplication = () => {
       linkedinUrl: '',
       portfolioUrl: '',
       coverLetter: '',
-      whyJoinTechVistar: '',
+      whyJoinVeenero: '',
     },
   });
 
@@ -114,7 +122,7 @@ export const JobApplication = () => {
         linkedin: values.linkedinUrl,
         portfolio: values.portfolioUrl,
         coverLetter: values.coverLetter,
-        whyJoinTechVistar: values.whyJoinTechVistar || '',
+        whyJoinVeenero: values.whyJoinVeenero || '',
         resumeUrl: uploadedResume.resumeUrl,
         resumePublicId: uploadedResume.publicId,
         resumeMimeType: uploadedResume.mimeType,
@@ -421,20 +429,19 @@ export const JobApplication = () => {
                     )}
                   </div>
 
+                  {/* Why Join Veenero */}
                   <div className="space-y-2">
-                    <Label htmlFor="whyJoinTechVistar" className="text-xs font-bold text-slate-700">
-                      Why do you want to join TechVistar?
-                    </Label>
+                    <Label htmlFor="whyJoinVeenero" className="text-xs font-bold text-slate-700">Why do you want to join Veenero?</Label>
                     <Textarea
-                      id="whyJoinTechVistar"
+                      id="whyJoinVeenero"
                       rows={3}
                       placeholder="Share your motivation..."
                       className="resize-none rounded-xl border-slate-200 focus-visible:ring-emerald-500"
-                      {...register('whyJoinTechVistar')}
+                      {...register('whyJoinVeenero')}
                     />
-                    {errors.whyJoinTechVistar && (
+                    {errors.whyJoinVeenero && (
                       <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500">
-                        <AlertCircle className="h-3.5 w-3.5" /> {errors.whyJoinTechVistar.message}
+                        <AlertCircle className="h-3.5 w-3.5" /> {errors.whyJoinVeenero.message}
                       </p>
                     )}
                   </div>

@@ -10,7 +10,6 @@ const baseNavItems: NavItem[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'offerings', label: 'Offerings' },
   { id: 'process', label: 'Process' },
-  { id: 'technology', label: 'Technology' },
 ];
 
 interface ServiceSectionNavigationProps {
@@ -20,7 +19,6 @@ interface ServiceSectionNavigationProps {
 export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavigationProps) => {
   const navItems: NavItem[] = [
     ...baseNavItems,
-    ...(showFaq ? [{ id: 'faq', label: 'FAQ' }] : []),
     { id: 'contact', label: 'Contact' },
   ];
   const [activeId, setActiveId] = useState<string>('overview');
@@ -157,7 +155,7 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
               onClick={handleNavClick(item.id)}
               data-active={activeId === item.id}
               className={cn(
-                'text-xs font-semibold uppercase tracking-wider pb-1 px-2 transition-all border-b-2 focus:outline-none mobile-touch-target shrink-0',
+                'text-sm md:text-base font-semibold pb-1.5 px-3 transition-all border-b-2 focus:outline-none mobile-touch-target shrink-0',
                 activeId === item.id
                   ? 'border-primary text-primary font-bold animate-pulse-subtle'
                   : 'border-transparent text-slate-500 hover:text-slate-900'

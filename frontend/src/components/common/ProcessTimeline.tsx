@@ -59,7 +59,7 @@ export const ProcessTimeline = ({
               <Sparkles className="h-3 w-3 text-emerald-600" />
             </div>
           )}
-          <h2 className="font-display text-heading-sm text-slate-900">
+          <h2 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">
             {title}
           </h2>
         </div>
@@ -107,18 +107,18 @@ export const ProcessTimeline = ({
                 {/* Phase card */}
                 <div className="min-w-0 flex-1 rounded-2xl border border-slate-100 bg-slate-50/60 p-4 transition-all duration-300 group-hover:border-emerald-500/25 group-hover:bg-white group-hover:shadow-[0_12px_30px_-12px_rgba(14,165,233,0.12)] md:p-5">
                   <div className="mb-1.5 flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600/90">
+                    <span className="text-xs md:text-sm font-bold text-emerald-600/90">
                       {labelPrefix} {twoDigitStep}
                     </span>
                     <span className="h-1 w-1 rounded-full bg-slate-300" aria-hidden />
                     <span className="text-xs font-semibold text-slate-400">Step {idx + 1}</span>
                   </div>
                   {step.title && (
-                    <h3 className="mb-1 font-display text-sm font-bold text-slate-800 transition-colors group-hover:text-emerald-700">
+                    <h3 className="mb-1 font-display text-base md:text-lg font-bold text-slate-900 transition-colors group-hover:text-emerald-700 leading-snug">
                       {step.title}
                     </h3>
                   )}
-                  <p className="text-xs leading-relaxed text-slate-500">{step.description}</p>
+                  <p className="text-sm md:text-base text-slate-600 leading-relaxed">{step.description}</p>
                 </div>
               </motion.li>
             );

@@ -66,18 +66,18 @@ export const IndustryCard = ({
             {industry.title}
           </h3>
 
-          <p className="mt-2 line-clamp-3 text-sm font-medium leading-relaxed text-slate-500">
+          <p className="mt-2 line-clamp-3 text-base md:text-lg font-medium leading-relaxed text-slate-600">
             {industry.shortDescription}
           </p>
 
           {offeringItems.length > 0 && (
             <div className="mt-5 flex-1">
-              <p className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
+              <p className="mb-2.5 text-xs font-bold uppercase tracking-[0.12em] text-slate-400">
                 {offeringsLabel}
               </p>
               <ul className="space-y-2">
                 {offeringItems.slice(0, 3).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs font-medium text-slate-600">
+                  <li key={i} className="flex items-start gap-2 text-sm md:text-base font-medium text-slate-700">
                     <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" />
                     <span className="line-clamp-1">{item}</span>
                   </li>

@@ -32,6 +32,10 @@ import uploadRouter   from './upload.routes';
 import pagesRouter    from './pages.routes';
 import officeRouter   from './office.routes';
 import adminRouter    from './admin.routes';
+import testimonialRouter from './testimonial.routes';
+import teamMemberRouter from './teamMember.routes';
+import blogPostRouter from './blogPost.routes';
+import mediaRouter from './media.routes';
 
 const router = Router();
 
@@ -52,6 +56,10 @@ router.use('/upload',     uploadRouter);
 router.use('/pages',      pagesRouter);
 router.use('/offices',    officeRouter);
 router.use('/admin',      adminRouter);
+router.use('/testimonials', testimonialRouter);
+router.use('/team', teamMemberRouter);
+router.use('/blog', blogPostRouter);
+router.use('/media', mediaRouter);
 
 // ─── API root info ─────────────────────────────────────────────────────────────
 // GET /api → Basic API info (not a real endpoint, just useful for developers)

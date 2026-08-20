@@ -14,7 +14,7 @@ export const ProcessSection = ({ service }: SectionProps) => {
   return (
     <ProcessTimeline
       steps={steps}
-      title="Development Process"
+      title="Process"
       showSparkles={false}
     />
   );

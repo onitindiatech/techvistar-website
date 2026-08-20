@@ -13,6 +13,63 @@ import {
   deleteCloudinaryPublicIds,
 } from '@/utils/mediaAsset';
 
+const FALLBACK_INDUSTRIES: Record<string, unknown>[] = [
+  {
+    slug: 'healthcare',
+    title: 'Healthcare',
+    subtitle: 'HIPAA-compliant platforms, EHR integration, and encrypted patient portals',
+    icon: 'Activity',
+    category: 'Healthtech',
+    status: 'active',
+    displayOrder: 1,
+  },
+  {
+    slug: 'education',
+    title: 'Education',
+    subtitle: 'LMS development, interactive student portals, and auto-scaling classrooms',
+    icon: 'GraduationCap',
+    category: 'Edtech',
+    status: 'active',
+    displayOrder: 2,
+  },
+  {
+    slug: 'finance',
+    title: 'Finance',
+    subtitle: 'Fintech portals, payment gateway integrations, and zero-trust security',
+    icon: 'Landmark',
+    category: 'Fintech',
+    status: 'active',
+    displayOrder: 3,
+  },
+  {
+    slug: 'retail-ecommerce',
+    title: 'Retail & E-commerce',
+    subtitle: 'High-speed storefronts, inventory broadcast feeds, and headless checkout',
+    icon: 'ShoppingCart',
+    category: 'E-commerce',
+    status: 'active',
+    displayOrder: 4,
+  },
+  {
+    slug: 'manufacturing',
+    title: 'Manufacturing',
+    subtitle: 'Industrial IoT telemetry dashboards, predictive maintenance, and supply chain tracking',
+    icon: 'Factory',
+    category: 'Industrial',
+    status: 'active',
+    displayOrder: 5,
+  },
+  {
+    slug: 'real-estate',
+    title: 'Real Estate',
+    subtitle: 'Proptech listing platforms, agent CRMs, and interactive virtual property tours',
+    icon: 'Home',
+    category: 'Proptech',
+    status: 'active',
+    displayOrder: 6,
+  },
+];
+
 export class IndustryService {
   /**
    * Creates a new industry. Auto-generates unique slug.
@@ -169,11 +226,19 @@ export class IndustryService {
    */
   async getActiveIndustries(category?: string): Promise<IIndustry[]> {
     logger.info('[IndustryService] Retrieving all active industries', { category });
-    const query: any = { status: 'active', isDeleted: { $ne: true } };
-    if (category && category !== 'All') {
-      query.category = { $regex: new RegExp('^' + category + '$', 'i') };
+    try {
+      const query: any = { status: 'active', isDeleted: { $ne: true } };
+      if (category && category !== 'All') {
+        query.category = { $regex: new RegExp('^' + category + '$', 'i') };
+      }
+      const results = await Industry.find(query).sort({ displayOrder: 1, createdAt: 1 }).lean() as IIndustry[];
+      if (results && results.length > 0) {
+        return results;
+      }
+    } catch (err) {
+      logger.warn('[IndustryService] Database query failed or unavailable, using in-memory fallbacks', { err });
     }
-    return Industry.find(query).sort({ displayOrder: 1, createdAt: 1 }).lean() as Promise<IIndustry[]>;
+    return FALLBACK_INDUSTRIES as unknown as IIndustry[];
   }
 
   /**

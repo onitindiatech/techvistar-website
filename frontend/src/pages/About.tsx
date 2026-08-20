@@ -157,10 +157,10 @@ const About = () => {
 
         <PageHeader
           title={
-            about.hero.title.includes('TechVistar') ? (
+            about.hero.title.includes('TechVistar') || about.hero.title.includes('Veenero') ? (
               <>
                 About{' '}
-                <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                <span className="hero-highlight-text--static inline-block font-black">
                   TechVistar
                 </span>
               </>
@@ -168,7 +168,7 @@ const About = () => {
               about.hero.title
             )
           }
-          subtitle={about.hero.eyebrow || ABOUT_PAGE.hero.eyebrow}
+          subtitle={about.hero.eyebrow}
           description={about.hero.description}
           backgroundImage={heroBg}
           bgPosition="right bottom"
@@ -384,13 +384,13 @@ const About = () => {
                 <motion.div
                   whileHover={{ scale: 1.015, y: -2 }}
                   whileTap={{ scale: 0.995 }}
-                  className="flex gap-4 rounded-2xl border-2 border-emerald-500/20 bg-white/80 p-5 shadow-sm backdrop-blur-sm"
+                  className="flex gap-4 rounded-2xl border-2 border-[#041a3d]/20 bg-white/80 p-5 shadow-sm backdrop-blur-sm"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-[0_4px_12px_-2px_rgba(14,165,233,0.2)]">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#041a3d] text-white shadow-[0_4px_12px_-2px_rgba(5,27,61,0.3)]">
                     <MapPin className="h-6 w-6" strokeWidth={1.75} aria-hidden />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100/80 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-emerald-800 ring-1 ring-emerald-800/10">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#041a3d]/10 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-[#041a3d] ring-1 ring-[#041a3d]/20">
                       {ABOUT_PAGE.location.heading}
                     </span>
                     <h3 className="mt-2 text-base font-extrabold tracking-tight text-slate-900">
@@ -403,13 +403,13 @@ const About = () => {
                 <motion.div
                   whileHover={{ scale: 1.015, y: -2 }}
                   whileTap={{ scale: 0.995 }}
-                  className="flex gap-4 rounded-2xl border-2 border-teal-500/20 bg-white/80 p-5 shadow-sm backdrop-blur-sm"
+                  className="flex gap-4 rounded-2xl border-2 border-[#041a3d]/20 bg-white/80 p-5 shadow-sm backdrop-blur-sm"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white shadow-[0_4px_12px_-2px_rgba(20,184,166,0.2)]">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#041a3d] text-white shadow-[0_4px_12px_-2px_rgba(5,27,61,0.3)]">
                     <ShieldCheck className="h-6 w-6" strokeWidth={1.75} aria-hidden />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-100/80 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-teal-800 ring-1 ring-teal-800/10">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#041a3d]/10 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-[#041a3d] ring-1 ring-[#041a3d]/20">
                       {ABOUT_PAGE.commitmentHeading}
                     </span>
                     <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-800">
@@ -419,24 +419,24 @@ const About = () => {
                 </motion.div>
               </div>
 
-              <div className="mt-5 flex flex-col gap-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-5 text-white shadow-md transition-shadow duration-300 hover:shadow-lg sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                <p className="text-xs font-bold leading-snug tracking-wide sm:max-w-[70%] sm:text-sm">
+              <div className="mt-5 flex flex-col gap-3 rounded-2xl border-2 border-slate-200/90 bg-white px-5 py-5 text-slate-800 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                <p className="text-xs font-bold leading-snug tracking-wide text-slate-800 sm:max-w-[70%] sm:text-sm">
                   {about.cta.text}
                 </p>
-                <Button
-                  variant="secondary"
-                  size="default"
-                  className="shrink-0 border-0 bg-white px-5 py-2.5 text-xs font-bold text-emerald-700 shadow-sm transition-all hover:bg-slate-50 hover:text-emerald-800"
-                  asChild
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ y: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="shrink-0 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold rounded-xl px-5 py-2.5 text-xs shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] transition-all cursor-pointer group"
                 >
                   <CmsHref
                     href={about.cta.buttonLink || '/#contact'}
-                    className="inline-flex items-center gap-2 uppercase tracking-wider"
+                    className="inline-flex items-center gap-2 uppercase tracking-wider text-white"
                   >
-                    {about.cta.buttonText}
-                    <ArrowRight className="h-4 w-4 stroke-[2.5]" aria-hidden />
+                    <span>{about.cta.buttonText}</span>
+                    <ArrowRight className="h-4 w-4 stroke-[2.5] text-white group-hover:translate-x-0.5 transition-transform duration-200" aria-hidden />
                   </CmsHref>
-                </Button>
+                </motion.button>
               </div>
             </section>
           </div>

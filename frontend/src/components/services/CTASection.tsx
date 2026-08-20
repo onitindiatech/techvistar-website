@@ -29,10 +29,10 @@ export const CTASection = ({ service, cmsConfig }: SectionProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       id="contact" 
-      className="relative overflow-hidden bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-700 border border-emerald-500/30 rounded-3xl p-8 md:p-12 text-white shadow-[0_20px_50px_rgba(14,165,233,0.15)] scroll-mt-24 text-center w-full"
+      className="relative overflow-hidden bg-[#041a3d] border border-[#041a3d]/30 rounded-3xl p-8 md:p-12 text-white shadow-[0_20px_50px_rgba(5,27,61,0.25)] scroll-mt-24 text-center w-full"
     >
       <div className="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-      <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-emerald-300/20 blur-2xl pointer-events-none" />
+      <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-blue-400/20 blur-2xl pointer-events-none" />
 
       <div className="absolute inset-0 pointer-events-none z-0 opacity-10" aria-hidden="true">
         <svg width="100%" height="100%">
@@ -45,27 +45,30 @@ export const CTASection = ({ service, cmsConfig }: SectionProps) => {
 
       <div className="relative z-10 space-y-6">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-xs font-semibold select-none">
-          <Sparkles className="h-3 w-3 text-emerald-100 animate-pulse" />
+          <Sparkles className="h-3 w-3 text-blue-200 animate-pulse" />
           <span>{cta.badge}</span>
         </div>
 
-        <h2 className="text-2xl md:text-4xl font-black font-display tracking-tight leading-tight max-w-2xl mx-auto">
+        <h2 className="text-base md:text-lg font-bold font-display leading-snug max-w-2xl mx-auto">
           {cta.headline}
         </h2>
 
-        <p className="text-emerald-50/90 text-xs md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
+        <p className="text-blue-100/90 text-xs md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
           {cta.body}
         </p>
 
         <div className="flex flex-wrap gap-4 justify-center pt-2">
           <Dialog>
             <DialogTrigger asChild>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
-                <Button className="bg-white text-emerald-700 hover:bg-slate-50 font-bold border-none shadow-[0_8px_20px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_25px_-4px_rgba(0,0,0,0.2)] px-7 py-3 rounded-xl inline-flex items-center gap-2 transition-all h-11 text-xs md:text-sm">
-                  <Calendar className="h-4.5 w-4.5" />
-                  {cta.primaryButtonLabel}
-                </Button>
-              </motion.div>
+              <motion.button
+                whileHover={{ y: -1 }}
+                whileTap={{ y: 0, scale: 0.98 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-7 text-xs font-extrabold text-[#041a3d] shadow-md transition-all hover:bg-slate-100 md:text-sm cursor-pointer group"
+              >
+                <Calendar className="h-4.5 w-4.5 text-[#041a3d]" />
+                <span>{cta.primaryButtonLabel}</span>
+              </motion.button>
             </DialogTrigger>
             <DialogContent className="border-none bg-transparent shadow-none p-0 w-[calc(100%-2rem)] sm:w-full max-w-2xl">
               <ConsultationForm
@@ -76,18 +79,17 @@ export const CTASection = ({ service, cmsConfig }: SectionProps) => {
             </DialogContent>
           </Dialog>
 
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              variant="outline"
-              className="border-white/30 hover:border-white text-white hover:bg-white/10 font-bold px-7 py-3 rounded-xl inline-flex items-center gap-2 h-11 text-xs md:text-sm transition-all"
-              asChild
-            >
-              <CmsHref href={cta.secondaryButtonHref}>
-                <MessageSquare className="h-4.5 w-4.5" />
-                {cta.secondaryButtonLabel}
-              </CmsHref>
-            </Button>
-          </motion.div>
+          <motion.button
+            whileHover={{ y: -1 }}
+            whileTap={{ y: 0, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-7 text-xs font-extrabold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm cursor-pointer group"
+          >
+            <CmsHref href={cta.secondaryButtonHref} className="inline-flex items-center gap-2 text-white">
+              <MessageSquare className="h-4.5 w-4.5 text-white" />
+              <span>{cta.secondaryButtonLabel}</span>
+            </CmsHref>
+          </motion.button>
         </div>
       </div>
     </motion.section>

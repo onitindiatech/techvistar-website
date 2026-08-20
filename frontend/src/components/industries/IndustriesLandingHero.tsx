@@ -27,8 +27,9 @@ export const IndustriesLandingHero = ({
 
   const title = hero.subtitle?.trim() ? (
     <>
-      {hero.title}{' '}
-      <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+      {hero.title}
+      <br />
+      <span className="hero-highlight-text--static inline-block font-black">
         {hero.subtitle}
       </span>
     </>
@@ -38,25 +39,28 @@ export const IndustriesLandingHero = ({
 
   const ctaButton = ctaText ? (
     ctaLink.startsWith('#') ? (
-      <Button
+      <motion.button
+        whileHover={{ y: -1 }}
+        whileTap={{ y: 0, scale: 0.98 }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
         onClick={onExplore}
-        size="lg"
-        className="h-12 rounded-xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500"
+        className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#041a3d] hover:bg-[#021028] px-6 text-sm font-extrabold text-white shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] transition-all cursor-pointer group"
       >
-        {ctaText}
-        <ArrowRight className="ml-2 h-4 w-4" />
-      </Button>
+        <span>{ctaText}</span>
+        <ArrowRight className="h-4 w-4 stroke-[2.5] text-white group-hover:translate-x-0.5 transition-transform duration-200" />
+      </motion.button>
     ) : (
-      <Button
-        asChild
-        size="lg"
-        className="h-12 rounded-xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500"
+      <motion.button
+        whileHover={{ y: -1 }}
+        whileTap={{ y: 0, scale: 0.98 }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#041a3d] hover:bg-[#021028] px-6 text-sm font-extrabold text-white shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] transition-all cursor-pointer group"
       >
-        <CmsHref href={ctaLink}>
-          {ctaText}
-          <ArrowRight className="ml-2 h-4 w-4" />
+        <CmsHref href={ctaLink} className="inline-flex items-center gap-2 text-white">
+          <span>{ctaText}</span>
+          <ArrowRight className="h-4 w-4 stroke-[2.5] text-white group-hover:translate-x-0.5 transition-transform duration-200" />
         </CmsHref>
-      </Button>
+      </motion.button>
     )
   ) : null;
 

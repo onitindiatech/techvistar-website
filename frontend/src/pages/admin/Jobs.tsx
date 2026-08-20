@@ -1046,7 +1046,7 @@ const Jobs = () => {
                       onChange={setSeo}
                       slug={slug}
                       pathPrefix="/careers/"
-                      defaultTitle={title ? `${title} | TechVistar Careers` : ''}
+                      defaultTitle={title ? `${title} | Veenero Careers` : ''}
                       defaultDescription={stripHtmlToText(description).slice(0, 160)}
                       defaultImage={bannerImage}
                     />

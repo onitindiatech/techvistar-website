@@ -1,6 +1,6 @@
-# TechVistar Website (Full-Stack SaaS Repository)
+# Veenero Website (Full-Stack SaaS Repository)
 
-This repository contains the TechVistar website, restructured into a professional full-stack layout separating the frontend application from backend services.
+This repository contains the Veenero website, restructured into a professional full-stack layout separating the frontend application from backend services.
 
 ## Repository Directory Hierarchy
 

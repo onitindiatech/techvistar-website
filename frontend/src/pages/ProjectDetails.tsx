@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getProjectBySlug, getActiveProjects } from '@/services/portfolio.service';
-import { decorateProject } from '@/data/projects';
+import { decorateProject, PROJECTS } from '@/data/projects';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -28,9 +28,20 @@ const ProjectDetails = () => {
     queryKey: ['projectDetails', slug],
     queryFn: () => getProjectBySlug(slug || ''),
     enabled: !!slug,
+    retry: 1,
   });
 
-  const project = apiProject ? decorateProject(apiProject) : undefined;
+  const project = useMemo(() => {
+    if (apiProject) {
+      const dec = decorateProject(apiProject);
+      if (dec) return dec;
+    }
+    if (!slug) return undefined;
+    return (
+      PROJECTS.find((p) => p.slug === slug) ||
+      PROJECTS.find((p) => p.slug.includes(slug) || slug.includes(p.slug))
+    );
+  }, [apiProject, slug]);
 
   const { data: apiProjects } = useQuery({
     queryKey: ['activeProjects'],
@@ -38,12 +49,17 @@ const ProjectDetails = () => {
     enabled: !!project,
   });
 
-  const projectsData = (apiProjects || []).map(decorateProject);
+  const projectsData = useMemo(() => {
+    const loaded = (apiProjects || []).map(decorateProject).filter(Boolean);
+    const loadedSlugs = new Set(loaded.map((p) => p.slug));
+    const fallbackList = PROJECTS.filter((p) => !loadedSlugs.has(p.slug));
+    return [...loaded, ...fallbackList];
+  }, [apiProjects]);
 
   const relatedProjects = useMemo(() => {
     if (!project) return [];
-    return projectsData
-      .filter((p) => p.id !== project.id)
+    const scored = projectsData
+      .filter((p) => p.id !== project.id && p.slug !== project.slug)
       .map((p) => {
         let score = 0;
         if (p.category === project.category) score += 3;
@@ -51,10 +67,9 @@ const ProjectDetails = () => {
         score += sharedTags;
         return { project: p, score };
       })
-      .filter((item) => item.score > 0)
       .sort((a, b) => b.score - a.score)
-      .slice(0, 3)
       .map((item) => item.project);
+    return scored.slice(0, 3);
   }, [project, projectsData]);
 
   const navItems = useMemo(() => {
@@ -64,7 +79,6 @@ const ProjectDetails = () => {
       ...(project.keyFeatures.length > 0 || project.detailedFeatures.length > 0 ? [{ id: 'features', label: 'Features' }] : []),
       ...(project.technologies.length > 0 ? [{ id: 'technology', label: 'Tech Stack' }] : []),
       ...(project.process.length > 0 ? [{ id: 'process', label: 'Process' }] : []),
-      ...(project.gallery.length > 0 ? [{ id: 'gallery', label: 'Gallery' }] : []),
       ...(project.challenges.length > 0 ? [{ id: 'challenges', label: 'Challenges' }] : []),
       { id: 'contact', label: 'Contact' },
     ];
@@ -140,7 +154,6 @@ const ProjectDetails = () => {
               <ProjectFeaturesSection project={project} />
               <ProjectTechnologySection project={project} />
               <ProjectProcessSection project={project} />
-              <ProjectGallerySection project={project} />
               <ProjectChallengesSection project={project} />
               <ProjectRelatedSection relatedProjects={relatedProjects} />
             </div>

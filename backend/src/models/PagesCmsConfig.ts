@@ -388,8 +388,8 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
       },
       cta: extendedCtaBlockSchema,
       ...seoMongooseFields,
-      seoTitle: { type: String, trim: true, default: 'Solutions | TechVistar' },
-      canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/solutions' },
+      seoTitle: { type: String, trim: true, default: 'Solutions | Veenero' },
+      canonicalUrl: { type: String, trim: true, default: 'https://veenero.com/solutions' },
     },
     industriesLanding: {
       hero: landingHeroSchema,
@@ -415,8 +415,8 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
       sidebarDefaults: sidebarDefaultsSchema,
       consultationDefaults: consultationDefaultsSchema,
       ...seoMongooseFields,
-      seoTitle: { type: String, trim: true, default: 'Industries | TechVistar' },
-      canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/industries' },
+      seoTitle: { type: String, trim: true, default: 'Industries | Veenero' },
+      canonicalUrl: { type: String, trim: true, default: 'https://veenero.com/industries' },
     },
     portfolioLanding: {
       hero: {
@@ -493,7 +493,7 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
           type: String,
           trim: true,
           default:
-            'TechVistar delivered our route optimization system ahead of schedule. The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag.',
+            'Veenero delivered our route optimization system ahead of schedule. The solver APIs and capacity constraints dashboard handled high-latency dispatch scripts with zero UI thread lag.',
         },
         author: { type: String, trim: true, default: 'Chief of Operations' },
         role: { type: String, trim: true, default: '' },
@@ -530,27 +530,27 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
         imagePublicId: { type: String, trim: true, default: '' },
       },
       ...seoMongooseFields,
-      seoTitle: { type: String, trim: true, default: 'Our Work | TechVistar Portfolio' },
-      canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/work' },
+      seoTitle: { type: String, trim: true, default: 'Our Work | Veenero Portfolio' },
+      canonicalUrl: { type: String, trim: true, default: 'https://veenero.com/work' },
     },
     careers: {
       hero: landingHeroSchema,
       culture: {
-        title: { type: String, trim: true, default: 'Life at TechVistar' },
+        title: { type: String, trim: true, default: 'Life at Veenero' },
         description: { type: String, trim: true, default: '' },
       },
       benefits: { type: [benefitItemSchema], default: [] },
       hiringProcess: { type: [processStepSchema], default: [] },
       cta: ctaBlockSchema,
       ...seoMongooseFields,
-      seoTitle: { type: String, trim: true, default: 'Careers at TechVistar | Join our engineering team' },
+      seoTitle: { type: String, trim: true, default: 'Careers at Veenero | Join our engineering team' },
       seoDescription: {
         type: String,
         trim: true,
         default:
-          'Explore open roles at TechVistar. Join a collaborative team building web, AI, and automation products.',
+          'Explore open roles at Veenero. Join a collaborative team building web, AI, and automation products.',
       },
-      canonicalUrl: { type: String, trim: true, default: 'https://techvistar.com/careers' },
+      canonicalUrl: { type: String, trim: true, default: 'https://veenero.com/careers' },
     },
     websiteSettings: {
       logo: { type: String, trim: true, default: '' },

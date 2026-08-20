@@ -361,7 +361,7 @@ const ContactSettings = () => {
           <CmsTextFields
             twoColumn
             fields={[
-              { key: 'email',       label: 'Email address', placeholder: 'info@techvistar.com' },
+              { key: 'email',       label: 'Email address', placeholder: 'info@veenero.com' },
               { key: 'phone',       label: 'Phone number',  placeholder: '+91 98765 43210' },
               { key: 'supportText', label: 'Support text',  type: 'textarea', fullWidth: true, placeholder: 'We usually respond within…' },
             ]}
@@ -377,7 +377,7 @@ const ContactSettings = () => {
         >
           <CmsTextFields
             fields={[
-              { key: 'heading', label: 'Office heading', placeholder: 'TechVistar HQ' },
+              { key: 'heading', label: 'Office heading', placeholder: 'Veenero HQ' },
               { key: 'address', label: 'Address', type: 'textarea', fullWidth: true },
               { key: 'hours', label: 'Working hours', placeholder: 'Mon–Sat, 9 AM – 7 PM IST' },
             ]}

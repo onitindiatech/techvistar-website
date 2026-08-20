@@ -16,6 +16,105 @@ import {
 
 export type ProjectStatus = 'Completed' | 'In Progress' | 'Coming Soon';
 
+const FALLBACK_PROJECTS: Record<string, unknown>[] = [
+  {
+    id: 1,
+    title: 'Smart City Mobility & Dynamic Routing Engine',
+    slug: 'navigation-route-optimization',
+    description: 'High-throughput GIS routing system processing real-time telemetry from 50,000+ urban transit nodes.',
+    category: 'Full-Stack Web App',
+    thumbnail: 'mobilityImg',
+    technologies: ['React', 'TypeScript', 'Node.js', 'PostGIS', 'Redis', 'WebSockets'],
+    liveUrl: 'https://example.com/mobility',
+    githubUrl: 'https://github.com/example/mobility',
+    featured: true,
+    date: '2024-02',
+    client: 'MetroTransit Corp',
+    role: 'Lead Full-Stack Architect',
+    status: 'Completed',
+  },
+  {
+    id: 2,
+    title: 'Enterprise ESG & Carbon Accounting Platform',
+    slug: 'ecosystem-environmental-intelligence',
+    description: 'Automated Scope 1-3 greenhouse gas emissions ledger with real-time auditability and regulatory export.',
+    category: 'Full-Stack Web App',
+    thumbnail: 'sustainabilityImg',
+    technologies: ['Next.js', 'Python', 'FastAPI', 'PostgreSQL', 'TailwindCSS'],
+    liveUrl: 'https://example.com/esg',
+    githubUrl: 'https://github.com/example/esg',
+    featured: true,
+    date: '2024-01',
+    client: 'EcoTech Global',
+    role: 'Principal System Engineer',
+    status: 'Completed',
+  },
+  {
+    id: 3,
+    title: 'Precision AgTech Crop Health Pipeline',
+    slug: 'crop-hub-crop-health-screening',
+    description: 'Multispectral drone image segmentation & moisture mapping delivering field-level yield forecasts.',
+    category: 'AI / Data Platform',
+    thumbnail: 'cropImg',
+    technologies: ['Python', 'PyTorch', 'OpenCV', 'React', 'Google Cloud Platform'],
+    liveUrl: 'https://example.com/crop',
+    githubUrl: 'https://github.com/example/crop',
+    featured: true,
+    date: '2023-11',
+    client: 'AgriVision Labs',
+    role: 'Computer Vision Lead',
+    status: 'Completed',
+  },
+  {
+    id: 4,
+    title: 'Customer Sentiment & NLP Analytics Suite',
+    slug: 'sentiment-classification-service',
+    description: 'Real-time multi-channel conversational intelligence platform processing 2M+ support transcripts daily.',
+    category: 'AI / Data Platform',
+    thumbnail: 'nlpImg',
+    technologies: ['Python', 'Transformers', 'FastAPI', 'Elasticsearch', 'React', 'D3.js'],
+    liveUrl: 'https://example.com/nlp',
+    githubUrl: 'https://github.com/example/nlp',
+    featured: false,
+    date: '2023-09',
+    client: 'OmniCustomer Inc',
+    role: 'Lead AI Engineer',
+    status: 'Completed',
+  },
+  {
+    id: 5,
+    title: 'Autonomous Resume & Candidate Ranking Engine',
+    slug: 'resume-review-assistant',
+    description: 'AI-assisted talent screening system matching candidate profiles against enterprise role requisitions.',
+    category: 'SaaS Platform',
+    thumbnail: 'resumeReviewImg',
+    technologies: ['Next.js', 'TypeScript', 'Python', 'Pinecone', 'OpenAI API', 'TailwindCSS'],
+    liveUrl: 'https://example.com/resume',
+    githubUrl: 'https://github.com/example/resume',
+    featured: false,
+    date: '2023-08',
+    client: 'TalentScale HR',
+    role: 'Full-Stack AI Developer',
+    status: 'Completed',
+  },
+  {
+    id: 6,
+    title: 'Clinical Risk Scoring & Patient Monitoring',
+    slug: 'clinical-risk-scoring-prototype',
+    description: 'Predictive health analytics engine alerting clinical care teams to early patient deterioration signs.',
+    category: 'Enterprise System',
+    thumbnail: 'clinicalRiskImg',
+    technologies: ['React', 'Node.js', 'Python', 'FHIR API', 'PostgreSQL', 'Docker'],
+    liveUrl: 'https://example.com/clinical',
+    githubUrl: 'https://github.com/example/clinical',
+    featured: false,
+    date: '2023-06',
+    client: 'HealthShield Health System',
+    role: 'Senior Software Engineer',
+    status: 'Completed',
+  },
+];
+
 export class ProjectService {
   /**
    * Creates a new Project portfolio item.
@@ -192,9 +291,17 @@ export class ProjectService {
    */
   async getActiveProjects(): Promise<IProject[]> {
     logger.info('[ProjectService] Retrieving all active projects');
-    return ProjectModel.find({ isDeleted: { $ne: true } })
-      .sort({ displayOrder: 1, date: -1 })
-      .lean() as Promise<IProject[]>;
+    try {
+      const results = await ProjectModel.find({ isDeleted: { $ne: true } })
+        .sort({ displayOrder: 1, date: -1 })
+        .lean() as IProject[];
+      if (results && results.length > 0) {
+        return results;
+      }
+    } catch (err) {
+      logger.warn('[ProjectService] Database query failed or unavailable, using in-memory fallbacks', { err });
+    }
+    return FALLBACK_PROJECTS as unknown as IProject[];
   }
 
   /**
@@ -272,11 +379,25 @@ export class ProjectService {
    */
   async getProjectBySlug(slug: string): Promise<IProject> {
     logger.info('[ProjectService] Retrieving active project by slug', { slug });
-    const project = await ProjectModel.findOne({ slug, isDeleted: { $ne: true } }).lean();
-    if (!project) {
-      throw ApiError.notFound(`Project not found for slug "${slug}"`);
+    if (mongoose.connection.readyState !== 1) {
+      const fallback = FALLBACK_PROJECTS.find((p) => p.slug === slug);
+      if (fallback) return fallback as unknown as IProject;
     }
-    return project as IProject;
+    try {
+      const project = await ProjectModel.findOne({ slug, isDeleted: { $ne: true } }).lean();
+      if (project) {
+        return project as IProject;
+      }
+    } catch (err) {
+      logger.warn('[ProjectService] Database query for project slug failed, checking fallbacks', { slug, err });
+    }
+
+    const fallback = FALLBACK_PROJECTS.find((p) => p.slug === slug);
+    if (fallback) {
+      return fallback as unknown as IProject;
+    }
+
+    throw ApiError.notFound(`Project not found for slug "${slug}"`);
   }
 }
 

@@ -80,7 +80,7 @@ export async function healthCheck(_req: Request, res: Response): Promise<void> {
   // Return 503 if degraded — load balancers use the status code to route traffic
   const statusCode = isHealthy ? HTTP_STATUS.OK : HTTP_STATUS.SERVICE_UNAVAILABLE;
 
-  ApiResponse.success(res, data, 'TechVistar API is operational', statusCode);
+  ApiResponse.success(res, data, 'Veenero API is operational', statusCode);
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

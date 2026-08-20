@@ -21,7 +21,7 @@ export interface IJobApplication extends BaseDocument {
   resumeMimeType?: string;
   originalFileName?: string;
   coverLetter: string;
-  whyJoinTechVistar?: string;
+  whyJoinVeenero?: string;
   status: typeof VALIDATION.JOB_APPLICATION_STATUSES[number];
   isDeleted?: boolean;
   deletedAt?: Date | null;
@@ -101,7 +101,7 @@ const jobApplicationSchema = new Schema<IJobApplication>(
       trim: true,
       minlength: [20, 'Cover letter must be at least 20 characters long'],
     },
-    whyJoinTechVistar: {
+    whyJoinVeenero: {
       type: String,
       trim: true,
       default: '',

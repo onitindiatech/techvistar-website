@@ -1,6 +1,6 @@
 # Backend Architecture Documentation
 
-This document explains the backend of the TechVistar project in a beginner-friendly way while also describing the professional architecture decisions behind it.
+This document explains the backend of the Veenero project in a beginner-friendly way while also describing the professional architecture decisions behind it.
 
 > This file documents the current backend implementation in the repository. It is written for learning, onboarding, and codebase understanding.
 
@@ -9,7 +9,7 @@ This document explains the backend of the TechVistar project in a beginner-frien
 ## 1. Project Overview
 
 ### What this backend does
-This backend is the server-side engine of the TechVistar application. It exposes a REST API that powers:
+This backend is the server-side engine of the Veenero application. It exposes a REST API that powers:
 - admin authentication
 - contact form submissions
 - newsletter subscriptions
@@ -1762,7 +1762,7 @@ Body:
 - portfolio
 - resumeUrl
 - coverLetter
-- whyJoinTechVistar
+- whyJoinVeenero
 
 ### GET /api/careers/applications/:id
 Purpose:
@@ -1992,7 +1992,7 @@ Purpose:
 
 Fields:
 - jobId (ObjectId reference to Job)
-- fullName, email, phone, currentLocation, yearsOfExperience, linkedin, portfolio, resumeUrl, coverLetter, whyJoinTechVistar, status
+- fullName, email, phone, currentLocation, yearsOfExperience, linkedin, portfolio, resumeUrl, coverLetter, whyJoinVeenero, status
 
 Validation:
 - jobId required and must be a valid ObjectId

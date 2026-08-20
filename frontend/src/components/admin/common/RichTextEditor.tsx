@@ -1,6 +1,6 @@
 /**
  * @file RichTextEditor.tsx
- * @description Reusable TipTap rich text editor for TechVistar CMS admin forms.
+ * @description Reusable TipTap rich text editor for Veenero CMS admin forms.
  */
 
 import { useEffect, useMemo, useCallback, useState } from 'react';

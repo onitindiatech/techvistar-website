@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -95,7 +96,7 @@ export const ConsultationForm = ({
     <div className={
       inline 
         ? "text-left w-full" 
-        : "bg-white border-2 border-emerald-500 transition-colors duration-500 rounded-2xl p-6 md:p-7 shadow-xl shadow-emerald-500/20 text-left min-h-[80vh] sm:min-h-0 flex flex-col justify-center sm:block"
+        : "bg-white border-2 border-[#0b2859] transition-colors duration-500 rounded-2xl p-6 md:p-7 shadow-[0_15px_35px_rgba(11,40,89,0.2)] text-left min-h-[80vh] sm:min-h-0 flex flex-col justify-center sm:block"
     }>
       <h3 className="mb-1.5 text-base font-bold text-slate-900">{formConfig.title}</h3>
       <p className="text-[11px] text-slate-500 mb-5 leading-relaxed">{formConfig.description}</p>
@@ -110,7 +111,7 @@ export const ConsultationForm = ({
             type="text"
             required
             placeholder="Jane Doe"
-            className="bg-white border-slate-200 text-xs h-9"
+            className="bg-white border-slate-200 text-xs h-9 focus-visible:ring-sky-500/30 focus-visible:border-[#041a3d] focus-visible:shadow-[0_0_15px_rgba(14,165,233,0.25)]"
             value={formData.name}
             onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
           />
@@ -126,7 +127,7 @@ export const ConsultationForm = ({
               type="tel"
               required
               placeholder="+1 (555) 019-2834"
-              className="bg-white border-slate-200 text-xs h-9"
+              className="bg-white border-slate-200 text-xs h-9 focus-visible:ring-sky-500/30 focus-visible:border-[#041a3d] focus-visible:shadow-[0_0_15px_rgba(14,165,233,0.25)]"
               value={formData.phone}
               onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
             />
@@ -142,7 +143,7 @@ export const ConsultationForm = ({
             type="email"
             required
             placeholder="jane@company.com"
-            className="bg-white border-slate-200 text-xs h-9"
+            className="bg-white border-slate-200 text-xs h-9 focus-visible:ring-sky-500/30 focus-visible:border-[#041a3d] focus-visible:shadow-[0_0_15px_rgba(14,165,233,0.25)]"
             value={formData.email}
             onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
           />
@@ -155,7 +156,7 @@ export const ConsultationForm = ({
           <Textarea
             id="inquiry-desc"
             placeholder="Outline your milestones or technical stack goals..."
-            className="bg-white border-slate-200 text-xs min-h-[140px] sm:min-h-[80px] resize-none"
+            className="bg-white border-slate-200 text-xs min-h-[140px] sm:min-h-[80px] resize-none focus-visible:ring-sky-500/30 focus-visible:border-[#041a3d] focus-visible:shadow-[0_0_15px_rgba(14,165,233,0.25)]"
             value={formData.description}
             onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
           />
@@ -165,7 +166,7 @@ export const ConsultationForm = ({
           <input
             type="checkbox"
             id="inquiry-agree"
-            className="mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600"
+            className="mt-0.5 rounded border-slate-300 text-[#0b2859] focus:ring-[#0b2859]/20"
             checked={formData.agree}
             onChange={(e) => setFormData((prev) => ({ ...prev, agree: e.target.checked }))}
           />
@@ -174,18 +175,21 @@ export const ConsultationForm = ({
           </label>
         </div>
 
-        <Button
+        <motion.button
+          whileHover={{ y: -1 }}
+          whileTap={{ y: 0, scale: 0.98 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-10 text-xs mt-2 rounded-xl"
+          className="w-full bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold h-11 text-sm mt-2 rounded-xl shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           {isSubmitting ? (
-            <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
+            <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            <Send className="h-3.5 w-3.5 mr-2" />
+            <Send className="h-4 w-4" />
           )}
-          {formConfig.submitLabel}
-        </Button>
+          <span>{formConfig.submitLabel}</span>
+        </motion.button>
       </form>
     </div>
   );

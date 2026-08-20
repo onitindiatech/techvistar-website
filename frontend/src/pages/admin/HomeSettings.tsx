@@ -558,7 +558,7 @@ const HomeSettings = () => {
             <div className="space-y-2">
               <Label className="text-xs font-semibold text-slate-600">Highlight pills</Label>
               <p className="text-[11px] text-slate-500">
-                Shown when Highlight pills toggle is on. Section title “Why Choose TechVistar” is fixed in the hero layout.
+                Shown when Highlight pills toggle is on. Section title “Why Choose Veenero” is fixed in the hero layout.
               </p>
               {(form.ipadProHero.highlights.length ? form.ipadProHero.highlights : ['']).map((highlight, index) => (
                 <Input
@@ -585,7 +585,7 @@ const HomeSettings = () => {
               </Button>
             </div>
             <p className="text-[11px] text-slate-500">
-              “Explore TechVistar” scroll indicator and “Trusted by industry leaders” footer copy are controlled in the main Hero section.
+              “Explore Veenero” scroll indicator and “Trusted by industry leaders” footer copy are controlled in the main Hero section.
             </p>
           </CmsSectionCard>
 

@@ -31,7 +31,7 @@ export const ProjectOverviewSection = ({ project }: SectionProps) => {
             <div className="icon-btn pointer-events-none scale-75 origin-top-left -mb-4 -mr-4">
               <span
                 className="icon-btn__back"
-                style={{ background: 'linear-gradient(hsl(123, 90%, 40%), hsl(108, 90%, 40%))' }}
+                style={{ background: 'linear-gradient(#041a3d, #0b2859)' }}
               />
               <span className="icon-btn__front">
                 <span className="icon-btn__icon">
@@ -42,21 +42,21 @@ export const ProjectOverviewSection = ({ project }: SectionProps) => {
             <h2 className="font-display text-heading-sm text-slate-900">Overview</h2>
           </div>
 
-          <div className="w-12 h-1 bg-emerald-500 rounded-full" />
+          <div className="w-12 h-1 bg-[#041a3d] rounded-full" />
 
           <RichTextContent
             content={project.longDescription}
-            className="text-slate-600 text-sm md:text-sm leading-relaxed"
+            className="text-slate-600 text-base md:text-lg leading-relaxed font-normal"
           />
 
           {keyInsight && (
-            <div className="bg-emerald-50/50 border border-emerald-100/50 rounded-2xl p-4 flex gap-4 items-start transition-all duration-300 hover:bg-emerald-50/80">
-              <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0 border border-emerald-100">
-                <Lightbulb className="h-5 w-5 text-emerald-600 animate-pulse" />
+            <div className="bg-blue-50/60 border border-blue-100 rounded-2xl p-4 flex gap-4 items-start transition-all duration-300 hover:bg-blue-50/90">
+              <div className="h-10 w-10 rounded-xl bg-[#041a3d]/10 flex items-center justify-center shrink-0 border border-blue-100">
+                <Lightbulb className="h-5 w-5 text-[#041a3d] animate-pulse" />
               </div>
               <div>
-                <div className="text-xs font-bold text-emerald-800 mb-0.5">Key Insight</div>
-                <p className="text-xs text-emerald-700/90 leading-relaxed font-medium">{keyInsight}</p>
+                <div className="text-sm font-bold text-[#041a3d] mb-0.5">Key Insight</div>
+                <p className="text-sm md:text-base text-slate-700 leading-relaxed font-medium">{keyInsight}</p>
               </div>
             </div>
           )}
@@ -64,7 +64,7 @@ export const ProjectOverviewSection = ({ project }: SectionProps) => {
 
         <div className="md:col-span-5 flex justify-center items-center">
           <div className="relative group/image w-full">
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-500/10 to-sky-500/10 opacity-75 blur-xl group-hover/image:opacity-100 transition duration-300 pointer-events-none" />
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#041a3d]/15 to-sky-500/15 opacity-75 blur-xl group-hover/image:opacity-100 transition duration-300 pointer-events-none" />
             <div className="relative z-10 w-full transition-transform duration-300 group-hover/image:scale-[1.03]">
               <img
                 src={coverImage}

@@ -18,7 +18,7 @@ import { FAQModel } from '../models/FAQ';
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/techvistar';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/veenero';
 
 // ─── Source data (mirrors frontend/src/data/faqs.ts exactly) ─────────────────
 const FAQ_DATA = [
@@ -30,7 +30,7 @@ const FAQ_DATA = [
     featured:     true,
     status:       'active',
     displayOrder: 1,
-    question:     "What is TechVistar's delivery methodology?",
+    question:     "What is Veenero's delivery methodology?",
     answer:       'We run a modern, disciplined engineering process. We operate under clear deliverables, version-controlled repository updates, mirror environments to match production, and complete staging sign-offs. We avoid ambiguous timelines by structuring our projects into milestone-based handovers.',
   },
   {

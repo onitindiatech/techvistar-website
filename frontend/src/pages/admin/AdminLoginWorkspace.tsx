@@ -210,7 +210,7 @@ export const AdminLoginWorkspace = () => {
         <circle cx="522" cy="210" r="3" fill="#eab308" fillOpacity="0.8" />
         <circle cx="532" cy="210" r="3" fill="#22c55e" fillOpacity="0.8" />
         <text x="508" y="232" fill="#64748b" fontSize="9" fontFamily="ui-monospace, monospace">
-          TechVistar CMS — Dashboard
+          Veenero CMS — Dashboard
         </text>
         {/* Chart bars */}
         {[0, 1, 2, 3, 4, 5].map((i) => (

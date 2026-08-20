@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
 import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
-import { Service, decorateService, IMAGE_MAP } from '@/data/services';
+import { Service, decorateService, IMAGE_MAP, SERVICES } from '@/data/services';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import { mergeServicesCmsConfig } from '@/types/servicesCms';
@@ -34,21 +34,27 @@ const Services = () => {
   const { data: cmsConfigApi } = useQuery({
     queryKey: ['servicesCmsConfig'],
     queryFn: getServicesCmsConfig,
+    staleTime: 300000,
   });
 
   const cmsConfig = mergeServicesCmsConfig(cmsConfigApi);
   const landing = cmsConfig.landing;
 
-  const { data: apiServices, isLoading, isError, error } = useQuery({
+  const { data: apiServices } = useQuery({
     queryKey: ['activeServices'],
     queryFn: () => getActiveServices(),
-    retry: 2,
+    retry: false,
+    staleTime: 300000,
   });
 
-  const activeServices = useMemo(
-    () => (apiServices || []).map((item: unknown) => decorateService(item)),
-    [apiServices]
-  );
+  const activeServices = useMemo(() => {
+    const loaded = (Array.isArray(apiServices) ? apiServices : [])
+      .map((item: unknown) => decorateService(item))
+      .filter((s): s is Service => Boolean(s));
+    const apiSlugs = new Set(loaded.map((s) => s.slug));
+    const fallbackList = SERVICES.filter((s) => !apiSlugs.has(s.slug));
+    return [...loaded, ...fallbackList].sort((a, b) => a.order - b.order);
+  }, [apiServices]);
 
   const categories = useMemo(
     () => ['All', ...Array.from(new Set(activeServices.map((s) => s.category)))],
@@ -144,38 +150,7 @@ const Services = () => {
           </div>
         </section>
 
-        {isLoading ? (
-          <section className="py-16 md:py-24">
-            <div className="container mx-auto max-w-7xl px-4 md:px-6">
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {[...Array(6)].map((_, idx) => (
-                  <div
-                    key={idx}
-                    className="h-[420px] animate-pulse rounded-3xl border border-slate-100 bg-white"
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        ) : isError ? (
-          <section className="py-16 md:py-24">
-            <div className="container mx-auto max-w-lg px-4 md:px-6">
-              <div className="flex flex-col items-center rounded-2xl border border-red-100 bg-red-50/50 p-8 text-center">
-                <div className="mb-4 rounded-xl bg-red-100 p-3 text-red-600">
-                  <AlertCircle className="h-8 w-8" />
-                </div>
-                <h3 className="mb-1 text-lg font-bold text-red-900">Failed to load services</h3>
-                <p className="mb-6 text-sm leading-relaxed text-red-700">
-                  {error instanceof Error ? error.message : 'An unexpected server error occurred.'}
-                </p>
-                <Button onClick={() => window.location.reload()} variant="outline">
-                  Reload Page
-                </Button>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <>
+        <>
             {featuredServices.length > 0 && (
               <section id="featured-services" className="border-b border-slate-100 bg-white py-16 md:py-24">
                 <div className="container mx-auto max-w-7xl space-y-10 md:space-y-12 px-4 md:px-6">
@@ -254,7 +229,6 @@ const Services = () => {
               </div>
             </section>
           </>
-        )}
 
         <Footer />
       </main>

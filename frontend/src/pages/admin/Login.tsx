@@ -98,8 +98,8 @@ const Login = () => {
       <PageSeo
         seo={{ robotsIndex: false, robotsFollow: false }}
         defaults={{
-          title: 'Admin Login | TechVistar',
-          description: 'Secure administrator sign-in for TechVistar CMS.',
+          title: 'Admin Login | Veenero',
+          description: 'Secure administrator sign-in for Veenero CMS.',
           url: buildCanonical('/admin/login'),
         }}
       />
@@ -156,10 +156,10 @@ const Login = () => {
                     transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
                     className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-emerald-100 bg-white shadow-sm"
                   >
-                    <img src={logo} alt="TechVistar" className="h-8 w-8 rounded-lg object-cover" />
+                    <img src={logo} alt="Veenero" className="h-8 w-8 rounded-lg object-cover" />
                   </motion.div>
                   <div>
-                    <p className="font-display text-lg font-bold tracking-tight text-slate-900">TechVistar</p>
+                    <p className="font-display text-lg font-bold tracking-tight text-slate-900">Veenero</p>
                     <p className="text-xs font-medium text-emerald-600">Enterprise CMS</p>
                   </div>
                 </motion.div>
@@ -192,7 +192,7 @@ const Login = () => {
                         <Input
                           id="email"
                           type="email"
-                          placeholder="admin@techvistar.com"
+                          placeholder="admin@veenero.com"
                           autoComplete="email"
                           className={`h-12 rounded-xl border bg-white/80 pl-11 text-base shadow-sm transition-all duration-200 placeholder:text-slate-400 focus-visible:ring-2 sm:text-[15px] ${
                             error
@@ -365,7 +365,7 @@ const Login = () => {
                 >
                   <p className="text-xs font-medium text-slate-400">{APP_VERSION}</p>
                   <p className="text-xs text-slate-400">
-                    &copy; {new Date().getFullYear()} TechVistar. All rights reserved.
+                    &copy; {new Date().getFullYear()} Veenero. All rights reserved.
                   </p>
                 </motion.div>
               </motion.div>

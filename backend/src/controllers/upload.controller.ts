@@ -6,6 +6,7 @@
 import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { cloudinaryService } from '@/services/cloudinary.service';
+import { MediaModel } from '@/models/Media';
 import { ApiResponse } from '@/utils/ApiResponse';
 import { ApiError } from '@/utils/ApiError';
 import { HTTP_STATUS, UPLOAD, VIDEO_UPLOAD, RESUME_UPLOAD } from '@/constants';
@@ -37,9 +38,17 @@ export async function uploadImage(
 
     const result = await cloudinaryService.uploadImage(req.file);
 
+    // Save to local Media database reference
+    const media = await MediaModel.create({
+      filename: req.file.originalname,
+      url: result.url,
+      mimeType: req.file.mimetype,
+      size: req.file.size
+    });
+
     ApiResponse.success(
       res,
-      result,
+      { ...result, mediaId: media._id },
       'Image uploaded successfully',
       HTTP_STATUS.CREATED
     );

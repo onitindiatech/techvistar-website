@@ -121,125 +121,15 @@
 
   html {
     scroll-behavior: smooth;
-    font-size: 16px;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  }
-
-  /* 🎯 STRICT 3-LEVEL SCREENSHOT TYPOGRAPHY SYSTEM (PROTECTED HEADER EXCLUDED) 🎯 */
-
-  /* LEVEL 1: Hero Main Page Titles ("Custom Software Development" & "We Build Intelligent Digital Solutions") */
-  main h1,
-  .hero-headline,
-  .page-title,
-  .text-display-2xl,
-  .text-display-xl,
-  .text-display-lg,
-  .text-heading-xl,
-  .text-7xl,
-  .text-6xl,
-  .text-5xl {
-    font-size: clamp(2.5rem, 4.5vw + 0.5rem, 4.25rem) !important;
-    line-height: 1.08 !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.03em !important;
-  }
-
-  /* LEVEL 2: Section Titles & Major Subtitles ("Accelerate your digital footprint...") */
-  main h2,
-  .section-title,
-  .text-heading-lg,
-  .text-heading-md,
-  .text-4xl,
-  .text-3xl,
-  .text-2xl {
-    font-size: clamp(1.375rem, 2.5vw, 1.875rem) !important;
-    line-height: 1.25 !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.02em !important;
-  }
-
-  /* LEVEL 3 & ALL OTHER CONTENT TEXT (Excluding protected header/navbar) */
-  /* Applies to paragraphs, card titles, badges, tags, stats labels, descriptions, footer, sidebar, buttons, forms */
-  main h3,
-  main h4,
-  main h5,
-  main h6,
-  main p,
-  main span:not(header *):not(.hero-headline *):not(.section-title *),
-  main a:not(header *),
-  main button:not(header *),
-  main input,
-  main select,
-  main textarea,
-  main label,
-  main li,
-  main td,
-  main th,
-  main small,
-  main code,
-  main badge,
-  footer h3,
-  footer h4,
-  footer p,
-  footer span,
-  footer a,
-  footer li,
-  footer small,
-  .text-heading-sm,
-  .text-heading-xs,
-  .text-body-lg,
-  .text-body-md,
-  .text-body-sm,
-  .text-caption,
-  .text-label,
-  .text-button,
-  .text-mega,
-  .text-mega-desc,
-  .text-xl,
-  .text-lg,
-  .text-base,
-  .text-sm,
-  .text-xs {
-    font-size: 1rem !important;
-    line-height: 1.6 !important;
-  }
-
-  /* Ensure Level 1 & Level 2 headings preserve internal span font-size (e.g. gradient highlight words) */
-  main h1 *,
-  .hero-headline * {
-    font-size: inherit !important;
-    line-height: inherit !important;
-  }
-
-  main h2 *,
-  .section-title * {
-    font-size: inherit !important;
-    line-height: inherit !important;
-  }
-
-  /* Small badge/tag/stat font size overrides evaluate to Level 3 size for content outside header */
-  main [class*="text-\["],
-  main [class*="text-xs"],
-  main [class*="text-sm"],
-  main [class*="text-caption"],
-  main [class*="text-label"],
-  footer [class*="text-\["],
-  footer [class*="text-xs"],
-  footer [class*="text-sm"],
-  footer [class*="text-caption"],
-  footer [class*="text-label"] {
-    font-size: 1rem !important;
-    line-height: 1.6 !important;
   }
 }
 

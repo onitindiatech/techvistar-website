@@ -147,7 +147,7 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
           <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-emerald-500/[0.03] blur-xl" />
 
           <h3 className="border-b border-slate-100 pb-3 font-display text-xs font-black uppercase tracking-wider text-slate-900">
-            {sidebar.summaryTitle}
+            Key Challenges
           </h3>
 
           <div className="space-y-5">

@@ -114,7 +114,15 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
                 </p>
                 
                 <RichTextContent
-                  content={service.longDescription}
+                  content={
+                    typeof service.longDescription === 'string'
+                      ? service.longDescription
+                          .replace(/<\/?ol[^>]*>/gi, '')
+                          .replace(/^<li[^>]*>/i, '<p>')
+                          .replace(/<\/li>$/i, '</p>')
+                          .replace(/(<p[^>]*>|^)\s*1\.\s*/i, '$1')
+                      : service.longDescription
+                  }
                   className="text-slate-600 text-sm md:text-base leading-relaxed"
                 />
 

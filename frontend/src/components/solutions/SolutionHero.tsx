@@ -60,24 +60,24 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
                   {badgeText}
                 </div>
 
-                <h1 className="text-[1.75rem] leading-[1.12] md:text-5xl font-extrabold font-display text-slate-900 md:leading-tight">
+                <h1 className="text-3xl md:text-5xl font-extrabold font-display text-slate-900 leading-tight">
                   {solution.title}
                 </h1>
 
-                <p className="text-base md:text-lg font-bold text-emerald-600 leading-snug">
+                <p className="text-xl md:text-2xl font-bold font-display text-emerald-600 leading-snug">
                   {solution.subtitle}
                 </p>
 
                 <RichTextContent
                   content={solution.heroDescription}
-                  className="text-slate-600 text-sm leading-relaxed"
+                  className="text-slate-600 text-sm md:text-base leading-relaxed [&_p]:!text-sm md:[&_p]:!text-base"
                 />
 
                 {heroHighlights.length > 0 && (
                   <div className="space-y-3 pt-2">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400 font-semibold">
+                    <h3 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
                       Key Highlights
-                    </p>
+                    </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
                       {heroHighlights.map((highlight, idx) => (
                         <div key={idx} className="flex gap-2.5 items-start text-sm md:text-base text-slate-700 font-normal leading-relaxed">

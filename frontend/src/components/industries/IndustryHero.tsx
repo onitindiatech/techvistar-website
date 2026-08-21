@@ -52,24 +52,24 @@ export const IndustryHero = ({ industry }: IndustryHeroProps) => {
             <div className="space-y-5 md:col-span-7">
 
 
-              <h1 className="font-display text-[1.75rem] leading-[1.12] font-extrabold text-slate-900 md:text-5xl md:leading-tight">
+              <h1 className="text-3xl md:text-5xl font-extrabold font-display text-slate-900 leading-tight">
                 {industry.title}
               </h1>
 
-              <p className="text-base font-bold leading-snug text-emerald-600 md:text-lg">
+              <p className="text-xl md:text-2xl font-bold font-display text-emerald-600 leading-snug">
                 {industry.heroTagline?.trim() || industry.shortDescription}
               </p>
 
               <RichTextContent
                 content={industry.description}
-                className="text-sm leading-relaxed text-slate-600"
+                className="text-sm md:text-base leading-relaxed text-slate-600 [&_p]:!text-sm md:[&_p]:!text-base"
               />
 
               {industry.benefits && industry.benefits.length > 0 && (
                 <div className="space-y-3 pt-2">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  <h3 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
                     Key Highlights
-                  </p>
+                  </h3>
                   <div className="grid grid-cols-1 gap-x-4 gap-y-2.5 sm:grid-cols-2">
                     {industry.benefits.map((highlight, idx) => (
                       <div key={idx} className="flex items-start gap-2.5 text-sm md:text-base font-normal text-slate-700 leading-relaxed">

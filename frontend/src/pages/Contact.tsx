@@ -212,9 +212,9 @@ export const Contact = () => {
                     <Phone className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-extrabold font-display text-slate-900 text-sm">Call Us</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contactPhone}</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.office.hours}</span>
+                    <div className="font-display font-bold text-slate-900 text-base">Call Us</div>
+                    <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contactPhone}</p>
+                    <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.office.hours}</span>
                   </div>
                 </motion.a>
 
@@ -228,9 +228,9 @@ export const Contact = () => {
                     <Mail className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-extrabold font-display text-slate-900 text-sm">Email Us</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contactEmail}</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.contactInfo.supportText}</span>
+                    <div className="font-display font-bold text-slate-900 text-base">Email Us</div>
+                    <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contactEmail}</p>
+                    <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.contactInfo.supportText}</span>
                   </div>
                 </motion.a>
 
@@ -243,9 +243,9 @@ export const Contact = () => {
                     <MapPin className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-extrabold font-display text-slate-900 text-sm">{contact.office.heading}</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">TechVistar HQ</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">{contact.office.address}</span>
+                    <div className="font-display font-bold text-slate-900 text-base">{contact.office.heading}</div>
+                    <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">TechVistar HQ</p>
+                    <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.office.address}</span>
                   </div>
                 </motion.div>
 
@@ -258,9 +258,9 @@ export const Contact = () => {
                     <Clock className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-extrabold font-display text-slate-900 text-sm">Working Hours</div>
-                    <p className="text-xs text-slate-600 font-bold mt-0.5">{contact.office.hours.split(',')[0] || contact.office.hours}</p>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">
+                    <div className="font-display font-bold text-slate-900 text-base">Working Hours</div>
+                    <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contact.office.hours.split(',')[0] || contact.office.hours}</p>
+                    <span className="text-xs text-slate-500 font-medium block mt-0.5">
                       {contact.office.hours.includes(',') ? contact.office.hours.split(',').slice(1).join(',').trim() : ''}
                     </span>
                   </div>
@@ -274,8 +274,8 @@ export const Contact = () => {
                 <div className="flex items-center gap-3 pb-3 mb-4 border-b border-slate-100">
                   <Mail className="w-5.5 h-5.5 text-[#041a3d]" />
                   <div>
-                    <h3 className="font-display text-lg font-bold text-slate-900">{contact.cta.title}</h3>
-                    <p className="text-[11px] text-slate-500 font-bold mt-0.5">{contact.cta.description}</p>
+                    <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">{contact.cta.title}</h3>
+                    <p className="text-xs md:text-sm text-slate-600 mt-0.5">{contact.cta.description}</p>
                   </div>
                 </div>
 
@@ -283,7 +283,7 @@ export const Contact = () => {
                   {/* Row 1 */}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <Label htmlFor="name" className="text-xs font-bold text-slate-700">Full name *</Label>
+                      <Label htmlFor="name" className="text-xs md:text-sm font-semibold text-slate-700">Full name *</Label>
                       <input 
                         id="name"
                         type="text" 
@@ -295,7 +295,7 @@ export const Contact = () => {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="email" className="text-xs font-bold text-slate-700">Work email *</Label>
+                      <Label htmlFor="email" className="text-xs md:text-sm font-semibold text-slate-700">Work email *</Label>
                       <input 
                         id="email"
                         type="email" 
@@ -311,7 +311,7 @@ export const Contact = () => {
                   {/* Row 2 */}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <Label htmlFor="phone" className="text-xs font-bold text-slate-700">Phone number</Label>
+                      <Label htmlFor="phone" className="text-xs md:text-sm font-semibold text-slate-700">Phone number</Label>
                       <input 
                         id="phone"
                         type="tel" 
@@ -322,7 +322,7 @@ export const Contact = () => {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="company" className="text-xs font-bold text-slate-700">Company name</Label>
+                      <Label htmlFor="company" className="text-xs md:text-sm font-semibold text-slate-700">Company name</Label>
                       <input 
                         id="company"
                         type="text" 
@@ -336,7 +336,7 @@ export const Contact = () => {
 
                   {/* Row 3 */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="inquiryType" className="text-xs font-bold text-slate-700">Inquiry type *</Label>
+                    <Label htmlFor="inquiryType" className="text-xs md:text-sm font-semibold text-slate-700">Inquiry type *</Label>
                     <select
                       id="inquiryType"
                       value={formData.inquiryType}
@@ -353,7 +353,7 @@ export const Contact = () => {
 
                   {/* Row 4 */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="message" className="text-xs font-bold text-slate-700">Tell us about your project *</Label>
+                    <Label htmlFor="message" className="text-xs md:text-sm font-semibold text-slate-700">Tell us about your project *</Label>
                     <textarea 
                       id="message"
                       required
@@ -436,7 +436,7 @@ export const Contact = () => {
         {/* OUR OFFICES SECTION */}
         <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
           <div className="mb-8">
-            <h3 className="text-lg font-bold font-display text-slate-900">Our Offices</h3>
+            <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Our Offices</h3>
           </div>
 
           <div className="grid md:grid-cols-2 max-w-5xl mx-auto gap-8">
@@ -494,7 +494,7 @@ export const Contact = () => {
                   <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20 flex-1 flex flex-col justify-between">
                     <div className="space-y-4">
                       <div className="flex items-start justify-between gap-2">
-                        <div className="font-display font-extrabold text-slate-900 text-xl group-hover:text-[#041a3d] transition-colors duration-300">
+                        <div className="font-display text-base md:text-lg font-bold text-slate-900 group-hover:text-[#041a3d] transition-colors duration-300">
                           {office.name}
                         </div>
                         <span className="shrink-0 text-[9px] font-black text-[#041a3d] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider border border-blue-200/60">
@@ -504,7 +504,7 @@ export const Contact = () => {
 
                       <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
                         <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-[#041a3d] transition-colors duration-300" />
-                        <p className="text-sm font-semibold leading-relaxed whitespace-pre-line">
+                        <p className="text-xs md:text-sm font-normal leading-relaxed text-slate-600 whitespace-pre-line">
                           {office.address}
                         </p>
                       </div>
@@ -515,7 +515,7 @@ export const Contact = () => {
                         href={`https://maps.google.com/?q=${encodeURIComponent(office.name + ' ' + office.address)}`}
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#041a3d] hover:text-sky-600 transition-colors group/link"
+                        className="inline-flex items-center gap-1.5 text-xs md:text-sm font-bold text-[#041a3d] hover:text-sky-600 transition-colors group/link"
                       >
                         View on Maps
                         <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1.5 transition-transform duration-300" />
@@ -536,28 +536,28 @@ export const Contact = () => {
                 <span className="p-1 rounded-md bg-emerald-50"><CheckCircle2 className="w-4 h-4" /></span>
                 <span>Expert Team</span>
               </div>
-              <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">Skilled professionals dedicated to your success</p>
+              <p className="text-xs md:text-sm text-slate-600 font-normal leading-relaxed">Skilled professionals dedicated to your success</p>
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
                 <span className="p-1 rounded-md bg-emerald-50"><CheckCircle2 className="w-4 h-4" /></span>
                 <span>Secure & Reliable</span>
               </div>
-              <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">Enterprise-grade security and best practices</p>
+              <p className="text-xs md:text-sm text-slate-600 font-normal leading-relaxed">Enterprise-grade security and best practices</p>
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
                 <span className="p-1 rounded-md bg-emerald-50"><CheckCircle2 className="w-4 h-4" /></span>
                 <span>On-Time Delivery</span>
               </div>
-              <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">Agile approach ensuring timely project delivery</p>
+              <p className="text-xs md:text-sm text-slate-600 font-normal leading-relaxed">Agile approach ensuring timely project delivery</p>
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
                 <span className="p-1 rounded-md bg-emerald-50"><CheckCircle2 className="w-4 h-4" /></span>
                 <span>Long-Term Support</span>
               </div>
-              <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">We stay with you beyond project completion</p>
+              <p className="text-xs md:text-sm text-slate-600 font-normal leading-relaxed">We stay with you beyond project completion</p>
             </div>
           </div>
         </section>

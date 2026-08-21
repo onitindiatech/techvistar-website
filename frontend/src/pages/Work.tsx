@@ -301,7 +301,7 @@ export const Work = () => {
               <span className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-emerald-600">
                 {landing.featuredProjects.badge}
               </span>
-              <h2 className="font-display text-2xl font-extrabold text-slate-900 sm:text-4xl">
+              <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 {landing.featuredProjects.heading}
               </h2>
               <p className="text-sm font-semibold text-slate-500">{landing.featuredProjects.description}</p>
@@ -327,10 +327,10 @@ export const Work = () => {
                     </div>
 
                     <div className="space-y-2.5 p-5">
-                      <div className="font-display text-sm font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d] line-clamp-1">
+                      <div className="font-display text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d] line-clamp-1">
                         {project.title}
                       </div>
-                      <p className="line-clamp-3 text-xs leading-relaxed text-slate-500">
+                      <p className="line-clamp-3 text-base md:text-lg font-medium leading-relaxed text-slate-500">
                         {project.description}
                       </p>
                     </div>
@@ -355,7 +355,7 @@ export const Work = () => {
               <span className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-[#041a3d]">
                 {landing.recentWork.badge}
               </span>
-              <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
+              <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 {landing.recentWork.heading}
               </h2>
               <p className="text-sm font-semibold text-slate-500">{landing.recentWork.description}</p>
@@ -382,10 +382,10 @@ export const Work = () => {
                       </div>
 
                       <div className="space-y-3 p-5">
-                        <div className="text-base font-bold text-slate-900 transition-colors group-hover:text-[#041a3d]">
+                        <div className="font-display text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d]">
                           {project.title}
                         </div>
-                        <p className="line-clamp-3 text-xs font-semibold leading-relaxed text-slate-600">
+                        <p className="line-clamp-3 text-base md:text-lg font-medium leading-relaxed text-slate-600">
                           {project.description}
                         </p>
 
@@ -440,10 +440,10 @@ export const Work = () => {
 
           <section className="border-t border-slate-200/80 bg-slate-50 px-6 py-12 sm:px-12 md:py-16 md:px-14 lg:px-16">
             <div className="mx-auto mb-12 max-w-2xl space-y-2 text-center">
-              <h2 className="font-display text-2xl font-extrabold text-slate-900 sm:text-3xl">
+              <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 {landing.statistics.heading}
               </h2>
-              <p className="text-xs font-semibold text-slate-500 sm:text-sm">{landing.statistics.description}</p>
+              <p className="text-sm font-semibold text-slate-500">{landing.statistics.description}</p>
             </div>
 
             <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-12">
@@ -504,10 +504,10 @@ export const Work = () => {
 
           <section className="container-custom mx-auto max-w-7xl px-6 py-12 sm:px-12 md:px-14 md:py-16 lg:px-16 border-t border-slate-200/80">
             <div className="mx-auto mb-12 max-w-2xl space-y-2 text-center">
-              <h2 className="font-display text-2xl font-extrabold text-slate-900 sm:text-3xl">
+              <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 {landing.workflow.heading}
               </h2>
-              <p className="text-xs font-semibold text-slate-500 sm:text-sm">{landing.workflow.description}</p>
+              <p className="text-sm font-semibold text-slate-500">{landing.workflow.description}</p>
             </div>
 
             <motion.div

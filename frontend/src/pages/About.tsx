@@ -181,21 +181,21 @@ const About = () => {
               className={`${sectionPad} border-b border-slate-100 bg-gradient-to-br from-primary/[0.02] via-emerald-50/[0.05] to-transparent`}
               aria-labelledby="overview-heading"
             >
-              <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-3">
+              <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-3">
                 <div className="md:col-span-2">
                   <h2
                     id="overview-heading"
-                    className="font-display text-lg font-bold tracking-tight text-slate-900 sm:text-xl"
+                    className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
                   >
                     {about.story.title}
                   </h2>
-                  <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-700 sm:text-[0.9375rem]">
+                  <div className="mt-4 space-y-3 text-sm md:text-base leading-relaxed text-slate-600">
                     {storyParagraphs.map((p, idx) => (
                       <p key={idx}>{p}</p>
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-col items-center justify-center p-4">
+                <div className="flex flex-col items-center justify-center pt-0 md:pt-2">
                   <div className="relative flex h-auto w-[160px] items-center justify-center rounded-xl border-2 border-emerald-500/10 bg-white/50 p-4 shadow-lg backdrop-blur-sm">
                     <img src={siteLogo} alt="TechVistar Logo" className="h-auto w-full object-contain" />
                   </div>
@@ -208,11 +208,11 @@ const About = () => {
               <motion.div {...fadeUp}>
                 <h2
                   id="focus-heading"
-                  className="font-display text-lg font-bold tracking-tight text-slate-900 sm:text-xl"
+                  className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
                 >
                   {focusSection.heading || DEFAULT_ABOUT_CMS.focusAreas.heading}
                 </h2>
-                <p className="mt-2 text-sm leading-snug text-slate-600">
+                <p className="mt-2 text-sm md:text-base leading-relaxed text-slate-600">
                   {focusSection.description || DEFAULT_ABOUT_CMS.focusAreas.description}
                 </p>
               </motion.div>
@@ -243,10 +243,10 @@ const About = () => {
                           <Icon className="h-[1.125rem] w-[1.125rem]" strokeWidth={1.75} aria-hidden />
                         </div>
                       )}
-                      <h3 className="mt-3 font-display text-[0.9375rem] font-semibold leading-snug text-slate-900">
+                      <h3 className="mt-3 font-display text-base font-bold leading-snug text-slate-900">
                         {area.title}
                       </h3>
-                      <p className="mt-1.5 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                      <p className="mt-1.5 text-xs md:text-sm leading-relaxed text-slate-600">
                         {area.description}
                       </p>
                     </motion.div>
@@ -259,11 +259,11 @@ const About = () => {
             <section className={`${sectionPad} border-b border-slate-100`} aria-labelledby="industries-heading">
               <h2
                 id="industries-heading"
-                className="font-display text-lg font-bold tracking-tight text-slate-900 sm:text-xl"
+                className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
               >
                 {industriesSection.heading || DEFAULT_ABOUT_CMS.industriesServe.heading}
               </h2>
-              <p className="mt-2 text-sm leading-snug text-slate-600">
+              <p className="mt-2 text-sm md:text-base leading-relaxed text-slate-600">
                 {industriesSection.description || DEFAULT_ABOUT_CMS.industriesServe.description}
               </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
@@ -297,11 +297,11 @@ const About = () => {
                         </div>
                       )}
                       <div
-                        className={`text-sm font-bold text-slate-900 transition-colors ${styles.titleHover}`}
+                        className={`font-display text-base font-bold text-slate-900 transition-colors ${styles.titleHover}`}
                       >
                         {ind.title}
                       </div>
-                      <p className="mt-1 text-[11px] leading-relaxed text-slate-500">{ind.description}</p>
+                      <p className="mt-1 text-xs md:text-sm leading-relaxed text-slate-600">{ind.description}</p>
                     </motion.div>
                   );
                 })}
@@ -335,11 +335,11 @@ const About = () => {
                         >
                           <pillar.icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
                         </div>
-                        <h3 className="min-w-0 flex-1 pt-0.5 font-display text-[0.9375rem] font-bold leading-snug text-slate-900">
+                        <h3 className="min-w-0 flex-1 pt-0.5 font-display text-base font-bold leading-snug text-slate-900">
                           {pillar.label}
                         </h3>
                       </div>
-                      <p className="mt-3 text-xs leading-relaxed text-slate-600 sm:text-sm">{pillar.text}</p>
+                      <p className="mt-3 text-sm md:text-base leading-relaxed text-slate-600">{pillar.text}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -354,11 +354,11 @@ const About = () => {
             >
               <h2
                 id="principles-heading"
-                className="font-display text-lg font-bold tracking-tight text-slate-900 sm:text-xl"
+                className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
               >
                 {ABOUT_PAGE.principlesHeading}
               </h2>
-              <p className="mt-2 text-sm leading-snug text-slate-600">{ABOUT_PAGE.principlesIntro}</p>
+              <p className="mt-2 text-sm md:text-base leading-relaxed text-slate-600">{ABOUT_PAGE.principlesIntro}</p>
               <div className="mt-5 grid gap-3 border-t border-slate-200/80 pt-4 sm:grid-cols-2">
                 {ABOUT_PAGE.principles.map((line, i) => (
                   <motion.div
@@ -369,7 +369,7 @@ const About = () => {
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded bg-primary/10 text-primary ring-1 ring-primary/20">
                       <Check className="h-3 w-3 stroke-[2.5]" aria-hidden />
                     </span>
-                    <span className="text-sm font-medium leading-snug text-slate-700">{line}</span>
+                    <span className="text-sm md:text-base font-normal leading-relaxed text-slate-700">{line}</span>
                   </motion.div>
                 ))}
               </div>
@@ -393,10 +393,10 @@ const About = () => {
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#041a3d]/10 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-[#041a3d] ring-1 ring-[#041a3d]/20">
                       {ABOUT_PAGE.location.heading}
                     </span>
-                    <h3 className="mt-2 text-base font-extrabold tracking-tight text-slate-900">
+                    <h3 className="mt-2 font-display text-base font-bold text-slate-900">
                       {ABOUT_COPY.locationLine}
                     </h3>
-                    <p className="mt-1 text-xs font-semibold text-slate-500">{ABOUT_PAGE.location.detail}</p>
+                    <p className="mt-1 text-xs md:text-sm leading-relaxed text-slate-600">{ABOUT_PAGE.location.detail}</p>
                   </div>
                 </motion.div>
 
@@ -412,7 +412,7 @@ const About = () => {
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#041a3d]/10 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-[#041a3d] ring-1 ring-[#041a3d]/20">
                       {ABOUT_PAGE.commitmentHeading}
                     </span>
-                    <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-800">
+                    <p className="mt-2 text-sm md:text-base leading-relaxed text-slate-600">
                       {ABOUT_COPY.closing}
                     </p>
                   </div>
@@ -420,7 +420,7 @@ const About = () => {
               </div>
 
               <div className="mt-5 flex flex-col gap-3 rounded-2xl border-2 border-slate-200/90 bg-white px-5 py-5 text-slate-800 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                <p className="text-xs font-bold leading-snug tracking-wide text-slate-800 sm:max-w-[70%] sm:text-sm">
+                <p className="text-sm md:text-base font-semibold leading-relaxed text-slate-800 sm:max-w-[70%]">
                   {about.cta.text}
                 </p>
                 <motion.button

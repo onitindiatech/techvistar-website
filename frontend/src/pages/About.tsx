@@ -168,7 +168,6 @@ const About = () => {
               about.hero.title
             )
           }
-          subtitle={about.hero.eyebrow}
           description={about.hero.description}
           backgroundImage={heroBg}
           bgPosition="right bottom"
@@ -189,7 +188,7 @@ const About = () => {
                   >
                     {about.story.title}
                   </h2>
-                  <div className="mt-4 space-y-3 text-sm md:text-base leading-relaxed text-slate-600">
+                  <div className="mt-4 space-y-3 text-base md:text-lg leading-relaxed text-slate-600">
                     {storyParagraphs.map((p, idx) => (
                       <p key={idx}>{p}</p>
                     ))}
@@ -212,7 +211,7 @@ const About = () => {
                 >
                   {focusSection.heading || DEFAULT_ABOUT_CMS.focusAreas.heading}
                 </h2>
-                <p className="mt-2 text-sm md:text-base leading-relaxed text-slate-600">
+                <p className="mt-2 text-base md:text-lg leading-relaxed text-slate-600">
                   {focusSection.description || DEFAULT_ABOUT_CMS.focusAreas.description}
                 </p>
               </motion.div>
@@ -246,7 +245,7 @@ const About = () => {
                       <h3 className="mt-3 font-display text-base md:text-lg font-bold leading-snug text-slate-900">
                         {area.title}
                       </h3>
-                      <p className="mt-1.5 text-sm md:text-base leading-relaxed font-normal text-slate-600">
+                      <p className="mt-1.5 text-base leading-relaxed font-normal text-slate-600">
                         {area.description}
                       </p>
                     </motion.div>
@@ -263,7 +262,7 @@ const About = () => {
               >
                 {industriesSection.heading || DEFAULT_ABOUT_CMS.industriesServe.heading}
               </h2>
-              <p className="mt-2 text-sm md:text-base leading-relaxed text-slate-600">
+              <p className="mt-2 text-base md:text-lg leading-relaxed text-slate-600">
                 {industriesSection.description || DEFAULT_ABOUT_CMS.industriesServe.description}
               </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
@@ -301,7 +300,7 @@ const About = () => {
                       >
                         {ind.title}
                       </div>
-                      <p className="mt-1 text-sm md:text-base leading-relaxed font-normal text-slate-600">{ind.description}</p>
+                      <p className="mt-1 text-base leading-relaxed font-normal text-slate-600">{ind.description}</p>
                     </motion.div>
                   );
                 })}
@@ -339,7 +338,7 @@ const About = () => {
                           {pillar.label}
                         </h3>
                       </div>
-                      <p className="mt-3 text-sm md:text-base leading-relaxed text-slate-600">{pillar.text}</p>
+                      <p className="mt-3 text-base md:text-lg leading-relaxed text-slate-600">{pillar.text}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -358,7 +357,7 @@ const About = () => {
               >
                 {ABOUT_PAGE.principlesHeading}
               </h2>
-              <p className="mt-2 text-sm md:text-base leading-relaxed text-slate-600">{ABOUT_PAGE.principlesIntro}</p>
+              <p className="mt-2 text-base md:text-lg leading-relaxed text-slate-600">{ABOUT_PAGE.principlesIntro}</p>
               <div className="mt-5 grid gap-3 border-t border-slate-200/80 pt-4 sm:grid-cols-2">
                 {ABOUT_PAGE.principles.map((line, i) => (
                   <motion.div
@@ -369,7 +368,7 @@ const About = () => {
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded bg-primary/10 text-primary ring-1 ring-primary/20">
                       <Check className="h-3 w-3 stroke-[2.5]" aria-hidden />
                     </span>
-                    <span className="text-sm md:text-base font-normal leading-relaxed text-slate-700">{line}</span>
+                    <span className="text-base md:text-lg font-normal leading-relaxed text-slate-700">{line}</span>
                   </motion.div>
                 ))}
               </div>
@@ -396,7 +395,7 @@ const About = () => {
                     <h3 className="mt-2 font-display text-base md:text-lg font-bold text-slate-900 leading-snug">
                       {ABOUT_COPY.locationLine}
                     </h3>
-                    <p className="mt-1 text-sm md:text-base leading-relaxed font-normal text-slate-600">{ABOUT_PAGE.location.detail}</p>
+                    <p className="mt-1 text-base leading-relaxed font-normal text-slate-600">{ABOUT_PAGE.location.detail}</p>
                   </div>
                 </motion.div>
 
@@ -412,7 +411,7 @@ const About = () => {
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#041a3d]/10 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-[#041a3d] ring-1 ring-[#041a3d]/20">
                       {ABOUT_PAGE.commitmentHeading}
                     </span>
-                    <p className="mt-2 text-sm md:text-base leading-relaxed text-slate-600">
+                    <p className="mt-2 text-base md:text-lg leading-relaxed text-slate-600">
                       {ABOUT_COPY.closing}
                     </p>
                   </div>
@@ -420,7 +419,7 @@ const About = () => {
               </div>
 
               <div className="mt-5 flex flex-col gap-3 rounded-2xl border-2 border-slate-200/90 bg-white px-5 py-5 text-slate-800 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                <p className="text-sm md:text-base font-semibold leading-relaxed text-slate-800 sm:max-w-[70%]">
+                <p className="text-base md:text-lg font-semibold leading-relaxed text-slate-800 sm:max-w-[70%]">
                   {about.cta.text}
                 </p>
                 <motion.button

@@ -153,7 +153,7 @@ export const ProjectsSection = () => {
                             }`}>
                               <Link to={`/work/${project.slug}`}>{project.title}</Link>
                             </h3>
-                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-[6] md:line-clamp-5">
+                            <p className="text-slate-600 text-sm md:text-base font-normal leading-relaxed line-clamp-[6] md:line-clamp-5">
                               {project.description}
                             </p>
                           </div>

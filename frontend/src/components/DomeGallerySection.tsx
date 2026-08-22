@@ -144,14 +144,14 @@ export const DomeGallerySection = () => {
               ) : null}
             </h2>
 
-            <p className="text-slate-500 text-sm sm:text-[0.95rem] leading-relaxed max-w-xl">
+            <p className="text-slate-600 text-base md:text-lg font-medium leading-relaxed max-w-xl">
               {portfolio.description}
             </p>
 
             {features.length > 0 ? (
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
                 {features.map((feat) => (
-                  <li key={feat} className="flex items-center gap-2.5 text-slate-700 font-medium text-[0.85rem] sm:text-sm">
+                  <li key={feat} className="flex items-center gap-2.5 text-slate-700 font-semibold text-sm md:text-base">
                     <div className="w-5 h-5 rounded-full bg-[#0b2859]/10 flex items-center justify-center border border-[#0b2859]/20 shrink-0">
                       <Check className="w-3.5 h-3.5 text-[#0b2859]" strokeWidth={3} />
                     </div>

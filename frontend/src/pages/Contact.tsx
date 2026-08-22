@@ -213,8 +213,8 @@ export const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Call Us</h3>
-                    <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contactPhone}</p>
-                    <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.office.hours}</span>
+                    <p className="text-sm md:text-base font-semibold text-slate-600 mt-0.5">{contactPhone}</p>
+                    <span className="text-xs md:text-sm text-slate-500 font-medium block mt-0.5">{contact.office.hours}</span>
                   </div>
                 </motion.a>
 
@@ -229,8 +229,8 @@ export const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Email Us</h3>
-                    <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contactEmail}</p>
-                    <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.contactInfo.supportText}</span>
+                    <p className="text-sm md:text-base font-semibold text-slate-600 mt-0.5">{contactEmail}</p>
+                    <span className="text-xs md:text-sm text-slate-500 font-medium block mt-0.5">{contact.contactInfo.supportText}</span>
                   </div>
                 </motion.a>
 
@@ -244,8 +244,8 @@ export const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">{contact.office.heading}</h3>
-                    <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">TechVistar HQ</p>
-                    <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.office.address}</span>
+                    <p className="text-sm md:text-base font-semibold text-slate-600 mt-0.5">TechVistar HQ</p>
+                    <span className="text-xs md:text-sm text-slate-500 font-medium block mt-0.5">{contact.office.address}</span>
                   </div>
                 </motion.div>
 
@@ -259,8 +259,8 @@ export const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Working Hours</h3>
-                    <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contact.office.hours.split(',')[0] || contact.office.hours}</p>
-                    <span className="text-xs text-slate-500 font-medium block mt-0.5">
+                    <p className="text-sm md:text-base font-semibold text-slate-600 mt-0.5">{contact.office.hours.split(',')[0] || contact.office.hours}</p>
+                    <span className="text-xs md:text-sm text-slate-500 font-medium block mt-0.5">
                       {contact.office.hours.includes(',') ? contact.office.hours.split(',').slice(1).join(',').trim() : ''}
                     </span>
                   </div>
@@ -275,7 +275,7 @@ export const Contact = () => {
                   <Mail className="w-5.5 h-5.5 text-[#041a3d]" />
                   <div>
                     <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">{contact.cta.title}</h3>
-                    <p className="text-sm md:text-base font-normal text-slate-600 leading-relaxed mt-0.5">{contact.cta.description}</p>
+                    <p className="text-base md:text-lg font-normal text-slate-600 leading-relaxed mt-0.5">{contact.cta.description}</p>
                   </div>
                 </div>
 
@@ -283,7 +283,7 @@ export const Contact = () => {
                   {/* Row 1 */}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <Label htmlFor="name" className="text-xs md:text-sm font-semibold text-slate-700">Full name *</Label>
+                      <Label htmlFor="name" className="text-sm md:text-base font-semibold text-slate-700">Full name *</Label>
                       <input 
                         id="name"
                         type="text" 
@@ -291,11 +291,11 @@ export const Contact = () => {
                         placeholder="Enter your full name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
+                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm md:text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="email" className="text-xs md:text-sm font-semibold text-slate-700">Work email *</Label>
+                      <Label htmlFor="email" className="text-sm md:text-base font-semibold text-slate-700">Work email *</Label>
                       <input 
                         id="email"
                         type="email" 
@@ -303,7 +303,7 @@ export const Contact = () => {
                         placeholder="Enter your work email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
+                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm md:text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -311,37 +311,37 @@ export const Contact = () => {
                   {/* Row 2 */}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <Label htmlFor="phone" className="text-xs md:text-sm font-semibold text-slate-700">Phone number</Label>
+                      <Label htmlFor="phone" className="text-sm md:text-base font-semibold text-slate-700">Phone number</Label>
                       <input 
                         id="phone"
                         type="tel" 
                         placeholder="Your contact number"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
+                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm md:text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="company" className="text-xs md:text-sm font-semibold text-slate-700">Company name</Label>
+                      <Label htmlFor="company" className="text-sm md:text-base font-semibold text-slate-700">Company name</Label>
                       <input 
                         id="company"
                         type="text" 
                         placeholder="Your company name"
                         value={formData.company}
                         onChange={(e) => handleInputChange('company', e.target.value)}
-                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
+                        className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm md:text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all"
                       />
                     </div>
                   </div>
 
                   {/* Row 3 */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="inquiryType" className="text-xs md:text-sm font-semibold text-slate-700">Inquiry type *</Label>
+                    <Label htmlFor="inquiryType" className="text-sm md:text-base font-semibold text-slate-700">Inquiry type *</Label>
                     <select
                       id="inquiryType"
                       value={formData.inquiryType}
                       onChange={(e) => handleInputChange('inquiryType', e.target.value)}
-                      className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm font-bold text-slate-900 focus:outline-none transition-all cursor-pointer"
+                      className="w-full h-11 bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl px-4 text-sm md:text-base font-bold text-slate-900 focus:outline-none transition-all cursor-pointer"
                     >
                       <option value="Web Development">Web Development</option>
                       <option value="Mobile Development">Mobile Development</option>
@@ -353,7 +353,7 @@ export const Contact = () => {
 
                   {/* Row 4 */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="message" className="text-xs md:text-sm font-semibold text-slate-700">Tell us about your project *</Label>
+                    <Label htmlFor="message" className="text-sm md:text-base font-semibold text-slate-700">Tell us about your project *</Label>
                     <textarea 
                       id="message"
                       required
@@ -361,7 +361,7 @@ export const Contact = () => {
                       placeholder="Share your project details, goals, and requirements..."
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl p-4 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all resize-none"
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-[#041a3d] focus:ring-2 focus:ring-[#041a3d]/25 focus:shadow-[0_0_12px_rgba(4,26,61,0.2)] rounded-xl p-4 text-sm md:text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none transition-all resize-none"
                     />
                   </div>
 
@@ -371,7 +371,7 @@ export const Contact = () => {
                     transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-12 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-sm rounded-xl transition-all duration-200 shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] flex items-center justify-center gap-2 mt-2 cursor-pointer"
+                    className="w-full h-12 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-sm md:text-base rounded-xl transition-all duration-200 shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] flex items-center justify-center gap-2 mt-2 cursor-pointer"
                   >
                     <span>{isSubmitting ? 'Sending...' : contact.cta.buttonText}</span>
                     <Send className="w-4 h-4" />
@@ -409,7 +409,7 @@ export const Contact = () => {
                     {contact.office.heading}
                   </span>
                   <h3 className="text-2xl md:text-4xl font-extrabold font-display text-slate-900 mb-3">TechVistar</h3>
-                  <p className="text-sm md:text-base text-slate-500 font-semibold leading-relaxed">
+                  <p className="text-base md:text-lg text-slate-500 font-semibold leading-relaxed">
                     {contact.office.address}
                   </p>
                 </div>
@@ -422,7 +422,7 @@ export const Contact = () => {
                     href="https://www.openstreetmap.org/?mlat=28.628&mlon=77.372#map=16/28.628/77.372" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 h-11 px-7 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-sm rounded-xl transition-all duration-200 shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group/btn"
+                    className="inline-flex items-center justify-center gap-2 h-11 px-7 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-sm md:text-base rounded-xl transition-all duration-200 shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] group/btn"
                   >
                     <span>Get Directions</span>
                     <ArrowUpRight className="w-4 h-4 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -504,7 +504,7 @@ export const Contact = () => {
 
                       <div className="flex gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
                         <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-slate-300 group-hover:text-[#041a3d] transition-colors duration-300" />
-                        <p className="text-xs md:text-sm font-normal leading-relaxed text-slate-600 whitespace-pre-line">
+                        <p className="text-sm md:text-base font-normal leading-relaxed text-slate-600 whitespace-pre-line">
                           {office.address}
                         </p>
                       </div>
@@ -532,32 +532,32 @@ export const Contact = () => {
         <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
+              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm md:text-base">
                 <span className="p-1 rounded-md bg-emerald-50"><CheckCircle2 className="w-4 h-4" /></span>
                 <span>Expert Team</span>
               </div>
-              <p className="text-xs md:text-sm text-slate-600 font-normal leading-relaxed">Skilled professionals dedicated to your success</p>
+              <p className="text-sm md:text-base text-slate-600 font-normal leading-relaxed">Skilled professionals dedicated to your success</p>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
+              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm md:text-base">
                 <span className="p-1 rounded-md bg-emerald-50"><CheckCircle2 className="w-4 h-4" /></span>
                 <span>Secure & Reliable</span>
               </div>
-              <p className="text-xs md:text-sm text-slate-600 font-normal leading-relaxed">Enterprise-grade security and best practices</p>
+              <p className="text-sm md:text-base text-slate-600 font-normal leading-relaxed">Enterprise-grade security and best practices</p>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
+              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm md:text-base">
                 <span className="p-1 rounded-md bg-emerald-50"><CheckCircle2 className="w-4 h-4" /></span>
                 <span>On-Time Delivery</span>
               </div>
-              <p className="text-xs md:text-sm text-slate-600 font-normal leading-relaxed">Agile approach ensuring timely project delivery</p>
+              <p className="text-sm md:text-base text-slate-600 font-normal leading-relaxed">Agile approach ensuring timely project delivery</p>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
+              <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm md:text-base">
                 <span className="p-1 rounded-md bg-emerald-50"><CheckCircle2 className="w-4 h-4" /></span>
                 <span>Long-Term Support</span>
               </div>
-              <p className="text-xs md:text-sm text-slate-600 font-normal leading-relaxed">We stay with you beyond project completion</p>
+              <p className="text-sm md:text-base text-slate-600 font-normal leading-relaxed">We stay with you beyond project completion</p>
             </div>
           </div>
         </section>

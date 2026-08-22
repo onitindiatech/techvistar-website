@@ -171,17 +171,17 @@ export const ServicesSection = () => {
                     {/* ── Card Body ───────────────────────────────── */}
                     <div className="flex flex-1 flex-col px-5 pb-5 pt-4">
                       {/* Service name */}
-                      <h3 className="font-display text-[0.9375rem] font-bold leading-snug text-slate-900 transition-colors duration-300 group-hover:text-emerald-700">
+                      <h3 className="font-display text-base md:text-lg font-bold leading-snug text-slate-900 transition-colors duration-300 group-hover:text-emerald-700">
                         {service.title}
                       </h3>
 
                       {/* 2-line description */}
-                      <p className="mt-1.5 line-clamp-2 text-[0.8125rem] leading-relaxed text-slate-500">
+                      <p className="mt-1.5 line-clamp-2 text-sm md:text-base font-normal leading-relaxed text-slate-600">
                         {service.shortDescription}
                       </p>
 
                       {/* Explore CTA */}
-                      <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[0.75rem] font-bold text-emerald-600 transition-all duration-300 ease-out group-hover:gap-2.5 group-hover:text-emerald-700">
+                      <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-xs md:text-sm font-bold text-emerald-600 transition-all duration-300 ease-out group-hover:gap-2.5 group-hover:text-emerald-700">
                         Explore
                         <ArrowRight
                           className="h-3.5 w-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1"

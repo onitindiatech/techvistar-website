@@ -137,7 +137,7 @@ export const ContactSection = () => {
             ) : null}
           </h2>
           {contactCta.description ? (
-            <p className="text-slate-500 font-semibold text-sm sm:text-base mt-4 px-4 line-clamp-2">
+            <p className="text-slate-600 font-medium text-base md:text-lg mt-4 px-4 line-clamp-2">
               {contactCta.description}
             </p>
           ) : null}
@@ -161,7 +161,7 @@ export const ContactSection = () => {
               <h3 className="text-xl md:text-2xl font-extrabold font-display text-slate-900 leading-tight mb-2">
                 {primaryStep?.title || contactCta.heading}
               </h3>
-              <p className="text-[12px] text-slate-500 font-medium px-2 max-w-[260px]">
+              <p className="text-sm md:text-base text-slate-600 font-medium px-2 max-w-[280px]">
                 {primaryStep?.description || contactCta.description}
               </p>
             </div>
@@ -180,7 +180,7 @@ export const ContactSection = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm h-11 rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 font-semibold"
+                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm md:text-base h-11 rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 font-semibold"
                 />
                 <Input
                   name="company"
@@ -188,7 +188,7 @@ export const ContactSection = () => {
                   placeholder="Company Name"
                   value={formData.company}
                   onChange={handleChange}
-                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm h-11 rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 font-semibold"
+                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm md:text-base h-11 rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 font-semibold"
                 />
               </div>
 
@@ -201,7 +201,7 @@ export const ContactSection = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm h-11 rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 font-semibold"
+                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm md:text-base h-11 rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 font-semibold"
                 />
                 <Input
                   name="phone"
@@ -210,7 +210,7 @@ export const ContactSection = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm h-11 rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 font-semibold"
+                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm md:text-base h-11 rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 font-semibold"
                 />
               </div>
 
@@ -219,7 +219,7 @@ export const ContactSection = () => {
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm h-11 rounded-xl px-3 font-semibold focus:outline-none focus:ring-2 focus:ring-[#0b2859]/20 focus:border-[#0b2859]/40"
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm md:text-base h-11 rounded-xl px-3 font-semibold focus:outline-none focus:ring-2 focus:ring-[#0b2859]/20 focus:border-[#0b2859]/40"
                 >
                   <option value="">Project Category (optional)</option>
                   {categories.map((cat) => (
@@ -238,7 +238,7 @@ export const ContactSection = () => {
                 onChange={handleChange}
                 required
                 rows={4}
-                className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 resize-none font-semibold p-4"
+                className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm md:text-base rounded-xl focus-visible:ring-[#0b2859]/20 focus-visible:border-[#0b2859]/40 resize-none font-semibold p-4"
               />
 
               {/* Privacy Checkbox */}
@@ -251,7 +251,7 @@ export const ContactSection = () => {
                     onChange={handleChange}
                     className="w-4 h-4 rounded border-slate-300 text-[#0b2859] focus:ring-[#0b2859]/20"
                   />
-                  <span className="text-[11px] sm:text-xs font-semibold text-slate-600">
+                  <span className="text-xs md:text-sm font-medium text-slate-600">
                     I agree to be contacted by the Veenero team and accept the <a href="/privacy" className="text-[#0b2859] font-bold hover:underline">privacy policy</a>.
                   </span>
                 </label>

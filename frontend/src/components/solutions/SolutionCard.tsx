@@ -90,7 +90,7 @@ export const SolutionCard = ({
             {solution.title}
           </h3>
 
-          <p className="mt-2 line-clamp-3 text-base md:text-lg font-medium leading-relaxed text-slate-600">
+          <p className="mt-2 line-clamp-3 text-sm md:text-base font-normal leading-relaxed text-slate-600">
             {solution.desc || solution.heroDescription || solution.subtitle}
           </p>
 
@@ -101,7 +101,7 @@ export const SolutionCard = ({
               </p>
               <ul className="space-y-2">
                 {offeringItems.slice(0, 3).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm md:text-base font-medium text-slate-700">
+                  <li key={i} className="flex items-start gap-2 text-xs md:text-sm font-normal text-slate-700">
                     <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" />
                     <span className="line-clamp-1">{item}</span>
                   </li>

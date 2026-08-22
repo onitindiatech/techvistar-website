@@ -330,7 +330,7 @@ export const Work = () => {
                       <div className="font-display text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d] line-clamp-1">
                         {project.title}
                       </div>
-                      <p className="line-clamp-3 text-base md:text-lg font-medium leading-relaxed text-slate-500">
+                      <p className="line-clamp-3 text-sm md:text-base font-normal leading-relaxed text-slate-500">
                         {project.description}
                       </p>
                     </div>
@@ -385,7 +385,7 @@ export const Work = () => {
                         <div className="font-display text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d]">
                           {project.title}
                         </div>
-                        <p className="line-clamp-3 text-base md:text-lg font-medium leading-relaxed text-slate-600">
+                        <p className="line-clamp-3 text-sm md:text-base font-normal leading-relaxed text-slate-600">
                           {project.description}
                         </p>
 
@@ -507,7 +507,7 @@ export const Work = () => {
               <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 {landing.workflow.heading}
               </h2>
-              <p className="text-sm font-semibold text-slate-500">{landing.workflow.description}</p>
+              <p className="text-base md:text-lg font-medium leading-relaxed text-slate-600">{landing.workflow.description}</p>
             </div>
 
             <motion.div
@@ -556,13 +556,13 @@ export const Work = () => {
                       }}
                       className={`select-none cursor-default rounded-xl border p-5 relative space-y-3 shadow-sm transition-all duration-300 ${color.bg} ${color.border} ${color.hoverBorder}`}
                     >
-                      <span className={`rounded-full px-2 py-0.5 text-[9px] font-extrabold ${color.badge}`}>
+                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-extrabold ${color.badge}`}>
                         Step 0{index + 1}
                       </span>
-                      <div className="pt-1 text-xs font-extrabold tracking-wide text-slate-800">
+                      <div className="pt-1 text-sm md:text-base font-extrabold tracking-wide text-slate-800 leading-snug">
                         {step.title}
                       </div>
-                      <p className="text-[10px] font-semibold leading-relaxed text-slate-500">{step.description}</p>
+                      <p className="text-xs md:text-sm font-medium leading-relaxed text-slate-600">{step.description}</p>
                     </motion.div>
                   );
                 });

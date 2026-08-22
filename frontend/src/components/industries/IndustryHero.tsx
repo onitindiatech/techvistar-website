@@ -67,12 +67,12 @@ export const IndustryHero = ({ industry }: IndustryHeroProps) => {
 
               {industry.benefits && industry.benefits.length > 0 && (
                 <div className="space-y-3 pt-2">
-                  <h3 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
+                  <h3 className="text-xl md:text-2xl font-bold font-display text-slate-900 leading-snug">
                     Key Highlights
                   </h3>
                   <div className="grid grid-cols-1 gap-x-4 gap-y-2.5 sm:grid-cols-2">
                     {industry.benefits.map((highlight, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5 text-base font-normal text-slate-600 leading-relaxed">
+                      <div key={idx} className="flex items-start gap-2.5 text-base md:text-lg font-normal text-slate-600 leading-relaxed">
                         <div className="mt-1 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border border-emerald-100 bg-emerald-50 p-0.5">
                           <Check className="h-3 w-3 text-emerald-600" />
                         </div>

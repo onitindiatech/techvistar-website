@@ -184,7 +184,7 @@ const About = () => {
                 <div className="md:col-span-2">
                   <h2
                     id="overview-heading"
-                    className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
+                    className="font-display text-xl md:text-2xl font-bold text-slate-900 leading-snug"
                   >
                     {about.story.title}
                   </h2>
@@ -207,7 +207,7 @@ const About = () => {
               <motion.div {...fadeUp}>
                 <h2
                   id="focus-heading"
-                  className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
+                  className="font-display text-xl md:text-2xl font-bold text-slate-900 leading-snug"
                 >
                   {focusSection.heading || DEFAULT_ABOUT_CMS.focusAreas.heading}
                 </h2>
@@ -242,7 +242,7 @@ const About = () => {
                           <Icon className="h-[1.125rem] w-[1.125rem]" strokeWidth={1.75} aria-hidden />
                         </div>
                       )}
-                      <h3 className="mt-3 font-display text-base md:text-lg font-bold leading-snug text-slate-900">
+                      <h3 className="mt-3 font-display text-lg md:text-xl font-bold leading-snug text-slate-900">
                         {area.title}
                       </h3>
                       <p className="mt-1.5 text-base leading-relaxed font-normal text-slate-600">
@@ -258,7 +258,7 @@ const About = () => {
             <section className={`${sectionPad} border-b border-slate-100`} aria-labelledby="industries-heading">
               <h2
                 id="industries-heading"
-                className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
+                className="font-display text-xl md:text-2xl font-bold text-slate-900 leading-snug"
               >
                 {industriesSection.heading || DEFAULT_ABOUT_CMS.industriesServe.heading}
               </h2>
@@ -296,7 +296,7 @@ const About = () => {
                         </div>
                       )}
                       <div
-                        className={`font-display text-base md:text-lg font-bold text-slate-900 leading-snug transition-colors ${styles.titleHover}`}
+                        className={`font-display text-lg md:text-xl font-bold text-slate-900 leading-snug transition-colors ${styles.titleHover}`}
                       >
                         {ind.title}
                       </div>
@@ -311,7 +311,7 @@ const About = () => {
             <section className={`${sectionPad} border-b border-slate-100`} aria-labelledby="mission-heading">
               <h2
                 id="mission-heading"
-                className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
+                className="font-display text-xl md:text-2xl font-bold text-slate-900 leading-snug"
               >
                 {ABOUT_PAGE.missionVisionHeading}
               </h2>
@@ -334,7 +334,7 @@ const About = () => {
                         >
                           <pillar.icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
                         </div>
-                        <h3 className="min-w-0 flex-1 pt-0.5 font-display text-base md:text-lg font-bold leading-snug text-slate-900">
+                        <h3 className="min-w-0 flex-1 pt-0.5 font-display text-lg md:text-xl font-bold leading-snug text-slate-900">
                           {pillar.label}
                         </h3>
                       </div>
@@ -353,7 +353,7 @@ const About = () => {
             >
               <h2
                 id="principles-heading"
-                className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
+                className="font-display text-xl md:text-2xl font-bold text-slate-900 leading-snug"
               >
                 {ABOUT_PAGE.principlesHeading}
               </h2>

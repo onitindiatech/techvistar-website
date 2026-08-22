@@ -31,14 +31,15 @@ export function RichTextContent({
     return (
       <Tag
         className={cn(
-          'rich-text prose prose-sm max-w-none dark:prose-invert',
+          'rich-text prose prose-sm max-w-none dark:prose-invert font-sans',
           'prose-headings:font-display',
+          'prose-body:font-sans prose-p:font-sans prose-p:leading-relaxed',
           'prose-a:text-emerald-700 prose-a:underline prose-a:underline-offset-2',
           'prose-ul:list-disc prose-ul:pl-5 prose-ol:list-decimal prose-ol:pl-5',
           'prose-li:my-0.5 prose-li:marker:text-slate-400',
-          'prose-p:leading-relaxed',
           '[&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5',
           '[&_a]:text-emerald-700 [&_a]:underline [&_a]:underline-offset-2',
+          '[&_p]:font-sans [&_span]:font-sans',
           className
         )}
         dangerouslySetInnerHTML={{ __html: html }}
@@ -47,7 +48,7 @@ export function RichTextContent({
   }
 
   return (
-    <Tag className={cn('whitespace-pre-line leading-relaxed', className)}>
+    <Tag className={cn('whitespace-pre-line leading-relaxed font-sans', className)}>
       {raw}
     </Tag>
   );

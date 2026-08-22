@@ -28,8 +28,6 @@ import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import { MobileBackButton } from '@/components/ui/MobileBackButton';
 
-import { FALLBACK_JOBS } from '@/data/jobs';
-
 const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;
 
 const applicationSchema = z.object({
@@ -60,11 +58,7 @@ export const JobApplication = () => {
     enabled: !!slug,
   });
 
-  const activeJob = (() => {
-    if (job) return job;
-    if (!slug) return undefined;
-    return FALLBACK_JOBS.find((j) => j.slug === slug);
-  })();
+  const activeJob = job;
 
   const {
     register,

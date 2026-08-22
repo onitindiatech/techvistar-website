@@ -62,51 +62,50 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
       {/* Primary summary — ServiceSidebar visual language */}
       <div className="relative space-y-6 overflow-hidden rounded-3xl border-2 border-emerald-500/20 bg-white p-6 shadow-sm">
         <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-emerald-500/[0.03] blur-xl" />
-
-        <h3 className="border-b border-slate-100 pb-3 font-display text-xs font-black uppercase tracking-wider text-slate-900">
-          {sidebar.summaryTitle}
+        <h3 className="border-b border-slate-100 pb-3 font-display text-base md:text-lg font-bold text-slate-900 leading-snug">
+          {(sidebar.summaryTitle || 'Industry Consultation').replace(/Consultatio$/i, 'Consultation')}
         </h3>
 
         <div className="space-y-5">
           {industry.category && (
-            <div className="flex items-start gap-4 text-xs">
+            <div className="flex items-start gap-4 text-xs md:text-sm">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                 <ShieldCheck className="h-4 w-4" />
               </div>
               <div>
-                <p className="font-bold text-slate-800">Category</p>
-                <p className="mt-0.5 text-slate-500">{industry.category}</p>
+                <p className="text-sm md:text-base font-bold text-slate-900">Category</p>
+                <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{industry.category}</p>
               </div>
             </div>
           )}
 
-          <div className="flex items-start gap-4 text-xs">
+          <div className="flex items-start gap-4 text-xs md:text-sm">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <p className="font-bold text-slate-800">{sidebar.responseTimeTitle}</p>
-              <p className="mt-0.5 text-slate-500">{sidebar.responseTime}</p>
+              <p className="text-sm md:text-base font-bold text-slate-900">{sidebar.responseTimeTitle}</p>
+              <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{sidebar.responseTime}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-4 text-xs">
+          <div className="flex items-start gap-4 text-xs md:text-sm">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
               <Calendar className="h-4 w-4" />
             </div>
             <div>
-              <p className="font-bold text-slate-800">{sidebar.businessHoursTitle}</p>
-              <p className="mt-0.5 text-slate-500">{sidebar.businessHours}</p>
+              <p className="text-sm md:text-base font-bold text-slate-900">{sidebar.businessHoursTitle}</p>
+              <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{sidebar.businessHours}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-4 text-xs">
+          <div className="flex items-start gap-4 text-xs md:text-sm">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
               <ShieldCheck className="h-4 w-4" />
             </div>
             <div>
-              <p className="font-bold text-slate-800">{sidebar.secureTitle}</p>
-              <p className="mt-0.5 text-slate-500">{sidebar.secureDescription}</p>
+              <p className="text-sm md:text-base font-bold text-slate-900">{sidebar.secureTitle}</p>
+              <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{sidebar.secureDescription}</p>
             </div>
           </div>
         </div>
@@ -127,7 +126,7 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
         <Dialog>
           <DialogTrigger asChild>
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button className="h-10 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-emerald-700">
+              <Button className="h-11 w-full rounded-xl bg-emerald-600 py-2.5 text-sm md:text-base font-extrabold text-white shadow-sm transition-all hover:bg-emerald-700">
                 {sidebar.buttonLabel}
               </Button>
             </motion.div>
@@ -146,7 +145,7 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
         <div className="relative space-y-6 overflow-hidden rounded-3xl border-2 border-emerald-500/20 bg-white p-6 shadow-sm">
           <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-emerald-500/[0.03] blur-xl" />
 
-          <h3 className="border-b border-slate-100 pb-3 font-display text-xs font-black uppercase tracking-wider text-slate-900">
+          <h3 className="border-b border-slate-100 pb-3 font-display text-base md:text-lg font-bold text-slate-900 leading-snug">
             Key Challenges
           </h3>
 
@@ -154,13 +153,13 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
             {supportItems.map((item, idx) => {
               const Icon = item.icon;
               return (
-                <div key={idx} className="flex items-start gap-4 text-xs">
+                <div key={idx} className="flex items-start gap-4 text-xs md:text-sm">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                     <Icon className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="font-bold text-slate-800">{item.title}</p>
-                    <p className="mt-0.5 text-slate-500">{item.description}</p>
+                    <p className="text-sm md:text-base font-bold text-slate-900">{item.title}</p>
+                    <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{item.description}</p>
                   </div>
                 </div>
               );
@@ -170,7 +169,7 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
               asChild
-              className="h-10 w-full rounded-xl bg-emerald-600 text-xs font-bold text-white shadow-sm hover:bg-emerald-700"
+              className="h-11 w-full rounded-xl bg-emerald-600 text-sm md:text-base font-extrabold text-white shadow-sm hover:bg-emerald-700"
             >
               <Link to="/contact">{sidebar.buttonLabel}</Link>
             </Button>
@@ -186,19 +185,19 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-white/10 text-emerald-400">
               <Mail className="h-3.5 w-3.5" />
             </div>
-            <div className="font-display text-xs font-black uppercase tracking-wider text-slate-300">
+            <div className="font-display text-base md:text-lg font-bold text-white leading-snug">
               {sidebar.directInquiriesTitle}
             </div>
           </div>
 
-          <p className="text-[11px] font-medium leading-relaxed text-slate-400">
+          <p className="text-xs md:text-sm font-medium leading-relaxed text-slate-300">
             {sidebar.directInquiriesBody}
           </p>
 
           <div className="border-t border-slate-800/80 pt-2">
             <a
               href={mailtoHref}
-              className="text-xs font-bold text-emerald-400 underline decoration-dotted underline-offset-4 transition-colors hover:text-emerald-300"
+              className="text-sm md:text-base font-bold text-emerald-400 underline decoration-dotted underline-offset-4 transition-colors hover:text-emerald-300"
             >
               {inquiryEmail}
             </a>

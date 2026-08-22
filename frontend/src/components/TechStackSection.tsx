@@ -113,7 +113,7 @@ export const TechStackSection = () => {
             Trusted Technologies We Build With
           </h2>
 
-          <p className="text-slate-500 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-600 font-medium text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
             We build scalable digital products using modern technologies trusted by startups and enterprises worldwide.
           </p>
         </motion.div>

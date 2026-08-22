@@ -304,7 +304,7 @@ export const Work = () => {
               <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 {landing.featuredProjects.heading}
               </h2>
-              <p className="text-sm font-semibold text-slate-500">{landing.featuredProjects.description}</p>
+              <p className="text-base md:text-lg font-medium text-slate-600">{landing.featuredProjects.description}</p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -330,8 +330,8 @@ export const Work = () => {
                       <div className="font-display text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d] line-clamp-1">
                         {project.title}
                       </div>
-                      <p className="line-clamp-3 text-sm md:text-base font-normal leading-relaxed text-slate-500">
-                        {project.description}
+                      <p className="line-clamp-3 text-sm md:text-base font-normal leading-relaxed text-slate-600">
+                        {project.shortDescription || project.description}
                       </p>
                     </div>
                   </div>
@@ -358,7 +358,7 @@ export const Work = () => {
               <h2 className="font-display text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 {landing.recentWork.heading}
               </h2>
-              <p className="text-sm font-semibold text-slate-500">{landing.recentWork.description}</p>
+              <p className="text-base md:text-lg font-medium text-slate-600">{landing.recentWork.description}</p>
             </div>
 
             {normalProjects.length > 0 ? (

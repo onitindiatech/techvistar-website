@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveJobs, Job } from '@/services/job.service';
-import { FALLBACK_JOBS } from '@/data/jobs';
 import { getPublicPagesConfig } from '@/services/pages.service';
 import { mergePagesCmsConfig, DEFAULT_CAREERS_LANDING_CMS } from '@/types/pagesCms';
 import { seoFromItem } from '@/lib/seoAdmin';
@@ -54,10 +53,7 @@ const Careers = () => {
   });
 
   const activeJobs = useMemo(() => {
-    const loaded = (Array.isArray(jobs) ? jobs : []).filter(job => job.status === 'active' && !job.isDeleted);
-    const loadedSlugs = new Set(loaded.map((j) => j.slug));
-    const fallbackList = FALLBACK_JOBS.filter((j) => !loadedSlugs.has(j.slug));
-    return [...loaded, ...fallbackList];
+    return (Array.isArray(jobs) ? jobs : []).filter(job => job.status === 'active' && !job.isDeleted);
   }, [jobs]);
 
   const departments = useMemo(() => {
@@ -285,15 +281,15 @@ const Careers = () => {
 
                         {/* Card Info */}
                         <div className="p-6 space-y-2.5">
-                          <h3 className="text-base font-bold text-slate-900 leading-snug group-hover:text-emerald-600 transition-colors">
+                          <h3 className="text-base md:text-lg font-bold text-slate-900 leading-snug group-hover:text-emerald-600 transition-colors">
                             {job.title}
                           </h3>
-                          <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500 font-bold uppercase">
+                          <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm text-slate-500 font-bold uppercase">
                             <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {job.location}</span>
                             <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {job.employmentType}</span>
                             <span className="flex items-center gap-1"><Briefcase className="w-3.5 h-3.5" /> {job.experience}</span>
                           </div>
-                          <p className="text-sm md:text-base text-slate-600 leading-relaxed font-normal line-clamp-3 pt-1">
+                          <p className="text-base md:text-lg text-slate-600 leading-relaxed font-normal line-clamp-3 pt-1">
                             {shortDesc}
                           </p>
                         </div>
@@ -322,12 +318,12 @@ const Careers = () => {
           </div>
         </section>
 
-        {/* 3. Why Join TechVistar (Exactly matching reference card design) */}
-        <section className="pt-4 pb-12 md:pt-6 md:pb-16 bg-slate-50 border-b border-slate-100">
-          <div className="container mx-auto px-6 sm:px-12 md:px-14 lg:px-16 max-w-7xl space-y-10 md:space-y-12">
+        {/* 3. Why Join TechVistar */}
+        <section className="py-12 md:py-16 bg-slate-50 border-b border-slate-100">
+          <div className="container mx-auto px-6 sm:px-12 md:px-14 lg:px-16 max-w-7xl space-y-8 md:space-y-10">
             <div className="text-center max-w-2xl mx-auto space-y-2">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-slate-900 tracking-tight">Why Join TechVistar?</h2>
-              <p className="text-slate-600 text-base md:text-lg font-medium leading-relaxed">We empower people to do their best work and grow together.</p>
+              <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed">We empower people to do their best work and grow together.</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
@@ -350,8 +346,8 @@ const Careers = () => {
 
                     {/* Content */}
                     <div className="p-4 flex-grow flex flex-col justify-between space-y-2">
-                      <h3 className="text-base font-bold text-slate-900 leading-snug">{benefit.title}</h3>
-                      <p className="text-sm md:text-base text-slate-600 leading-relaxed font-normal">{benefit.desc}</p>
+                      <h3 className="text-lg md:text-xl font-bold text-slate-900 leading-snug">{benefit.title}</h3>
+                      <p className="text-base md:text-lg text-slate-600 leading-relaxed font-normal">{benefit.desc}</p>
                     </div>
                   </motion.div>
                 );
@@ -360,44 +356,46 @@ const Careers = () => {
           </div>
         </section>
 
-        {/* 4. Hiring Process (Perfect horizontal step icons sequence) */}
-        <section className="py-10 md:py-12 bg-white border-b border-slate-100">
-          <div className="container mx-auto px-6 sm:px-12 md:px-14 lg:px-16 max-w-7xl space-y-12">
+        {/* 4. Hiring Process */}
+        <section className="py-12 md:py-16 bg-white border-b border-slate-100">
+          <div className="container mx-auto px-6 sm:px-12 md:px-14 lg:px-16 max-w-7xl space-y-10 md:space-y-12">
             <div className="text-center max-w-2xl mx-auto space-y-2">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-slate-900 tracking-tight">Our Hiring Process</h2>
-              <p className="text-slate-600 text-base md:text-lg font-medium leading-relaxed">Our simple and transparent hiring process</p>
+              <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed">Our simple and transparent hiring process</p>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative max-w-5xl mx-auto">
-              {processTimeline.map((step, idx) => {
-                const Icon = step.icon;
-                return (
-                  <div key={idx} className="flex flex-col items-center text-center space-y-3 relative z-10 flex-1 group">
-                    {idx < processTimeline.length - 1 && (
-                      <div className="hidden md:block absolute left-[50%] right-[-50%] top-6 h-[2px] bg-slate-100 border-dashed border-t-2 pointer-events-none group-hover:border-emerald-250 transition-colors" />
-                    )}
+            <div className="relative max-w-6xl mx-auto">
+              {/* Continuous horizontal line behind step icons on desktop */}
+              <div className="hidden lg:block absolute top-6 left-[8%] right-[8%] h-[2px] border-t-2 border-dashed border-slate-200 -translate-y-1/2 z-0" />
 
-                    {/* Circular Colored floating icon */}
-                    <motion.div 
-                      animate={{ y: [0, -4, 0] }}
-                      transition={{ repeat: Infinity, duration: 4, delay: idx * 0.3 }}
-                      className={`h-12 w-12 rounded-full bg-gradient-to-tr ${step.color} text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform cursor-default`}
-                    >
-                      <Icon className="h-5 w-5" />
-                    </motion.div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 relative z-10">
+                {processTimeline.map((step, idx) => {
+                  const Icon = step.icon;
+                  return (
+                    <div key={idx} className="flex flex-col items-center text-center space-y-3 group">
+                      {/* Circular Colored floating icon */}
+                      <motion.div 
+                        animate={{ y: [0, -4, 0] }}
+                        transition={{ repeat: Infinity, duration: 4, delay: idx * 0.3 }}
+                        className={`h-12 w-12 rounded-full bg-gradient-to-tr ${step.color} text-white flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-default relative z-10`}
+                      >
+                        <Icon className="h-5 w-5" />
+                      </motion.div>
 
-                    <h3 className="text-base font-bold text-slate-900 leading-snug">{step.phase}</h3>
-                    <p className="text-sm md:text-base text-slate-600 font-normal leading-relaxed max-w-[160px]">{step.desc}</p>
-                  </div>
-                );
-              })}
+                      <div className="space-y-1">
+                        <h3 className="text-lg md:text-xl font-bold text-slate-900 leading-snug">{step.phase}</h3>
+                        <p className="text-base md:text-lg text-slate-600 font-normal leading-relaxed">{step.desc}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
 
-
         {/* 6. Bottom CTA Block */}
-        <section className="py-16 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white border-t border-slate-900">
+        <section className="py-14 md:py-16 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white border-t border-slate-900">
           <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center space-y-6">
             <h2 className="text-2xl sm:text-3xl font-black font-display tracking-tight">{careers.cta.title}</h2>
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto font-medium">

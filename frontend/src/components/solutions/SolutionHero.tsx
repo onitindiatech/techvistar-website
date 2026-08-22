@@ -75,12 +75,12 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
 
                 {heroHighlights.length > 0 && (
                   <div className="space-y-3 pt-2">
-                    <h3 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
+                    <h3 className="text-xl md:text-2xl font-bold font-display text-slate-900 leading-snug">
                       Key Highlights
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
                       {heroHighlights.map((highlight, idx) => (
-                        <div key={idx} className="flex gap-2.5 items-start text-base text-slate-600 font-normal leading-relaxed">
+                        <div key={idx} className="flex gap-2.5 items-start text-base md:text-lg text-slate-600 font-normal leading-relaxed">
                           <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-1 shrink-0 border border-emerald-100">
                             <Check className="h-3 w-3 text-emerald-600" />
                           </div>

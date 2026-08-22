@@ -452,7 +452,7 @@ export const Navbar = () => {
                     </svg>
                   </div>
                   
-                  <div className="text-sm font-extrabold font-display">Enterprise AI Integration</div>
+                  <div className="text-base font-extrabold font-display">Enterprise AI Integration</div>
                   <p className="text-mega-desc font-semibold text-slate-400">
                     Automate business intelligence processes and integrate responsive LLM agents into your workflow.
                   </p>
@@ -533,7 +533,7 @@ export const Navbar = () => {
                     </svg>
                   </div>
                   
-                  <div className="text-sm font-extrabold font-display">Intelligent Workflows</div>
+                  <div className="text-base font-extrabold font-display">Intelligent Workflows</div>
                   <p className="text-mega-desc font-semibold text-slate-400">
                     Deploy autonomous digital agents to automate recurring business reporting and customer requests.
                   </p>

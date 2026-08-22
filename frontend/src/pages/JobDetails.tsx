@@ -17,6 +17,11 @@ import {
   ChevronRight,
   Users,
   Building2,
+  Code2,
+  Rocket,
+  ShieldCheck,
+  Zap,
+  Sparkles,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { RichTextContent } from '@/components/common/RichTextContent';
@@ -85,7 +90,7 @@ export const JobDetails = () => {
   const heroOverview = job?.roleOverview?.trim() || (shortDesc && shortDesc !== job?.title ? shortDesc : '');
   const heroHighlights = job?.keyHighlights?.length
     ? job.keyHighlights
-    : (job?.responsibilities?.length ? job.responsibilities.slice(0, 4) : (job?.requirements?.length ? job.requirements.slice(0, 4) : []));
+    : (job?.responsibilities?.length ? job.responsibilities.slice(0, 3) : (job?.requirements?.length ? job.requirements.slice(0, 3) : []));
   const heroSkills = job?.skills?.length
     ? job.skills
     : (job?.techStack?.length ? job.techStack : (job?.requirements || []).slice(0, 6));
@@ -200,104 +205,130 @@ export const JobDetails = () => {
       {seoBlock}
       <Navbar />
       <main className="min-h-screen bg-slate-50 pt-0">
-        {/* Hero — Services Detail architecture */}
-        <section className="mb-6 border-b border-slate-200 bg-white pb-8 pt-[4.5rem] md:mb-8 md:pb-14 md:pt-28">
-          <div className="detail-page-gutter mx-auto w-full px-4 md:px-6 lg:px-12 xl:px-20">
-            <MobileBackButton to="/careers" label="All Roles" className="mb-6" />
+        {/* Redesigned Career Details Hero */}
+        <section className="mb-6 border-b border-slate-200/80 bg-white pb-8 pt-[4.5rem] md:mb-8 md:pb-12 md:pt-24">
+          <div className="detail-page-gutter mx-auto w-full px-4 md:px-6 lg:px-12 xl:px-20 max-w-7xl">
+            <div className="mb-5">
+              <Link
+                to="/careers"
+                className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+              >
+                <ArrowLeft className="h-3.5 w-3.5 text-slate-500" />
+                <span>All Careers</span>
+              </Link>
+            </div>
 
-            <div className="relative z-10 flex w-full flex-col gap-12">
-              <div className="w-full space-y-6">
-                <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
-                  <div className="space-y-5 md:col-span-7">
-                    <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/50 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-700">
-                      {job.department}
-                    </div>
+            <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-10">
+              {/* Left Column (~58% width -> lg:col-span-7) */}
+              <div className="space-y-5 lg:col-span-7">
+                {job.department && (
+                  <Badge className="border-none bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-700 shadow-none">
+                    {job.department}
+                  </Badge>
+                )}
 
-                    <h1 className="font-display text-[1.75rem] font-extrabold leading-[1.12] text-slate-900 md:text-5xl md:leading-tight">
-                      {job.title}
-                    </h1>
+                <h1 className="font-display text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-[1.15]">
+                  {job.title}
+                </h1>
 
-                    {shortDesc && (
-                      <p className="text-base font-bold leading-snug text-emerald-600 md:text-lg">
-                        {stripHtmlToText(shortDesc).split(/(?<=[.!?])\s+/)[0]}
-                      </p>
-                    )}
+                {shortDesc && (
+                  <p className="text-base md:text-xl font-bold leading-snug text-emerald-600">
+                    {stripHtmlToText(shortDesc).split(/(?<=[.!?])\s+/)[0]}
+                  </p>
+                )}
 
-                    <div className="flex flex-wrap gap-x-5 gap-y-2.5 pt-1 text-xs font-medium text-slate-700">
-                      <span className="flex items-center gap-1.5">
-                        <MapPin className="h-3.5 w-3.5 text-emerald-600" /> {job.location}
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <Clock className="h-3.5 w-3.5 text-emerald-600" /> {job.employmentType}
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <Briefcase className="h-3.5 w-3.5 text-emerald-600" /> {job.experience}
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <DollarSign className="h-3.5 w-3.5 text-emerald-600" /> {job.salary}
-                      </span>
-                    </div>
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 py-2 text-xs sm:text-sm font-semibold text-slate-700 border-y border-slate-100">
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-4 w-4 text-emerald-600" />
+                    {job.location}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="h-4 w-4 text-emerald-600" />
+                    {job.employmentType}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Briefcase className="h-4 w-4 text-emerald-600" />
+                    {job.experience}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <DollarSign className="h-4 w-4 text-emerald-600" />
+                    {job.salary}
+                  </span>
+                </div>
 
-                    {/* Role Overview */}
-                    {heroOverview && (
-                      <div className="pt-2">
-                        <RichTextContent
-                          content={heroOverview}
-                          className="text-slate-600 !text-lg leading-relaxed [&_p]:!text-lg font-normal"
-                        />
-                      </div>
-                    )}
+                {heroOverview && (
+                  <RichTextContent
+                    content={heroOverview}
+                    className="text-slate-600 !text-base md:!text-lg leading-relaxed font-normal [&_p]:!text-base md:[&_p]:!text-lg"
+                  />
+                )}
 
-                    {/* Key Highlights */}
-                    {heroHighlights.length > 0 && (
-                      <div className="space-y-3 pt-3 border-t border-slate-100/80">
-                        <h3 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
-                          Key Highlights
-                        </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
-                          {heroHighlights.map((highlight, idx) => (
-                            <div key={idx} className="flex gap-2.5 items-start text-base text-slate-600 font-normal leading-relaxed">
-                              <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-1 shrink-0 border border-emerald-100">
-                                <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                              </div>
-                              <span>{highlight}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Core Competencies */}
-                    {heroSkills.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100/80">
-                        <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mr-1">Core Competencies:</span>
-                        {heroSkills.map((skill, idx) => (
-                          <Badge
+                {/* Key Highlights (Responsive 3-Card Grid matching reference) */}
+                {heroHighlights.length > 0 && (
+                  <div className="space-y-3 pt-2">
+                    <h3 className="font-display text-xl md:text-2xl font-bold text-slate-900 leading-snug">
+                      Key Highlights
+                    </h3>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {heroHighlights.map((highlight, idx) => {
+                        const iconList = [Code2, Rocket, ShieldCheck, Zap, Sparkles, CheckCircle2];
+                        const IconComp = iconList[idx % iconList.length];
+                        return (
+                          <div
                             key={idx}
-                            variant="secondary"
-                            className="bg-emerald-50/80 text-emerald-800 border border-emerald-200/60 px-2.5 py-0.5 text-xs font-semibold rounded-md"
+                            className="flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-3.5 transition-all hover:border-emerald-500/30 hover:bg-white hover:shadow-sm"
                           >
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-700">
+                              <IconComp className="h-4.5 w-4.5" />
+                            </div>
+                            <p className="text-base md:text-lg font-normal leading-relaxed text-slate-700">{highlight}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
+                )}
 
-                  <div className="flex items-center justify-center py-4 md:col-span-5 md:py-0">
-                    <img
-                      src={resolvedBanner}
-                      alt={job.title}
-                      className="h-auto w-full max-w-[280px] object-contain md:max-w-full"
-                    />
+                {/* Core Competencies */}
+                {heroSkills.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-2 pt-2">
+                    <span className="mr-1 text-xs font-bold uppercase tracking-wider text-slate-500">
+                      Core Competencies:
+                    </span>
+                    {heroSkills.map((skill, idx) => (
+                      <Badge
+                        key={idx}
+                        variant="secondary"
+                        className="rounded-lg border border-slate-200/70 bg-slate-100/80 px-3 py-1 text-xs font-semibold text-slate-700 shadow-none hover:bg-slate-200/80"
+                      >
+                        {skill}
+                      </Badge>
+                    ))}
                   </div>
+                )}
+              </div>
+
+              {/* Right Column (~42% width -> lg:col-span-5) with Dedicated Image Panel */}
+              <div className="lg:col-span-5">
+                <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-gradient-to-b from-sky-50/40 via-slate-50/60 to-white p-6 md:p-8 shadow-sm flex flex-col items-center justify-center min-h-[340px] lg:min-h-[420px] group">
+                  {/* Subtle ambient lighting & backdrop dots */}
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(16,185,129,0.08),transparent_70%)] opacity-80" />
+                  <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-sky-400/10 blur-2xl" />
+                  <div className="pointer-events-none absolute -left-12 -bottom-12 h-40 w-40 rounded-full bg-emerald-400/10 blur-2xl" />
+
+                  {/* Cloudinary Career Image Container */}
+                  <img
+                    src={resolvedBanner}
+                    alt={job.title}
+                    className="relative z-10 h-auto max-h-[340px] sm:max-h-[380px] lg:max-h-[420px] w-auto max-w-full object-contain drop-shadow-md transition-transform duration-500 hover:scale-[1.02]"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Sticky section navigation */}
+        {/* Sticky Section Navigation */}
         {navItems.length > 0 && (
           <nav
             ref={subnavRef}
@@ -312,9 +343,9 @@ export const JobDetails = () => {
                     href={`#${item.id}`}
                     onClick={scrollToSection(item.id)}
                     className={cn(
-                      'shrink-0 border-b-2 pb-1 text-xs font-bold uppercase tracking-wider transition-colors',
+                      'shrink-0 border-b-2 pb-1.5 px-3 text-sm md:text-base font-semibold transition-all focus:outline-none mobile-touch-target',
                       activeId === item.id
-                        ? 'border-emerald-600 text-emerald-700'
+                        ? 'border-emerald-600 text-emerald-700 font-bold'
                         : 'border-transparent text-slate-500 hover:text-slate-800'
                     )}
                   >
@@ -578,64 +609,64 @@ export const JobDetails = () => {
               >
                 <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-emerald-500/[0.03] blur-xl" />
 
-                <h3 className="border-b border-slate-100 pb-3 font-display text-xs font-black uppercase tracking-wider text-slate-900">
+                <h3 className="border-b border-slate-100 pb-3 font-display text-base md:text-lg font-bold text-slate-900 leading-snug">
                   Role Metadata
                 </h3>
 
                 <div className="space-y-5">
-                  <div className="flex items-start gap-4 text-xs">
+                  <div className="flex items-start gap-4 text-xs md:text-sm">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                       <Briefcase className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800">Department</p>
-                      <p className="mt-0.5 text-slate-500">{job.department}</p>
+                      <p className="text-sm md:text-base font-bold text-slate-900">Department</p>
+                      <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{job.department}</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-4 text-xs">
+                  <div className="flex items-start gap-4 text-xs md:text-sm">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                       <Clock className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800">Employment Type</p>
-                      <p className="mt-0.5 text-slate-500">{job.employmentType}</p>
+                      <p className="text-sm md:text-base font-bold text-slate-900">Employment Type</p>
+                      <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{job.employmentType}</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-4 text-xs">
+                  <div className="flex items-start gap-4 text-xs md:text-sm">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                       <MapPin className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800">Location</p>
-                      <p className="mt-0.5 text-slate-500">{job.location}</p>
+                      <p className="text-sm md:text-base font-bold text-slate-900">Location</p>
+                      <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{job.location}</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-4 text-xs">
+                  <div className="flex items-start gap-4 text-xs md:text-sm">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                       <Users className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800">Experience</p>
-                      <p className="mt-0.5 text-slate-500">{job.experience}</p>
+                      <p className="text-sm md:text-base font-bold text-slate-900">Experience</p>
+                      <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{job.experience}</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-4 text-xs">
+                  <div className="flex items-start gap-4 text-xs md:text-sm">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                       <DollarSign className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800">Salary</p>
-                      <p className="mt-0.5 text-slate-500">{job.salary}</p>
+                      <p className="text-sm md:text-base font-bold text-slate-900">Salary</p>
+                      <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">{job.salary}</p>
                     </div>
                   </div>
                   {job.applicationDeadline && (
-                    <div className="flex items-start gap-4 text-xs">
+                    <div className="flex items-start gap-4 text-xs md:text-sm">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                         <Calendar className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="font-bold text-slate-800">Deadline</p>
-                        <p className="mt-0.5 text-slate-500">
+                        <p className="text-sm md:text-base font-bold text-slate-900">Deadline</p>
+                        <p className="mt-0.5 text-xs md:text-sm text-slate-600 font-medium">
                           {new Date(job.applicationDeadline).toLocaleDateString()}
                         </p>
                       </div>
@@ -646,7 +677,7 @@ export const JobDetails = () => {
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Button
                     asChild
-                    className="h-10 w-full rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-emerald-700"
+                    className="h-11 w-full rounded-xl bg-emerald-600 py-2.5 text-sm md:text-base font-extrabold text-white shadow-sm transition-all hover:bg-emerald-700"
                   >
                     <Link to={`/careers/apply/${job.slug}`}>Apply Now</Link>
                   </Button>

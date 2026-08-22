@@ -183,7 +183,7 @@ export const ServiceCard = ({
             {service.title}
           </h3>
 
-          <p className="mt-2 line-clamp-3 text-sm md:text-base font-normal leading-relaxed text-slate-600">
+          <p className="mt-2 line-clamp-3 text-base md:text-lg font-medium leading-relaxed text-slate-600">
             {service.shortDescription}
           </p>
 

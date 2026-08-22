@@ -38,43 +38,43 @@ export const ServiceSidebar = ({ service, cmsConfig }: ServiceSidebarProps) => {
         <div className="absolute right-0 top-0 w-24 h-24 rounded-full bg-blue-500/[0.03] blur-xl pointer-events-none" />
 
         <h3 className="text-base md:text-lg font-bold font-display text-slate-900 border-b border-slate-100 pb-3 leading-snug">
-          {sidebar.summaryTitle}
+          {(sidebar.summaryTitle || 'Consultation Summary').replace(/Consultatio$/i, 'Consultation')}
         </h3>
 
         <div className="space-y-5">
-          <div className="flex gap-4 items-start text-xs">
+          <div className="flex gap-4 items-start text-xs md:text-sm">
             <div className="h-8 w-8 rounded-lg bg-blue-50 text-[#041a3d] border border-blue-100 flex items-center justify-center shrink-0">
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <p className="font-bold text-slate-800">{sidebar.responseTimeTitle}</p>
-              <p className="text-slate-500 mt-0.5">{sidebar.responseTime}</p>
+              <p className="text-sm md:text-base font-bold text-slate-900">{sidebar.responseTimeTitle}</p>
+              <p className="text-xs md:text-sm text-slate-600 font-medium mt-0.5">{sidebar.responseTime}</p>
             </div>
           </div>
 
-          <div className="flex gap-4 items-start text-xs">
+          <div className="flex gap-4 items-start text-xs md:text-sm">
             <div className="h-8 w-8 rounded-lg bg-blue-50 text-[#041a3d] border border-blue-100 flex items-center justify-center shrink-0">
               <Calendar className="h-4 w-4" />
             </div>
             <div>
-              <p className="font-bold text-slate-800">{sidebar.businessHoursTitle}</p>
-              <p className="text-slate-500 mt-0.5">{sidebar.businessHours}</p>
+              <p className="text-sm md:text-base font-bold text-slate-900">{sidebar.businessHoursTitle}</p>
+              <p className="text-xs md:text-sm text-slate-600 font-medium mt-0.5">{sidebar.businessHours}</p>
             </div>
           </div>
 
-          <div className="flex gap-4 items-start text-xs">
+          <div className="flex gap-4 items-start text-xs md:text-sm">
             <div className="h-8 w-8 rounded-lg bg-blue-50 text-[#041a3d] border border-blue-100 flex items-center justify-center shrink-0">
               <ShieldCheck className="h-4 w-4" />
             </div>
             <div>
-              <p className="font-bold text-slate-800">{sidebar.secureTitle}</p>
-              <p className="text-slate-500 mt-0.5">{sidebar.secureDescription}</p>
+              <p className="text-sm md:text-base font-bold text-slate-900">{sidebar.secureTitle}</p>
+              <p className="text-xs md:text-sm text-slate-600 font-medium mt-0.5">{sidebar.secureDescription}</p>
             </div>
           </div>
         </div>
 
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Button asChild className="w-full bg-[#041a3d] hover:bg-[#021028] text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition-all h-10">
+          <Button asChild className="w-full bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-sm md:text-base py-2.5 rounded-xl shadow-md transition-all h-11">
             <Link to="/contact">More Information</Link>
           </Button>
         </motion.div>
@@ -93,14 +93,14 @@ export const ServiceSidebar = ({ service, cmsConfig }: ServiceSidebarProps) => {
             </h3>
           </div>
 
-          <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+          <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">
             {sidebar.directInquiriesBody}
           </p>
 
           <div className="pt-2 border-t border-white/10">
             <a
               href={mailtoHref}
-              className="text-xs font-bold text-sky-300 hover:text-white transition-colors underline decoration-dotted underline-offset-4"
+              className="text-sm md:text-base font-bold text-sky-300 hover:text-white transition-colors underline decoration-dotted underline-offset-4"
             >
               {inquiryEmail}
             </a>

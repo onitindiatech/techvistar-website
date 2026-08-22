@@ -46,7 +46,7 @@ export const ProjectOverviewSection = ({ project }: SectionProps) => {
 
           <RichTextContent
             content={project.longDescription}
-            className="text-slate-600 !text-lg leading-relaxed font-normal [&_p]:!text-lg"
+            className="text-slate-600 !text-lg leading-relaxed font-normal [&_p]:!text-lg font-sans"
           />
 
           {keyInsight && (
@@ -56,7 +56,7 @@ export const ProjectOverviewSection = ({ project }: SectionProps) => {
               </div>
               <div>
                 <h3 className="text-base md:text-lg font-bold font-display text-[#041a3d] mb-0.5 leading-snug">Key Insight</h3>
-                <p className="text-base text-slate-700 leading-relaxed font-normal">{keyInsight}</p>
+                <p className="text-base text-slate-700 leading-relaxed font-normal font-sans">{keyInsight}</p>
               </div>
             </div>
           )}

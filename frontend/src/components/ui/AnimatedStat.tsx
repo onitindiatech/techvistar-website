@@ -144,14 +144,14 @@ export const AnimatedStat: React.FC<AnimatedStatProps> = ({
             </div>
           )}
           <div>
-            <p className="mb-0.5 text-sm font-bold leading-none text-slate-900">
+            <p className="mb-0.5 text-base font-extrabold leading-none text-slate-900">
               {isNumeric ? `${prefix}${count}${suffix}` : value}
             </p>
             <motion.p
               initial={{ opacity: 0, y: 4 }}
               animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 4 }}
               transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
-              className="text-[10px] font-semibold leading-tight text-slate-500"
+              className="text-xs md:text-sm font-semibold leading-tight text-slate-600"
             >
               {label}
             </motion.p>

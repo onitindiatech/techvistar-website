@@ -141,7 +141,7 @@ export const SolutionSectionNavigation = ({ navItems }: SolutionSectionNavigatio
               onClick={handleNavClick(item.id)}
               data-active={activeId === item.id}
               className={cn(
-                'text-xs font-semibold uppercase tracking-wider pb-1 px-2 transition-all border-b-2 focus:outline-none mobile-touch-target shrink-0',
+                'text-sm md:text-base font-semibold pb-1.5 px-3 transition-all border-b-2 focus:outline-none mobile-touch-target shrink-0',
                 activeId === item.id
                   ? 'border-primary text-primary font-bold animate-pulse-subtle'
                   : 'border-transparent text-slate-500 hover:text-slate-900'

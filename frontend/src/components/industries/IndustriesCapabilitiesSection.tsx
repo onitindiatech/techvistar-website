@@ -51,12 +51,12 @@ export const IndustriesCapabilitiesSection = ({
             ) : (
               <Building2 className="h-4 w-4" />
             )}
-            <span className="text-[10px] font-black uppercase tracking-widest">{eyebrow}</span>
+            <span className="text-xs font-black uppercase tracking-widest">{eyebrow}</span>
           </div>
           <h2 className="font-display text-heading-md text-slate-900 md:text-heading-xl">
             {title}
           </h2>
-          <p className="text-sm font-semibold leading-relaxed text-slate-500">{description}</p>
+          <p className="text-base md:text-lg font-medium leading-relaxed text-slate-600">{description}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -97,10 +97,12 @@ export const IndustriesCapabilitiesSection = ({
                     <Icon className="h-5 w-5" />
                   </div>
                 )}
-                <h3 className="font-display text-sm font-bold text-slate-900 group-hover:text-emerald-700">
+                <h3 className="font-display text-lg font-bold leading-snug text-slate-900 group-hover:text-emerald-700">
                   {item.title}
                 </h3>
-                <p className="mt-2 text-xs font-medium leading-relaxed text-slate-500">{item.description}</p>
+                <p className="mt-2 text-base md:text-lg font-medium leading-relaxed text-slate-600">
+                  {item.description}
+                </p>
               </motion.article>
             );
           })}

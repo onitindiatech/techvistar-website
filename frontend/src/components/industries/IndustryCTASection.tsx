@@ -43,7 +43,7 @@ export const IndustryCTASection = ({ industry }: IndustryCTASectionProps) => {
         </h2>
 
         {cta.body && (
-          <p className="mx-auto max-w-xl text-xs font-medium leading-relaxed text-blue-100/90 md:text-sm">
+          <p className="mx-auto max-w-xl text-base md:text-lg font-medium leading-relaxed text-blue-100/90">
             {cta.body}
           </p>
         )}
@@ -53,7 +53,7 @@ export const IndustryCTASection = ({ industry }: IndustryCTASectionProps) => {
             whileHover={{ y: -1 }}
             whileTap={{ y: 0, scale: 0.98 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-7 text-xs font-extrabold text-[#041a3d] shadow-md transition-all hover:bg-slate-100 md:text-sm cursor-pointer group"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-7 text-sm font-extrabold text-[#041a3d] shadow-md transition-all hover:bg-slate-100 md:text-base cursor-pointer group"
           >
             <CmsHref href="/contact" className="inline-flex items-center gap-2 text-[#041a3d]">
               <span>{cta.primaryButtonLabel}</span>
@@ -65,7 +65,7 @@ export const IndustryCTASection = ({ industry }: IndustryCTASectionProps) => {
             whileHover={{ y: -1 }}
             whileTap={{ y: 0, scale: 0.98 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-7 text-xs font-extrabold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm cursor-pointer group"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-7 text-sm font-extrabold text-white transition-all hover:border-white hover:bg-white/10 md:text-base cursor-pointer group"
           >
             <CmsHref href={cta.secondaryButtonHref} className="inline-flex items-center gap-2 text-white">
               <MessageSquare className="h-4 w-4 text-white" />

@@ -118,7 +118,7 @@ export const ProcessTimeline = ({
                       {step.title}
                     </h3>
                   )}
-                  <p className="text-sm md:text-base text-slate-600 leading-relaxed">{step.description}</p>
+                  <p className="text-base md:text-lg text-slate-600 leading-relaxed font-normal">{step.description}</p>
                 </div>
               </motion.li>
             );

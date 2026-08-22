@@ -204,14 +204,14 @@ export const AnimatedStat: React.FC<AnimatedStatProps> = ({
           ref={containerRef}
           className={`rounded-2xl border border-slate-200/80 bg-slate-50/80 px-4 py-5 text-center shadow-sm ${hoverClasses} ${className}`}
         >
-          <p className="font-display text-xl font-black text-emerald-700 md:text-2xl">
+          <p className="font-display text-2xl font-black text-emerald-700 md:text-3xl">
             {isNumeric ? `${prefix}${count}${suffix}` : value}
           </p>
           <motion.p
             initial={{ opacity: 0, y: 5 }}
             animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
             transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
-            className="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-500"
+            className="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500"
           >
             {label}
           </motion.p>

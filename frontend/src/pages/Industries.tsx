@@ -103,7 +103,7 @@ export const Industries = () => {
                 <div className="max-w-2xl space-y-3">
                   <div className="flex items-center gap-2 text-emerald-600">
                     <Layers className="h-4 w-4" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">
+                    <span className="text-xs font-black uppercase tracking-widest">
                       {catalog.eyebrow || DEFAULT_INDUSTRIES_LANDING_CMS.catalog.eyebrow}
                     </span>
                   </div>
@@ -111,9 +111,9 @@ export const Industries = () => {
                     {catalog.title || DEFAULT_INDUSTRIES_LANDING_CMS.catalog.title}
                   </h2>
                   {catalog.subtitle?.trim() && (
-                    <p className="text-sm font-bold text-emerald-600">{catalog.subtitle}</p>
+                    <p className="text-base font-bold text-emerald-600">{catalog.subtitle}</p>
                   )}
-                  <p className="text-sm font-semibold text-slate-500">
+                  <p className="text-base md:text-lg font-medium leading-relaxed text-slate-600">
                     {catalog.description || DEFAULT_INDUSTRIES_LANDING_CMS.catalog.description}
                   </p>
                 </div>
@@ -185,7 +185,7 @@ export const Industries = () => {
                 {bottomCta.title || DEFAULT_INDUSTRIES_LANDING_CMS.cta.title}
               </h2>
 
-              <p className="mx-auto max-w-xl text-xs font-medium leading-relaxed text-blue-100/90 md:text-sm">
+              <p className="mx-auto max-w-xl text-base md:text-lg font-medium leading-relaxed text-blue-100/90">
                 {bottomCta.description || DEFAULT_INDUSTRIES_LANDING_CMS.cta.description}
               </p>
 
@@ -194,7 +194,7 @@ export const Industries = () => {
                   whileHover={{ y: -1 }}
                   whileTap={{ y: 0, scale: 0.98 }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-7 text-xs font-extrabold text-[#041a3d] shadow-md transition-all hover:bg-slate-100 md:text-sm cursor-pointer group"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-7 text-sm font-extrabold text-[#041a3d] shadow-md transition-all hover:bg-slate-100 md:text-base cursor-pointer group"
                 >
                   <CmsHref href={bottomCta.buttonLink || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonLink} className="inline-flex items-center gap-2 text-[#041a3d]">
                     <span>{bottomCta.buttonText || DEFAULT_INDUSTRIES_LANDING_CMS.cta.buttonText}</span>
@@ -205,7 +205,7 @@ export const Industries = () => {
                   whileHover={{ y: -1 }}
                   whileTap={{ y: 0, scale: 0.98 }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-7 text-xs font-extrabold text-white transition-all hover:border-white hover:bg-white/10 md:text-sm cursor-pointer group"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-7 text-sm font-extrabold text-white transition-all hover:border-white hover:bg-white/10 md:text-base cursor-pointer group"
                 >
                   <CmsHref
                     href={

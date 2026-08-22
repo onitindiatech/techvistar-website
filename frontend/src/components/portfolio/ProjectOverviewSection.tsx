@@ -39,7 +39,7 @@ export const ProjectOverviewSection = ({ project }: SectionProps) => {
                 </span>
               </span>
             </div>
-            <h2 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">Overview</h2>
+            <h2 className="text-base md:text-lg font-bold font-sans text-slate-900 leading-snug">Overview</h2>
           </div>
 
           <div className="w-12 h-1 bg-[#041a3d] rounded-full" />
@@ -55,7 +55,7 @@ export const ProjectOverviewSection = ({ project }: SectionProps) => {
                 <Lightbulb className="h-5 w-5 text-[#041a3d] animate-pulse" />
               </div>
               <div>
-                <h3 className="text-base md:text-lg font-bold font-display text-[#041a3d] mb-0.5 leading-snug">Key Insight</h3>
+                <h3 className="text-base md:text-lg font-bold font-sans text-[#041a3d] mb-0.5 leading-snug">Key Insight</h3>
                 <p className="text-base text-slate-700 leading-relaxed font-normal font-sans">{keyInsight}</p>
               </div>
             </div>

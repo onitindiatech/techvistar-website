@@ -29,7 +29,7 @@ export const ProjectSidebar = ({ project }: SectionProps) => {
       <div className="relative space-y-6 overflow-hidden rounded-3xl border-2 border-[#041a3d]/20 bg-white p-6 shadow-sm">
         <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-[#041a3d]/[0.03] blur-xl" />
 
-        <h3 className="border-b border-slate-100 pb-3 font-display text-base md:text-lg font-bold text-slate-900 leading-snug">
+        <h3 className="border-b border-slate-100 pb-3 font-sans text-base md:text-lg font-bold text-slate-900 leading-snug">
           Project Metadata
         </h3>
 

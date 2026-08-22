@@ -67,7 +67,6 @@ export const IndustriesLandingHero = ({
   return (
     <PageHeader
       title={title}
-      subtitle={hero.eyebrow}
       description={hero.description}
       backgroundImage={backgroundImage}
     >

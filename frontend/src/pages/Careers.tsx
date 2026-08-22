@@ -146,7 +146,6 @@ const Careers = () => {
               careers.hero.title
             )
           }
-          subtitle={(careers.hero.eyebrow || 'Careers at TechVistar').replace(/Veenero/gi, 'TechVistar')}
           description={careers.hero.description}
           backgroundImage={heroBg}
           bgPosition="right bottom"
@@ -187,7 +186,7 @@ const Careers = () => {
                   placeholder="Search by job title, department, or keyword..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full h-11 pl-10 pr-4 bg-slate-50 border border-slate-100 focus:border-emerald-500/40 rounded-xl text-xs focus:outline-none transition-colors"
+                  className="w-full h-11 pl-10 pr-4 bg-slate-50 border border-slate-100 focus:border-emerald-500/40 rounded-xl text-sm focus:outline-none transition-colors"
                 />
               </div>
 
@@ -196,7 +195,7 @@ const Careers = () => {
                   <select
                     value={selectedDept}
                     onChange={(e) => setSelectedDept(e.target.value)}
-                    className="h-10 px-3 rounded-xl border border-slate-200 text-[11px] font-bold bg-white focus:outline-none"
+                    className="h-10 px-3 rounded-xl border border-slate-200 text-xs font-bold bg-white focus:outline-none"
                   >
                     <option value="All">All Departments</option>
                     {departments.filter(d => d !== 'All').map(d => (
@@ -209,7 +208,7 @@ const Careers = () => {
                   <select
                     value={selectedLoc}
                     onChange={(e) => setSelectedLoc(e.target.value)}
-                    className="h-10 px-3 rounded-xl border border-slate-200 text-[11px] font-bold bg-white focus:outline-none"
+                    className="h-10 px-3 rounded-xl border border-slate-200 text-xs font-bold bg-white focus:outline-none"
                   >
                     <option value="All">All Locations</option>
                     {locations.filter(l => l !== 'All').map(l => (
@@ -222,7 +221,7 @@ const Careers = () => {
                   <select
                     value={selectedEmpType}
                     onChange={(e) => setSelectedEmpType(e.target.value)}
-                    className="h-10 px-3 rounded-xl border border-slate-200 text-[11px] font-bold bg-white focus:outline-none"
+                    className="h-10 px-3 rounded-xl border border-slate-200 text-xs font-bold bg-white focus:outline-none"
                   >
                     <option value="All">All Types</option>
                     {employmentTypes.filter(t => t !== 'All').map(t => (
@@ -238,7 +237,7 @@ const Careers = () => {
                     setSelectedLoc('All');
                     setSelectedEmpType('All');
                   }}
-                  className="h-10 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 text-xs font-bold text-slate-700 w-full sm:w-auto"
+                  className="h-10 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 text-sm font-bold text-slate-700 w-full sm:w-auto"
                 >
                   <RotateCcw className="w-3.5 h-3.5" /> Reset Filters
                 </button>
@@ -398,7 +397,7 @@ const Careers = () => {
         <section className="py-14 md:py-16 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white border-t border-slate-900">
           <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center space-y-6">
             <h2 className="text-2xl sm:text-3xl font-black font-display tracking-tight">{careers.cta.title}</h2>
-            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto font-medium">
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-lg mx-auto font-medium">
               {careers.cta.description}
             </p>
             <div className="pt-2">

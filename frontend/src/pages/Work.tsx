@@ -230,7 +230,7 @@ export const Work = () => {
                       placeholder={filters.searchPlaceholder}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="h-11 rounded-xl border-slate-200 bg-white pl-10 pr-4 text-xs font-semibold text-slate-900 focus-visible:ring-emerald-500/20"
+                      className="h-11 rounded-xl border-slate-200 bg-white pl-10 pr-4 text-sm font-semibold text-slate-900 focus-visible:ring-emerald-500/20"
                     />
                   </div>
                 ) : (
@@ -242,7 +242,7 @@ export const Work = () => {
                     <select
                       value={selectedIndustry}
                       onChange={(e) => setSelectedIndustry(e.target.value)}
-                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-700 focus:outline-none"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 focus:outline-none"
                     >
                       <option value="All">{filters.allIndustriesLabel}</option>
                       {industries.filter((industry) => industry !== 'All').map((industry) => (
@@ -255,7 +255,7 @@ export const Work = () => {
                     <select
                       value={selectedService}
                       onChange={(e) => setSelectedService(e.target.value)}
-                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-700 focus:outline-none"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 focus:outline-none"
                     >
                       <option value="All">{filters.allServicesLabel}</option>
                       {services.filter((service) => service !== 'All').map((service) => (
@@ -268,7 +268,7 @@ export const Work = () => {
                     <select
                       value={selectedTechnology}
                       onChange={(e) => setSelectedTechnology(e.target.value)}
-                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-700 focus:outline-none"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 focus:outline-none"
                     >
                       <option value="All">{filters.allTechnologiesLabel}</option>
                       {technologies.filter((technology) => technology !== 'All').map((technology) => (
@@ -281,7 +281,7 @@ export const Work = () => {
                     <select
                       value={selectedStatus}
                       onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-700 focus:outline-none"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 focus:outline-none"
                     >
                       <option value="All">{filters.allStatusesLabel}</option>
                       {statuses.filter((status) => status !== 'All').map((status) => (
@@ -330,7 +330,7 @@ export const Work = () => {
                       <div className="font-display text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d] line-clamp-1">
                         {project.title}
                       </div>
-                      <p className="line-clamp-3 text-sm md:text-base font-normal leading-relaxed text-slate-600">
+                      <p className="line-clamp-3 text-base md:text-lg font-normal leading-relaxed text-slate-600">
                         {project.shortDescription || project.description}
                       </p>
                     </div>
@@ -385,7 +385,7 @@ export const Work = () => {
                         <div className="font-display text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#041a3d]">
                           {project.title}
                         </div>
-                        <p className="line-clamp-3 text-sm md:text-base font-normal leading-relaxed text-slate-600">
+                        <p className="line-clamp-3 text-base md:text-lg font-normal leading-relaxed text-slate-600">
                           {project.description}
                         </p>
 
@@ -556,13 +556,13 @@ export const Work = () => {
                       }}
                       className={`select-none cursor-default rounded-xl border p-5 relative space-y-3 shadow-sm transition-all duration-300 ${color.bg} ${color.border} ${color.hoverBorder}`}
                     >
-                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-extrabold ${color.badge}`}>
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-extrabold ${color.badge}`}>
                         Step 0{index + 1}
                       </span>
-                      <div className="pt-1 text-sm md:text-base font-extrabold tracking-wide text-slate-800 leading-snug">
+                      <div className="pt-1 text-base md:text-lg font-extrabold tracking-wide text-slate-800 leading-snug">
                         {step.title}
                       </div>
-                      <p className="text-xs md:text-sm font-medium leading-relaxed text-slate-600">{step.description}</p>
+                      <p className="text-sm md:text-base font-medium leading-relaxed text-slate-600">{step.description}</p>
                     </motion.div>
                   );
                 });

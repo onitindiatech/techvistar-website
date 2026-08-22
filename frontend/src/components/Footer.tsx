@@ -225,8 +225,8 @@ export const Footer = () => {
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:contents">
           {/* Column 2: Services List */}
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-3 md:space-y-5">
-            <div className="border-b border-white/5 pb-1.5 font-display text-label font-extrabold uppercase text-white md:pb-2 md:text-caption">Services</div>
-            <ul className="space-y-2 md:space-y-3 font-bold text-[11px] sm:text-sm">
+            <div className="border-b border-white/5 pb-1.5 font-sans text-sm sm:text-base font-extrabold uppercase tracking-wider text-white md:pb-2">Services</div>
+            <ul className="space-y-2 md:space-y-3 font-bold text-sm sm:text-base">
               {footer.serviceLinks.map((link) => (
                 <li key={link.label}>
                   <Link 
@@ -243,8 +243,8 @@ export const Footer = () => {
 
           {/* Column 3: Industries Serve List */}
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-3 md:space-y-5">
-            <div className="border-b border-white/5 pb-1.5 font-display text-label font-extrabold uppercase text-white md:pb-2 md:text-caption">Industries</div>
-            <ul className="space-y-2 md:space-y-3 font-bold text-[11px] sm:text-sm">
+            <div className="border-b border-white/5 pb-1.5 font-sans text-sm sm:text-base font-extrabold uppercase tracking-wider text-white md:pb-2">Industries</div>
+            <ul className="space-y-2 md:space-y-3 font-bold text-sm sm:text-base">
               {footer.industryLinks.map((link) => (
                 <li key={link.label}>
                   <Link 
@@ -261,8 +261,8 @@ export const Footer = () => {
 
           {/* Column 4: Company Links */}
           <motion.div variants={itemFadeUp} className="lg:col-span-2 md:col-span-1 space-y-3 md:space-y-5">
-            <div className="border-b border-white/5 pb-1.5 font-display text-label font-extrabold uppercase text-white md:pb-2 md:text-caption">Company</div>
-            <ul className="space-y-2 md:space-y-3 font-bold text-[11px] sm:text-sm">
+            <div className="border-b border-white/5 pb-1.5 font-sans text-sm sm:text-base font-extrabold uppercase tracking-wider text-white md:pb-2">Company</div>
+            <ul className="space-y-2 md:space-y-3 font-bold text-sm sm:text-base">
               {footer.companyLinks.map((link) => (
                 <li key={link.label}>
                   <Link 
@@ -279,11 +279,11 @@ export const Footer = () => {
 
           {/* Column 5: Premium Newsletter Card */}
           <motion.div variants={itemFadeUp} className="col-span-2 lg:col-span-2 md:col-span-1 space-y-3 md:space-y-5">
-            <div className="border-b border-white/5 pb-1.5 font-display text-label font-extrabold uppercase text-white md:pb-2 md:text-caption">Newsletter</div>
+            <div className="border-b border-white/5 pb-1.5 font-sans text-sm sm:text-base font-extrabold uppercase tracking-wider text-white md:pb-2">Newsletter</div>
             
             <div className="space-y-3">
-              <div className="text-white text-xs font-bold leading-snug">{footer.newsletterHeading}</div>
-              <p className="text-[11px] text-slate-300 font-semibold leading-relaxed">
+              <div className="text-white text-sm font-bold leading-snug">{footer.newsletterHeading}</div>
+              <p className="text-sm text-slate-300 font-semibold leading-relaxed">
                 {footer.newsletterDescription}
               </p>
             </div>
@@ -294,7 +294,7 @@ export const Footer = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/[0.02] border-white/5 text-white placeholder:text-slate-600 text-xs h-10 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30"
+                className="bg-white/[0.02] border-white/5 text-white placeholder:text-slate-600 text-sm h-10 rounded-xl focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30"
                 required
               />
               <motion.button 
@@ -302,7 +302,7 @@ export const Footer = () => {
                 whileTap={{ y: 0, scale: 0.98 }}
                 type="submit" 
                 disabled={isSubmitting} 
-                className="w-full h-10 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-xs rounded-xl shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full h-10 bg-[#041a3d] hover:bg-[#021028] text-white font-extrabold text-sm rounded-xl shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_6px_25px_rgba(14,165,233,0.5)] transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <span>{isSubmitting ? 'Subscribing...' : 'Subscribe'}</span>
               </motion.button>

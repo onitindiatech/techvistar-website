@@ -145,7 +145,7 @@ export const ProjectSectionNavigation = ({ navItems }: ProjectSectionNavigationP
               onClick={handleNavClick(item.id)}
               data-active={activeId === item.id}
               className={cn(
-                'text-sm md:text-base font-semibold pb-1.5 px-3 transition-all border-b-2 focus:outline-none mobile-touch-target shrink-0',
+                'text-sm md:text-base font-semibold font-sans pb-1.5 px-3 transition-all border-b-2 focus:outline-none mobile-touch-target shrink-0',
                 activeId === item.id
                   ? 'border-primary text-primary font-bold animate-pulse-subtle'
                   : 'border-transparent text-slate-500 hover:text-slate-900'

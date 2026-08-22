@@ -51,7 +51,7 @@ export const RelatedIndustriesSection = ({ industry }: RelatedIndustriesSectionP
 
   return (
     <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm md:p-8">
-      <h2 className="mb-8 font-display text-heading-sm text-slate-900">Related Industries</h2>
+      <h2 className="mb-8 text-base md:text-lg font-bold font-display text-slate-900 leading-snug">Related Industries</h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {related.map((item, index) => {
@@ -85,10 +85,10 @@ export const RelatedIndustriesSection = ({ industry }: RelatedIndustriesSectionP
                       {item.category}
                     </Badge>
                   )}
-                  <h3 className="font-display text-base font-bold text-slate-900 group-hover:text-emerald-600">
+                  <h3 className="font-display text-base md:text-lg font-bold text-slate-900 group-hover:text-emerald-600 leading-snug">
                     {item.title}
                   </h3>
-                  <p className="mt-2 line-clamp-2 text-base font-medium leading-relaxed text-slate-600">{item.shortDescription}</p>
+                  <p className="mt-2 line-clamp-2 text-sm md:text-base font-normal leading-relaxed text-slate-600">{item.shortDescription}</p>
                 </div>
               </Link>
             </motion.div>

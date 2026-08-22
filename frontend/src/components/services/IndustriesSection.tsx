@@ -98,7 +98,7 @@ export const IndustriesSection = ({ service }: SectionProps) => {
         Industries We Serve
       </h2>
 
-      <p className="relative z-10 text-xs text-slate-500 mb-6">
+      <p className="relative z-10 text-base text-slate-500 mb-6">
         Adapting our delivery frameworks to the specific requirements of target sectors:
       </p>
 
@@ -149,7 +149,7 @@ export const IndustriesSection = ({ service }: SectionProps) => {
           })}
         </motion.div>
       ) : (
-        <p className="relative z-10 text-slate-500 text-xs font-medium">
+        <p className="relative z-10 text-slate-500 text-base font-medium">
           No specific industry connections configured for this service stack.
         </p>
       )}

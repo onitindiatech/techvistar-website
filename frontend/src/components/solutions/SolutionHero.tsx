@@ -70,7 +70,7 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
 
                 <RichTextContent
                   content={solution.heroDescription}
-                  className="text-slate-600 text-sm md:text-base leading-relaxed [&_p]:!text-sm md:[&_p]:!text-base"
+                  className="text-slate-600 !text-lg leading-relaxed [&_p]:!text-lg"
                 />
 
                 {heroHighlights.length > 0 && (
@@ -80,7 +80,7 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
                       {heroHighlights.map((highlight, idx) => (
-                        <div key={idx} className="flex gap-2.5 items-start text-sm md:text-base text-slate-700 font-normal leading-relaxed">
+                        <div key={idx} className="flex gap-2.5 items-start text-base text-slate-700 font-normal leading-relaxed">
                           <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-1 shrink-0 border border-emerald-100">
                             <Check className="h-3 w-3 text-emerald-600" />
                           </div>

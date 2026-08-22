@@ -45,7 +45,7 @@ export const FAQSection = ({ service }: SectionProps) => {
             >
               <button
                 onClick={() => setOpenIndex(isOpen ? null : i)}
-                className="w-full flex items-center justify-between gap-4 p-4 md:p-5 text-left font-bold text-xs md:text-sm text-slate-800 transition-colors"
+                className="w-full flex items-center justify-between gap-4 p-4 md:p-5 text-left font-bold text-base text-slate-800 transition-colors"
                 type="button"
               >
                 <div className="flex items-center gap-3">
@@ -77,8 +77,8 @@ export const FAQSection = ({ service }: SectionProps) => {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.25, ease: 'easeInOut' }}
                   >
-                    <div className="px-5 pb-5 pt-1 text-xs md:text-xs text-slate-500 leading-relaxed border-t border-slate-100/50">
-                      <RichTextContent content={faq.answer} className="text-xs md:text-xs text-slate-500 leading-relaxed" />
+                    <div className="px-5 pb-5 pt-1 text-base text-slate-500 leading-relaxed border-t border-slate-100/50">
+                      <RichTextContent content={faq.answer} className="text-base text-slate-500 leading-relaxed [&_p]:!text-base" />
                     </div>
                   </motion.div>
                 )}

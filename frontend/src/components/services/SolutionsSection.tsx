@@ -153,7 +153,7 @@ export const SolutionsSection = ({ service }: SectionProps) => {
                   {offering.title}
                 </h3>
                 
-                <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-3">
+                <p className="text-base text-slate-600 leading-relaxed mb-3">
                   {offering.description}
                 </p>
               </div>
@@ -179,7 +179,7 @@ export const SolutionsSection = ({ service }: SectionProps) => {
           {(service.offerings || []).map((offering, i) => (
             <div
               key={i}
-              className="flex gap-3 text-sm text-slate-700 leading-relaxed items-start p-3 rounded-xl border border-slate-100 bg-white shadow-sm hover:border-[#041a3d]/20 hover:shadow transition-all"
+              className="flex gap-3 text-base text-slate-700 leading-relaxed items-start p-3 rounded-xl border border-slate-100 bg-white shadow-sm hover:border-[#041a3d]/20 hover:shadow transition-all"
             >
               <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-blue-50 text-[#041a3d] border border-blue-100">
                 <Check className="h-3.5 w-3.5" />

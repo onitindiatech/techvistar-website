@@ -64,12 +64,12 @@ export const SolutionFeaturesSection = ({ solution }: SectionProps) => {
           <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
             <Sparkles className="h-3 w-3 text-emerald-600" />
           </div>
-          <h2 className="font-display text-heading-sm text-slate-900">
+          <h2 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
             {solution.sectionCopy?.featuresTitle || 'Key Features'}
           </h2>
         </div>
         {solution.sectionCopy?.featuresSubtitle?.trim() && (
-          <p className="pl-7 text-base font-medium leading-relaxed text-slate-600">
+          <p className="pl-7 text-base font-normal leading-relaxed text-slate-600">
             {solution.sectionCopy.featuresSubtitle}
           </p>
         )}
@@ -108,11 +108,11 @@ export const SolutionFeaturesSection = ({ solution }: SectionProps) => {
                   </span>
                 </div>
 
-                <h3 className="text-base font-bold text-slate-900 mb-1 group-hover:text-emerald-700 transition-colors font-display">
+                <h3 className="text-base md:text-lg font-bold font-display text-slate-900 mb-1 group-hover:text-emerald-700 transition-colors leading-snug">
                   {feature.title}
                 </h3>
 
-                <p className="text-base font-medium text-slate-600 leading-relaxed mb-2">
+                <p className="text-base font-normal text-slate-600 leading-relaxed mb-2">
                   {feature.description}
                 </p>
               </div>

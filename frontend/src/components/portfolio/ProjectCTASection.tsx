@@ -84,7 +84,7 @@ export const ProjectCTASection = ({ projectCta }: ProjectCTASectionProps) => {
         </h2>
 
         {cta.description?.trim() && (
-          <p className="text-blue-100/90 text-xs md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
+          <p className="text-blue-100/90 text-base max-w-xl mx-auto leading-relaxed font-medium">
             {cta.description}
           </p>
         )}

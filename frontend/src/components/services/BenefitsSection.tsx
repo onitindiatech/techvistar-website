@@ -37,7 +37,7 @@ export const BenefitsSection = ({ service }: SectionProps) => {
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
                 <Check className="h-4 w-4" />
               </div>
-              <p className="text-sm font-semibold leading-relaxed text-slate-700">{benefit}</p>
+              <p className="text-base font-semibold leading-relaxed text-slate-700">{benefit}</p>
             </motion.div>
           ))}
         </div>
@@ -58,7 +58,7 @@ export const BenefitsSection = ({ service }: SectionProps) => {
                 <Zap className="h-4 w-4" />
               </div>
               <h3 className="mb-1.5 font-display text-sm font-bold text-slate-900">{item.title}</h3>
-              <p className="text-xs font-medium leading-relaxed text-slate-500">{item.description}</p>
+              <p className="text-base font-medium leading-relaxed text-slate-500">{item.description}</p>
             </motion.div>
           ))}
         </div>

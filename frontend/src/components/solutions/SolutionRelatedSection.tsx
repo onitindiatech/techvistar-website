@@ -95,7 +95,7 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
           <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10">
             <Sparkles className="h-3 w-3 text-emerald-600" />
           </div>
-          <h2 className="font-display text-heading-sm text-slate-900">Related Solutions</h2>
+          <h2 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">Related Solutions</h2>
         </div>
         <Link
           to="/solutions"
@@ -150,11 +150,11 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
                   </div>
 
                   <div className="p-5">
-                    <h3 className="text-sm font-bold text-slate-900 group-hover/card:text-emerald-700 transition-colors font-display line-clamp-1 mb-2">
+                    <h3 className="text-base md:text-lg font-bold font-display text-slate-900 group-hover/card:text-emerald-700 transition-colors leading-snug line-clamp-1 mb-2">
                       {item.title}
                     </h3>
 
-                    <p className="text-base text-slate-600 font-medium leading-relaxed line-clamp-2">
+                    <p className="text-base text-slate-600 font-normal leading-relaxed line-clamp-2">
                       {item.subtitle}
                     </p>
                   </div>

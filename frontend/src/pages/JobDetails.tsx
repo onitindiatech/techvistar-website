@@ -283,7 +283,7 @@ export const JobDetails = () => {
                   <h2 className="mb-4 font-display text-heading-sm text-slate-900">Role Summary</h2>
                   <RichTextContent
                     content={shortDesc}
-                    className="text-sm leading-relaxed text-slate-600"
+                    className="!text-base leading-relaxed text-slate-600 [&_p]:!text-base"
                   />
                 </motion.section>
               )}
@@ -299,7 +299,7 @@ export const JobDetails = () => {
                   <h2 className="mb-4 font-display text-heading-sm text-slate-900">Job Details</h2>
                   <RichTextContent
                     content={fullDesc}
-                    className="text-sm leading-relaxed text-slate-600"
+                    className="!text-base leading-relaxed text-slate-600 [&_p]:!text-base"
                   />
                 </motion.section>
               )}
@@ -344,7 +344,7 @@ export const JobDetails = () => {
                     {job.responsibilities.map((resp, index) => (
                       <li
                         key={index}
-                        className="flex items-start gap-3 text-sm font-medium leading-relaxed text-slate-600"
+                        className="flex items-start gap-3 text-base font-medium leading-relaxed text-slate-600"
                       >
                         <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
                         <span>{resp}</span>
@@ -372,7 +372,7 @@ export const JobDetails = () => {
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
                           <CheckCircle2 className="h-4 w-4" />
                         </div>
-                        <span className="text-xs font-medium leading-snug text-slate-700">
+                        <span className="text-base font-medium leading-snug text-slate-700">
                           {benefit}
                         </span>
                       </div>
@@ -389,7 +389,7 @@ export const JobDetails = () => {
                 className="scroll-mt-24 border-t border-slate-200/80 pt-12"
               >
                 <h2 className="mb-2 font-display text-heading-sm text-slate-900">About The Team</h2>
-                <p className="mb-6 text-sm leading-relaxed text-slate-600">
+                <p className="mb-6 text-base leading-relaxed text-slate-600">
                   We believe in structured execution, transparent pipelines, and collaborative
                   problem-solving.
                 </p>

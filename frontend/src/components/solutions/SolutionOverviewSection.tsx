@@ -32,7 +32,7 @@ export const SolutionOverviewSection = ({ solution }: SectionProps) => {
                 </span>
               </span>
             </div>
-            <h2 className="font-display text-heading-sm text-slate-900">
+            <h2 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
               {solution.sectionCopy?.overviewTitle || 'Overview'}
             </h2>
           </div>
@@ -41,7 +41,7 @@ export const SolutionOverviewSection = ({ solution }: SectionProps) => {
 
           <RichTextContent
             content={solution.ourSolution.overview}
-            className="text-slate-600 text-base md:text-lg leading-relaxed font-normal"
+            className="text-slate-600 text-base leading-relaxed font-normal [&_p]:!text-base"
           />
         </div>
 

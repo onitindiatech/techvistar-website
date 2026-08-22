@@ -62,7 +62,7 @@ export const ProjectFeaturesSection = ({ project }: SectionProps) => {
         <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-emerald-600" />
         </div>
-        <h2 className="font-display text-heading-sm text-slate-900">Features Implemented</h2>
+        <h2 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">Features Implemented</h2>
       </div>
 
       <motion.div
@@ -104,11 +104,11 @@ export const ProjectFeaturesSection = ({ project }: SectionProps) => {
                       </div>
                     </div>
 
-                    <h3 className="text-sm font-bold text-slate-900 mb-0.5 group-hover:text-emerald-700 transition-colors font-display">
+                    <h3 className="text-base md:text-lg font-bold font-display text-slate-900 mb-0.5 group-hover:text-emerald-700 transition-colors leading-snug">
                       {feature.title}
                     </h3>
                     {feature.description && (
-                      <p className="text-xs text-slate-500 leading-relaxed mt-1">{feature.description}</p>
+                      <p className="text-base text-slate-600 leading-relaxed mt-1">{feature.description}</p>
                     )}
                   </div>
                 </motion.div>
@@ -139,7 +139,7 @@ export const ProjectFeaturesSection = ({ project }: SectionProps) => {
                       </span>
                     </div>
 
-                    <h3 className="text-sm font-bold text-slate-900 mb-0.5 group-hover:text-emerald-700 transition-colors font-display">
+                    <h3 className="text-base md:text-lg font-bold font-display text-slate-900 mb-0.5 group-hover:text-emerald-700 transition-colors leading-snug">
                       {feature}
                     </h3>
                   </div>

@@ -42,12 +42,12 @@ export const SolutionBenefitsSection = ({ solution }: SectionProps) => {
           <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10">
             <Sparkles className="h-3 w-3 text-emerald-600" />
           </div>
-          <h2 className="font-display text-heading-sm text-slate-900">
+          <h2 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
             {solution.sectionCopy?.benefitsTitle || 'Benefits & Features'}
           </h2>
         </div>
         {solution.sectionCopy?.benefitsSubtitle?.trim() && (
-          <p className="pl-7 text-base font-medium leading-relaxed text-slate-600">
+          <p className="pl-7 text-base font-normal leading-relaxed text-slate-600">
             {solution.sectionCopy.benefitsSubtitle}
           </p>
         )}
@@ -68,8 +68,8 @@ export const SolutionBenefitsSection = ({ solution }: SectionProps) => {
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600">
                 <Icon className="h-4 w-4" />
               </div>
-              <h3 className="mb-1.5 font-display text-base font-bold text-slate-900">{benefit.title}</h3>
-              <p className="text-base font-medium leading-relaxed text-slate-600">{benefit.desc}</p>
+              <h3 className="mb-1.5 font-display text-base md:text-lg font-bold text-slate-900 leading-snug">{benefit.title}</h3>
+              <p className="text-base font-normal leading-relaxed text-slate-600">{benefit.desc}</p>
             </motion.div>
           );
         })}

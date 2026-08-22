@@ -53,7 +53,7 @@ export const CTASection = ({ service, cmsConfig }: SectionProps) => {
           {cta.headline}
         </h2>
 
-        <p className="text-blue-100/90 text-xs md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
+        <p className="text-blue-100/90 text-base max-w-xl mx-auto leading-relaxed font-medium">
           {cta.body}
         </p>
 

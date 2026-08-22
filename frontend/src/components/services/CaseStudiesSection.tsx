@@ -103,7 +103,7 @@ export const CaseStudiesSection = ({ service }: SectionProps) => {
                     <Link to={`/work/${project.slug}`}>{project.title}</Link>
                   </h3>
                   
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                  <p className="text-base text-slate-500 leading-relaxed line-clamp-3">
                     {project.description}
                   </p>
                 </div>
@@ -124,7 +124,7 @@ export const CaseStudiesSection = ({ service }: SectionProps) => {
       ) : (
         <div className="relative z-10 rounded-2xl bg-slate-50 border border-slate-100 p-8 text-center">
           <Briefcase className="h-8 w-8 text-slate-300 mx-auto mb-3" />
-          <p className="text-xs font-medium text-slate-500 mb-4 leading-relaxed">Custom integration case studies are available upon request.</p>
+          <p className="text-base font-medium text-slate-500 mb-4 leading-relaxed">Custom integration case studies are available upon request.</p>
           <a href="#contact" className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors">
             Request past build logs <ArrowRight className="h-3.5 w-3.5" />
           </a>

@@ -151,7 +151,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="mb-4 font-display text-heading-xl text-white md:text-display-xl"
+          className="mb-4 text-3xl md:text-5xl font-extrabold font-display text-white leading-tight"
         >
           {title}
         </motion.h1>
@@ -160,7 +160,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="max-w-2xl text-body-md text-zinc-300 md:text-body-lg"
+            className="max-w-2xl text-sm md:text-base leading-relaxed font-normal text-zinc-300"
           >
             {description}
           </motion.p>

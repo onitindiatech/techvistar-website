@@ -52,7 +52,7 @@ export const OverviewSection = ({ service }: SectionProps) => {
           {/* Description */}
           <RichTextContent
             content={service.longDescription}
-            className="text-slate-600 text-base md:text-lg leading-relaxed font-normal"
+            className="text-slate-600 text-base leading-relaxed font-normal [&_p]:!text-base"
           />
 
           {/* Key Insight callout box */}
@@ -65,7 +65,7 @@ export const OverviewSection = ({ service }: SectionProps) => {
                 <h3 className="text-base md:text-lg font-bold font-display text-[#041a3d] mb-0.5 leading-snug">Key Insight</h3>
                 <RichTextContent
                   content={service.overview}
-                  className="text-sm md:text-base text-slate-700 leading-relaxed font-medium"
+                  className="text-base text-slate-700 leading-relaxed font-medium [&_p]:!text-base"
                 />
               </div>
             </div>

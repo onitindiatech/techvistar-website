@@ -90,7 +90,7 @@ export const IndustryOverviewSection = ({ industry }: IndustryOverviewSectionPro
 
             </div>
 
-            <h2 className="font-display text-heading-sm text-slate-900">Overview</h2>
+            <h2 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">Overview</h2>
 
           </div>
 
@@ -119,9 +119,9 @@ export const IndustryOverviewSection = ({ industry }: IndustryOverviewSectionPro
 
               <div>
 
-                <div className="mb-0.5 text-xs font-bold text-emerald-800">Sector Focus</div>
+                <h3 className="text-base md:text-lg font-bold font-display text-[#041a3d] mb-0.5 leading-snug">Sector Focus</h3>
 
-                <RichTextContent content={insight} className="text-xs font-medium leading-relaxed text-emerald-700/90" />
+                <RichTextContent content={insight} className="text-sm md:text-base text-slate-700 leading-relaxed font-normal" />
 
               </div>
 

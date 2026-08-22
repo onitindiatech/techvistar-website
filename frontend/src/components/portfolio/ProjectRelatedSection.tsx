@@ -36,7 +36,7 @@ export const ProjectRelatedSection = ({ relatedProjects }: SectionProps) => {
         <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-emerald-600" />
         </div>
-        <h2 className="font-display text-heading-sm text-slate-900">Related Projects</h2>
+        <h2 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">Related Projects</h2>
       </div>
 
       <motion.div
@@ -74,11 +74,11 @@ export const ProjectRelatedSection = ({ relatedProjects }: SectionProps) => {
                 </div>
 
                 <div className="p-5">
-                  <h3 className="text-sm font-bold text-slate-900 group-hover/card:text-emerald-700 transition-colors font-display line-clamp-1 mb-2">
+                  <h3 className="text-base md:text-lg font-bold font-display text-slate-900 group-hover/card:text-emerald-700 transition-colors leading-snug line-clamp-1 mb-2">
                     {rp.title}
                   </h3>
 
-                  <p className="text-base text-slate-600 font-medium leading-relaxed line-clamp-2">
+                  <p className="text-base text-slate-600 font-normal leading-relaxed line-clamp-2">
                     {rp.description}
                   </p>
                 </div>

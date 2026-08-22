@@ -212,7 +212,7 @@ export const Contact = () => {
                     <Phone className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-display font-bold text-slate-900 text-base">Call Us</div>
+                    <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Call Us</h3>
                     <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contactPhone}</p>
                     <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.office.hours}</span>
                   </div>
@@ -228,7 +228,7 @@ export const Contact = () => {
                     <Mail className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-display font-bold text-slate-900 text-base">Email Us</div>
+                    <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Email Us</h3>
                     <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contactEmail}</p>
                     <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.contactInfo.supportText}</span>
                   </div>
@@ -243,7 +243,7 @@ export const Contact = () => {
                     <MapPin className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-display font-bold text-slate-900 text-base">{contact.office.heading}</div>
+                    <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">{contact.office.heading}</h3>
                     <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">TechVistar HQ</p>
                     <span className="text-xs text-slate-500 font-medium block mt-0.5">{contact.office.address}</span>
                   </div>
@@ -258,7 +258,7 @@ export const Contact = () => {
                     <Clock className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <div className="font-display font-bold text-slate-900 text-base">Working Hours</div>
+                    <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Working Hours</h3>
                     <p className="text-xs md:text-sm font-semibold text-slate-600 mt-0.5">{contact.office.hours.split(',')[0] || contact.office.hours}</p>
                     <span className="text-xs text-slate-500 font-medium block mt-0.5">
                       {contact.office.hours.includes(',') ? contact.office.hours.split(',').slice(1).join(',').trim() : ''}
@@ -275,7 +275,7 @@ export const Contact = () => {
                   <Mail className="w-5.5 h-5.5 text-[#041a3d]" />
                   <div>
                     <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">{contact.cta.title}</h3>
-                    <p className="text-xs md:text-sm text-slate-600 mt-0.5">{contact.cta.description}</p>
+                    <p className="text-sm md:text-base font-normal text-slate-600 leading-relaxed mt-0.5">{contact.cta.description}</p>
                   </div>
                 </div>
 
@@ -494,9 +494,9 @@ export const Contact = () => {
                   <div className="p-6 sm:p-8 space-y-5 bg-white relative z-20 flex-1 flex flex-col justify-between">
                     <div className="space-y-4">
                       <div className="flex items-start justify-between gap-2">
-                        <div className="font-display text-base md:text-lg font-bold text-slate-900 group-hover:text-[#041a3d] transition-colors duration-300">
+                        <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug group-hover:text-[#041a3d] transition-colors duration-300">
                           {office.name}
-                        </div>
+                        </h3>
                         <span className="shrink-0 text-[9px] font-black text-[#041a3d] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider border border-blue-200/60">
                           {office.badge}
                         </span>

@@ -243,10 +243,10 @@ const About = () => {
                           <Icon className="h-[1.125rem] w-[1.125rem]" strokeWidth={1.75} aria-hidden />
                         </div>
                       )}
-                      <h3 className="mt-3 font-display text-base font-bold leading-snug text-slate-900">
+                      <h3 className="mt-3 font-display text-base md:text-lg font-bold leading-snug text-slate-900">
                         {area.title}
                       </h3>
-                      <p className="mt-1.5 text-xs md:text-sm leading-relaxed text-slate-600">
+                      <p className="mt-1.5 text-sm md:text-base leading-relaxed font-normal text-slate-600">
                         {area.description}
                       </p>
                     </motion.div>
@@ -297,11 +297,11 @@ const About = () => {
                         </div>
                       )}
                       <div
-                        className={`font-display text-base font-bold text-slate-900 transition-colors ${styles.titleHover}`}
+                        className={`font-display text-base md:text-lg font-bold text-slate-900 leading-snug transition-colors ${styles.titleHover}`}
                       >
                         {ind.title}
                       </div>
-                      <p className="mt-1 text-xs md:text-sm leading-relaxed text-slate-600">{ind.description}</p>
+                      <p className="mt-1 text-sm md:text-base leading-relaxed font-normal text-slate-600">{ind.description}</p>
                     </motion.div>
                   );
                 })}
@@ -312,7 +312,7 @@ const About = () => {
             <section className={`${sectionPad} border-b border-slate-100`} aria-labelledby="mission-heading">
               <h2
                 id="mission-heading"
-                className="font-display text-lg font-bold tracking-tight text-slate-900 sm:text-xl"
+                className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug"
               >
                 {ABOUT_PAGE.missionVisionHeading}
               </h2>
@@ -335,7 +335,7 @@ const About = () => {
                         >
                           <pillar.icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
                         </div>
-                        <h3 className="min-w-0 flex-1 pt-0.5 font-display text-base font-bold leading-snug text-slate-900">
+                        <h3 className="min-w-0 flex-1 pt-0.5 font-display text-base md:text-lg font-bold leading-snug text-slate-900">
                           {pillar.label}
                         </h3>
                       </div>
@@ -393,10 +393,10 @@ const About = () => {
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#041a3d]/10 px-2.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-[#041a3d] ring-1 ring-[#041a3d]/20">
                       {ABOUT_PAGE.location.heading}
                     </span>
-                    <h3 className="mt-2 font-display text-base font-bold text-slate-900">
+                    <h3 className="mt-2 font-display text-base md:text-lg font-bold text-slate-900 leading-snug">
                       {ABOUT_COPY.locationLine}
                     </h3>
-                    <p className="mt-1 text-xs md:text-sm leading-relaxed text-slate-600">{ABOUT_PAGE.location.detail}</p>
+                    <p className="mt-1 text-sm md:text-base leading-relaxed font-normal text-slate-600">{ABOUT_PAGE.location.detail}</p>
                   </div>
                 </motion.div>
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { decorateSolution, decorateStaticSolution, SOLUTIONS_DATA, type SolutionDetail } from '@/data/solutions';
+import { decorateSolution, type SolutionDetail } from '@/data/solutions';
 import { getActiveSolutions } from '@/services/solutions.service';
 import { Badge } from '@/components/ui/badge';
 import { getSolutionCardImage } from '@/components/solutions/SolutionCard';
@@ -28,12 +28,7 @@ export const SolutionRelatedSection = ({ solution }: SectionProps) => {
   });
 
   const activeSolutions = useMemo(() => {
-    const loaded = (Array.isArray(apiSolutions) ? apiSolutions : []).map(decorateSolution);
-    const loadedSlugs = new Set(loaded.map((s) => s.slug));
-    const fallbackList = Object.values(SOLUTIONS_DATA)
-      .map(decorateStaticSolution)
-      .filter((s) => !loadedSlugs.has(s.slug));
-    return [...loaded, ...fallbackList];
+    return (Array.isArray(apiSolutions) ? apiSolutions : []).map(decorateSolution);
   }, [apiSolutions]);
 
   const related = useMemo(() => {

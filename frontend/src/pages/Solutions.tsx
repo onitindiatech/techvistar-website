@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { AlertCircle, Layers, RotateCcw, Star } from 'lucide-react';
 import { getActiveSolutions } from '@/services/solutions.service';
 import { getPublicPagesConfig } from '@/services/pages.service';
-import { decorateSolution, decorateStaticSolution, SOLUTIONS_DATA, SolutionDetail } from '@/data/solutions';
+import { decorateSolution, SolutionDetail } from '@/data/solutions';
 import { IMAGE_MAP } from '@/data/services';
 import { mergePagesCmsConfig, DEFAULT_SOLUTIONS_LANDING_CMS } from '@/types/pagesCms';
 import { seoFromItem } from '@/lib/seoAdmin';
@@ -52,18 +52,10 @@ export const Solutions = () => {
   });
 
   const activeSolutions = useMemo((): SolutionListItem[] => {
-    const loaded = (Array.isArray(apiSolutions) ? apiSolutions : []).map((item: Record<string, unknown>) => ({
+    return (Array.isArray(apiSolutions) ? apiSolutions : []).map((item: Record<string, unknown>) => ({
       ...decorateSolution(item),
       featured: item.featured === true || item.featured === 'true',
     }));
-    const loadedSlugs = new Set(loaded.map((s) => s.slug));
-    const fallbackList = Object.values(SOLUTIONS_DATA)
-      .map((item) => ({
-        ...decorateStaticSolution(item),
-        featured: false,
-      }))
-      .filter((s) => !loadedSlugs.has(s.slug));
-    return [...loaded, ...fallbackList];
   }, [apiSolutions]);
 
   const categories = useMemo(

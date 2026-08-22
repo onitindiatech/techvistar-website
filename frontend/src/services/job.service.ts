@@ -1,6 +1,12 @@
 import { SeoMetadata } from '@/types/seo';
 import { adminFetch, getApiBaseUrl, publicFetch, readApiError } from '@/lib/api';
 
+export interface HiringProcessStep {
+  step?: number;
+  title: string;
+  description: string;
+}
+
 export interface Job extends SeoMetadata {
   _id: string;
   title: string;
@@ -14,6 +20,16 @@ export interface Job extends SeoMetadata {
   requirements: string[];
   responsibilities: string[];
   benefits: string[];
+
+  // Extended CMS fields
+  roleOverview?: string;
+  keyHighlights?: string[];
+  preferredQualifications?: string[];
+  skills?: string[];
+  techStack?: string[];
+  whatYouWillWorkOn?: string[];
+  hiringProcess?: HiringProcessStep[];
+
   displayOrder?: number;
   status: 'active' | 'closed' | 'draft';
   featured: boolean;

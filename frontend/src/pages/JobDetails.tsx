@@ -82,14 +82,26 @@ export const JobDetails = () => {
     teamImg ||
     'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800';
 
+  const heroOverview = job?.roleOverview?.trim() || (shortDesc && shortDesc !== job?.title ? shortDesc : '');
+  const heroHighlights = job?.keyHighlights?.length
+    ? job.keyHighlights
+    : (job?.responsibilities?.length ? job.responsibilities.slice(0, 4) : (job?.requirements?.length ? job.requirements.slice(0, 4) : []));
+  const heroSkills = job?.skills?.length
+    ? job.skills
+    : (job?.techStack?.length ? job.techStack : (job?.requirements || []).slice(0, 6));
+
   const navItems = useMemo(() => {
     if (!job) return [];
     return [
-      ...(shortDesc ? [{ id: 'summary', label: 'Summary' }] : []),
+      ...(shortDesc || job.roleOverview ? [{ id: 'summary', label: 'Summary' }] : []),
       ...(fullDesc ? [{ id: 'details', label: 'Details' }] : []),
-      ...(job.requirements?.length ? [{ id: 'requirements', label: 'Requirements' }] : []),
+      ...(job.whatYouWillWorkOn?.length ? [{ id: 'work-on', label: 'Work Focus' }] : []),
       ...(job.responsibilities?.length ? [{ id: 'responsibilities', label: 'Responsibilities' }] : []),
+      ...(job.requirements?.length ? [{ id: 'requirements', label: 'Requirements' }] : []),
+      ...(job.preferredQualifications?.length ? [{ id: 'preferred', label: 'Preferred' }] : []),
+      ...(job.techStack?.length ? [{ id: 'tech-stack', label: 'Tech Stack' }] : []),
       ...(job.benefits?.length ? [{ id: 'benefits', label: 'Benefits' }] : []),
+      ...(job.hiringProcess?.length ? [{ id: 'hiring-process', label: 'Hiring Process' }] : []),
       { id: 'team', label: 'Team' },
       { id: 'apply', label: 'Apply' },
     ];
@@ -211,7 +223,7 @@ export const JobDetails = () => {
                       </p>
                     )}
 
-                    <div className="flex flex-wrap gap-x-5 gap-y-2.5 pt-2 text-xs font-medium text-slate-700">
+                    <div className="flex flex-wrap gap-x-5 gap-y-2.5 pt-1 text-xs font-medium text-slate-700">
                       <span className="flex items-center gap-1.5">
                         <MapPin className="h-3.5 w-3.5 text-emerald-600" /> {job.location}
                       </span>
@@ -225,6 +237,51 @@ export const JobDetails = () => {
                         <DollarSign className="h-3.5 w-3.5 text-emerald-600" /> {job.salary}
                       </span>
                     </div>
+
+                    {/* Role Overview */}
+                    {heroOverview && (
+                      <div className="pt-2">
+                        <RichTextContent
+                          content={heroOverview}
+                          className="text-slate-600 !text-lg leading-relaxed [&_p]:!text-lg font-normal"
+                        />
+                      </div>
+                    )}
+
+                    {/* Key Highlights */}
+                    {heroHighlights.length > 0 && (
+                      <div className="space-y-3 pt-3 border-t border-slate-100/80">
+                        <h3 className="text-base md:text-lg font-bold font-display text-slate-900 leading-snug">
+                          Key Highlights
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
+                          {heroHighlights.map((highlight, idx) => (
+                            <div key={idx} className="flex gap-2.5 items-start text-base text-slate-600 font-normal leading-relaxed">
+                              <div className="h-4.5 w-4.5 rounded-full bg-emerald-50 flex items-center justify-center p-0.5 mt-1 shrink-0 border border-emerald-100">
+                                <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                              </div>
+                              <span>{highlight}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Core Competencies */}
+                    {heroSkills.length > 0 && (
+                      <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100/80">
+                        <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mr-1">Core Competencies:</span>
+                        {heroSkills.map((skill, idx) => (
+                          <Badge
+                            key={idx}
+                            variant="secondary"
+                            className="bg-emerald-50/80 text-emerald-800 border border-emerald-200/60 px-2.5 py-0.5 text-xs font-semibold rounded-md"
+                          >
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex items-center justify-center py-4 md:col-span-5 md:py-0">
@@ -304,28 +361,23 @@ export const JobDetails = () => {
                 </motion.section>
               )}
 
-              {job.requirements && job.requirements.length > 0 && (
+              {job.whatYouWillWorkOn && job.whatYouWillWorkOn.length > 0 && (
                 <motion.section
-                  id="requirements"
+                  id="work-on"
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.08 }}
+                  transition={{ duration: 0.4 }}
                   className={MODULE_SHELL}
                 >
-                  <h2 className="mb-4 font-display text-heading-sm text-slate-900">
-                    Requirements & Skills
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {job.requirements.map((req, index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="rounded-lg border-none bg-slate-100 px-3.5 py-1 text-[10px] font-bold uppercase text-slate-700"
-                      >
-                        {req}
-                      </Badge>
+                  <h2 className="mb-4 font-display text-heading-sm text-slate-900">What You'll Work On</h2>
+                  <ul className="space-y-3">
+                    {job.whatYouWillWorkOn.map((item, index) => (
+                      <li key={index} className="flex items-start gap-3 text-base font-medium leading-relaxed text-slate-600">
+                        <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                        <span>{item}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </motion.section>
               )}
 
@@ -354,6 +406,70 @@ export const JobDetails = () => {
                 </motion.section>
               )}
 
+              {job.requirements && job.requirements.length > 0 && (
+                <motion.section
+                  id="requirements"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.08 }}
+                  className={MODULE_SHELL}
+                >
+                  <h2 className="mb-4 font-display text-heading-sm text-slate-900">
+                    Requirements & Skills
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {job.requirements.map((req, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="rounded-lg border-none bg-slate-100 px-3.5 py-1 text-xs font-bold uppercase text-slate-700"
+                      >
+                        {req}
+                      </Badge>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
+
+              {job.preferredQualifications && job.preferredQualifications.length > 0 && (
+                <motion.section
+                  id="preferred"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className={MODULE_SHELL}
+                >
+                  <h2 className="mb-4 font-display text-heading-sm text-slate-900">Preferred Qualifications & Nice-to-Haves</h2>
+                  <ul className="space-y-3">
+                    {job.preferredQualifications.map((pref, index) => (
+                      <li key={index} className="flex items-start gap-3 text-base font-medium leading-relaxed text-slate-600">
+                        <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                        <span>{pref}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.section>
+              )}
+
+              {job.techStack && job.techStack.length > 0 && (
+                <motion.section
+                  id="tech-stack"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className={MODULE_SHELL}
+                >
+                  <h2 className="mb-4 font-display text-heading-sm text-slate-900">Technology Stack</h2>
+                  <div className="flex flex-wrap gap-2.5">
+                    {job.techStack.map((tech, index) => (
+                      <Badge key={index} variant="secondary" className="px-3.5 py-1 bg-emerald-50/80 text-emerald-800 border border-emerald-200/80 rounded-lg text-xs font-semibold">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
+
               {job.benefits && job.benefits.length > 0 && (
                 <motion.section
                   id="benefits"
@@ -375,6 +491,33 @@ export const JobDetails = () => {
                         <span className="text-base font-medium leading-snug text-slate-700">
                           {benefit}
                         </span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
+
+              {job.hiringProcess && job.hiringProcess.length > 0 && (
+                <motion.section
+                  id="hiring-process"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className={MODULE_SHELL}
+                >
+                  <h2 className="mb-6 font-display text-heading-sm text-slate-900">Our Hiring Process</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {job.hiringProcess.map((stepItem, index) => (
+                      <div key={index} className="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-slate-50/50">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#041a3d] text-white font-bold text-sm">
+                          {stepItem.step || index + 1}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-slate-900 text-sm leading-snug">{stepItem.title}</h3>
+                          {stepItem.description && (
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">{stepItem.description}</p>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>

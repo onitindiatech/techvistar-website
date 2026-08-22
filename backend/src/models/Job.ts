@@ -20,6 +20,20 @@ export interface IJob extends BaseDocument, ISeoFields {
   requirements: string[];
   responsibilities: string[];
   benefits: string[];
+
+  // Extended CMS Fields
+  roleOverview?: string;
+  keyHighlights?: string[];
+  preferredQualifications?: string[];
+  skills?: string[];
+  techStack?: string[];
+  whatYouWillWorkOn?: string[];
+  hiringProcess?: Array<{
+    step?: number;
+    title: string;
+    description: string;
+  }>;
+
   displayOrder: number;
   status: typeof VALIDATION.JOB_STATUSES[number];
   featured: boolean;
@@ -94,6 +108,41 @@ const jobSchema = new Schema<IJob>(
     },
     benefits: {
       type: [String],
+      default: [],
+    },
+    roleOverview: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    keyHighlights: {
+      type: [String],
+      default: [],
+    },
+    preferredQualifications: {
+      type: [String],
+      default: [],
+    },
+    skills: {
+      type: [String],
+      default: [],
+    },
+    techStack: {
+      type: [String],
+      default: [],
+    },
+    whatYouWillWorkOn: {
+      type: [String],
+      default: [],
+    },
+    hiringProcess: {
+      type: [
+        {
+          step: { type: Number },
+          title: { type: String, trim: true },
+          description: { type: String, trim: true },
+        },
+      ],
       default: [],
     },
     displayOrder: {

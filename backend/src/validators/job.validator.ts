@@ -19,6 +19,13 @@ interface JobInput extends SeoInput {
   requirements?: unknown;
   responsibilities?: unknown;
   benefits?: unknown;
+  roleOverview?: unknown;
+  keyHighlights?: unknown;
+  preferredQualifications?: unknown;
+  skills?: unknown;
+  techStack?: unknown;
+  whatYouWillWorkOn?: unknown;
+  hiringProcess?: unknown;
   displayOrder?: unknown;
   status?: unknown;
   featured?: unknown;
@@ -114,6 +121,59 @@ export function validateJobInput(input: JobInput, isUpdate = false): Record<stri
     }
   }
 
+  let parsedRoleOverview: string | undefined;
+  if (input.roleOverview !== undefined && input.roleOverview !== null) {
+    parsedRoleOverview = String(input.roleOverview).trim();
+  }
+
+  let parsedKeyHighlights: string[] | undefined;
+  if (input.keyHighlights !== undefined) {
+    if (Array.isArray(input.keyHighlights)) {
+      parsedKeyHighlights = input.keyHighlights.map((k) => String(k).trim()).filter(Boolean);
+    }
+  }
+
+  let parsedPreferredQualifications: string[] | undefined;
+  if (input.preferredQualifications !== undefined) {
+    if (Array.isArray(input.preferredQualifications)) {
+      parsedPreferredQualifications = input.preferredQualifications.map((p) => String(p).trim()).filter(Boolean);
+    }
+  }
+
+  let parsedSkills: string[] | undefined;
+  if (input.skills !== undefined) {
+    if (Array.isArray(input.skills)) {
+      parsedSkills = input.skills.map((s) => String(s).trim()).filter(Boolean);
+    }
+  }
+
+  let parsedTechStack: string[] | undefined;
+  if (input.techStack !== undefined) {
+    if (Array.isArray(input.techStack)) {
+      parsedTechStack = input.techStack.map((t) => String(t).trim()).filter(Boolean);
+    }
+  }
+
+  let parsedWhatYouWillWorkOn: string[] | undefined;
+  if (input.whatYouWillWorkOn !== undefined) {
+    if (Array.isArray(input.whatYouWillWorkOn)) {
+      parsedWhatYouWillWorkOn = input.whatYouWillWorkOn.map((w) => String(w).trim()).filter(Boolean);
+    }
+  }
+
+  let parsedHiringProcess: Array<{ step?: number; title: string; description: string }> | undefined;
+  if (input.hiringProcess !== undefined) {
+    if (Array.isArray(input.hiringProcess)) {
+      parsedHiringProcess = input.hiringProcess
+        .filter((item: any) => item && (item.title || item.description))
+        .map((item: any, idx: number) => ({
+          step: Number(item.step) || idx + 1,
+          title: String(item.title || '').trim(),
+          description: String(item.description || '').trim(),
+        }));
+    }
+  }
+
   if (input.status !== undefined && input.status !== null) {
     const statusStr = String(input.status).trim();
     if (!(VALIDATION.JOB_STATUSES as readonly string[]).includes(statusStr)) {
@@ -161,6 +221,13 @@ export function validateJobInput(input: JobInput, isUpdate = false): Record<stri
     if (parsedRequirements !== undefined) updatePayload.requirements = parsedRequirements;
     if (parsedResponsibilities !== undefined) updatePayload.responsibilities = parsedResponsibilities;
     if (parsedBenefits !== undefined) updatePayload.benefits = parsedBenefits;
+    if (parsedRoleOverview !== undefined) updatePayload.roleOverview = parsedRoleOverview;
+    if (parsedKeyHighlights !== undefined) updatePayload.keyHighlights = parsedKeyHighlights;
+    if (parsedPreferredQualifications !== undefined) updatePayload.preferredQualifications = parsedPreferredQualifications;
+    if (parsedSkills !== undefined) updatePayload.skills = parsedSkills;
+    if (parsedTechStack !== undefined) updatePayload.techStack = parsedTechStack;
+    if (parsedWhatYouWillWorkOn !== undefined) updatePayload.whatYouWillWorkOn = parsedWhatYouWillWorkOn;
+    if (parsedHiringProcess !== undefined) updatePayload.hiringProcess = parsedHiringProcess;
     if (input.status !== undefined && input.status !== null) {
       updatePayload.status = String(input.status).trim();
     }
@@ -185,6 +252,13 @@ export function validateJobInput(input: JobInput, isUpdate = false): Record<stri
     requirements: parsedRequirements ?? [],
     responsibilities: parsedResponsibilities ?? [],
     benefits: parsedBenefits ?? [],
+    roleOverview: parsedRoleOverview ?? '',
+    keyHighlights: parsedKeyHighlights ?? [],
+    preferredQualifications: parsedPreferredQualifications ?? [],
+    skills: parsedSkills ?? [],
+    techStack: parsedTechStack ?? [],
+    whatYouWillWorkOn: parsedWhatYouWillWorkOn ?? [],
+    hiringProcess: parsedHiringProcess ?? [],
     status: input.status ? String(input.status).trim() : 'draft',
     displayOrder: parsedDisplayOrder ?? 0,
     featured: input.featured === true || input.featured === 'true',

@@ -70,7 +70,7 @@ const Jobs = () => {
   const [status, setStatus] = useState<JobStatus>("draft");
   const [displayOrder, setDisplayOrder] = useState("0");
 
-  // Content Tab (Short & Full Description, Responsibilities, Requirements, Skills/Tags, Benefits)
+  // Content Tab (Short & Full Description, Responsibilities, Requirements, Skills/Tags, Benefits, Extended Fields)
   const [shortDescription, setShortDescription] = useState("");
   const [fullDescription, setFullDescription] = useState("");
   const [responsibilitiesText, setResponsibilitiesText] = useState("");
@@ -78,6 +78,12 @@ const Jobs = () => {
   const [benefitsText, setBenefitsText] = useState("");
   const [skillInput, setSkillInput] = useState("");
   const [skillsList, setSkillsList] = useState<string[]>([]);
+  const [roleOverview, setRoleOverview] = useState("");
+  const [keyHighlightsText, setKeyHighlightsText] = useState("");
+  const [preferredQualificationsText, setPreferredQualificationsText] = useState("");
+  const [techStackText, setTechStackText] = useState("");
+  const [whatYouWillWorkOnText, setWhatYouWillWorkOnText] = useState("");
+  const [hiringProcessText, setHiringProcessText] = useState("");
 
   // Media Tab
   const [bannerImage, setBannerImage] = useState("");
@@ -277,7 +283,8 @@ const Jobs = () => {
     return JSON.stringify({
       title, slug, department, location, employmentType, experience, salary, status, displayOrder,
       shortDescription, fullDescription, responsibilitiesText, requirementsText, benefitsText,
-      bannerImage, officeImage, teamImage, seo, skillsList
+      bannerImage, officeImage, teamImage, seo, skillsList,
+      roleOverview, keyHighlightsText, preferredQualificationsText, techStackText, whatYouWillWorkOnText, hiringProcessText
     });
   };
 
@@ -302,6 +309,12 @@ const Jobs = () => {
     setRequirementsText("");
     setBenefitsText("");
     setSkillsList(["React", "TypeScript", "Node.js"]);
+    setRoleOverview("");
+    setKeyHighlightsText("");
+    setPreferredQualificationsText("");
+    setTechStackText("");
+    setWhatYouWillWorkOnText("");
+    setHiringProcessText("");
     setBannerImage("");
     setOfficeImage("");
     setTeamImage("");
@@ -350,7 +363,17 @@ const Jobs = () => {
     setResponsibilitiesText((item.responsibilities || []).join("\n"));
     setRequirementsText((item.requirements || []).join("\n"));
     setBenefitsText((item.benefits || []).join("\n"));
-    setSkillsList(item.requirements || []);
+    setSkillsList(item.skills?.length ? item.skills : (item.requirements || []));
+    setRoleOverview(item.roleOverview || "");
+    setKeyHighlightsText((item.keyHighlights || []).join("\n"));
+    setPreferredQualificationsText((item.preferredQualifications || []).join("\n"));
+    setTechStackText((item.techStack || []).join("\n"));
+    setWhatYouWillWorkOnText((item.whatYouWillWorkOn || []).join("\n"));
+    setHiringProcessText(
+      (item.hiringProcess || [])
+        .map((hp: any) => `${hp.title}${hp.description ? ' | ' + hp.description : ''}`)
+        .join("\n")
+    );
     
     setSeo(seoFromItem(item));
     setStatus(item.status || "draft");
@@ -422,9 +445,23 @@ const Jobs = () => {
       experience,
       salary,
       description: combinedDescription,
-      requirements: skillsList,
+      requirements: requirementsText.split("\n").map(r => r.trim()).filter(Boolean).length ? requirementsText.split("\n").map(r => r.trim()).filter(Boolean) : skillsList,
       responsibilities: responsibilitiesText.split("\n").map(r => r.trim()).filter(Boolean),
       benefits: benefitsText.split("\n").map(b => b.trim()).filter(Boolean),
+      roleOverview: roleOverview.trim(),
+      keyHighlights: keyHighlightsText.split("\n").map(k => k.trim()).filter(Boolean),
+      preferredQualifications: preferredQualificationsText.split("\n").map(p => p.trim()).filter(Boolean),
+      skills: skillsList,
+      techStack: techStackText.split("\n").map(t => t.trim()).filter(Boolean),
+      whatYouWillWorkOn: whatYouWillWorkOnText.split("\n").map(w => w.trim()).filter(Boolean),
+      hiringProcess: hiringProcessText.split("\n").map((line, idx) => {
+        const parts = line.split("|");
+        return {
+          step: idx + 1,
+          title: (parts[0] || "").trim(),
+          description: (parts[1] || "").trim(),
+        };
+      }).filter(p => p.title),
       displayOrder: Number(displayOrder) || 0,
       status,
       featured: false,
@@ -953,6 +990,26 @@ const Jobs = () => {
                       {validationErrors.shortDescription && <p className="text-[10px] font-semibold text-red-500">{validationErrors.shortDescription}</p>}
                     </div>
 
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Role Overview (Hero Summary Paragraph)</label>
+                      <textarea
+                        className="w-full min-h-[90px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white font-sans leading-relaxed"
+                        value={roleOverview}
+                        onChange={(e) => setRoleOverview(e.target.value)}
+                        placeholder="Detailed role overview shown in the hero section..."
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Key Highlights (Hero Bullet Highlights - One per line)</label>
+                      <textarea
+                        className="w-full min-h-[90px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white leading-relaxed"
+                        value={keyHighlightsText}
+                        onChange={(e) => setKeyHighlightsText(e.target.value)}
+                        placeholder="e.g. Lead architecture reviews&#10;Optimize core pipeline performance"
+                      />
+                    </div>
+
                     <RichTextEditor
                       label="Full Description (Role Details)"
                       value={fullDescription}
@@ -982,6 +1039,26 @@ const Jobs = () => {
                       />
                     </div>
 
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Preferred Qualifications / Nice to Have (One per line)</label>
+                      <textarea
+                        className="w-full min-h-[90px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white leading-relaxed"
+                        value={preferredQualificationsText}
+                        onChange={(e) => setPreferredQualificationsText(e.target.value)}
+                        placeholder="e.g. Experience with GraphQL&#10;Familiarity with AWS Lambda"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">What You'll Work On (One per line)</label>
+                      <textarea
+                        className="w-full min-h-[90px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white leading-relaxed"
+                        value={whatYouWillWorkOnText}
+                        onChange={(e) => setWhatYouWillWorkOnText(e.target.value)}
+                        placeholder="e.g. Architecting real-time streaming engines&#10;Building high-throughput microservices"
+                      />
+                    </div>
+
                     <div className="space-y-2 p-4 bg-slate-50 rounded-xl border border-slate-200/50">
                       <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Skills Tags (Press Enter after typing)</label>
                       <div className="flex flex-wrap gap-2 mb-2 p-2 bg-white rounded-lg border border-slate-200 min-h-[44px]">
@@ -1003,12 +1080,32 @@ const Jobs = () => {
                     </div>
 
                     <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Technology Stack (One per line)</label>
+                      <textarea
+                        className="w-full min-h-[80px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white leading-relaxed font-mono text-xs"
+                        value={techStackText}
+                        onChange={(e) => setTechStackText(e.target.value)}
+                        placeholder="e.g. React&#10;TypeScript&#10;Node.js&#10;PostgreSQL"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
                       <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Role Perks & Benefits (One per line)</label>
                       <textarea
                         className="w-full min-h-[100px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white leading-relaxed"
                         value={benefitsText}
                         onChange={(e) => setBenefitsText(e.target.value)}
                         placeholder="e.g. Remote work stipend&#10;Flexible PTO"
+                      />
+                    </div>
+
+                    <div className="space-y-2 p-4 bg-slate-50 rounded-xl border border-slate-200/50">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Hiring Process Steps (Format: Title | Description - One per line)</label>
+                      <textarea
+                        className="w-full min-h-[100px] p-3 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white leading-relaxed font-mono text-xs"
+                        value={hiringProcessText}
+                        onChange={(e) => setHiringProcessText(e.target.value)}
+                        placeholder={"1. Application Review | Initial resume and portfolio screening\n2. Technical Interview | 45-min deep dive with engineering lead\n3. Architecture Challenge | Practical system design exercise\n4. Final Leadership Sync | Culture alignment & offer discussion"}
                       />
                     </div>
                   </div>

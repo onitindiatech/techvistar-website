@@ -106,7 +106,7 @@ const Services = () => {
 
         {/* Category filter */}
         <section className="border-b border-slate-200 bg-white py-8">
-          <div className="container mx-auto max-w-7xl px-4 md:px-6">
+          <div className="container mx-auto max-w-7xl px-6 sm:px-12 md:px-14 lg:px-16">
             <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-2 text-emerald-600">
                 <Layers className="h-4 w-4" />
@@ -151,7 +151,7 @@ const Services = () => {
         <>
             {featuredServices.length > 0 && (
               <section id="featured-services" className="border-b border-slate-100 bg-white py-16 md:py-24">
-                <div className="container mx-auto max-w-7xl space-y-10 md:space-y-12 px-4 md:px-6">
+                <div className="container mx-auto max-w-7xl space-y-10 md:space-y-12 px-6 sm:px-12 md:px-14 lg:px-16">
                   <div className="max-w-2xl space-y-3">
                     <div className="flex items-center gap-2 text-emerald-600">
                       <Star className="h-4 w-4 fill-emerald-500 text-emerald-500" />
@@ -184,7 +184,7 @@ const Services = () => {
             )}
 
             <section id="all-services" className="bg-slate-50 py-16 md:py-24">
-              <div className="container mx-auto max-w-7xl space-y-10 md:space-y-12 px-4 md:px-6">
+              <div className="container mx-auto max-w-7xl space-y-10 md:space-y-12 px-6 sm:px-12 md:px-14 lg:px-16">
                 <div className="max-w-2xl space-y-3">
                   <div className="flex items-center gap-2 text-emerald-600">
                     <Layers className="h-4 w-4" />

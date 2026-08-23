@@ -48,7 +48,7 @@ export const ServicesLandingHero = ({
         }}
       />
 
-      <div className="container relative z-10 mx-auto max-w-5xl px-4 md:px-6 text-left">
+      <div className="container relative z-10 mx-auto max-w-7xl px-6 sm:px-12 md:px-14 lg:px-16 text-left">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}

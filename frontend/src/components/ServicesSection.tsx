@@ -146,7 +146,7 @@ export const ServicesSection = () => {
                       <img
                         src={coverSrc}
                         alt={service.title}
-                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
+                        className="h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-[1.06]"
                         loading="lazy"
                         decoding="async"
                       />

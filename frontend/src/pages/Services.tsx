@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
 import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
-import { Service, decorateService, IMAGE_MAP, SERVICES } from '@/data/services';
+import { Service, decorateService, IMAGE_MAP } from '@/data/services';
 import { PageSeo } from '@/components/common/PageSeo';
 import { buildCanonical } from '@/lib/seoResolve';
 import { mergeServicesCmsConfig } from '@/types/servicesCms';
@@ -48,12 +48,10 @@ const Services = () => {
   });
 
   const activeServices = useMemo(() => {
-    const loaded = (Array.isArray(apiServices) ? apiServices : [])
+    return (Array.isArray(apiServices) ? apiServices : [])
       .map((item: unknown) => decorateService(item))
-      .filter((s): s is Service => Boolean(s));
-    const apiSlugs = new Set(loaded.map((s) => s.slug));
-    const fallbackList = SERVICES.filter((s) => !apiSlugs.has(s.slug));
-    return [...loaded, ...fallbackList].sort((a, b) => a.order - b.order);
+      .filter((s): s is Service => Boolean(s))
+      .sort((a, b) => a.order - b.order);
   }, [apiServices]);
 
   const categories = useMemo(

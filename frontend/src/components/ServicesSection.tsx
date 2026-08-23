@@ -8,7 +8,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
-import { decorateService, getServiceCardImage, SERVICES, type Service } from '@/data/services';
+import { decorateService, getServiceCardImage, type Service } from '@/data/services';
 import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
 import { mergeServicesCmsConfig } from '@/types/servicesCms';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
@@ -87,10 +87,10 @@ export const ServicesSection = () => {
   });
 
   const activeServices = useMemo(() => {
-    const loaded = (apiServices || []).map(decorateService).filter((s): s is Service => Boolean(s));
-    const apiSlugs = new Set(loaded.map((s) => s.slug));
-    const fallbackList = SERVICES.filter((s) => !apiSlugs.has(s.slug));
-    return [...loaded, ...fallbackList].sort((a, b) => a.order - b.order);
+    return (apiServices || [])
+      .map(decorateService)
+      .filter((s): s is Service => Boolean(s))
+      .sort((a, b) => a.order - b.order);
   }, [apiServices]);
 
   const services = useMemo(() => {

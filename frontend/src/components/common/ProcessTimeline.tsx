@@ -1,5 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, useInView } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import { useRef } from 'react';
 
 export interface TimelineStep {
   step?: number | string;
@@ -23,6 +24,8 @@ export const ProcessTimeline = ({
   labelPrefix = 'Phase',
 }: ProcessTimelineProps) => {
   const prefersReducedMotion = useReducedMotion();
+  const listRef = useRef<HTMLOListElement>(null);
+  const isInView = useInView(listRef, { once: true, margin: '-40px' });
 
   if (!steps || steps.length === 0) return null;
 
@@ -80,10 +83,10 @@ export const ProcessTimeline = ({
         ) : null}
 
         <motion.ol
+          ref={listRef}
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
+          animate={isInView ? 'visible' : 'hidden'}
           className="m-0 flex list-none flex-col gap-0 p-0"
         >
           {steps.map((step, idx) => {

@@ -127,7 +127,7 @@ export const ContactSection = () => {
           transition={{ duration: 0.45 }}
           className="text-center max-w-2xl mx-auto mb-8"
         >
-          <h2 id="contact-heading" className="font-display text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-900 mt-4 md:mt-5 tracking-tight">
+          <h2 id="contact-heading" className="font-sans text-heading-lg md:text-heading-xl lg:text-display-lg font-extrabold text-slate-900 mt-4 md:mt-5 tracking-tight">
             {contactCta.heading}
             {contactCta.highlight ? (
               <>

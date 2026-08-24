@@ -54,7 +54,7 @@ export const SectionHeader = ({
       <h2
         id={headingId}
         className={cn(
-          'mb-5 font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight md:whitespace-nowrap',
+          'mb-5 font-sans text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight md:whitespace-nowrap',
           light ? 'text-slate-950' : 'text-white'
         )}
       >

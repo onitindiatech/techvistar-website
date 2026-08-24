@@ -9,33 +9,31 @@ import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
 import { resolveCmsMediaSrc } from '@/components/admin/common/CmsImageField';
 
-// Import all project work images for the dome gallery
-import cropHealth from '@/assets/crop_health_analysis.png';
-import aiTranslator from '@/assets/ai_translator.png';
-import aiTranslatorBatches from '@/assets/ai_translator_batches.png';
-import clinicalRisk from '@/assets/clinical_risk_scoring.png';
-import resumeReview from '@/assets/resume_review_assistant.png';
-import sentimentNlp from '@/assets/sentiment_nlp_dashboard.png';
-import sustainability from '@/assets/sustainability_dashboard.png';
-import mobilityRouting from '@/assets/mobility_routing_dashboard.png';
-import portfolioMockup from '@/assets/portfolio_laptop_mockup.jpg';
-
-const WHATSAPP_CHAT_IMAGES = [
-  { src: cropHealth, alt: 'Crop Health Analysis Dashboard' },
-  { src: aiTranslator, alt: 'AI Translator Application' },
-  { src: aiTranslatorBatches, alt: 'AI Translator Batch Processing' },
-  { src: clinicalRisk, alt: 'Clinical Risk Scoring System' },
-  { src: resumeReview, alt: 'Resume Review Assistant' },
-  { src: sentimentNlp, alt: 'Sentiment NLP Dashboard' },
-  { src: sustainability, alt: 'Sustainability Dashboard' },
-  { src: mobilityRouting, alt: 'Mobility Routing Dashboard' },
-  { src: portfolioMockup, alt: 'Portfolio Showcase' },
-];
+import { useQuery } from '@tanstack/react-query';
+import { getActiveProjects } from '@/services/portfolio.service';
+import { decorateProject, PROJECTS } from '@/data/projects';
 
 export const DomeGallerySection = () => {
   const { portfolio } = useHomeCms();
   const { ref, isInView } = useAnimatedSection();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
+
+  const { data: apiProjects } = useQuery({
+    queryKey: ['activeProjects'],
+    queryFn: getActiveProjects,
+    staleTime: 300000,
+  });
+
+  const domeImages = useMemo(() => {
+    const loaded = (Array.isArray(apiProjects) && apiProjects.length > 0)
+      ? apiProjects.map(decorateProject).filter((p): p is ReturnType<typeof decorateProject> => Boolean(p && p.thumbnail))
+      : PROJECTS.map(decorateProject);
+
+    return loaded.map((project) => ({
+      src: project.thumbnail,
+      alt: project.title,
+    }));
+  }, [apiProjects]);
 
   const features = useMemo(
     () => (portfolio.features?.length ? portfolio.features : []).filter(Boolean),
@@ -69,20 +67,20 @@ export const DomeGallerySection = () => {
   // Keyboard navigation and escape key closing
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (activeIdx === null) return;
+      if (activeIdx === null || domeImages.length === 0) return;
       
       if (e.key === 'Escape') {
         setActiveIdx(null);
       } else if (e.key === 'ArrowRight') {
-        setActiveIdx((prev) => (prev === null ? null : (prev + 1) % WHATSAPP_CHAT_IMAGES.length));
+        setActiveIdx((prev) => (prev === null ? null : (prev + 1) % domeImages.length));
       } else if (e.key === 'ArrowLeft') {
-        setActiveIdx((prev) => (prev === null ? null : (prev - 1 + WHATSAPP_CHAT_IMAGES.length) % WHATSAPP_CHAT_IMAGES.length));
+        setActiveIdx((prev) => (prev === null ? null : (prev - 1 + domeImages.length) % domeImages.length));
       }
     };
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIdx]);
+  }, [activeIdx, domeImages.length]);
 
   return (
     <SiteSection 
@@ -202,7 +200,7 @@ export const DomeGallerySection = () => {
             <div className="w-full h-full max-w-[550px] lg:translate-x-8 relative">
               {portfolio.globeEnabled ? (
                 <DomeGallery
-                  images={WHATSAPP_CHAT_IMAGES}
+                  images={domeImages}
                   overlayBlurColor="transparent"
                   grayscale={false}
                   fit={0.42}
@@ -225,7 +223,7 @@ export const DomeGallerySection = () => {
 
       {/* Lightbox / Gallery Modal */}
       <AnimatePresence>
-        {activeIdx !== null && (
+        {activeIdx !== null && domeImages[activeIdx] && (
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             {/* Backdrop with dark blur */}
             <motion.div 
@@ -248,7 +246,7 @@ export const DomeGallerySection = () => {
               <div className="w-full flex justify-between items-center px-4 py-2 text-white pointer-events-auto select-none max-w-3xl mb-2">
                 {/* Counter */}
                 <div className="px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/10 text-xs font-semibold uppercase tracking-wider">
-                  {activeIdx + 1} / {WHATSAPP_CHAT_IMAGES.length}
+                  {activeIdx + 1} / {domeImages.length}
                 </div>
                 
                 {/* Close Button */}
@@ -268,7 +266,7 @@ export const DomeGallerySection = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setActiveIdx((prev) => (prev === null ? null : (prev - 1 + WHATSAPP_CHAT_IMAGES.length) % WHATSAPP_CHAT_IMAGES.length));
+                    setActiveIdx((prev) => (prev === null ? null : (prev - 1 + domeImages.length) % domeImages.length));
                   }}
                   className="absolute left-[-60px] hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-xl"
                   aria-label="Previous Project"
@@ -280,8 +278,8 @@ export const DomeGallerySection = () => {
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-[0_24px_50px_rgba(0,0,0,0.5)] aspect-[4/3] w-full max-h-[65vh] flex items-center justify-center select-none">
                   <motion.img 
                     key={activeIdx}
-                    src={WHATSAPP_CHAT_IMAGES[activeIdx].src}
-                    alt={WHATSAPP_CHAT_IMAGES[activeIdx].alt}
+                    src={domeImages[activeIdx].src}
+                    alt={domeImages[activeIdx].alt}
                     className="w-full h-full object-contain pointer-events-none"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -294,7 +292,7 @@ export const DomeGallerySection = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setActiveIdx((prev) => (prev === null ? null : (prev - 1 + WHATSAPP_CHAT_IMAGES.length) % WHATSAPP_CHAT_IMAGES.length));
+                        setActiveIdx((prev) => (prev === null ? null : (prev - 1 + domeImages.length) % domeImages.length));
                       }}
                       className="w-9.5 h-9.5 rounded-full bg-black/45 border border-white/15 flex items-center justify-center text-white pointer-events-auto cursor-pointer"
                     >
@@ -305,7 +303,7 @@ export const DomeGallerySection = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setActiveIdx((prev) => (prev === null ? null : (prev + 1) % WHATSAPP_CHAT_IMAGES.length));
+                        setActiveIdx((prev) => (prev === null ? null : (prev + 1) % domeImages.length));
                       }}
                       className="w-9.5 h-9.5 rounded-full bg-black/45 border border-white/15 flex items-center justify-center text-white pointer-events-auto cursor-pointer"
                     >
@@ -318,7 +316,7 @@ export const DomeGallerySection = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setActiveIdx((prev) => (prev === null ? null : (prev + 1) % WHATSAPP_CHAT_IMAGES.length));
+                    setActiveIdx((prev) => (prev === null ? null : (prev + 1) % domeImages.length));
                   }}
                   className="absolute right-[-60px] hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-xl"
                   aria-label="Next Project"
@@ -329,7 +327,7 @@ export const DomeGallerySection = () => {
 
               {/* Caption Description Text */}
               <div className="w-full max-w-3xl text-center text-white/95 mt-4 px-4 font-sans text-sm sm:text-base font-semibold drop-shadow-md select-text pointer-events-auto">
-                {WHATSAPP_CHAT_IMAGES[activeIdx].alt}
+                {domeImages[activeIdx].alt}
               </div>
 
             </motion.div>

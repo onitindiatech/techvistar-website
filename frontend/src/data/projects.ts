@@ -459,9 +459,9 @@ export const PROJECTS: readonly Project[] = [
 ] as const;
 
 export const SECTION_PROJECTS = {
-  tag: 'Case highlights',
-  title: 'Representative work',
-  highlight: 'across stacks',
+  tag: 'OUR WORK',
+  title: 'THE BRANDS BEHIND OUR WORK.',
+  highlight: '',
   description:
-    'Samples span routing, NLP/ML, finance, and internal tooling—illustrative of how we scope, integrate, and hand over production-minded software. Details anonymized where required.',
+    'Representative work and case studies of ambitious businesses scaling with our brand, digital experience, and engineering solutions.',
 } as const;

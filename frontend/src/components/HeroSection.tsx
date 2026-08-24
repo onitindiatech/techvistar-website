@@ -299,7 +299,7 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
                 style={{ transformStyle: 'preserve-3d' }}
                 aria-label={heroHeadlineLabel}
                 className={cn(
-                  'hero-headline font-display font-extrabold text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)]',
+                  'hero-headline font-sans font-extrabold text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)]',
                   'w-full min-w-0 flex flex-col items-start gap-0',
                   'text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.08]',
                   'tracking-[-0.02em] md:tracking-[-0.028em]'

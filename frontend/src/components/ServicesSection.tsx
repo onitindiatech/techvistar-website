@@ -113,7 +113,7 @@ export const ServicesSection = () => {
         <SectionHeader
           tag={sectionCopy.tag}
           title={homeFeatured.heading?.trim() || sectionCopy.title}
-          highlight={sectionCopy.highlight}
+          highlight={homeFeatured.heading?.trim() ? '' : sectionCopy.highlight}
           description={homeFeatured.subtitle?.trim() || sectionCopy.description}
           isInView={isInView}
           headingId="services-heading"

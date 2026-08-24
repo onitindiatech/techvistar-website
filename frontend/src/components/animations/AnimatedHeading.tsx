@@ -61,9 +61,11 @@ export const AnimatedHeading = ({
     >
       {words.map((word, idx) => {
         const cleanWord = word.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '');
-        const isHighlighted = highlightWords.some(hw => 
-          cleanWord.toLowerCase() === hw.toLowerCase() || 
-          word.toLowerCase().includes(hw.toLowerCase())
+        const isHighlighted = highlightWords.some(hw =>
+          hw.length > 0 && (
+            cleanWord.toLowerCase() === hw.toLowerCase() ||
+            word.toLowerCase().includes(hw.toLowerCase())
+          )
         );
 
         return (

@@ -99,7 +99,7 @@ export const DEFAULT_SERVICES_CMS_CONFIG: ServicesCmsConfig = {
   homeSection: {
     tag: 'Our services',
     title: 'Productized growth',
-    highlight: 'you can scope and measure',
+    highlight: '',
     description:
       'Eighteen core service verticals—from custom software engineering to digital marketing and AI integrations—each designed with transparent processes, technologies, and outcomes.',
     viewAllTitle: 'View All Services',

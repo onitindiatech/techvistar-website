@@ -160,10 +160,10 @@ const pagesCmsConfigSchema = new Schema<IPagesCmsConfig>(
     home: {
       hero: {
         badge: { type: String, trim: true, default: '' },
-        headlineLine1: { type: String, trim: true, default: 'Technology-first' },
-        headlineAccent: { type: String, trim: true, default: 'Growth' },
-        headlineLine2: { type: String, trim: true, default: 'Without the chaos' },
-        tagline: { type: String, trim: true, default: '' },
+        headlineLine1: { type: String, trim: true, default: 'BECOME THE NAME THEY REMEMBER.' },
+        headlineAccent: { type: String, trim: true, default: '' },
+        headlineLine2: { type: String, trim: true, default: '' },
+        tagline: { type: String, trim: true, default: 'The brand & venture scaling partner for ambitious businesses.' },
         ctaPrimary: { type: String, trim: true, default: 'Get in touch' },
         ctaSecondary: { type: String, trim: true, default: 'View services' },
         ctaPrimaryLink: { type: String, trim: true, default: '/#services' },

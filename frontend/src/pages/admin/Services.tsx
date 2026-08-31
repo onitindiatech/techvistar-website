@@ -5,7 +5,8 @@ import { PageHeader } from "@/components/admin/common/PageHeader";
 import { EmptyState } from "@/components/admin/common/EmptyState";
 import { 
   getAllServices, createService, updateService, deleteService,
-  restoreService, permanentlyDeleteService, bulkDeleteServices, bulkRestoreServices, bulkUpdateStatus
+  restoreService, permanentlyDeleteService, bulkDeleteServices, bulkRestoreServices, bulkUpdateStatus,
+  getServiceCategories
 } from "@/services/services.service";
 import { useToast } from "@/hooks/use-toast";
 import { resolveLucideIcon } from "@/lib/resolveLucideIcon";
@@ -93,7 +94,7 @@ const Services = () => {
   const [shortDescription, setShortDescription] = useState("");
   const [fullDescription, setFullDescription] = useState("");
   const [icon, setIcon] = useState("Wrench");
-  const [category, setCategory] = useState("Development");
+  const [category, setCategory] = useState("");
   const [overview, setOverview] = useState("");
   const [status, setStatus] = useState<"draft" | "active">("draft");
   const [displayOrder, setDisplayOrder] = useState("0");
@@ -149,6 +150,13 @@ const Services = () => {
   // Original state (for dirty checks)
   const [originalDataStr, setOriginalDataStr] = useState("");
 
+  // Fetch available service categories from backend (Brand / Growth / Systems / Digital)
+  const { data: serviceCategories } = useQuery<string[]>({
+    queryKey: ["serviceCategories"],
+    queryFn: getServiceCategories,
+    staleTime: 5 * 60 * 1000, // categories rarely change — cache for 5 minutes
+  });
+
   // Debounced search logic (300ms)
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -157,6 +165,14 @@ const Services = () => {
     }, 300);
     return () => clearTimeout(handler);
   }, [searchTerm]);
+
+  // Pre-select the first category once categories load (only when field is blank)
+  useEffect(() => {
+    if (serviceCategories && serviceCategories.length > 0 && !category) {
+      setCategory(serviceCategories[0]);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serviceCategories]);
 
   // Fetch Services via React Query using backend pagination & advanced filters
   const { data: apiResponse, isLoading, isError, error } = useQuery({
@@ -432,7 +448,7 @@ const Services = () => {
     setShortDescription("");
     setFullDescription("");
     setIcon("Wrench");
-    setCategory("Development");
+    setCategory(serviceCategories?.[0] ?? "");
     setOverview("");
     setStatus("draft");
     setDisplayOrder("0");
@@ -458,7 +474,7 @@ const Services = () => {
     // Set baseline state
     setTimeout(() => {
       setOriginalDataStr(JSON.stringify({
-        title: "", slug: "", shortDescription: "", fullDescription: "", icon: "Wrench", category: "Development",
+        title: "", slug: "", shortDescription: "", fullDescription: "", icon: "Wrench", category: serviceCategories?.[0] ?? "",
         overview: "", status: "draft", displayOrder: "0", coverImage: "", thumbnail: "", seoTitle: "", seoDescription: "",
         cta: "", featured: false, dashboardImage: "", features: [], technologies: [], benefits: [], industries: [], offerings: [],
         processSteps: [], statsList: [], extendedCms: EMPTY_EXTENDED_CMS
@@ -476,7 +492,7 @@ const Services = () => {
     setShortDescription(item.shortDescription || "");
     setFullDescription(item.fullDescription || "");
     setIcon(item.icon || "Wrench");
-    setCategory(item.category || "Development");
+    setCategory(item.category || serviceCategories?.[0] || "");
     setOverview(item.overview || "");
     setStatus(item.status || "draft");
     setDisplayOrder(String(item.displayOrder || 0));
@@ -512,7 +528,7 @@ const Services = () => {
     setTimeout(() => {
       setOriginalDataStr(JSON.stringify({
         title: item.title || "", slug: item.slug || "", shortDescription: item.shortDescription || "",
-        fullDescription: item.fullDescription || "", icon: item.icon || "Wrench", category: item.category || "Development",
+        fullDescription: item.fullDescription || "", icon: item.icon || "Wrench", category: item.category || serviceCategories?.[0] || "",
         overview: item.overview || "", status: item.status || "draft", displayOrder: String(item.displayOrder || 0),
         coverImage: item.coverImage || "", thumbnail: item.thumbnail || "", seoTitle: item.seoTitle || "",
         seoDescription: item.seoDescription || "", cta: item.cta || "", featured: item.featured || false,
@@ -1325,13 +1341,22 @@ const Services = () => {
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="space-y-2">
                           <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Category *</label>
-                          <Input 
-                            required 
-                            value={category} 
-                            onChange={(e) => setCategory(e.target.value)} 
-                            placeholder="e.g. Development" 
-                            className={`h-10 rounded-lg border-slate-200 ${validationErrors.category ? "border-red-500 focus-visible:ring-red-450" : ""}`} 
-                          />
+                          <select
+                            required
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className={`w-full h-10 px-3 rounded-lg border bg-white text-sm font-semibold focus-visible:outline-none focus:ring-2 focus:ring-emerald-500/30 ${
+                              validationErrors.category ? "border-red-500" : "border-slate-200"
+                            }`}
+                          >
+                            {!serviceCategories || serviceCategories.length === 0 ? (
+                              <option value="" disabled>Loading categories...</option>
+                            ) : (
+                              serviceCategories.map((cat) => (
+                                <option key={cat} value={cat}>{cat}</option>
+                              ))
+                            )}
+                          </select>
                           {validationErrors.category && (
                             <p className="text-[10px] text-red-500 font-bold uppercase tracking-wider">{validationErrors.category}</p>
                           )}
@@ -1657,6 +1682,11 @@ const Services = () => {
                     onChange={(patch) => setExtendedCms((prev) => ({ ...prev, ...patch }))}
                     allServiceOptions={allServiceOptions}
                     allIndustryOptions={allIndustryOptions}
+                    offerings={offerings}
+                    offeringInput={offeringInput}
+                    onOfferingInputChange={setOfferingInput}
+                    onAddOffering={(val) => addTag("off", val)}
+                    onRemoveOffering={(idx) => removeTag("off", idx)}
                   />
                 )}
 

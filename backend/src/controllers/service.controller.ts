@@ -10,6 +10,30 @@ import { ApiResponse } from '@/utils/ApiResponse';
 import { HTTP_STATUS } from '@/constants';
 
 /**
+ * The 4 service pillar categories used to group services in the navbar mega-menu.
+ * Stored here as the single backend source of truth — the admin dropdown fetches
+ * this list dynamically so no category name is hardcoded in the frontend form.
+ */
+export const SERVICE_PILLAR_CATEGORIES = ['Brand', 'Growth', 'Systems', 'Digital'] as const;
+
+/**
+ * GET /api/services/categories
+ * Returns the list of available service categories.
+ * Public — no auth required (used by admin form on page load).
+ */
+export async function getServiceCategories(
+  _req: Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    ApiResponse.success(res, [...SERVICE_PILLAR_CATEGORIES], 'Service categories fetched successfully');
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
  * GET /api/services
  * Returns all active services ordered by displayOrder.
  */

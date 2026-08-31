@@ -5,8 +5,10 @@ import { PageHeader } from "@/components/admin/common/PageHeader";
 import { EmptyState } from "@/components/admin/common/EmptyState";
 import {
   getAllSolutions, createSolution, updateSolution, deleteSolution,
-  restoreSolution, permanentlyDeleteSolution, bulkDeleteSolutions, bulkRestoreSolutions, bulkUpdateStatus
+  restoreSolution, permanentlyDeleteSolution, bulkDeleteSolutions, bulkRestoreSolutions, bulkUpdateStatus,
+  getSolutionCategories
 } from "@/services/solutions.service";
+import { SOLUTION_CATEGORIES } from "@/data/solutions";
 import { useToast } from "@/hooks/use-toast";
 import { resolveLucideIcon } from "@/lib/resolveLucideIcon";
 import {
@@ -34,7 +36,8 @@ import {
   type SolutionExtendedCmsState,
 } from "@/components/admin/solutions/SolutionExtendedCmsFields";
 
-const SOLUTION_CATEGORIES = ["Business Solutions", "AI Solutions", "Digital Solutions"];
+// Default fallback solution categories
+const DEFAULT_SOLUTION_CATEGORIES: string[] = [...SOLUTION_CATEGORIES];
 
 type TabName =
   | "general"
@@ -93,7 +96,7 @@ const Solutions = () => {
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [subtitle, setSubtitle] = useState("");
   const [icon, setIcon] = useState("Shapes");
-  const [category, setCategory] = useState(SOLUTION_CATEGORIES[0]);
+  const [category, setCategory] = useState(DEFAULT_SOLUTION_CATEGORIES[0]);
   const [status, setStatus] = useState<"draft" | "active">("active");
   const [displayOrder, setDisplayOrder] = useState("0");
   const [featured, setFeatured] = useState(false);
@@ -125,6 +128,17 @@ const Solutions = () => {
   // Validation
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [originalDataStr, setOriginalDataStr] = useState("");
+
+  // Fetch available solution categories from backend (Business / AI / Digital / Growth)
+  const { data: fetchedCategories } = useQuery<string[]>({
+    queryKey: ["solutionCategories"],
+    queryFn: getSolutionCategories,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const categoriesList = fetchedCategories && fetchedCategories.length > 0
+    ? fetchedCategories
+    : DEFAULT_SOLUTION_CATEGORIES;
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -431,7 +445,7 @@ const Solutions = () => {
     setIsSlugManual(false);
     setSubtitle("");
     setIcon("Shapes");
-    setCategory(SOLUTION_CATEGORIES[0]);
+    setCategory(categoriesList[0]);
     setStatus("active");
     setDisplayOrder("0");
     setFeatured(false);
@@ -474,7 +488,7 @@ const Solutions = () => {
     setIsSlugManual(true);
     setSubtitle(item.subtitle || "");
     setIcon(item.icon || "Shapes");
-    setCategory(item.category || SOLUTION_CATEGORIES[0]);
+    setCategory(item.category || categoriesList[0]);
     setStatus(item.status || "active");
     setDisplayOrder(String(item.displayOrder || 0));
     setFeatured(item.featured || false);
@@ -682,7 +696,7 @@ const Solutions = () => {
                 className="h-8 px-2.5 rounded-lg border border-slate-200 text-xs font-semibold bg-white focus:outline-none"
               >
                 <option value="all">All Categories</option>
-                {SOLUTION_CATEGORIES.map((cat) => (
+                {categoriesList.map((cat) => (
                   <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
@@ -1078,7 +1092,7 @@ const Solutions = () => {
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
                         >
-                          {SOLUTION_CATEGORIES.map((cat) => (
+                          {categoriesList.map((cat) => (
                             <option key={cat} value={cat}>{cat}</option>
                           ))}
                         </select>

@@ -7,6 +7,7 @@ import { Router } from 'express';
 import {
   getPublicSolutions,
   getPublicSolutionBySlug,
+  getSolutionCategories,
   adminCreateSolution,
   adminUpdateSolution,
   adminDeleteSolution,
@@ -36,6 +37,7 @@ router.put('/admin/:id', authMiddleware, adminUpdateSolution);
 router.delete('/admin/:id', authMiddleware, adminDeleteSolution);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
+router.get('/categories', publicReadLimiter, getSolutionCategories);
 router.get('/', publicReadLimiter, publicCmsCache, getPublicSolutions);
 router.get('/:slug', publicReadLimiter, publicCmsCache, getPublicSolutionBySlug);
 

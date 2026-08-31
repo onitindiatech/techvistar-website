@@ -18,6 +18,18 @@ interface QueryParams {
 }
 
 /**
+ * Fetches available solution categories from the backend.
+ */
+export async function getSolutionCategories(): Promise<string[]> {
+  const response = await publicFetch(`${getApiBaseUrl()}/api/solutions/categories`);
+  if (!response.ok) {
+    throw new Error(await readApiError(response, 'Failed to fetch solution categories'));
+  }
+  const result = await response.json();
+  return Array.isArray(result.data) ? result.data : [];
+}
+
+/**
  * Fetches all active solutions from the backend.
  */
 export async function getActiveSolutions(category?: string): Promise<any[]> {

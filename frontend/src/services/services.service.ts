@@ -35,6 +35,19 @@ export async function getActiveServices(category?: string): Promise<any[]> {
 }
 
 /**
+ * Fetches the list of available service pillar categories from the backend.
+ * Used by the admin Service form to populate the Category dropdown dynamically.
+ */
+export async function getServiceCategories(): Promise<string[]> {
+  const response = await publicFetch(`${getApiBaseUrl()}/api/services/categories`);
+  if (!response.ok) {
+    throw new Error(await readApiError(response, 'Failed to fetch service categories'));
+  }
+  const result = await response.json();
+  return Array.isArray(result.data) ? result.data : [];
+}
+
+/**
  * Fetches all services (active + drafts) for admin panel with pagination, search, and filtering.
  */
 export async function getAllServices(params: QueryParams = {}): Promise<{ services: any[]; pagination: any }> {

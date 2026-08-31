@@ -1,59 +1,103 @@
 import type { LucideIcon } from 'lucide-react';
-import { Briefcase, Brain } from 'lucide-react';
+import {
+  Brain,
+  Globe,
+} from 'lucide-react';
 import { resolveLucideIcon } from '@/lib/resolveLucideIcon';
-import { SERVICES } from '@/data/services';
 import { SOLUTIONS_DATA, resolveSolutionIcon } from '@/data/solutions';
 
-/** Design capacity: 3 columns × 4 links (matches current mega-menu layout). */
+/** Design capacity: up to 4 columns × 4 links (matches current mega-menu layout). */
 export const NAV_MEGA_ITEMS_PER_COLUMN = 4;
 
 export type NavMegaItem = {
   label: string;
   to: string;
-  desc: string;
+  desc?: string;
   icon: LucideIcon;
   slug: string;
 };
 
 export type NavMegaColumn = {
+  code?: string;
   title: string;
+  subtitle?: string;
   items: NavMegaItem[];
 };
 
-type ColumnRule = {
-  title: string;
-  match: (category: string) => boolean;
-};
+/** Maximum number of solution category columns shown in the navbar dropdown. */
+const MAX_SOLUTION_COLUMNS = 4;
 
-const SERVICE_COLUMN_RULES: ColumnRule[] = [
+const PILLAR_CONFIGS = [
   {
-    title: 'Development Services',
-    match: (c) => /develop|saas|software|product|platform|engineering/i.test(c),
+    code: '01',
+    title: 'BRAND',
+    subtitle: 'How the business is perceived.',
+    match: (c: string, t: string) => /brand|design|creative|ui|ux|perceiv|identity|content/i.test(c) || /brand|design|creative|ui|ux|identity|documentation/i.test(t),
   },
   {
-    title: 'Design Services',
-    match: (c) => /design|brand|creative|ui|ux/i.test(c),
+    code: '02',
+    title: 'GROWTH',
+    subtitle: 'How the business attracts and converts demand.',
+    match: (c: string, t: string) => /growth|market|seo|conversion|lead|acquisition/i.test(c) || /market|growth|seo|conversion|revenue/i.test(t),
   },
   {
-    title: 'Cloud & AI',
-    match: (c) => /cloud|ai|infra|automat|security|devops|tech|data|market/i.test(c),
+    code: '03',
+    title: 'SYSTEMS',
+    subtitle: 'How the business operates and scales.',
+    match: (c: string, t: string) => /system|infra|automat|cloud|ops|operation|advanced|ai|tech/i.test(c) || /automat|cloud|devops|system|ops|ai/i.test(t),
+  },
+  {
+    code: '04',
+    title: 'DIGITAL',
+    subtitle: 'How the business delivers and evolves.',
+    match: (c: string, t: string) => /digital|develop|software|product|platform|app|web/i.test(c) || /develop|software|product|platform|web|app/i.test(t),
   },
 ];
 
-const SOLUTION_COLUMN_RULES: ColumnRule[] = [
-  {
-    title: 'Business Solutions',
-    match: (c) => /business|enterprise|crm|erp|ops|operation/i.test(c),
-  },
-  {
-    title: 'AI Solutions',
-    match: (c) => /\bai\b|agent|chatbot|generative|intelligence|ml|llm/i.test(c),
-  },
-  {
-    title: 'Digital Solutions',
-    match: (c) => /digital|cloud|api|data|security|cyber|analytics|integration/i.test(c),
-  },
-];
+/**
+ * Dynamically builds Services mega-menu columns from backend/MongoDB active services.
+ * Contains NO hardcoded, fake, or non-existent services.
+ */
+export function buildServiceNavColumns(services: any[] | undefined | null): NavMegaColumn[] {
+  if (!services || !Array.isArray(services) || services.length === 0) {
+    return [];
+  }
+
+  const activeServices = services.filter((s) => s && s.slug && s.status !== 'draft');
+
+  const columns: NavMegaColumn[] = PILLAR_CONFIGS.map((cfg) => ({
+    code: cfg.code,
+    title: cfg.title,
+    subtitle: cfg.subtitle,
+    items: [],
+  }));
+
+  for (const s of activeServices) {
+    const category = String(s.category || '').trim();
+    const title = String(s.title || s.name || s.slug).trim();
+    const slug = String(s.slug).trim();
+
+    let matchedIndex = PILLAR_CONFIGS.findIndex((cfg) => cfg.match(category, title));
+    if (matchedIndex === -1) matchedIndex = 3;
+
+    let iconComp: LucideIcon = Globe;
+    if (typeof s.icon === 'function' || (typeof s.icon === 'object' && s.icon !== null)) {
+      iconComp = s.icon as LucideIcon;
+    } else if (typeof s.icon === 'string' && s.icon) {
+      iconComp = (resolveLucideIcon(s.icon) as LucideIcon) || Globe;
+    }
+
+    columns[matchedIndex].items.push({
+      label: title,
+      to: `/services/${slug}`,
+      slug: slug,
+      icon: iconComp,
+      desc: s.shortDescription || s.overview || '',
+    });
+  }
+
+  return columns.filter((col) => col.items.length > 0);
+}
 
 function sortByDisplayOrder<T extends { displayOrder?: number; title?: string }>(items: T[]): T[] {
   return [...items].sort((a, b) => {
@@ -64,44 +108,8 @@ function sortByDisplayOrder<T extends { displayOrder?: number; title?: string }>
   });
 }
 
-function resolveColumnIndex(category: string, rules: ColumnRule[]): number {
-  const normalized = String(category || '').trim();
-  const matched = rules.findIndex((rule) => rule.match(normalized));
-  return matched >= 0 ? matched : rules.length - 1;
-}
-
-function buildColumns(
-  items: NavMegaItem[],
-  categories: string[],
-  rules: ColumnRule[],
-): NavMegaColumn[] {
-  const columns: NavMegaColumn[] = rules.map((rule) => ({ title: rule.title, items: [] }));
-  const overflow: NavMegaItem[] = [];
-
-  items.forEach((item, index) => {
-    const columnIndex = resolveColumnIndex(categories[index] ?? '', rules);
-    const column = columns[columnIndex];
-    if (column.items.length < NAV_MEGA_ITEMS_PER_COLUMN) {
-      column.items.push(item);
-    } else {
-      overflow.push(item);
-    }
-  });
-
-  // Fill remaining slots so new CMS items still appear within design capacity.
-  for (const item of overflow) {
-    const target = columns.find((column) => column.items.length < NAV_MEGA_ITEMS_PER_COLUMN);
-    if (!target) break;
-    target.items.push(item);
-  }
-
-  return columns;
-}
 
 
-/**
- * Derives a concise one-liner subtitle from a potentially long CMS description.
- */
 const MEGA_DESC_MAX = 55;
 
 function condenseMegaDesc(raw: string): string {
@@ -110,38 +118,15 @@ function condenseMegaDesc(raw: string): string {
   if (text.length <= MEGA_DESC_MAX) return text;
 
   const window = text.slice(0, MEGA_DESC_MAX + 1);
-
-  // 1. Natural break: first `. ` or `; ` or `, ` within the window.
   const breakMatch = window.match(/^(.*?)[.,;](?:\s|$)/);
   if (breakMatch && breakMatch[1] && breakMatch[1].trim().length >= 8) {
     return breakMatch[1].trim();
   }
 
-  // 2. Last whole-word boundary within MAX chars.
   const truncated = text.slice(0, MEGA_DESC_MAX);
   const lastSpace = truncated.lastIndexOf(' ');
   const short = lastSpace > 10 ? truncated.slice(0, lastSpace) : truncated;
   return short.trim() + '…';
-}
-
-function toServiceNavItem(service: any): NavMegaItem | null {
-  const slug = String(service?.slug ?? '').trim();
-  if (!slug) return null;
-
-  let iconComp: LucideIcon = Briefcase;
-  if (typeof service.icon === 'function' || (typeof service.icon === 'object' && service.icon !== null)) {
-    iconComp = service.icon as LucideIcon;
-  } else if (typeof service.icon === 'string' && service.icon) {
-    iconComp = (resolveLucideIcon(service.icon) as LucideIcon) || Briefcase;
-  }
-
-  return {
-    label: String(service.title || slug).trim(),
-    to: `/services/${slug}`,
-    desc: condenseMegaDesc(String(service.shortDescription || service.overview || service.fullDescription || service.longDescription || '')),
-    icon: iconComp,
-    slug,
-  };
 }
 
 function toSolutionNavItem(solution: any): NavMegaItem | null {
@@ -165,44 +150,13 @@ function toSolutionNavItem(solution: any): NavMegaItem | null {
 }
 
 
-/**
- * Build Services mega-menu columns. Falls back to or combines with static SERVICES if API returns a sparse list.
- */
-export function buildServiceNavColumns(services: any[] | undefined | null): NavMegaColumn[] {
-  const staticServices = SERVICES as any[];
-  let sourceList: any[] = services && services.length > 0 ? services : staticServices;
-
-  if (services && services.length > 0 && services.length < 6) {
-    const apiSlugs = new Set(services.map((s) => s.slug));
-    const extraStatic = staticServices.filter((s) => !apiSlugs.has(s.slug));
-    sourceList = [...services, ...extraStatic];
-  }
-
-  let active = sortByDisplayOrder(sourceList.filter((service) => service?.slug));
-  if (active.length === 0 && staticServices.length > 0) {
-    active = sortByDisplayOrder(staticServices.filter((service) => service?.slug));
-  }
-  const items: NavMegaItem[] = [];
-  const categories: string[] = [];
-
-  for (const service of active) {
-    const item = toServiceNavItem(service);
-    if (!item) continue;
-    items.push(item);
-    categories.push(String(service.category || ''));
-  }
-
-  const columns = buildColumns(items, categories, SERVICE_COLUMN_RULES);
-  const totalItems = columns.reduce((acc, col) => acc + col.items.length, 0);
-  if (totalItems === 0 && sourceList !== staticServices) {
-    return buildServiceNavColumns(staticServices);
-  }
-
-  return columns;
-}
 
 /**
- * Build Solutions mega-menu columns. Falls back to or combines with static SOLUTIONS_DATA if API returns a sparse list.
+ * Build Solutions mega-menu columns dynamically from backend/MongoDB data.
+ * Discovers up to MAX_SOLUTION_COLUMNS unique categories directly from each
+ * solution's `category` field — no hardcoded category names or regex matching.
+ * A new category assigned in the admin panel will automatically appear as a
+ * new column without any code changes.
  */
 export function buildSolutionNavColumns(solutions: any[] | undefined | null): NavMegaColumn[] {
   const staticSolutions = Object.values(SOLUTIONS_DATA);
@@ -218,22 +172,49 @@ export function buildSolutionNavColumns(solutions: any[] | undefined | null): Na
   if (active.length === 0 && staticSolutions.length > 0) {
     active = sortByDisplayOrder(staticSolutions.filter((solution) => solution?.slug));
   }
-  const items: NavMegaItem[] = [];
-  const categories: string[] = [];
+  if (active.length === 0) return [];
 
+  // Discover unique categories from the data in first-appearance order, capped at MAX_SOLUTION_COLUMNS
+  const seenCategories: string[] = [];
   for (const solution of active) {
+    const cat = String(solution.category || '').trim();
+    if (cat && !seenCategories.includes(cat)) {
+      seenCategories.push(cat);
+      if (seenCategories.length === MAX_SOLUTION_COLUMNS) break;
+    }
+  }
+
+  // Fallback bucket for solutions with an empty or unrecognized category
+  const fallbackCat = seenCategories[seenCategories.length - 1] ?? 'Solutions';
+  if (!seenCategories.includes(fallbackCat)) seenCategories.push(fallbackCat);
+
+  // Build one column per unique category (ordered by first appearance)
+  const columnMap = new Map<string, NavMegaColumn>(
+    seenCategories.map((cat, idx) => [
+      cat,
+      {
+        code: String(idx + 1).padStart(2, '0'),
+        title: cat.toUpperCase(),
+        items: [],
+      },
+    ])
+  );
+
+  // Distribute solutions into their matching column
+  for (const solution of active) {
+    const cat = String(solution.category || '').trim();
     const item = toSolutionNavItem(solution);
     if (!item) continue;
-    items.push(item);
-    categories.push(String(solution.category || ''));
+    const column = columnMap.get(cat) ?? columnMap.get(fallbackCat);
+    if (column && column.items.length < NAV_MEGA_ITEMS_PER_COLUMN) {
+      column.items.push(item);
+    }
   }
 
-  const columns = buildColumns(items, categories, SOLUTION_COLUMN_RULES);
-  const totalItems = columns.reduce((acc, col) => acc + col.items.length, 0);
-  if (totalItems === 0 && sourceList !== staticSolutions) {
+  const result = Array.from(columnMap.values()).filter((col) => col.items.length > 0);
+  if (result.length === 0 && sourceList !== staticSolutions) {
     return buildSolutionNavColumns(staticSolutions as any[]);
   }
-
-  return columns;
+  return result;
 }
 

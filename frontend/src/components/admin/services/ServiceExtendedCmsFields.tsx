@@ -57,6 +57,12 @@ interface Props {
   onChange: (patch: Partial<ServiceExtendedCmsState>) => void;
   allServiceOptions: { slug: string; title: string }[];
   allIndustryOptions: { slug: string; title: string }[];
+  // Core Offerings (simple string[]) — lives in Services.tsx parent state
+  offerings: string[];
+  offeringInput: string;
+  onOfferingInputChange: (val: string) => void;
+  onAddOffering: (val: string) => void;
+  onRemoveOffering: (index: number) => void;
 }
 
 function toggleSlug(list: string[], slug: string): string[] {
@@ -69,6 +75,11 @@ export function ServiceExtendedCmsFields({
   onChange,
   allServiceOptions,
   allIndustryOptions,
+  offerings,
+  offeringInput,
+  onOfferingInputChange,
+  onAddOffering,
+  onRemoveOffering,
 }: Props) {
   const setOffering = (idx: number, patch: Partial<DetailedOffering>) => {
     const next = [...state.detailedOfferings];
@@ -78,74 +89,135 @@ export function ServiceExtendedCmsFields({
 
   if (activeTab === 'offerings') {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500">Detailed Offering Cards</span>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-8 text-xs"
-            onClick={() =>
-              onChange({
-                detailedOfferings: [
-                  ...state.detailedOfferings,
-                  { title: '', description: '', badges: [], color: 'green', iconName: 'sparkles' },
-                ],
-              })
-            }
-          >
-            <Plus className="w-3.5 h-3.5 mr-1" /> Add Card
-          </Button>
-        </div>
-        {state.detailedOfferings.map((offering, idx) => (
-          <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3 relative">
+      <div className="space-y-6">
+
+        {/* ── CORE OFFERINGS (simple string[]) ─────────────────────── */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
+          <p className="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+            Core Offerings
+          </p>
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            These short labels appear as checkmark items under “KEY OFFERINGS” on
+            the service card and listing pages. Type one item and press Enter.
+          </p>
+
+          {/* Input row */}
+          <div className="flex gap-2">
+            <Input
+              value={offeringInput}
+              onChange={(e) => onOfferingInputChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  onAddOffering(offeringInput);
+                }
+              }}
+              placeholder="Type an offering and press Enter"
+              className="h-9 text-sm"
+            />
             <button
               type="button"
-              onClick={() =>
-                onChange({ detailedOfferings: state.detailedOfferings.filter((_, i) => i !== idx) })
-              }
-              className="absolute top-3 right-3 text-slate-400 hover:text-red-500"
+              onClick={() => onAddOffering(offeringInput)}
+              className="shrink-0 h-9 px-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-colors text-xs font-semibold"
             >
-              <Trash className="w-4 h-4" />
+              Add
             </button>
-            <Input placeholder="Title" value={offering.title} onChange={(e) => setOffering(idx, { title: e.target.value })} />
-            <textarea
-              className="w-full min-h-[80px] p-3 rounded-lg border border-slate-200 text-xs"
-              placeholder="Description"
-              value={offering.description}
-              onChange={(e) => setOffering(idx, { description: e.target.value })}
-            />
-            <div className="grid grid-cols-2 gap-3">
-              <select
-                className="h-9 rounded-lg border border-slate-200 text-xs px-2"
-                value={offering.color}
-                onChange={(e) => setOffering(idx, { color: e.target.value })}
-              >
-                {OFFERING_COLORS.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
-              <select
-                className="h-9 rounded-lg border border-slate-200 text-xs px-2"
-                value={offering.iconName}
-                onChange={(e) => setOffering(idx, { iconName: e.target.value })}
-              >
-                {OFFERING_ICONS.map((icon) => (
-                  <option key={icon} value={icon}>{icon}</option>
-                ))}
-              </select>
+          </div>
+
+          {/* Chips */}
+          {offerings.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-1">
+              {offerings.map((item, idx) => (
+                <span
+                  key={idx}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700"
+                >
+                  {item}
+                  <button
+                    type="button"
+                    onClick={() => onRemoveOffering(idx)}
+                    className="ml-0.5 text-slate-400 hover:text-red-500 transition-colors"
+                    aria-label={`Remove ${item}`}
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
             </div>
-            <Input
-              placeholder="Badges (comma-separated)"
-              value={offering.badges.join(', ')}
-              onChange={(e) =>
-                setOffering(idx, {
-                  badges: e.target.value.split(',').map((b) => b.trim()).filter(Boolean),
+          )}
+        </div>
+
+        {/* ── DETAILED OFFERING CARDS ───────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500">Detailed Offering Cards</span>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-8 text-xs"
+              onClick={() =>
+                onChange({
+                  detailedOfferings: [
+                    ...state.detailedOfferings,
+                    { title: '', description: '', badges: [], color: 'green', iconName: 'sparkles' },
+                  ],
                 })
               }
-            />
+            >
+              <Plus className="w-3.5 h-3.5 mr-1" /> Add Card
+            </Button>
           </div>
-        ))}
+          {state.detailedOfferings.map((offering, idx) => (
+            <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3 relative">
+              <button
+                type="button"
+                onClick={() =>
+                  onChange({ detailedOfferings: state.detailedOfferings.filter((_, i) => i !== idx) })
+                }
+                className="absolute top-3 right-3 text-slate-400 hover:text-red-500"
+              >
+                <Trash className="w-4 h-4" />
+              </button>
+              <Input placeholder="Title" value={offering.title} onChange={(e) => setOffering(idx, { title: e.target.value })} />
+              <textarea
+                className="w-full min-h-[80px] p-3 rounded-lg border border-slate-200 text-xs"
+                placeholder="Description"
+                value={offering.description}
+                onChange={(e) => setOffering(idx, { description: e.target.value })}
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <select
+                  className="h-9 rounded-lg border border-slate-200 text-xs px-2"
+                  value={offering.color}
+                  onChange={(e) => setOffering(idx, { color: e.target.value })}
+                >
+                  {OFFERING_COLORS.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+                <select
+                  className="h-9 rounded-lg border border-slate-200 text-xs px-2"
+                  value={offering.iconName}
+                  onChange={(e) => setOffering(idx, { iconName: e.target.value })}
+                >
+                  {OFFERING_ICONS.map((icon) => (
+                    <option key={icon} value={icon}>{icon}</option>
+                  ))}
+                </select>
+              </div>
+              <Input
+                placeholder="Badges (comma-separated)"
+                value={offering.badges.join(', ')}
+                onChange={(e) =>
+                  setOffering(idx, {
+                    badges: e.target.value.split(',').map((b) => b.trim()).filter(Boolean),
+                  })
+                }
+              />
+            </div>
+          ))}
+        </div>
+
       </div>
     );
   }

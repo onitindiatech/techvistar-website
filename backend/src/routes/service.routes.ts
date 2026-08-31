@@ -7,6 +7,7 @@ import { Router } from 'express';
 import {
   getPublicServices,
   getPublicServiceBySlug,
+  getServiceCategories,
   adminCreateService,
   adminUpdateService,
   adminDeleteService,
@@ -46,6 +47,9 @@ router.put('/admin/:id', authMiddleware, adminUpdateService);
 router.delete('/admin/:id', authMiddleware, adminDeleteService);
 
 // ─── Public Endpoints ────────────────────────────────────────────────────────
+// GET /api/services/categories - Returns available service pillar categories
+router.get('/categories', publicReadLimiter, getServiceCategories);
+
 // GET /api/services - Returns all active services sorted by displayOrder
 router.get('/', publicReadLimiter, publicCmsCache, getPublicServices);
 

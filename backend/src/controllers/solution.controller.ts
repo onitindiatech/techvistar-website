@@ -9,6 +9,30 @@ import { solutionService } from '@/services/solution.service';
 import { ApiResponse } from '@/utils/ApiResponse';
 import { HTTP_STATUS } from '@/constants';
 
+export const SOLUTION_CATEGORIES = [
+  'Business Solutions',
+  'AI Solutions',
+  'Digital Solutions',
+  'Growth Solutions',
+] as const;
+
+/**
+ * GET /api/solutions/categories
+ * Returns the list of available solution categories.
+ * Public — no auth required (used by admin form on page load and navbar).
+ */
+export async function getSolutionCategories(
+  _req: Request,
+  res:  Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    ApiResponse.success(res, [...SOLUTION_CATEGORIES], 'Solution categories fetched successfully');
+  } catch (err) {
+    next(err);
+  }
+}
+
 /**
  * GET /api/solutions
  * Returns all active solutions ordered by displayOrder.

@@ -1,39 +1,99 @@
-import React, { useState, useEffect, useMemo, type CSSProperties } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useMemo, type CSSProperties } from 'react';
+import { motion } from 'framer-motion';
 import { SiteSection } from '@/components/SiteSection';
-import { Button } from '@/components/ui/button';
 import { CmsHref } from '@/components/common/CmsHref';
 import DomeGallery from '@/components/ui/DomeGallery';
-import { Check, ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
 import { resolveCmsMediaSrc } from '@/components/admin/common/CmsImageField';
 
-import { useQuery } from '@tanstack/react-query';
-import { getActiveProjects } from '@/services/portfolio.service';
-import { decorateProject, PROJECTS } from '@/data/projects';
+export const TECHVISTAR_ECOSYSTEM_TILES = [
+  {
+    type: 'icon',
+    icon: 'ai',
+    title: 'Applied AI & Neural Systems',
+    description: 'Enterprise AI agents, fine-tuned LLMs, predictive intelligence, and automated inference workflows.',
+  },
+  {
+    type: 'icon',
+    icon: 'code',
+    title: 'Full-Stack Software Engineering',
+    description: 'Scalable web applications, high-performance APIs, and modern TypeScript architectures.',
+  },
+  {
+    type: 'icon',
+    icon: 'cloud',
+    title: 'Cloud Architecture & DevOps',
+    description: 'Multi-region Kubernetes, automated CI/CD pipelines, and resilient serverless ecosystems.',
+  },
+  {
+    type: 'icon',
+    icon: 'database',
+    title: 'Data Infrastructure & Warehouses',
+    description: 'Real-time event streaming, ACID-compliant databases, and optimized caching layers.',
+  },
+  {
+    type: 'icon',
+    icon: 'analytics',
+    title: 'Business Intelligence & Analytics',
+    description: 'Actionable executive dashboards, conversion telemetry, and real-time user insights.',
+  },
+  {
+    type: 'icon',
+    icon: 'security',
+    title: 'Enterprise Cybersecurity & Trust',
+    description: 'Zero-trust architecture, SOC2 compliance standards, and end-to-end data encryption.',
+  },
+  {
+    type: 'icon',
+    icon: 'automation',
+    title: 'Process Automation & Workflows',
+    description: 'Autonomous background jobs, event-driven integrations, and operational task orchestration.',
+  },
+  {
+    type: 'icon',
+    icon: 'network',
+    title: 'API Mesh & Distributed Networks',
+    description: 'Low-latency GraphQL & REST mesh, microservice communication, and edge computing.',
+  },
+  {
+    type: 'icon',
+    icon: 'growth',
+    title: 'Digital Growth & Revenue Systems',
+    description: 'High-converting user journeys, SEO-optimized platforms, and scalable funnel architectures.',
+  },
+  {
+    type: 'icon',
+    icon: 'server',
+    title: 'High-Availability Server Clusters',
+    description: '99.99% SLA uptime, auto-scaling compute clusters, and load-balanced traffic gateways.',
+  },
+  {
+    type: 'icon',
+    icon: 'mobile',
+    title: 'Cross-Platform Mobile Apps',
+    description: 'High-performance React Native & Flutter applications with native device capabilities.',
+  },
+  {
+    type: 'icon',
+    icon: 'architecture',
+    title: 'Modern System Architecture',
+    description: 'Modular micro-frontends, composable services, and future-proof design systems.',
+  },
+  {
+    type: 'icon',
+    icon: 'workflow',
+    title: 'Workflow Automation & CI/CD',
+    description: 'Automated test suites, deterministic builds, and enterprise release management.',
+  },
+];
 
 export const DomeGallerySection = () => {
   const { portfolio } = useHomeCms();
   const { ref, isInView } = useAnimatedSection();
-  const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
-  const { data: apiProjects } = useQuery({
-    queryKey: ['activeProjects'],
-    queryFn: getActiveProjects,
-    staleTime: 300000,
-  });
-
-  const domeImages = useMemo(() => {
-    const loaded = (Array.isArray(apiProjects) && apiProjects.length > 0)
-      ? apiProjects.map(decorateProject).filter((p): p is ReturnType<typeof decorateProject> => Boolean(p && p.thumbnail))
-      : PROJECTS.map(decorateProject);
-
-    return loaded.map((project) => ({
-      src: project.thumbnail,
-      alt: project.title,
-    }));
-  }, [apiProjects]);
+  const domeImages = useMemo(() => TECHVISTAR_ECOSYSTEM_TILES, []);
 
   const features = useMemo(
     () => (portfolio.features?.length ? portfolio.features : []).filter(Boolean),
@@ -51,36 +111,6 @@ export const DomeGallerySection = () => {
   }, [portfolio.backgroundImage]);
 
   if (!portfolio.visible) return null;
-
-  // Prevent background scroll when modal is open
-  useEffect(() => {
-    if (activeIdx !== null) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
-    return () => {
-      document.body.classList.remove('overflow-hidden');
-    };
-  }, [activeIdx]);
-
-  // Keyboard navigation and escape key closing
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (activeIdx === null || domeImages.length === 0) return;
-      
-      if (e.key === 'Escape') {
-        setActiveIdx(null);
-      } else if (e.key === 'ArrowRight') {
-        setActiveIdx((prev) => (prev === null ? null : (prev + 1) % domeImages.length));
-      } else if (e.key === 'ArrowLeft') {
-        setActiveIdx((prev) => (prev === null ? null : (prev - 1 + domeImages.length) % domeImages.length));
-      }
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIdx, domeImages.length]);
 
   return (
     <SiteSection 
@@ -149,9 +179,9 @@ export const DomeGallerySection = () => {
             {features.length > 0 ? (
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
                 {features.map((feat) => (
-                  <li key={feat} className="flex items-center gap-2.5 text-slate-700 font-semibold text-sm md:text-base">
+                  <li key={feat} className="flex items-center gap-2.5 text-slate-700 font-normal text-sm md:text-base">
                     <div className="w-5 h-5 rounded-full bg-[#0b2859]/10 flex items-center justify-center border border-[#0b2859]/20 shrink-0">
-                      <Check className="w-3.5 h-3.5 text-[#0b2859]" strokeWidth={3} />
+                      <Check className="w-3.5 h-3.5 text-[#0b2859]" strokeWidth={2.5} />
                     </div>
                     <span>{feat}</span>
                   </li>
@@ -207,12 +237,8 @@ export const DomeGallerySection = () => {
                   minRadius={380}
                   maxRadius={500}
                   imageBorderRadius="16px"
-                  openedImageBorderRadius="20px"
-                  openedImageWidth="380px"
-                  openedImageHeight="285px"
                   dragSensitivity={Math.max(8, Math.round(18 / (portfolio.animationSpeed || 1)))}
                   segments={35}
-                  onImageClick={(index) => setActiveIdx(index)}
                 />
               ) : null}
             </div>
@@ -220,120 +246,6 @@ export const DomeGallerySection = () => {
 
         </div>
       </div>
-
-      {/* Lightbox / Gallery Modal */}
-      <AnimatePresence>
-        {activeIdx !== null && domeImages[activeIdx] && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-            {/* Backdrop with dark blur */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-slate-950/75 backdrop-blur-md cursor-pointer"
-              onClick={() => setActiveIdx(null)}
-            />
-
-            {/* Modal Image Box */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-4xl flex flex-col items-center pointer-events-none"
-            >
-              {/* Header Details with Image Count & Close Button */}
-              <div className="w-full flex justify-between items-center px-4 py-2 text-white pointer-events-auto select-none max-w-3xl mb-2">
-                {/* Counter */}
-                <div className="px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/10 text-xs font-semibold uppercase tracking-wider">
-                  {activeIdx + 1} / {domeImages.length}
-                </div>
-                
-                {/* Close Button */}
-                <button 
-                  onClick={() => setActiveIdx(null)}
-                  className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/25 transition-all text-white/80 hover:text-white cursor-pointer shadow-lg"
-                  aria-label="Close Gallery"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Main Image Viewport & Navigation Buttons */}
-              <div className="relative flex items-center justify-center w-full max-w-3xl pointer-events-auto">
-                
-                {/* Previous Button (Desktop/Tablet) */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveIdx((prev) => (prev === null ? null : (prev - 1 + domeImages.length) % domeImages.length));
-                  }}
-                  className="absolute left-[-60px] hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-xl"
-                  aria-label="Previous Project"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-
-                {/* Main Image Holder */}
-                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-[0_24px_50px_rgba(0,0,0,0.5)] aspect-[4/3] w-full max-h-[65vh] flex items-center justify-center select-none">
-                  <motion.img 
-                    key={activeIdx}
-                    src={domeImages[activeIdx].src}
-                    alt={domeImages[activeIdx].alt}
-                    className="w-full h-full object-contain pointer-events-none"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.22, ease: 'easeInOut' }}
-                  />
-
-                  {/* Navigation Overlays for Mobile/Tablet */}
-                  <div className="absolute inset-y-0 left-0 w-1/4 flex items-center justify-start pl-3 md:hidden pointer-events-none">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveIdx((prev) => (prev === null ? null : (prev - 1 + domeImages.length) % domeImages.length));
-                      }}
-                      className="w-9.5 h-9.5 rounded-full bg-black/45 border border-white/15 flex items-center justify-center text-white pointer-events-auto cursor-pointer"
-                    >
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                  </div>
-                  <div className="absolute inset-y-0 right-0 w-1/4 flex items-center justify-end pr-3 md:hidden pointer-events-none">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveIdx((prev) => (prev === null ? null : (prev + 1) % domeImages.length));
-                      }}
-                      className="w-9.5 h-9.5 rounded-full bg-black/45 border border-white/15 flex items-center justify-center text-white pointer-events-auto cursor-pointer"
-                    >
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Next Button (Desktop/Tablet) */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveIdx((prev) => (prev === null ? null : (prev + 1) % domeImages.length));
-                  }}
-                  className="absolute right-[-60px] hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-xl"
-                  aria-label="Next Project"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </div>
-
-              {/* Caption Description Text */}
-              <div className="w-full max-w-3xl text-center text-white/95 mt-4 px-4 font-sans text-sm sm:text-base font-semibold drop-shadow-md select-text pointer-events-auto">
-                {domeImages[activeIdx].alt}
-              </div>
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </SiteSection>
   );
 };

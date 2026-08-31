@@ -2,6 +2,7 @@ import {
   Building2, Brain, Sparkles, Cloud, Target,
   Layers, Code2, Cpu, Repeat, Settings, FolderGit2, Shield, Clock, CodeXml,
   TrendingUp, Users, Headphones, Zap, Maximize, Activity, HeadphonesIcon,
+  Search,
 } from 'lucide-react';
 import { resolveCmsMediaSrc } from '@/components/admin/common/CmsImageField';
 import {
@@ -66,6 +67,15 @@ export interface SolutionDetail {
   seoDescription?: string;
 }
 
+export const SOLUTION_CATEGORIES = [
+  'Business Solutions',
+  'AI Solutions',
+  'Digital Solutions',
+  'Growth Solutions',
+] as const;
+
+export type SolutionCategory = (typeof SOLUTION_CATEGORIES)[number];
+
 export const ICON_MAP: Record<string, React.ComponentType<any>> = {
   Building2,
   Brain,
@@ -88,6 +98,7 @@ export const ICON_MAP: Record<string, React.ComponentType<any>> = {
   Zap,
   Maximize,
   Activity,
+  Search,
 };
 
 export function resolveSolutionIcon(name: string): React.ComponentType<any> {
@@ -782,6 +793,165 @@ export const SOLUTIONS_DATA: Record<string, Omit<SolutionDetail, 'heroDescriptio
     faqs: [
       { q: 'What compliance frameworks do you support?', a: 'We specialize in aligning systems to SOC2, ISO 27001, HIPAA, and GDPR specifications.' },
       { q: 'How often are security scans run?', a: 'Our CI/CD pipelines run code dependency scans on every commit, and host scans execute daily.' }
+    ]
+  },
+  'growth-strategy': {
+    slug: 'growth-strategy',
+    title: 'Growth Strategy',
+    subtitle: 'Data-Backed Acquisition Models, Funnel Auditing, and Retention Systems',
+    icon: TrendingUp,
+    category: 'Growth Solutions',
+    challenges: {
+      title: 'Stagnant Acquisition Funnels and Rising Customer Acquisition Costs',
+      points: [
+        'Unclear visibility into full-funnel drop-off stages and user acquisition friction.',
+        'High customer acquisition costs (CAC) without predictable lifetime value (LTV) gains.',
+        'Siloed marketing, sales, and product telemetry preventing rapid iteration.'
+      ],
+      impact: 'Stalls revenue momentum, drains marketing spend, and limits scalable market expansion.'
+    },
+    ourSolution: {
+      overview: 'We engineer end-to-end growth engines combining cohort attribution analytics, conversion funnel instrumentation, and retention feedback loops to scale sustainable revenue.',
+      capabilities: [
+        'Multi-touch attribution modeling and CAC-to-LTV analytics.',
+        'Systematic A/B experimentation and conversion rate optimization (CRO) pipelines.',
+        'Lifecycle activation, onboarding, and retention automation matrices.'
+      ]
+    },
+    features: [
+      { title: 'Attribution Engine', description: 'Trace revenue back to specific campaigns, keywords, and touchpoints.', icon: Activity },
+      { title: 'Funnel Instrumentation', description: 'Granular telemetry tracking drop-off across all key user milestones.', icon: Activity },
+      { title: 'Cohort Retention Loops', description: 'Automated triggers to re-engage churning accounts and maximize LTV.', icon: Repeat }
+    ],
+    howItWorks: [
+      { step: '01', title: 'Funnel Diagnostic & Audit', desc: 'We audit full-funnel conversion telemetry, CAC efficiency, and drop-off friction.' },
+      { step: '02', title: 'Experimentation Matrix Setup', desc: 'We deploy rapid multi-variant testing pipelines and instrumentation schemas.' },
+      { step: '03', title: 'Scaling & Growth Loops', desc: 'We automate high-converting flows and optimize compounding retention channels.' }
+    ],
+    benefits: {
+      roi: '3.4x improvement in customer acquisition ROI.',
+      efficiency: 'Growth testing cycle duration reduced from months to bi-weekly sprints.',
+      scalability: 'Data architecture scales to handle high-velocity multi-channel acquisition campaigns.',
+      security: 'Privacy-first analytics complying with GDPR, CCPA, and cookie consent regulations.'
+    },
+    industries: [
+      { name: 'SaaS Platforms', slug: 'saas' },
+      { name: 'eCommerce Retail', slug: 'ecommerce' }
+    ],
+    techStack: ['PostHog', 'Mixpanel', 'Segment', 'BigQuery', 'TypeScript', 'Docker'],
+    metrics: [
+      { label: 'CAC Reduction', value: '-38%' },
+      { label: 'Funnel Conversion Lift', value: '+42%' }
+    ],
+    faqs: [
+      { q: 'How quickly do we see results from Growth Strategy?', a: 'Initial diagnostic audits and high-impact conversion fixes typically deliver measurable results within 3 to 6 weeks.' },
+      { q: 'Can you work alongside our existing marketing and sales teams?', a: 'Yes, we embed directly with your product, marketing, and revenue teams to build reproducible internal capabilities.' }
+    ]
+  },
+  'customer-experience-optimization': {
+    slug: 'customer-experience-optimization',
+    title: 'Customer Experience Optimization',
+    subtitle: 'Frictionless User Journeys, Journey Telemetry, and Conversion Multipliers',
+    icon: Users,
+    category: 'Growth Solutions',
+    challenges: {
+      title: 'High User Churn, Complex Workflows, and Fragmented Digital Touchpoints',
+      points: [
+        'Complex multi-step user workflows causing high checkout and sign-up drop-offs.',
+        'Disconnected customer support logs failing to feed back into product improvements.',
+        'Lack of real-time session replay and qualitative feedback data.'
+      ],
+      impact: 'Damages brand perception, lowers customer satisfaction (CSAT), and drives churn.'
+    },
+    ourSolution: {
+      overview: 'We architect frictionless digital customer journeys, user onboarding flows, and automated feedback telemetry to maximize customer satisfaction and lifetime retention.',
+      capabilities: [
+        'Friction-free UX workflows, self-service portals, and checkout optimization.',
+        'Real-time customer journey analytics and sentiment telemetry.',
+        'Proactive support escalation and automated customer satisfaction feedback loops.'
+      ]
+    },
+    features: [
+      { title: 'Journey Telemetry', description: 'Monitor user friction, rage clicks, and session drop-offs in real time.', icon: Search },
+      { title: 'Onboarding Accelerators', description: 'Interactive guided tours and progressive profiling flows.', icon: Sparkles },
+      { title: 'CSAT Automation', description: 'Automated survey triggers and immediate customer service escalations.', icon: Headphones }
+    ],
+    howItWorks: [
+      { step: '01', title: 'Experience Mapping', desc: 'We map every user touchpoint to isolate drop-off friction and UX debt.' },
+      { step: '02', title: 'Workflow Redesign', desc: 'We streamline sign-ups, checkout steps, and self-service dashboards.' },
+      { step: '03', title: 'Telemetry & Continuous Tuning', desc: 'We deploy live heatmaps, session diagnostics, and feedback monitors.' }
+    ],
+    benefits: {
+      roi: '45% increase in customer lifetime value (LTV).',
+      efficiency: 'User onboarding completion time decreased by 60%.',
+      scalability: 'Handles millions of concurrent customer touchpoints and support events.',
+      security: 'Anonymized session logging compliant with enterprise data protection standards.'
+    },
+    industries: [
+      { name: 'Fintech & Banking', slug: 'finance' },
+      { name: 'Healthcare', slug: 'healthcare' }
+    ],
+    techStack: ['React', 'Next.js', 'TailwindCSS', 'Zendesk', 'FullStory', 'Node.js'],
+    metrics: [
+      { label: 'CSAT Score', value: '4.9/5' },
+      { label: 'Onboarding Drop-off', value: '-55%' }
+    ],
+    faqs: [
+      { q: 'How is customer privacy protected in journey telemetry?', a: 'All sensitive PII (passwords, payment details, personal data) is automatically masked and encrypted at the edge before recording.' },
+      { q: 'Can this integrate with our mobile apps as well as web?', a: 'Yes, our SDKs and telemetry layers support React Native, iOS, Android, and web platforms simultaneously.' }
+    ]
+  },
+  'digital-growth-platforms': {
+    slug: 'digital-growth-platforms',
+    title: 'Digital Growth Platforms',
+    subtitle: 'High-Velocity Multi-Channel Growth Infrastructure and Experimentation Engines',
+    icon: Zap,
+    category: 'Growth Solutions',
+    challenges: {
+      title: 'Slow Engineering Cycles for Marketing Pages and Fragmented MarTech Stacks',
+      points: [
+        'Marketing teams blocked by engineering backlogs for landing page rollouts and experiments.',
+        'Fragmented toolchains leading to duplicate customer data and inaccurate analytics.',
+        'Slow page load times degrading paid ad quality scores and conversion rates.'
+      ],
+      impact: 'Inflates paid acquisition costs, slows go-to-market speed, and loses ground to agile competitors.'
+    },
+    ourSolution: {
+      overview: 'We build composable digital growth platforms with sub-second page performance, dynamic CMS landing page builders, automated lead ingestion, and unified CRM synchronization.',
+      capabilities: [
+        'Headless CMS architectures and modular component page builders for marketing teams.',
+        'Sub-second edge caching and Core Web Vitals optimization.',
+        'Automated lead enrichment, qualification webhooks, and CRM routing pipelines.'
+      ]
+    },
+    features: [
+      { title: 'Modular CMS Builder', description: 'Empower non-technical teams to launch on-brand landing pages in minutes.', icon: Layers },
+      { title: 'Sub-Second Edge Speeds', description: 'Global CDN distribution achieving 95+ Google PageSpeed scores.', icon: Zap },
+      { title: 'Automated Lead Sync', description: 'Instant webhook validation, lead enrichment, and CRM pipeline assignment.', icon: Repeat }
+    ],
+    howItWorks: [
+      { step: '01', title: 'Platform Architecture Scoping', desc: 'We design the headless CMS schema, design tokens, and CRM integration map.' },
+      { step: '02', title: 'Component System Build', desc: 'We construct a high-performance modular UI system and lead ingest pipelines.' },
+      { step: '03', title: 'Edge Deployment & Training', desc: 'We configure global CDN caching and train your marketing team on publishing.' }
+    ],
+    benefits: {
+      roi: '50% reduction in customer acquisition cost through improved page speed and conversion.',
+      efficiency: 'Campaign time-to-market slashed from 3 weeks to under 2 hours.',
+      scalability: 'Serverless edge nodes easily absorbing viral traffic spikes with zero downtime.',
+      security: 'Enterprise-grade WAF, DDoS protection, and automated SSL certificate management.'
+    },
+    industries: [
+      { name: 'SaaS Platforms', slug: 'saas' },
+      { name: 'Professional Services', slug: 'professional-services' }
+    ],
+    techStack: ['Next.js', 'TailwindCSS', 'TypeScript', 'Cloudflare Workers', 'GraphQL', 'HubSpot'],
+    metrics: [
+      { label: 'PageSpeed Score', value: '98/100' },
+      { label: 'Time-to-Publish', value: '< 2 hrs' }
+    ],
+    faqs: [
+      { q: 'Can non-technical marketing managers create pages independently?', a: 'Yes, the headless CMS gives marketing full visual control using pre-approved, brand-compliant design components.' },
+      { q: 'How does this improve paid ad performance?', a: 'Faster page speeds and tighter message-matching landing pages boost Google Quality Scores and lower cost-per-click (CPC).' }
     ]
   }
 };

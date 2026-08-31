@@ -1,23 +1,19 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Gem, TrendingUp, Settings, CodeXml, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAnimatedSection } from '@/hooks/useAnimatedSection';
 import { SiteSection } from '@/components/SiteSection';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveServices } from '@/services/services.service';
-import { decorateService, getServiceCardImage, type Service } from '@/data/services';
+import { decorateService, type Service } from '@/data/services';
 import { getServicesCmsConfig } from '@/services/servicesCmsConfig.service';
 import { mergeServicesCmsConfig } from '@/types/servicesCms';
 import { SpotlightCard } from '@/components/animations/SpotlightCard';
 import { useHomeCms } from '@/contexts/HomeCmsContext';
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
-
-/** Home services grid: 4×2 on desktop */
-const HOME_SERVICES_COUNT = 8;
 
 const listContainer = {
   hidden: { opacity: 0 },
@@ -35,38 +31,6 @@ const itemVariants = {
     transition: { duration: 0.55, ease },
   },
 };
-
-function isFeaturedService(service: Service): boolean {
-  return Boolean(service.featured);
-}
-
-/**
- * Featured first, then remaining active services, up to `limit`.
- * Optional CMS manualSelection is honored first, then the same fill rules apply.
- */
-function selectHomeServices(activeServices: Service[], manualSlugs: string[], limit: number): Service[] {
-  const bySlug = new Map(activeServices.map((service) => [service.slug, service]));
-  const picked: Service[] = [];
-  const seen = new Set<string>();
-
-  const push = (service: Service | undefined) => {
-    if (!service || seen.has(service.slug) || picked.length >= limit) return;
-    seen.add(service.slug);
-    picked.push(service);
-  };
-
-  for (const slug of manualSlugs) {
-    push(bySlug.get(slug));
-  }
-
-  const featured = activeServices.filter(isFeaturedService);
-  const rest = activeServices.filter((service) => !isFeaturedService(service));
-
-  for (const service of featured) push(service);
-  for (const service of rest) push(service);
-
-  return picked;
-}
 
 export const ServicesSection = () => {
   const { ref, isInView } = useAnimatedSection();
@@ -98,25 +62,37 @@ export const ServicesSection = () => {
       code: '01',
       title: 'BRAND',
       subtitle: 'How the business is perceived.',
-      match: (c: string, t: string) => /brand|design|creative|ui|ux|perceiv|identity|content/i.test(c) || /brand|design|creative|ui|ux|identity|documentation/i.test(t),
+      icon: Gem,
+      match: (c: string, t: string) =>
+        /brand|design|creative|ui|ux|perceiv|identity|content/i.test(c) ||
+        /brand|design|creative|ui|ux|identity|documentation/i.test(t),
     },
     {
       code: '02',
       title: 'GROWTH',
       subtitle: 'How the business attracts and converts demand.',
-      match: (c: string, t: string) => /growth|market|seo|conversion|lead|acquisition/i.test(c) || /market|growth|seo|conversion|revenue/i.test(t),
+      icon: TrendingUp,
+      match: (c: string, t: string) =>
+        /growth|market|seo|conversion|lead|acquisition/i.test(c) ||
+        /market|growth|seo|conversion|revenue/i.test(t),
     },
     {
       code: '03',
       title: 'SYSTEMS',
       subtitle: 'How the business operates and scales.',
-      match: (c: string, t: string) => /system|infra|automat|cloud|ops|operation|advanced|ai|tech/i.test(c) || /automat|cloud|devops|system|ops|ai/i.test(t),
+      icon: Settings,
+      match: (c: string, t: string) =>
+        /system|infra|automat|cloud|ops|operation|advanced|ai|tech/i.test(c) ||
+        /automat|cloud|devops|system|ops|ai/i.test(t),
     },
     {
       code: '04',
       title: 'DIGITAL',
       subtitle: 'How the business delivers and evolves.',
-      match: (c: string, t: string) => /digital|develop|software|product|platform|app|web/i.test(c) || /develop|software|product|platform|web|app/i.test(t),
+      icon: CodeXml,
+      match: (c: string, t: string) =>
+        /digital|develop|software|product|platform|app|web/i.test(c) ||
+        /develop|software|product|platform|web|app/i.test(t),
     },
   ];
 
@@ -141,11 +117,11 @@ export const ServicesSection = () => {
 
   return (
     <SiteSection ref={ref} id="services" variant="muted" aria-labelledby="services-heading" className="relative pt-8 pb-4 md:pt-14 md:pb-8">
-      {/* Soft ambient depth — emerald wash so the field feels less flat */}
+      {/* Soft ambient depth — authentic TechVistar blue wash */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-        <div className="absolute left-1/2 top-[40%] h-[min(560px,75vw)] w-[min(780px,95vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(14,165,233,0.07)_0%,rgba(148,163,184,0.04)_40%,transparent_68%)]" />
-        <div className="absolute left-[18%] top-[55%] h-[280px] w-[280px] rounded-full bg-emerald-400/[0.04] blur-[90px]" />
-        <div className="absolute right-[12%] top-[30%] h-[240px] w-[240px] rounded-full bg-teal-500/[0.035] blur-[80px]" />
+        <div className="absolute left-1/2 top-[40%] h-[min(560px,75vw)] w-[min(780px,95vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(14,165,233,0.06)_0%,rgba(148,163,184,0.03)_40%,transparent_68%)]" />
+        <div className="absolute left-[15%] top-[55%] h-[280px] w-[280px] rounded-full bg-sky-400/[0.04] blur-[90px]" />
+        <div className="absolute right-[12%] top-[30%] h-[240px] w-[240px] rounded-full bg-[#0b2859]/[0.03] blur-[80px]" />
       </div>
 
       <div className="container-custom relative z-10">
@@ -163,57 +139,72 @@ export const ServicesSection = () => {
           variants={listContainer}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="mx-auto mt-10 grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          className="mx-auto mt-10 grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch"
         >
-          {pillarGroups.map((pillar) => (
-            <motion.div key={pillar.title} variants={itemVariants} className="h-full">
-              <SpotlightCard
-                borderBeam
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.06),0_4px_16px_-4px_rgba(15,23,42,0.07)] transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/40 hover:shadow-xl"
-                spotlightColor="rgba(14, 165, 233, 0.06)"
-                borderColor="rgba(14, 165, 233, 0.40)"
-              >
-                {/* Pillar Header */}
-                <div className="space-y-1 mb-3">
-                  <span className="text-sm font-extrabold text-emerald-600 font-display block">
-                    {pillar.code}.
-                  </span>
-                  <h3 className="font-display text-xl font-extrabold tracking-tight text-slate-900">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-xs font-medium text-slate-500 leading-snug">
-                    {pillar.subtitle}
-                  </p>
-                </div>
+          {pillarGroups.map((pillar) => {
+            const PillarIcon = pillar.icon;
+            return (
+              <motion.div key={pillar.title} variants={itemVariants} className="h-full flex flex-col">
+                <SpotlightCard
+                  borderBeam
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl md:rounded-[22px] border border-slate-200/80 bg-white p-6 sm:p-7 shadow-[0_4px_20px_rgba(11,40,89,0.04)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#0b2859]/30 hover:shadow-[0_16px_36px_rgba(11,40,89,0.08)]"
+                  spotlightColor="rgba(11, 40, 89, 0.04)"
+                  borderColor="rgba(11, 40, 89, 0.25)"
+                >
+                  <div>
+                    {/* Top Row: Pillar Icon Box + Watermark Number */}
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="w-12 h-12 rounded-xl bg-[#0b2859]/[0.08] border border-[#0b2859]/15 flex items-center justify-center text-[#0b2859] shadow-sm group-hover:scale-105 group-hover:bg-[#0b2859] group-hover:text-white group-hover:border-[#0b2859] transition-all duration-300">
+                        <PillarIcon className="w-6 h-6" strokeWidth={1.8} />
+                      </div>
+                      <span className="text-3xl sm:text-4xl font-black text-slate-200/80 select-none tracking-tight font-display group-hover:text-[#0b2859]/20 transition-colors duration-300">
+                        {pillar.code}.
+                      </span>
+                    </div>
 
-                <div className="w-full h-px bg-slate-100 my-2" />
+                    {/* Pillar Header */}
+                    <div className="space-y-1 mb-4">
+                      <span className="text-xs font-extrabold text-[#0b2859] font-display uppercase tracking-wider block">
+                        {pillar.code}.
+                      </span>
+                      <h3 className="font-display text-xl font-extrabold tracking-tight text-slate-900">
+                        {pillar.title}
+                      </h3>
+                      <p className="text-xs font-medium text-slate-500 leading-relaxed min-h-[32px]">
+                        {pillar.subtitle}
+                      </p>
+                    </div>
 
-                {/* Dynamically Grouped Active Backend Services */}
-                <div className="flex-1 space-y-1">
-                  {pillar.services.map((srv) => {
-                    const IconComp = srv.icon;
-                    return (
-                      <Link
-                        key={srv.slug}
-                        to={`/services/${srv.slug}`}
-                        className="group/item flex items-center justify-between py-2 px-2.5 rounded-xl hover:bg-emerald-500/[0.04] transition-all duration-200"
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="p-1.5 rounded-lg bg-slate-50 text-slate-500 group-hover/item:bg-emerald-100 group-hover/item:text-emerald-700 transition-colors shrink-0">
-                            <IconComp className="w-4 h-4" />
-                          </span>
-                          <span className="text-sm font-semibold text-slate-800 group-hover/item:text-emerald-700 transition-colors truncate">
-                            {srv.title}
-                          </span>
-                        </div>
-                        <ArrowRight className="w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 transition-all shrink-0 ml-1" />
-                      </Link>
-                    );
-                  })}
-                </div>
-              </SpotlightCard>
-            </motion.div>
-          ))}
+                    <div className="w-full h-px bg-slate-100/80 mb-3" />
+
+                    {/* Dynamically Grouped Active Backend Services */}
+                    <div className="space-y-1">
+                      {pillar.services.map((srv) => (
+                        <Link
+                          key={srv.slug}
+                          to={`/services/${srv.slug}`}
+                          className="group/item flex items-center justify-between py-1.5 px-2 rounded-xl hover:bg-[#0b2859]/[0.04] transition-all duration-200"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <span className="p-1 rounded-full bg-[#0b2859]/[0.08] text-[#0b2859] border border-[#0b2859]/15 group-hover/item:bg-[#0b2859] group-hover/item:text-white group-hover/item:border-[#0b2859] transition-all duration-200 shrink-0">
+                              <Globe className="w-3.5 h-3.5" />
+                            </span>
+                            <span className="text-sm font-semibold text-slate-700 group-hover/item:text-[#0b2859] transition-colors truncate">
+                              {srv.title}
+                            </span>
+                          </div>
+                          <ArrowRight className="w-3.5 h-3.5 text-[#0b2859] opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 transition-all shrink-0 ml-1" />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom subtle glow accent line on hover */}
+                  <div className="absolute bottom-0 inset-x-6 h-[2px] bg-gradient-to-r from-transparent via-[#0b2859]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </SpotlightCard>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {/* Centered section CTA */}
@@ -241,3 +232,4 @@ export const ServicesSection = () => {
 };
 
 export default ServicesSection;
+

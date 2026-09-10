@@ -2,6 +2,13 @@ import { useEffect, useMemo, useRef, useCallback } from 'react';
 import { useGesture } from '@use-gesture/react';
 import './DomeGallery.css';
 
+/* ── Partner logo assets ── */
+import cloneVoxLogo   from '@/assets/Clone_vox_logo.jpeg';
+import arikapLogo     from '@/assets/Arikap_logo.jpeg';
+import ambikHubLogo   from '@/assets/Ambik_hub_logo.jpeg';
+import fixCloudCost   from '@/assets/FIX_CLOUDCOST_LOGO.jpeg';
+import instrexLogo    from '@/assets/INSTREX_LOGO.jpeg';
+
 const DEFAULT_TILES = [
   { type: 'icon', icon: 'instrex',   title: 'INSTREX' },
   { type: 'icon', icon: 'cloudcost', title: 'CloudCost' },
@@ -27,97 +34,196 @@ const wrapAngleSigned = deg => {
   return a - 180;
 };
 
+/**
+ * Renders the logo mark for each partner, cropping away wordmark/text
+ * using overflow:hidden + object-fit tricks so only the recognisable
+ * mark fills the tile — faithful to the uploaded reference images.
+ */
 function renderEcosystemIcon(iconType) {
   switch (iconType) {
 
-    /* ──────────────────────────────────────────────────────────────────
-       INSTREX  –  Stylised "I" pillar mark, dark-navy brand colour
-    ────────────────────────────────────────────────────────────────── */
-    case 'instrex':
-      return (
-        <svg className="w-8 h-8 sm:w-9 sm:h-9" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Top horizontal bar */}
-          <rect x="8" y="6" width="24" height="5" rx="2.5" fill="#0b2859"/>
-          {/* Vertical shaft */}
-          <rect x="16.5" y="10.5" width="7" height="19" rx="2" fill="#1a3d6e"/>
-          {/* Bottom horizontal bar */}
-          <rect x="8" y="29" width="24" height="5" rx="2.5" fill="#0b2859"/>
-        </svg>
-      );
-
-    /* ──────────────────────────────────────────────────────────────────
-       CloudCost  –  Cloud outline with orange + blue + green accent dots
-    ────────────────────────────────────────────────────────────────── */
-    case 'cloudcost':
-      return (
-        <svg className="w-9 h-9 sm:w-10 sm:h-10" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Cloud body */}
-          <path d="M32 28H14a8 8 0 1 1 1.07-15.93A10 10 0 0 1 34 20a6 6 0 0 1-2 8z" fill="#e8eef8" stroke="#1a3d6e" strokeWidth="1.6"/>
-          {/* Orange accent dot */}
-          <circle cx="16" cy="32" r="3.5" fill="#f97316"/>
-          {/* Blue accent dot */}
-          <circle cx="24.5" cy="34" r="3.5" fill="#2563eb"/>
-          {/* Green accent dot */}
-          <circle cx="33" cy="31" r="3.5" fill="#22c55e"/>
-        </svg>
-      );
-
-    /* ──────────────────────────────────────────────────────────────────
-       Arikap  –  Geometric "A" lettermark, angular, dark-navy
-    ────────────────────────────────────────────────────────────────── */
-    case 'arikap':
-      return (
-        <svg className="w-8 h-8 sm:w-9 sm:h-9" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Left leg */}
-          <polygon points="20,5 7,35 13,35 20,14" fill="#0b2859"/>
-          {/* Right leg */}
-          <polygon points="20,5 33,35 27,35 20,14" fill="#1a3d6e"/>
-          {/* Crossbar */}
-          <rect x="12" y="22" width="16" height="4" rx="2" fill="#0b2859"/>
-          {/* Apex highlight */}
-          <polygon points="20,5 17,13 23,13" fill="#3b82f6" opacity="0.6"/>
-        </svg>
-      );
-
-    /* ──────────────────────────────────────────────────────────────────
-       Ambik Hub  –  Wings / V-chevron mark, dark navy + accent blue
-    ────────────────────────────────────────────────────────────────── */
-    case 'ambikhub':
-      return (
-        <svg className="w-9 h-9 sm:w-10 sm:h-10" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Left wing */}
-          <path d="M4 12 L22 32 L22 22 L10 9 Z" fill="#0b2859"/>
-          {/* Right wing */}
-          <path d="M40 12 L22 32 L22 22 L34 9 Z" fill="#1a3d6e"/>
-          {/* Centre V-point accent */}
-          <path d="M17 27 L22 34 L27 27" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      );
-
-    /* ──────────────────────────────────────────────────────────────────
-       Clone Vox  –  Cloud silhouette with coloured highlight bars
-    ────────────────────────────────────────────────────────────────── */
+    /* ────────────────────────────────────────────────────────────────
+       CLONE VOX — CV waveform + microphone mark (upper portion of asset)
+       Asset is ~3:1 landscape; mark sits in top ~42%, full width.
+    ──────────────────────────────────────────────────────────────── */
     case 'clonevox':
       return (
-        <svg className="w-9 h-9 sm:w-10 sm:h-10" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Cloud body */}
-          <path d="M33 26H13a9 9 0 0 1 0-18 9.1 9.1 0 0 1 1.35.1A9 9 0 0 1 33 18a7 7 0 0 1 0 8z" fill="#dbeafe" stroke="#1a3d6e" strokeWidth="1.5"/>
-          {/* Coloured bar 1 – orange */}
-          <rect x="13" y="29" width="8" height="3.5" rx="1.75" fill="#f97316"/>
-          {/* Coloured bar 2 – blue */}
-          <rect x="23" y="29" width="8" height="3.5" rx="1.75" fill="#2563eb"/>
-          {/* Coloured bar 3 – green, narrow */}
-          <rect x="16" y="34" width="12" height="3" rx="1.5" fill="#16a34a"/>
-        </svg>
+        <div style={{
+          width: '100%', height: '100%', overflow: 'hidden',
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+          padding: '4px'
+        }}>
+          <img
+            src={cloneVoxLogo}
+            draggable={false}
+            alt="Clone Vox"
+            style={{
+              width: '130%',
+              height: 'auto',
+              objectFit: 'cover',
+              objectPosition: 'center top',
+              marginLeft: '-15%',
+              transform: 'scaleY(2.1) translateY(-17%)',
+              transformOrigin: 'top center',
+              imageRendering: 'auto',
+              flexShrink: 0,
+            }}
+          />
+        </div>
+      );
+
+    /* ────────────────────────────────────────────────────────────────
+       ARIKAP — dark-navy circular badge with A mark (upper portion)
+       Asset is ~3:1 landscape; circular mark occupies top ~55%, centered.
+    ──────────────────────────────────────────────────────────────── */
+    case 'arikap':
+      return (
+        <div style={{
+          width: '100%', height: '100%', overflow: 'hidden',
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+          padding: '4px'
+        }}>
+          <img
+            src={arikapLogo}
+            draggable={false}
+            alt="ARIKAP"
+            style={{
+              width: '90%',
+              height: 'auto',
+              objectFit: 'cover',
+              objectPosition: 'center top',
+              transform: 'scaleY(1.9) translateY(-9%)',
+              transformOrigin: 'top center',
+              flexShrink: 0,
+            }}
+          />
+        </div>
+      );
+
+    /* ────────────────────────────────────────────────────────────────
+       AMBIK HUB — stylised A + orange upward-arrow mark (upper portion)
+       Asset is ~3:1 landscape; A+arrow mark in top ~52%, centered.
+    ──────────────────────────────────────────────────────────────── */
+    case 'ambikhub':
+      return (
+        <div style={{
+          width: '100%', height: '100%', overflow: 'hidden',
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+          padding: '4px'
+        }}>
+          <img
+            src={ambikHubLogo}
+            draggable={false}
+            alt="Ambik Hub"
+            style={{
+              width: '90%',
+              height: 'auto',
+              objectFit: 'cover',
+              objectPosition: 'center top',
+              transform: 'scaleY(2.0) translateY(-10%)',
+              transformOrigin: 'top center',
+              flexShrink: 0,
+            }}
+          />
+        </div>
+      );
+
+    /* ────────────────────────────────────────────────────────────────
+       FIX CLOUDCOST — multicolor cloud + orange arrow + bar-chart mark
+       Asset is ~2.5:1 landscape; cloud mark in top ~57%, centered.
+    ──────────────────────────────────────────────────────────────── */
+    case 'cloudcost':
+      return (
+        <div style={{
+          width: '100%', height: '100%', overflow: 'hidden',
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+          padding: '4px'
+        }}>
+          <img
+            src={fixCloudCost}
+            draggable={false}
+            alt="FlixiCloud"
+            style={{
+              width: '100%',
+              height: 'auto',
+              objectFit: 'cover',
+              objectPosition: 'center top',
+              transform: 'scaleY(1.85) translateY(-8%)',
+              transformOrigin: 'top center',
+              flexShrink: 0,
+            }}
+          />
+        </div>
+      );
+
+    /* ────────────────────────────────────────────────────────────────
+       INSTREX — dark-navy "I" with blue inverted-triangle cap
+       Extracted cleanly from existing INSTREX_LOGO asset with original proportions.
+    ──────────────────────────────────────────────────────────────── */
+    case 'instrex':
+      return (
+        <div style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+        }}>
+          <div style={{
+            height: '66%',
+            aspectRatio: '55 / 176',
+            overflow: 'hidden',
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+            flexShrink: 0,
+          }}>
+            <img
+              src={instrexLogo}
+              draggable={false}
+              alt="INSTREX"
+              style={{
+                width: '1916.36%',
+                height: 'auto',
+                maxWidth: 'none',
+                maxHeight: 'none',
+                objectFit: 'fill',
+                transform: 'translate(-5.408%, -17.711%)',
+                transformOrigin: 'top left',
+                display: 'block',
+                flexShrink: 0,
+              }}
+            />
+          </div>
+        </div>
       );
 
     default:
       return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="2" y1="12" x2="22" y2="12" />
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-        </svg>
+        <div style={{
+          width: '100%', height: '100%', overflow: 'hidden',
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+          padding: '4px'
+        }}>
+          <img
+            src={cloneVoxLogo}
+            draggable={false}
+            alt="Clone Vox"
+            style={{
+              width: '130%',
+              height: 'auto',
+              objectFit: 'cover',
+              objectPosition: 'center top',
+              marginLeft: '-15%',
+              transform: 'scaleY(2.1) translateY(-17%)',
+              transformOrigin: 'top center',
+              imageRendering: 'auto',
+              flexShrink: 0,
+            }}
+          />
+        </div>
       );
   }
 }
@@ -142,7 +248,7 @@ function buildItems(pool, seg) {
       src: item.src || '',
       alt: item.alt || item.title || '',
       type: item.type || (item.icon ? 'icon' : 'image'),
-      icon: item.icon || 'code',
+      icon: item.icon || 'instrex',
       title: item.title || item.alt || '',
       description: item.description || ''
     };

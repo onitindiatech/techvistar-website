@@ -3,19 +3,16 @@ import { useGesture } from '@use-gesture/react';
 import './DomeGallery.css';
 
 const DEFAULT_TILES = [
-  { type: 'icon', icon: 'ai', title: 'Applied AI & Neural Systems' },
-  { type: 'icon', icon: 'code', title: 'Full-Stack Software Engineering' },
-  { type: 'icon', icon: 'cloud', title: 'Cloud Architecture & DevOps' },
-  { type: 'icon', icon: 'database', title: 'Data Infrastructure & Warehouses' },
-  { type: 'icon', icon: 'analytics', title: 'Business Intelligence & Analytics' },
-  { type: 'icon', icon: 'security', title: 'Enterprise Cybersecurity & Trust' },
-  { type: 'icon', icon: 'automation', title: 'Process Automation & Workflows' },
-  { type: 'icon', icon: 'network', title: 'API Mesh & Distributed Networks' },
-  { type: 'icon', icon: 'growth', title: 'Digital Growth & Revenue Systems' },
-  { type: 'icon', icon: 'server', title: 'High-Availability Server Clusters' },
-  { type: 'icon', icon: 'mobile', title: 'Cross-Platform Mobile Apps' },
-  { type: 'icon', icon: 'architecture', title: 'Modern System Architecture' },
-  { type: 'icon', icon: 'workflow', title: 'Workflow Automation & CI/CD' },
+  { type: 'icon', icon: 'instrex',   title: 'INSTREX' },
+  { type: 'icon', icon: 'cloudcost', title: 'CloudCost' },
+  { type: 'icon', icon: 'arikap',    title: 'Arikap' },
+  { type: 'icon', icon: 'ambikhub',  title: 'Ambik Hub' },
+  { type: 'icon', icon: 'clonevox',  title: 'Clone Vox' },
+  { type: 'icon', icon: 'arikap',    title: 'Arikap' },
+  { type: 'icon', icon: 'instrex',   title: 'INSTREX' },
+  { type: 'icon', icon: 'cloudcost', title: 'CloudCost' },
+  { type: 'icon', icon: 'clonevox',  title: 'Clone Vox' },
+  { type: 'icon', icon: 'ambikhub',  title: 'Ambik Hub' },
 ];
 
 const DEFAULTS = {
@@ -31,128 +28,92 @@ const wrapAngleSigned = deg => {
 };
 
 function renderEcosystemIcon(iconType) {
-  const stroke = "currentColor";
-  const strokeWidth = "1.8";
-  
   switch (iconType) {
-    case 'ai':
+
+    /* ──────────────────────────────────────────────────────────────────
+       INSTREX  –  Stylised "I" pillar mark, dark-navy brand colour
+    ────────────────────────────────────────────────────────────────── */
+    case 'instrex':
       return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <rect x="4" y="4" width="16" height="16" rx="3" />
-          <rect x="8.5" y="8.5" width="7" height="7" rx="1" strokeWidth="1.5" />
-          <path d="M10.5 13.5v-3l3 3v-3" strokeWidth="1.5" />
-          <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+        <svg className="w-8 h-8 sm:w-9 sm:h-9" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Top horizontal bar */}
+          <rect x="8" y="6" width="24" height="5" rx="2.5" fill="#0b2859"/>
+          {/* Vertical shaft */}
+          <rect x="16.5" y="10.5" width="7" height="19" rx="2" fill="#1a3d6e"/>
+          {/* Bottom horizontal bar */}
+          <rect x="8" y="29" width="24" height="5" rx="2.5" fill="#0b2859"/>
         </svg>
       );
-    case 'code':
+
+    /* ──────────────────────────────────────────────────────────────────
+       CloudCost  –  Cloud outline with orange + blue + green accent dots
+    ────────────────────────────────────────────────────────────────── */
+    case 'cloudcost':
       return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="16 18 22 12 16 6" />
-          <polyline points="8 6 2 12 8 18" />
-          <line x1="14" y1="4" x2="10" y2="20" strokeWidth="1.5" />
+        <svg className="w-9 h-9 sm:w-10 sm:h-10" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Cloud body */}
+          <path d="M32 28H14a8 8 0 1 1 1.07-15.93A10 10 0 0 1 34 20a6 6 0 0 1-2 8z" fill="#e8eef8" stroke="#1a3d6e" strokeWidth="1.6"/>
+          {/* Orange accent dot */}
+          <circle cx="16" cy="32" r="3.5" fill="#f97316"/>
+          {/* Blue accent dot */}
+          <circle cx="24.5" cy="34" r="3.5" fill="#2563eb"/>
+          {/* Green accent dot */}
+          <circle cx="33" cy="31" r="3.5" fill="#22c55e"/>
         </svg>
       );
-    case 'cloud':
+
+    /* ──────────────────────────────────────────────────────────────────
+       Arikap  –  Geometric "A" lettermark, angular, dark-navy
+    ────────────────────────────────────────────────────────────────── */
+    case 'arikap':
       return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
-          <path d="M12 13v5M10 15l2-2 2 2" strokeWidth="1.5" />
+        <svg className="w-8 h-8 sm:w-9 sm:h-9" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Left leg */}
+          <polygon points="20,5 7,35 13,35 20,14" fill="#0b2859"/>
+          {/* Right leg */}
+          <polygon points="20,5 33,35 27,35 20,14" fill="#1a3d6e"/>
+          {/* Crossbar */}
+          <rect x="12" y="22" width="16" height="4" rx="2" fill="#0b2859"/>
+          {/* Apex highlight */}
+          <polygon points="20,5 17,13 23,13" fill="#3b82f6" opacity="0.6"/>
         </svg>
       );
-    case 'database':
+
+    /* ──────────────────────────────────────────────────────────────────
+       Ambik Hub  –  Wings / V-chevron mark, dark navy + accent blue
+    ────────────────────────────────────────────────────────────────── */
+    case 'ambikhub':
       return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <ellipse cx="12" cy="5" rx="9" ry="3" />
-          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-          <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+        <svg className="w-9 h-9 sm:w-10 sm:h-10" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Left wing */}
+          <path d="M4 12 L22 32 L22 22 L10 9 Z" fill="#0b2859"/>
+          {/* Right wing */}
+          <path d="M40 12 L22 32 L22 22 L34 9 Z" fill="#1a3d6e"/>
+          {/* Centre V-point accent */}
+          <path d="M17 27 L22 34 L27 27" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       );
-    case 'analytics':
+
+    /* ──────────────────────────────────────────────────────────────────
+       Clone Vox  –  Cloud silhouette with coloured highlight bars
+    ────────────────────────────────────────────────────────────────── */
+    case 'clonevox':
       return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <line x1="18" y1="20" x2="18" y2="10" strokeWidth="2.2" />
-          <line x1="12" y1="20" x2="12" y2="4" strokeWidth="2.2" />
-          <line x1="6" y1="20" x2="6" y2="14" strokeWidth="2.2" />
-          <path d="M3 20h18" strokeWidth="1.8" />
-          <path d="M4 11l5-4 5 4 6-7" strokeWidth="1.5" />
+        <svg className="w-9 h-9 sm:w-10 sm:h-10" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Cloud body */}
+          <path d="M33 26H13a9 9 0 0 1 0-18 9.1 9.1 0 0 1 1.35.1A9 9 0 0 1 33 18a7 7 0 0 1 0 8z" fill="#dbeafe" stroke="#1a3d6e" strokeWidth="1.5"/>
+          {/* Coloured bar 1 – orange */}
+          <rect x="13" y="29" width="8" height="3.5" rx="1.75" fill="#f97316"/>
+          {/* Coloured bar 2 – blue */}
+          <rect x="23" y="29" width="8" height="3.5" rx="1.75" fill="#2563eb"/>
+          {/* Coloured bar 3 – green, narrow */}
+          <rect x="16" y="34" width="12" height="3" rx="1.5" fill="#16a34a"/>
         </svg>
       );
-    case 'security':
-      return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          <rect x="9.5" y="10.5" width="5" height="4" rx="1" />
-          <path d="M11 10.5V9a1 1 0 0 1 2 0v1.5" />
-        </svg>
-      );
-    case 'automation':
-      return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l.06.06a1.65 1.65 0 0 0 .33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-        </svg>
-      );
-    case 'network':
-      return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="3" />
-          <circle cx="4" cy="6" r="2" />
-          <circle cx="20" cy="6" r="2" />
-          <circle cx="4" cy="18" r="2" />
-          <circle cx="20" cy="18" r="2" />
-          <line x1="5.7" y1="7.3" x2="9.5" y2="10.2" />
-          <line x1="18.3" y1="7.3" x2="14.5" y2="10.2" />
-          <line x1="5.7" y1="16.7" x2="9.5" y2="13.8" />
-          <line x1="18.3" y1="16.7" x2="14.5" y2="13.8" />
-        </svg>
-      );
-    case 'growth':
-      return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-          <polyline points="17 6 23 6 23 12" />
-        </svg>
-      );
-    case 'server':
-      return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-          <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-          <line x1="6" y1="6" x2="6.01" y2="6" strokeWidth="2.5" />
-          <line x1="6" y1="18" x2="6.01" y2="18" strokeWidth="2.5" />
-          <line x1="10" y1="6" x2="14" y2="6" />
-          <line x1="10" y1="18" x2="14" y2="18" />
-        </svg>
-      );
-    case 'workflow':
-      return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="6" height="6" rx="1.5" />
-          <rect x="15" y="15" width="6" height="6" rx="1.5" />
-          <rect x="15" y="3" width="6" height="6" rx="1.5" />
-          <path d="M6 9v9a3 3 0 0 0 3 3h6" />
-          <path d="M9 6h6" />
-        </svg>
-      );
-    case 'architecture':
-      return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="12 2 2 7 12 12 22 7 12 2" />
-          <polyline points="2 17 12 22 22 17" />
-          <polyline points="2 12 12 17 22 12" />
-        </svg>
-      );
-    case 'mobile':
-      return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-          <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
-          <line x1="12" y1="18" x2="12.01" y2="18" strokeWidth="2" />
-          <line x1="9" y1="5" x2="15" y2="5" />
-        </svg>
-      );
+
     default:
       return (
-        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10" />
           <line x1="2" y1="12" x2="22" y2="12" />
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -162,6 +123,7 @@ function renderEcosystemIcon(iconType) {
 }
 
 function buildItems(pool, seg) {
+
   const activePool = pool && pool.length > 0 ? pool : DEFAULT_TILES;
   const xCols = Array.from({ length: seg }, (_, i) => -37 + i * 2);
   const evenYs = [-4, -2, 0, 2, 4];

@@ -16,6 +16,8 @@ import { ServiceSectionNavigation } from '@/components/services/ServiceSectionNa
 import { OverviewSection } from '@/components/services/OverviewSection';
 import { SolutionsSection } from '@/components/services/SolutionsSection';
 import { ProcessSection } from '@/components/services/ProcessSection';
+import { TechnologySection } from '@/components/services/TechnologySection';
+import { RelatedServicesSection } from '@/components/services/RelatedServicesSection';
 import { ServiceSidebar } from '@/components/services/ServiceSidebar';
 import { CTASection } from '@/components/services/CTASection';
 
@@ -100,15 +102,13 @@ const ServiceDetails = () => {
     );
   }
 
-  const showFaq = (service.faqs?.length ?? 0) > 0;
-
   return (
     <>
       {seoBlock}
       <Navbar />
       <main className="min-h-screen bg-slate-50 pt-0">
         <ServiceHero service={service} />
-        <ServiceSectionNavigation showFaq={showFaq} />
+        <ServiceSectionNavigation service={service} />
 
         {/* Dynamic Detail Modules Content Area */}
         <section className="w-full mx-auto px-4 md:px-6 lg:px-12 xl:px-20 mt-8 pb-16 detail-page-gutter">
@@ -117,6 +117,8 @@ const ServiceDetails = () => {
               <OverviewSection service={service} />
               <SolutionsSection service={service} />
               <ProcessSection service={service} />
+              <TechnologySection service={service} />
+              <RelatedServicesSection service={service} />
             </div>
 
             <div className="space-y-6">

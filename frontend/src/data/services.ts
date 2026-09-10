@@ -21,6 +21,7 @@ import {
   HardDrive,
   LucideIcon
 } from 'lucide-react';
+import { getCmsIcon } from '@/lib/cmsIcons';
 import { preferCmsImage } from '@/lib/mediaFallbacks';
 import type {
   ServiceCtaBlock,
@@ -336,61 +337,74 @@ export function decorateService(apiService: any): Service {
   let resolvedIcon: LucideIcon = Globe;
   if (apiService.icon && ICON_MAP[apiService.icon]) {
     resolvedIcon = ICON_MAP[apiService.icon];
+  } else if (apiService.icon) {
+    const fromCms = getCmsIcon(apiService.icon);
+    if (fromCms && fromCms !== Globe) {
+      resolvedIcon = fromCms;
+    }
   }
 
   const slug = typeof apiService.slug === 'string' ? apiService.slug : '';
+  const baseService = SERVICES.find((s) => s.slug === slug);
+
+  if (resolvedIcon === Globe && baseService?.icon) {
+    resolvedIcon = baseService.icon;
+  }
+
   // Preserve CMS fields separately — listing/detail helpers apply thumb ↔ cover fallback.
   // Do not copy cover into thumbnail here (same soft-placeholder bug as industries).
   const coverRaw = String(apiService.coverImage ?? '').trim();
   const coverImage = coverRaw
     ? resolveServiceImage(coverRaw, slug)
-    : '';
+    : (baseService?.coverImage || (slug && SERVICE_SLUG_COVER_ASSETS[slug]) || DEFAULT_SERVICE_COVER);
+
   const thumbnailRaw = String(apiService.thumbnail ?? apiService.thumbnailImage ?? '').trim();
   const thumbnail = thumbnailRaw
     ? resolveServiceImage(thumbnailRaw, slug)
-    : '';
+    : (baseService?.thumbnail || coverImage);
+
   const dashboardRaw = String(apiService.dashboardImage ?? '').trim();
   const dashboardImage = dashboardRaw
     ? (isCmsUploadedImage(dashboardRaw)
         ? dashboardRaw
         : resolveServiceImageKey(dashboardRaw) || dashboardRaw)
-    : '';
+    : (baseService?.dashboardImage ? (resolveServiceImageKey(baseService.dashboardImage) || baseService.dashboardImage) : '');
 
   return {
-    id: apiService._id || apiService.id,
+    id: apiService._id || apiService.id || baseService?.id || '',
     slug,
-    title: apiService.title,
-    shortDescription: apiService.shortDescription,
-    longDescription: apiService.fullDescription || apiService.shortDescription,
-    category: apiService.category,
+    title: apiService.title || baseService?.title || '',
+    shortDescription: apiService.shortDescription || baseService?.shortDescription || '',
+    longDescription: apiService.fullDescription || apiService.shortDescription || baseService?.longDescription || '',
+    category: apiService.category || baseService?.category || '',
     icon: resolvedIcon,
     coverImage,
     thumbnail,
-    overview: apiService.overview,
-    offerings: apiService.offerings?.length > 0 ? apiService.offerings : [],
-    process: apiService.process || [],
-    caseStudies: apiService.caseStudies || [],
-    technologies: apiService.technologies || [],
-    faqs: apiService.faqs || [],
-    benefits: apiService.benefits || [],
-    cta: apiService.cta || '',
-    ctaBlock: apiService.ctaBlock || undefined,
-    sidebar: apiService.sidebar || undefined,
-    consultationForm: apiService.consultationForm || undefined,
-    featured: apiService.featured || false,
-    order: apiService.displayOrder || 0,
-    status: apiService.status || 'active',
-    industries: apiService.industries || [],
-    relatedIndustrySlugs: apiService.relatedIndustrySlugs || [],
-    relatedServiceSlugs: apiService.relatedServiceSlugs || [],
-    heroBadge: apiService.heroBadge || '',
-    heroTagline: apiService.heroTagline || '',
-    whyChooseUs: apiService.whyChooseUs || [],
-    stats: apiService.stats || [],
-    detailedOfferings: apiService.detailedOfferings?.length > 0 ? apiService.detailedOfferings : [],
+    overview: apiService.overview?.trim() ? apiService.overview : (baseService?.overview || ''),
+    offerings: apiService.offerings && apiService.offerings.length > 0 ? apiService.offerings : (baseService?.offerings || []),
+    process: apiService.process && apiService.process.length > 0 ? apiService.process : (baseService?.process || []),
+    caseStudies: apiService.caseStudies && apiService.caseStudies.length > 0 ? apiService.caseStudies : (baseService?.caseStudies || []),
+    technologies: apiService.technologies && apiService.technologies.length > 0 ? apiService.technologies : (baseService?.technologies || []),
+    faqs: apiService.faqs && apiService.faqs.length > 0 ? apiService.faqs : (baseService?.faqs || []),
+    benefits: apiService.benefits && apiService.benefits.length > 0 ? apiService.benefits : (baseService?.benefits || []),
+    cta: apiService.cta || baseService?.cta || '',
+    ctaBlock: apiService.ctaBlock || baseService?.ctaBlock || undefined,
+    sidebar: apiService.sidebar || baseService?.sidebar || undefined,
+    consultationForm: apiService.consultationForm || baseService?.consultationForm || undefined,
+    featured: apiService.featured !== undefined ? apiService.featured : (baseService?.featured || false),
+    order: apiService.displayOrder !== undefined ? apiService.displayOrder : (baseService?.order || 0),
+    status: apiService.status || baseService?.status || 'active',
+    industries: apiService.industries && apiService.industries.length > 0 ? apiService.industries : (baseService?.industries || []),
+    relatedIndustrySlugs: apiService.relatedIndustrySlugs && apiService.relatedIndustrySlugs.length > 0 ? apiService.relatedIndustrySlugs : (baseService?.relatedIndustrySlugs || []),
+    relatedServiceSlugs: apiService.relatedServiceSlugs && apiService.relatedServiceSlugs.length > 0 ? apiService.relatedServiceSlugs : (baseService?.relatedServiceSlugs || []),
+    heroBadge: apiService.heroBadge || baseService?.heroBadge || '',
+    heroTagline: apiService.heroTagline || baseService?.heroTagline || '',
+    whyChooseUs: apiService.whyChooseUs && apiService.whyChooseUs.length > 0 ? apiService.whyChooseUs : (baseService?.whyChooseUs || []),
+    stats: apiService.stats && apiService.stats.length > 0 ? apiService.stats : (baseService?.stats || []),
+    detailedOfferings: apiService.detailedOfferings && apiService.detailedOfferings.length > 0 ? apiService.detailedOfferings : (baseService?.detailedOfferings || []),
     dashboardImage,
-    seoTitle: apiService.seoTitle || '',
-    seoDescription: apiService.seoDescription || '',
+    seoTitle: apiService.seoTitle || baseService?.seoTitle || '',
+    seoDescription: apiService.seoDescription || baseService?.seoDescription || '',
   };
 }
 

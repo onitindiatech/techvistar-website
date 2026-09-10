@@ -7,6 +7,7 @@ import { Suspense, lazy, useEffect, useState, type ReactNode } from "react";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import { HomeCmsProvider } from "@/contexts/HomeCmsContext";
 import { WebsiteBrandingEffect } from "@/components/WebsiteBrandingEffect";
+import { SmoothScrollEffect } from "@/components/common/SmoothScrollEffect";
 import { RouteFallback } from "@/components/common/RouteFallback";
 import { Analytics } from "@/components/Analytics";
 import { ClickSpark } from "@/components/ui/ClickSpark";
@@ -185,6 +186,7 @@ const App = () => (
       />
       <HomeCmsProvider>
       <WebsiteBrandingEffect />
+      <SmoothScrollEffect />
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Analytics />
         <PageTransitionLoader />

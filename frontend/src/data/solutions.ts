@@ -112,43 +112,97 @@ function resolveDashboardImage(value?: string): string {
 }
 
 export function decorateSolution(apiSolution: any): SolutionDetail {
-  const title = apiSolution.title || '';
+  const slug = typeof apiSolution.slug === 'string' ? apiSolution.slug : '';
+  const fallback = slug && SOLUTIONS_DATA[slug] ? SOLUTIONS_DATA[slug] : undefined;
+
+  const title = apiSolution.title || fallback?.title || '';
   const heroDescriptionRaw = (apiSolution.heroDescription || apiSolution.desc || '').trim();
   const heroDescription =
     heroDescriptionRaw && heroDescriptionRaw !== apiSolution.subtitle
       ? heroDescriptionRaw
       : buildDefaultHeroDescription(title);
 
+  const category = apiSolution.category || fallback?.category || 'Business Solutions';
+  const icon = (apiSolution.icon ? (ICON_MAP[apiSolution.icon] || resolveSolutionIcon(apiSolution.icon)) : undefined) || fallback?.icon || Brain;
+
+  const dashboardRaw = (apiSolution.dashboardImage || '').trim();
+  const dashboardImage = dashboardRaw
+    ? resolveDashboardImage(dashboardRaw)
+    : (fallback && (fallback as any).dashboardImage ? resolveDashboardImage((fallback as any).dashboardImage) : DEFAULT_DASHBOARD_IMAGE);
+
+  const challenges = apiSolution.challenges && (apiSolution.challenges.points?.length > 0 || apiSolution.challenges.title?.trim())
+    ? apiSolution.challenges
+    : (fallback?.challenges || { title: '', points: [], impact: '' });
+
+  const ourSolution = apiSolution.ourSolution && (apiSolution.ourSolution.capabilities?.length > 0 || apiSolution.ourSolution.overview?.trim())
+    ? apiSolution.ourSolution
+    : (fallback?.ourSolution || { overview: '', capabilities: [] });
+
+  const features = apiSolution.features && apiSolution.features.length > 0
+    ? apiSolution.features.map((f: any) => ({
+        title: f.title,
+        description: f.description,
+        icon: resolveSolutionIcon(f.icon),
+      }))
+    : (fallback?.features ? fallback.features.map((f) => ({
+        title: f.title,
+        description: f.description,
+        icon: typeof f.icon === 'string' ? resolveSolutionIcon(f.icon) : f.icon,
+      })) : []);
+
+  const howItWorks = apiSolution.howItWorks && apiSolution.howItWorks.length > 0
+    ? apiSolution.howItWorks
+    : (fallback?.howItWorks || []);
+
+  const hasBenefits = apiSolution.benefits && (apiSolution.benefits.roi || apiSolution.benefits.efficiency || apiSolution.benefits.scalability || apiSolution.benefits.security);
+  const benefits = hasBenefits ? apiSolution.benefits : (fallback?.benefits || { roi: '', efficiency: '', scalability: '', security: '' });
+
+  const industries = apiSolution.industries && apiSolution.industries.length > 0
+    ? apiSolution.industries
+    : (fallback?.industries || []);
+
+  const techStack = apiSolution.techStack && apiSolution.techStack.length > 0
+    ? apiSolution.techStack
+    : (fallback?.techStack || []);
+
+  const metrics = apiSolution.metrics && apiSolution.metrics.length > 0
+    ? apiSolution.metrics
+    : (fallback?.metrics || []);
+
+  const faqs = apiSolution.faqs && apiSolution.faqs.length > 0
+    ? apiSolution.faqs
+    : (fallback?.faqs || []);
+
+  const relatedSolutionSlugs = apiSolution.relatedSolutionSlugs && apiSolution.relatedSolutionSlugs.length > 0
+    ? apiSolution.relatedSolutionSlugs
+    : (fallback && (fallback as any).relatedSolutionSlugs ? (fallback as any).relatedSolutionSlugs : []);
+
   return {
-    slug: apiSolution.slug,
+    slug,
     title,
-    subtitle: apiSolution.subtitle,
+    subtitle: apiSolution.subtitle || fallback?.subtitle || '',
     desc: heroDescription,
     heroDescription,
-    heroBadge: (apiSolution.heroBadge || apiSolution.category || '').trim(),
+    heroBadge: (apiSolution.heroBadge || apiSolution.category || fallback?.category || '').trim(),
     backLinkText: (apiSolution.backLinkText || '').trim() || mergeSectionCopy(apiSolution.sectionCopy).backLinkText,
-    dashboardImage: resolveDashboardImage(apiSolution.dashboardImage),
+    dashboardImage,
     heroFloatingCards: mergeHeroFloatingCards(apiSolution.heroFloatingCards),
     heroStats: mergeHeroStats(apiSolution.heroStats),
     sectionCopy: mergeSectionCopy(apiSolution.sectionCopy),
-    icon: ICON_MAP[apiSolution.icon] || Brain,
-    category: apiSolution.category,
-    challenges: apiSolution.challenges || { title: '', points: [], impact: '' },
-    ourSolution: apiSolution.ourSolution || { overview: '', capabilities: [] },
-    features: (apiSolution.features || []).map((f: any) => ({
-      title: f.title,
-      description: f.description,
-      icon: resolveSolutionIcon(f.icon),
-    })),
-    howItWorks: apiSolution.howItWorks || [],
-    benefits: apiSolution.benefits || { roi: '', efficiency: '', scalability: '', security: '' },
-    industries: apiSolution.industries || [],
-    techStack: apiSolution.techStack || [],
-    metrics: apiSolution.metrics || [],
-    faqs: apiSolution.faqs || [],
-    relatedSolutionSlugs: apiSolution.relatedSolutionSlugs || [],
-    seoTitle: apiSolution.seoTitle,
-    seoDescription: apiSolution.seoDescription,
+    icon,
+    category,
+    challenges,
+    ourSolution,
+    features,
+    howItWorks,
+    benefits,
+    industries,
+    techStack,
+    metrics,
+    faqs,
+    relatedSolutionSlugs,
+    seoTitle: apiSolution.seoTitle || (fallback as any)?.seoTitle,
+    seoDescription: apiSolution.seoDescription || (fallback as any)?.seoDescription,
   };
 }
 

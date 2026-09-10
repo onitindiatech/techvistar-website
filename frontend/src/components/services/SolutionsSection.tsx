@@ -61,6 +61,11 @@ export const SolutionsSection = ({ service }: SectionProps) => {
 
   const offeringsData = service.detailedOfferings || [];
   const hasDetailedOfferings = offeringsData.length > 0;
+  const hasOfferings = (service.offerings || []).length > 0;
+
+  if (!hasDetailedOfferings && !hasOfferings) {
+    return null;
+  }
 
   // Animation variants
   const containerVariants = {

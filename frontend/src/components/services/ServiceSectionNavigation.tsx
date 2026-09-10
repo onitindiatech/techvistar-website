@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
+import { Service } from '@/data/services';
+
 interface NavItem {
   id: string;
   label: string;
@@ -10,17 +12,30 @@ const baseNavItems: NavItem[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'offerings', label: 'Offerings' },
   { id: 'process', label: 'Process' },
+  { id: 'technology', label: 'Technology' },
 ];
 
 interface ServiceSectionNavigationProps {
-  showFaq?: boolean;
+  service?: Service;
 }
 
-export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavigationProps) => {
-  const navItems: NavItem[] = [
-    ...baseNavItems,
-    { id: 'contact', label: 'Contact' },
-  ];
+export const ServiceSectionNavigation = ({ service }: ServiceSectionNavigationProps = {}) => {
+  const hasOfferings = (service?.detailedOfferings && service.detailedOfferings.length > 0) || (service?.offerings && service.offerings.length > 0);
+  const hasProcess = service?.process && service.process.length > 0;
+  const hasTechnology = service?.technologies && service.technologies.length > 0;
+
+  const navItems: NavItem[] = service
+    ? [
+        { id: 'overview', label: 'Overview' },
+        ...(hasOfferings ? [{ id: 'offerings', label: 'Offerings' }] : []),
+        ...(hasProcess ? [{ id: 'process', label: 'Process' }] : []),
+        ...(hasTechnology ? [{ id: 'technology', label: 'Technology' }] : []),
+        { id: 'contact', label: 'Contact' },
+      ]
+    : [
+        ...baseNavItems,
+        { id: 'contact', label: 'Contact' },
+      ];
   const [activeId, setActiveId] = useState<string>('overview');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const subnavRef = useRef<HTMLElement>(null);
@@ -98,7 +113,7 @@ export const ServiceSectionNavigation = ({ showFaq = false }: ServiceSectionNavi
     return () => {
       observer.disconnect();
     };
-  }, [showFaq, primaryHeight]);
+  }, [primaryHeight]);
 
   // Smooth scroll center active tab on mobile horizontally
   useEffect(() => {

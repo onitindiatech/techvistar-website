@@ -123,6 +123,10 @@
     scroll-behavior: smooth;
   }
 
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;

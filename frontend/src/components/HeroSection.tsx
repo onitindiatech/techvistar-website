@@ -60,9 +60,12 @@ function HeroHighlightText({
   const trimmed = text.trim();
   if (!trimmed) return null;
 
+  const blueGradientStyle =
+    'bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(37,99,235,0.45)]';
+
   if (!animate) {
     return (
-      <span className="hero-highlight-text--static inline-block font-black">
+      <span className={cn('inline-block font-black', blueGradientStyle)}>
         {trimmed}
       </span>
     );
@@ -70,7 +73,7 @@ function HeroHighlightText({
 
   return (
     <motion.span
-      className="hero-highlight-text inline-block font-black"
+      className={cn('inline-block font-black', blueGradientStyle)}
       animate={{ y: [0, -2, 0] }}
       transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
     >
@@ -174,6 +177,32 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
   const line2 = display.headlineLine2;
   const accent = display.headlineAccent;
   const animateHighlight = !reduceMotion && hero.animationEnabled;
+
+  // Keep prefix white as previous, and make only "THEY REMEMBER" (or whatever accent set by admin) blue
+  const headlineParts = useMemo(() => {
+    if (accent) {
+      return {
+        prefix: line1,
+        line2: line2 || '',
+        accentText: accent,
+      };
+    }
+    const rawHeading = display.useSingleHeading ? display.singleHeading : (line1 || '');
+    const match = rawHeading.match(/^(.*?\b)(THEY\s+REMEMBER[.\s]*)$/i);
+    if (match) {
+      return {
+        prefix: match[1].trimEnd(),
+        line2: line2 || '',
+        accentText: match[2].trim(),
+      };
+    }
+    return {
+      prefix: rawHeading,
+      line2: line2 || '',
+      accentText: '',
+    };
+  }, [accent, line1, line2, display.useSingleHeading, display.singleHeading]);
+
   const heroHeadlineLabel = display.useSingleHeading
     ? display.singleHeading
     : [line1, line2, accent].filter(Boolean).join(' ');
@@ -305,29 +334,20 @@ export const HeroSection = (_props: HeroSectionProps = {}) => {
                   'tracking-[-0.02em] md:tracking-[-0.028em]'
                 )}
               >
-                {display.useSingleHeading ? (
-                  <span className="block w-full max-w-[20ch] md:max-w-none text-pretty [text-wrap:pretty]">
-                    {display.singleHeading}
-                  </span>
-                ) : (
-                  <>
-                {line1 ? (
-                  <span className="block w-full max-w-[20ch] md:max-w-none md:whitespace-nowrap text-pretty [text-wrap:pretty]">
-                    {line1}
-                  </span>
-                ) : null}
-                {line2 ? (
+                <span className="block w-full max-w-[20ch] md:max-w-none md:whitespace-nowrap text-pretty [text-wrap:pretty]">
+                  <span>{headlineParts.prefix}</span>
+                  {headlineParts.accentText ? (
+                    <>
+                      {' '}
+                      <HeroHighlightText text={headlineParts.accentText} animate={animateHighlight} />
+                    </>
+                  ) : null}
+                </span>
+                {headlineParts.line2 ? (
                   <span className="block w-full max-w-[20ch] md:max-w-none md:whitespace-nowrap text-pretty [text-wrap:pretty] mt-0.5 md:mt-1.5">
-                    {line2}
+                    {headlineParts.line2}
                   </span>
                 ) : null}
-                {accent ? (
-                  <span className="block w-full max-w-[20ch] md:max-w-none md:whitespace-nowrap text-pretty [text-wrap:pretty] mt-0.5 md:mt-1.5">
-                    <HeroHighlightText text={accent} animate={animateHighlight} />
-                  </span>
-                ) : null}
-                  </>
-                )}
               </motion.h1>
 
               <motion.p

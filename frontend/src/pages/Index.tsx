@@ -18,10 +18,6 @@ const TechStackSection = lazySection(
   () => import('@/components/TechStackSection'),
   'TechStackSection',
 );
-const ProjectsSection = lazySection(
-  () => import('@/components/ProjectsSection'),
-  'ProjectsSection',
-);
 
 const DomeGallerySection = lazySection(
   () => import('@/components/DomeGallerySection'),
@@ -51,7 +47,6 @@ const Index = () => {
 
         <ServicesSection minHeight="320px" />
         <TechStackSection minHeight="280px" />
-        <ProjectsSection minHeight="480px" />
 
         <DomeGallerySection minHeight="520px" />
 

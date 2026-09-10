@@ -92,27 +92,6 @@ export const IndustryHero = ({ industry }: IndustryHeroProps) => {
               />
             </div>
           </div>
-
-          {industry.statistics && industry.statistics.length > 0 && (
-            <div className="space-y-6 border-t border-slate-200/60 pt-6">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {industry.statistics.map((stat, idx) => {
-                  const IconComponent = getStatIcon(stat.iconType);
-                  const theme = getThemeClasses(stat.colorTheme);
-                  return (
-                    <AnimatedStat
-                      key={idx}
-                      value={stat.value}
-                      label={stat.label}
-                      variant="hero-card"
-                      icon={<IconComponent className="h-4 w-4" />}
-                      themeIconClass={theme}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </section>

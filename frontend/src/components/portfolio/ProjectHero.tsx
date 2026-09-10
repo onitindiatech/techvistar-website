@@ -109,30 +109,6 @@ export const ProjectHero = ({ project }: ProjectHeroProps) => {
                   src={project.thumbnail}
                   alt={project.title}
                   className="w-full max-w-[280px] md:max-w-full h-auto object-contain"
-                />
-              </div>
-            </div>
-
-            {project.stats.length > 0 && (
-              <div className="space-y-6 pt-6 border-t border-slate-200/60">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {project.stats.map((stat, idx) => {
-                    const Icon = STAT_ICON_MAP[stat.iconType] || BarChart3;
-                    const themeIconClass = STAT_THEME_CLASSES[stat.colorTheme] || STAT_THEME_CLASSES.green;
-                    return (
-                      <AnimatedStat
-                        key={idx}
-                        value={stat.value}
-                        label={stat.label}
-                        variant="hero-card"
-                        icon={<Icon className="h-4 w-4" />}
-                        themeIconClass={themeIconClass}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

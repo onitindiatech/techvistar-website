@@ -110,19 +110,6 @@ export const IndustrySidebar = ({ industry, landingCms }: IndustrySidebarProps) 
           </div>
         </div>
 
-        {industry.statistics && industry.statistics.length > 0 && (
-          <div className="space-y-3 border-t border-slate-100 pt-5">
-            {industry.statistics.slice(0, 3).map((stat, idx) => (
-              <AnimatedStat
-                key={idx}
-                value={stat.value}
-                label={stat.label}
-                variant="sidebar-row"
-              />
-            ))}
-          </div>
-        )}
-
         <Dialog>
           <DialogTrigger asChild>
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>

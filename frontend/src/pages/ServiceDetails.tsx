@@ -42,7 +42,19 @@ const ServiceDetails = () => {
       const dec = decorateService(apiService);
       if (dec) return dec;
     }
-    return SERVICES.find((s) => s.slug === slug);
+    const match = SERVICES.find((s) => s.slug === slug);
+    if (match) return match;
+    if (slug === 'growth-strategy') {
+      const growthService = SERVICES.find((s) => s.slug === 'digital-marketing') || SERVICES.find((s) => s.slug === 'revenue-web-conversion-systems');
+      if (growthService) {
+        return {
+          ...growthService,
+          title: 'Growth Strategy & Marketing',
+          slug: 'growth-strategy',
+        };
+      }
+    }
+    return undefined;
   })();
 
   const serviceSeo = apiService ? seoFromApi(apiService as Record<string, unknown>) : undefined;

@@ -152,36 +152,6 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
                   src={getServiceHeroImage(service)}
                   alt={service.title}
                   className="w-full max-w-[280px] md:max-w-full h-auto object-contain"
-                />
-              </div>
-            </div>
-
-            {/* Bottom Half: Stats, Buttons, and Partner Logos */}
-            <div className="space-y-6 pt-6 border-t border-slate-200/60">
-              
-              {/* Stats Cards */}
-              {service.stats && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {service.stats.map((stat, idx) => {
-                    const IconComponent = getStatIcon(stat.iconType);
-                    const theme = getThemeClasses(stat.colorTheme);
-                    return (
-                      <AnimatedStat
-                        key={idx}
-                        value={stat.value}
-                        label={stat.label}
-                        variant="hero-card"
-                        icon={<IconComponent className="h-4 w-4" />}
-                        themeIconClass={theme.iconBg}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-
-
-
-            </div>
           </div>
         </div>
       </div>

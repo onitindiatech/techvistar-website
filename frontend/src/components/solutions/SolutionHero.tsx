@@ -97,30 +97,6 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
                   src={solution.dashboardImage}
                   alt={solution.title}
                   className="w-full max-w-[280px] md:max-w-full h-auto object-contain"
-                />
-              </div>
-            </div>
-
-            {heroStats.length > 0 && (
-              <div className="space-y-6 pt-6 border-t border-slate-200/60">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {heroStats.map((stat, idx) => {
-                    const IconComponent = getStatIcon(stat.icon);
-                    const themeIconClass = STAT_THEME_CLASSES[idx % STAT_THEME_CLASSES.length];
-                    return (
-                      <AnimatedStat
-                        key={`${stat.label}-${idx}`}
-                        value={stat.value}
-                        label={stat.label}
-                        variant="hero-card"
-                        icon={<IconComponent className="h-4 w-4" />}
-                        themeIconClass={themeIconClass}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

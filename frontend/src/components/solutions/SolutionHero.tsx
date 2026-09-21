@@ -97,6 +97,9 @@ export const SolutionHero = ({ solution }: SolutionHeroProps) => {
                   src={solution.dashboardImage}
                   alt={solution.title}
                   className="w-full max-w-[280px] md:max-w-full h-auto object-contain"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

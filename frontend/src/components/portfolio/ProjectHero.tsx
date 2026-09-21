@@ -109,6 +109,9 @@ export const ProjectHero = ({ project }: ProjectHeroProps) => {
                   src={project.thumbnail}
                   alt={project.title}
                   className="w-full max-w-[280px] md:max-w-full h-auto object-contain"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

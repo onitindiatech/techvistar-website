@@ -221,7 +221,7 @@ export const Work = () => {
 
           {(filters.enableSearch || filters.enableFilters) && (
             <section id="projects-grid" className="sticky top-20 z-40 border-y border-slate-200/80 bg-white/80 py-4 backdrop-blur-md">
-              <div className="container-custom mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 sm:px-12 md:flex-row md:px-14 lg:px-16">
+              <div className="container mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 sm:px-12 md:flex-row md:px-14 lg:px-16">
                 {filters.enableSearch ? (
                   <div className="relative w-full md:w-72">
                     <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -296,7 +296,7 @@ export const Work = () => {
             </section>
           )}
 
-          <section className="container-custom mx-auto max-w-7xl px-6 pt-12 pb-16 sm:px-12 md:px-14 md:pt-20 md:pb-20 lg:px-16">
+          <section className="container mx-auto max-w-7xl px-6 pt-12 pb-16 sm:px-12 md:px-14 md:pt-20 md:pb-20 lg:px-16">
             <div className="mb-12 space-y-2 text-center">
               <span className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-emerald-600">
                 {landing.featuredProjects.badge}

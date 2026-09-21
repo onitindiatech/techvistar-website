@@ -173,7 +173,7 @@ export const ServicesSection = () => {
                       </div>
 
                       {/* Category Description Paragraph */}
-                      <p className="text-xs sm:text-[13px] font-medium text-slate-600 leading-relaxed">
+                      <p className="text-base font-medium text-slate-600 leading-relaxed">
                         {pillar.description}
                       </p>
                     </div>

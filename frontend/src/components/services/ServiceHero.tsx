@@ -152,6 +152,9 @@ export const ServiceHero = ({ service }: ServiceHeroProps) => {
                   src={getServiceHeroImage(service)}
                   alt={service.title}
                   className="w-full max-w-[280px] md:max-w-full h-auto object-contain"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

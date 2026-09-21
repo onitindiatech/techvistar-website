@@ -167,7 +167,7 @@ export const Contact = () => {
         />
 
         {/* HERO GRID SECTION - FORM AND INFO CARDS */}
-        <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16 relative z-10" id="contact-form-section">
+        <section className="container mx-auto max-w-7xl px-6 sm:px-12 md:px-14 lg:px-16 py-12 md:py-16 relative z-10" id="contact-form-section">
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             
             {/* Left Side: Stats & Cards */}
@@ -384,7 +384,7 @@ export const Contact = () => {
         </section>
 
         {/* HEADQUARTERS MAP & DIRECTIONS BANNER */}
-        <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
+        <section className="container mx-auto max-w-7xl px-6 sm:px-12 md:px-14 lg:px-16 mb-12 md:mb-20 relative z-10">
           <div className="group w-full rounded-[2rem] overflow-hidden border border-slate-200/60 bg-white shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-15px_rgba(14,165,233,0.2)] transition-all duration-700 flex flex-col md:flex-row relative">
             
             {/* Grayscale OSM Map representation */}
@@ -434,7 +434,7 @@ export const Contact = () => {
         </section>
 
         {/* OUR OFFICES SECTION */}
-        <section className="container-custom max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
+        <section className="container mx-auto max-w-7xl px-6 sm:px-12 md:px-14 lg:px-16 mb-12 md:mb-20 relative z-10">
           <div className="mb-8">
             <h3 className="font-display text-base md:text-lg font-bold text-slate-900 leading-snug">Our Offices</h3>
           </div>

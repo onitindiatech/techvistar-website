@@ -173,8 +173,8 @@ const About = () => {
           bgPosition="right bottom"
         />
 
-        <div className="px-4 py-6 sm:px-6 md:py-8 lg:px-8">
-          <div className="mx-auto max-w-7xl overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_24px_-12px_rgba(15,23,42,0.1)]">
+        <div className="container mx-auto max-w-7xl px-6 sm:px-12 md:px-14 lg:px-16 py-6 md:py-8">
+          <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_24px_-12px_rgba(15,23,42,0.1)]">
             <motion.section
               {...fadeUp}
               className={`${sectionPad} border-b border-slate-100 bg-gradient-to-br from-primary/[0.02] via-emerald-50/[0.05] to-transparent`}

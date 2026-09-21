@@ -35,7 +35,7 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
       transition={{ duration: 0.6 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative overflow-hidden bg-zinc-950 pt-20 pb-10 md:pt-24 md:pb-12 border-b border-zinc-900 text-white"
+      className="relative overflow-hidden bg-slate-950 pt-28 pb-10 md:pt-32 md:pb-12 border-b border-slate-900 text-white"
     >
       {/* Animated Mesh Waves + Mouse Parallax */}
       {backgroundImage && (
@@ -133,50 +133,48 @@ export const PageHeader = ({ title, subtitle, description, backgroundImage, bgPo
       </div>
 
       {/* Gradient Overlay for Text Readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/60 to-transparent z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/60 to-transparent z-0 pointer-events-none" />
 
-      <div className="px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="mx-auto max-w-7xl px-5 sm:px-6 md:px-8 text-left">
-          {subtitle && (
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Badge variant="secondary" className="mb-3 border border-emerald-500/20 bg-emerald-500/10 text-caption text-emerald-400">
-                {subtitle}
-              </Badge>
-            </motion.div>
-          )}
-          <motion.h1
+      <div className="container relative z-10 mx-auto max-w-7xl px-6 sm:px-12 md:px-14 lg:px-16 text-left">
+        {subtitle && (
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="mb-4 text-3xl md:text-5xl font-extrabold font-display text-white leading-tight"
+            transition={{ duration: 0.6 }}
           >
-            {title}
-          </motion.h1>
-          {description && (
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="max-w-2xl text-base md:text-lg leading-relaxed font-normal text-zinc-300"
-            >
-              {description}
-            </motion.p>
-          )}
-          {children && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="mt-8"
-            >
-              {children}
-            </motion.div>
-          )}
-        </div>
+            <Badge variant="secondary" className="mb-3 border border-emerald-500/20 bg-emerald-500/10 text-caption text-emerald-400">
+              {subtitle}
+            </Badge>
+          </motion.div>
+        )}
+        <motion.h1
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="mb-4 text-3xl md:text-5xl font-extrabold font-display text-white leading-tight"
+        >
+          {title}
+        </motion.h1>
+        {description && (
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="max-w-2xl text-base md:text-lg leading-relaxed font-normal text-slate-300"
+          >
+            {description}
+          </motion.p>
+        )}
+        {children && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mt-8 flex flex-wrap items-center justify-start gap-4"
+          >
+            {children}
+          </motion.div>
+        )}
       </div>
     </motion.section>
   );
